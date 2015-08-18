@@ -1,0 +1,6 @@
+{
+  "name": "egg",
+  "productName": "Egg",
+  "version" : "0.0.1",
+  "main": "launch.js"
+}
