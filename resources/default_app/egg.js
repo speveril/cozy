@@ -1,8 +1,14 @@
 var fs = require('fs');
 var remote = require('remote');
 
-function Egg(args) {
+function Egg(argsArray) {
     console.log("Creating Egg Object");
+
+    var args = {};
+    for (var i in argsArray) {
+        var chunks = argsArray[i].split('=');
+        args[chunks[0]] = chunks[1];
+    }
 
     this.debug = !!args.debug;
     this.keys = {};
@@ -28,6 +34,7 @@ Egg.prototype = {
 
         window.addEventListener('keydown', this.onKeyDown.bind(this));
         window.addEventListener('keyup', this.onKeyUp.bind(this));
+        window.addEventListener('resize', this.onResize.bind(this));
 
         this.lastTime = Date.now();
         this.frame();
@@ -56,6 +63,10 @@ Egg.prototype = {
         if (this.debug && event.keyCode === 192) {
             remote.getCurrentWindow().toggleDevTools();
         }
+    },
+
+    onResize: function(event) {
+        console.log("TODO resize handling");
     },
 
     setTitle: function(title) {

@@ -1,30 +1,13 @@
 <html>
     <head>
-        <style>
-* {
-    margin: 0;
-    padding: 0;
-    -webkit-user-select: none;
-}
-        </style>
+        <link rel="stylesheet" href="egg.css">
+        <script src="lib/underscore.js"></script>
         <script src="lib/pixi.js"></script>
+        <script src="egg-util.js"></script>
     </head>
     <body>
         <script>
-var EggClass = require('./egg.js');
-
-function include(path) {
-    return require(process.cwd() + "/" + path);
-}
-
-var argsArray = window.location.search.slice(1).split('&');
-var args = {};
-for (var i in argsArray) {
-    var chunks = argsArray[i].split('=');
-    args[chunks[0]] = chunks[1];
-}
-
-Egg = new EggClass(args);
+Egg = new (require('./egg.js'))(window.location.search.slice(1).split('&'));
 Egg.run();
         </script>
     </body>

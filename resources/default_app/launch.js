@@ -13,6 +13,8 @@ for (var i in argv) {
     var option = argv[i];
     if (option === '--debug' || option === '-d') {
         options.debug = true;
+    } else if (option === '--console') {
+        options.console = true;
     } else if (option.indexOf('-') === 0) {
         console.log("Bad command line param, " + option);
         process.exit(1);
@@ -37,9 +39,10 @@ app.on('ready', function() {
       'use-content-size': true,
     //   'frame': false
     });
-    
+
     params = "game=" + gamePath;
     if (options.debug) params += "&debug=1";
+    if (options.console) window.toggleDevTools();
 
     window.loadUrl("file://" + __dirname + "/index.html?" + params);
 }.bind(this));
