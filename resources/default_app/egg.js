@@ -1,6 +1,8 @@
 var fs = require('fs');
 var remote = require('remote');
 
+var Map = require('./Map.js');
+
 function Egg(argsArray) {
     console.log("Creating Egg Object");
 
@@ -16,6 +18,8 @@ function Egg(argsArray) {
 }
 
 Egg.prototype = {
+    Map: Map,
+
     run: function() {
         process.chdir(this.game);
         this.gameDir = "../../" + this.game;
@@ -33,9 +37,14 @@ Egg.prototype = {
         this.config.height = this.config.height || 240;
 
         // set up window
-        this.browserWindow.setContentSize(this.config.width, this.config.height);
-        this.browserWindow.center();
+        var mult = 1;
+        while ((mult + 1) * this.config.width <= screen.availWidth && (mult + 1) * this.config.height <= screen.availHeight) {
+            mult++;
+        }
+
         this.browserWindow.setMinimumSize(this.config.width, this.config.height);
+        this.browserWindow.setContentSize(this.config.width * mult, this.config.height * mult);
+        this.browserWindow.center();
 
         window.addEventListener('keydown', this.onKeyDown.bind(this));
         window.addEventListener('keyup', this.onKeyUp.bind(this));
@@ -47,6 +56,7 @@ Egg.prototype = {
         this.renderer.backgroundColor = 0x888888;
         document.body.appendChild(this.renderer.view);
         this.stage = new PIXI.Container();
+        this.onResize();
 
         // set up animation loop
         this.lastTime = Date.now();
@@ -90,11 +100,8 @@ Egg.prototype = {
             multX   = newSize[0] / this.config.width,
             multY   = newSize[1] / this.config.height,
             mult    = Math.floor(Math.min(multX, multY));
-        // console.log(newSize, multX, multY, mult, [this.config.width * mult, this.config.height * mult]);
         this.renderer.resolution = mult;
-        // this.renderer.resize(this.config.width * mult, this.config.height * mult);
         this.renderer.resize(this.config.width, this.config.height);
-        // console.log(this.renderer.view);
     },
 
     setTitle: function(title) {

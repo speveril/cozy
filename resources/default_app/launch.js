@@ -37,7 +37,8 @@ app.on('ready', function() {
 
       'auto-hide-menu-bar': true,
       'use-content-size': true,
-    //   'frame': false
+    //   'frame': false,
+    //   'fullscreen': true
     });
 
     params = "game=" + gamePath;
