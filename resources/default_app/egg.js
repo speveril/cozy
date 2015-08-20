@@ -37,11 +37,9 @@ Egg.prototype = {
         this.config.height = this.config.height || 240;
 
         // set up window
-        var mult = 1;
-        while ((mult + 1) * this.config.width <= screen.availWidth && (mult + 1) * this.config.height <= screen.availHeight) {
-            mult++;
-        }
-
+        var multX   = screen.availWidth / this.config.width,
+            multY   = screen.availHeight/ this.config.height,
+            mult    = Math.floor(Math.min(multX, multY));
         this.browserWindow.setMinimumSize(this.config.width, this.config.height);
         this.browserWindow.setContentSize(this.config.width * mult, this.config.height * mult);
         this.browserWindow.center();
