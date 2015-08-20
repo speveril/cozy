@@ -1,0 +1,16 @@
+{
+    "animations": [
+        {
+            "frames": [6, 10, 11],
+            "repeat": "loop"
+        },
+        {
+            "frames": [7, 12, 13],
+            "repeat": "loop"
+        },
+        {
+            "frames": [8, 14, 15],
+            "repeat": "loop"
+        }
+    ]
+}
