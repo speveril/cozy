@@ -49,16 +49,18 @@ Egg.prototype = {
         };
 
         _.each(this.config.buttons, function(keys, button) {
+            if (typeof keys === 'number') keys = [keys];
             _.each(keys, function(key) {
                 if (!_.has(this.buttonMap, key)) this.buttonMap[key] = [];
                 this.buttonMap[key].push(button);
             }.bind(this))
         }.bind(this));
+        console.log(this.config.buttons, this.buttonMap);
 
         // set up window
-        var multX   = screen.availWidth / this.config.width,
-            multY   = screen.availHeight/ this.config.height,
-            mult    = Math.floor(Math.min(multX, multY));
+        var multX = screen.availWidth / this.config.width,
+            multY = screen.availHeight/ this.config.height,
+            mult  = Math.floor(Math.min(multX, multY));
         this.browserWindow.setMinimumSize(this.config.width, this.config.height);
         this.browserWindow.setContentSize(this.config.width * mult, this.config.height * mult);
         this.browserWindow.center();
@@ -91,7 +93,7 @@ Egg.prototype = {
         this.lastTime += dt;
 
         if (this.Game && this.Game.frame) {
-            this.Game.frame(dt);
+            this.Game.frame(dt / 1000);
         }
 
         this.renderer.render(this.stage);
@@ -141,6 +143,10 @@ Egg.prototype = {
         remote.getCurrentWindow().setTitle(title);
     },
 
+    setBackground: function(color) {
+        this.renderer.backgroundColor = color;
+    },
+
     loadTexture: function(path) {
         return PIXI.Texture.fromImage(this.gameDir + "/" + path);
     },
@@ -150,7 +156,7 @@ Egg.prototype = {
     },
 
     quit: function() {
-        window.close();
+        this.browserWindow.close();
     }
 };
 
