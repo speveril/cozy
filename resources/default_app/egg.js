@@ -13,7 +13,9 @@ function Egg(argsArray) {
     }
 
     this.debug = !!args.debug;
-    this.keys = {};
+    this.key = {};
+    this.button = {};
+    this.buttonMap = {};
     this.game = args.game;
 }
 
@@ -35,6 +37,23 @@ Egg.prototype = {
 
         this.config.width = this.config.width || 320;
         this.config.height = this.config.height || 240;
+        this.config.buttons = this.config.buttons || {
+            "left": [37],        // left arrow
+            "up": [38],          // up arrow
+            "right": [39],       // right arrow
+            "down": [40],        // down arrow
+
+            "confirm": [32,88],  // space, x
+            "cancel": [18,90],   // alt, z
+            "menu": [27]         // esc
+        };
+
+        _.each(this.config.buttons, function(keys, button) {
+            _.each(keys, function(key) {
+                if (!_.has(this.buttonMap, key)) this.buttonMap[key] = [];
+                this.buttonMap[key].push(button);
+            }.bind(this))
+        }.bind(this));
 
         // set up window
         var multX   = screen.availWidth / this.config.width,
@@ -79,16 +98,32 @@ Egg.prototype = {
     },
 
     onKeyDown: function(event) {
-        this.keys[event.keyCode] = true;
+        var keyCode = event.keyCode;
+
+        this.key[keyCode] = true;
+
+        if (_.has(this.buttonMap, keyCode)) {
+            _.each(this.buttonMap[keyCode], function(b) {
+                this.button[b] = true;
+            }.bind(this));
+        }
     },
 
     onKeyUp: function(event) {
-        this.keys[event.keyCode] = false;
+        var keyCode = event.keyCode;
 
-        // console.log(event.keyCode);
+        // console.log(keyCode);
+
+        this.key[keyCode] = false;
+
+        if (_.has(this.buttonMap, keyCode)) {
+            _.each(this.buttonMap[keyCode], function(b) {
+                this.button[b] = false;
+            }.bind(this));
+        }
 
         // DEBUGGING KEYS
-        if (this.debug && event.keyCode === 192) { // ~ key, opens console
+        if (this.debug && keyCode === 192) { // ~ key, opens console
             remote.getCurrentWindow().toggleDevTools();
         }
     },
@@ -115,7 +150,6 @@ Egg.prototype = {
     },
 
     quit: function() {
-        console.log("Quitting Egg");
         window.close();
     }
 };
