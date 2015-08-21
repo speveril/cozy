@@ -1,0 +1,14 @@
+{
+    "width": 640,
+    "height": 480,
+
+    "buttons": {
+        "p1_up": 65,
+        "p1_down": 90,
+
+        "p2_up": 38,
+        "p2_down": 40,
+
+        "exit": 27
+    }
+}
