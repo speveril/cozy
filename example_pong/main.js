@@ -45,9 +45,10 @@ ball = {
             this.position.x + this.radius > player1.sprite.position.x
         ) {
             if (this.position.y + this.radius >= player1.sprite.position.y && this.position.y - this.radius <= player1.sprite.position.y + player1.height) {
-                this.angle = (Math.PI) + (Math.PI - this.angle);
+                this.setPosition(player1.sprite.position.x + this.radius + player1.width, this.position.y);
+                this.angle = (Math.PI / 4) + (Math.PI / 2) * ((this.position.y - player1.sprite.position.y) / (player1.height + 2 * this.radius));
                 this.normalizeAngle();
-                this.velocity *= 1 + Math.random() * 0.1;
+                this.velocity *= 1 + Math.random() * 0.3;
             }
         }
 
@@ -56,9 +57,10 @@ ball = {
             this.position.x + this.radius > player2.sprite.position.x
         ) {
             if (this.position.y + this.radius >= player2.sprite.position.y && this.position.y - this.radius <= player2.sprite.position.y + player2.height) {
-                this.angle = -this.angle;
+                this.setPosition(player2.sprite.position.x - this.radius, this.position.y);
+                this.angle = -(Math.PI / 4) - (Math.PI / 2) * ((this.position.y - player2.sprite.position.y) / (player2.height + 2 * this.radius));
                 this.normalizeAngle();
-                this.velocity += 1 + Math.random() * 0.1;
+                this.velocity += 1 + Math.random() * 0.3;
             }
         }
 
@@ -76,12 +78,12 @@ ball = {
         if (this.position.y < this.radius) {
             this.angle = (3 * Math.PI / 2) + (3 * Math.PI / 2 - this.angle);
             this.normalizeAngle();
-            this.velocity += 1 + Math.random() * 0.1
+            this.velocity += 1 + Math.random() * 0.3;
         }
         if (this.position.y >= Egg.config.height -this.radius) {
             this.angle = (Math.PI / 2) + (Math.PI / 2 - this.angle);
             this.normalizeAngle();
-            this.velocity += 1 + Math.random() * 0.1;
+            this.velocity += 1 + Math.random() * 0.3;
         }
     }
 };
@@ -166,7 +168,7 @@ function frame(dt) {
 
 function resetBall() {
     ball.setPosition(Egg.config.width / 2, Egg.config.height / 2);
-    ball.velocity = 150;
+    ball.velocity = 250;
     ball.angle = Math.random() * (Math.PI / 2);
     if (Math.random() < 0.5) {
         ball.angle += Math.PI / 4;
