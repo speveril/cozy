@@ -3,7 +3,9 @@ include('test.js');
 module.exports = {
     start: function() {
         var tex = new Egg.Texture("res/sprite/lance-vodwin.png");
-        this.sprite = new Egg.Sprite(tex);
+        this.sprite = new Egg.Sprite({
+            texture: tex
+        });
         Egg.stage.addChild(this.sprite.innerSprite);
     },
 

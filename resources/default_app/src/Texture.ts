@@ -1,5 +1,5 @@
 module Egg {
-    class Texture {
+    export class Texture {
         innerTexture: PIXI.Texture;
 
         constructor(path) {

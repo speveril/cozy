@@ -1,3 +1,3 @@
 module Egg {
-    class Map {}
+    export class Map {}
 }

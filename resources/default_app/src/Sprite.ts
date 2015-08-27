@@ -1,5 +1,5 @@
 module Egg {
-    class Sprite {
+    export class Sprite {
         innerSprite: PIXI.Sprite;
         hotspot: PIXI.Point;
         position: PIXI.Point;
@@ -23,6 +23,7 @@ module Egg {
 
             this.hotspot = new PIXI.Point(args.hotspot.x || 0, args.hotspot.y || 0);
             this.position = new PIXI.Point(args.position.x || 0, args.position.y || 0 );
+            this.positionInnerSprite();
         }
 
         setPosition(x, y) {

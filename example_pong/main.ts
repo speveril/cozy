@@ -1,44 +1,50 @@
-function Ball(args) {
-    Egg.Sprite.call(this, args);
-}
-Ball.__proto__ = Egg.Sprite.prototype;
+///<reference path="../resources/default_app/Egg.d.ts" />
 
-Ball.prototype = {
-    velocity: 0,
-    angle: 0,
+class Ball extends Egg.Sprite {
+    velocity: number;
+    angle: number;
 
-    step: function(dt) {
+    radius: number;
+
+    constructor(args) {
+        super(args);
+        this.velocity = 0;
+        this.angle = 0;
+        this.radius = args.hotspot.x;
+    }
+
+    step(dt) {
         this.adjustPosition(
             Math.sin(this.angle) * this.velocity * dt,
             -Math.cos(this.angle) * this.velocity * dt
         );
-    },
+    }
 
-    normalizeAngle: function() {
+    normalizeAngle() {
         while (this.angle < 0) this.angle += (Math.PI * 2);
         while (this.angle >= Math.PI * 2) this.angle -= (Math.PI * 2);
-    },
+    }
 
-    bounce: function() {
+    bounce() {
         if (
-            this.position.x - this.radius < player1.sprite.position.x + player1.width &&
-            this.position.x + this.radius > player1.sprite.position.x
+            this.position.x - this.radius < player1.innerSprite.position.x + player1.width &&
+            this.position.x + this.radius > player1.innerSprite.position.x
         ) {
-            if (this.position.y + this.radius >= player1.sprite.position.y && this.position.y - this.radius <= player1.sprite.position.y + player1.height) {
-                this.setPosition(player1.sprite.position.x + this.radius + player1.width, this.position.y);
-                this.angle = (Math.PI / 4) + (Math.PI / 2) * ((this.position.y - player1.sprite.position.y) / (player1.height + 2 * this.radius));
+            if (this.position.y + this.radius >= player1.innerSprite.position.y && this.position.y - this.radius <= player1.innerSprite.position.y + player1.height) {
+                this.setPosition(player1.innerSprite.position.x + this.radius + player1.width, this.position.y);
+                this.angle = (Math.PI / 4) + (Math.PI / 2) * ((this.position.y - player1.innerSprite.position.y) / (player1.height + 2 * this.radius));
                 this.normalizeAngle();
                 this.velocity *= 1 + Math.random() * 0.3;
             }
         }
 
         if (
-            this.position.x - this.radius < player2.sprite.position.x + player2.width &&
-            this.position.x + this.radius > player2.sprite.position.x
+            this.position.x - this.radius < player2.innerSprite.position.x + player2.width &&
+            this.position.x + this.radius > player2.innerSprite.position.x
         ) {
-            if (this.position.y + this.radius >= player2.sprite.position.y && this.position.y - this.radius <= player2.sprite.position.y + player2.height) {
-                this.setPosition(player2.sprite.position.x - this.radius, this.position.y);
-                this.angle = -(Math.PI / 4) - (Math.PI / 2) * ((this.position.y - player2.sprite.position.y) / (player2.height + 2 * this.radius));
+            if (this.position.y + this.radius >= player2.innerSprite.position.y && this.position.y - this.radius <= player2.innerSprite.position.y + player2.height) {
+                this.setPosition(player2.innerSprite.position.x - this.radius, this.position.y);
+                this.angle = -(Math.PI / 4) - (Math.PI / 2) * ((this.position.y - player2.innerSprite.position.y) / (player2.height + 2 * this.radius));
                 this.normalizeAngle();
                 this.velocity += 1 + Math.random() * 0.3;
             }
@@ -49,7 +55,7 @@ Ball.prototype = {
             updateScores();
             resetBall();
         }
-        if (this.position.x >= Egg.config.width +this.radius) {
+        if (this.position.x >= Egg.config['width'] + this.radius) {
             player1.score++;
             updateScores();
             resetBall();
@@ -60,26 +66,32 @@ Ball.prototype = {
             this.normalizeAngle();
             this.velocity += 1 + Math.random() * 0.3;
         }
-        if (this.position.y >= Egg.config.height -this.radius) {
+        if (this.position.y >= Egg.config['height'] -this.radius) {
             this.angle = (Math.PI / 2) + (Math.PI / 2 - this.angle);
             this.normalizeAngle();
             this.velocity += 1 + Math.random() * 0.3;
         }
     }
-};
+}
 
-player1 = {
-    score: 0,
-    height: 48,
-    width: 6,
-    speed: 200
-};
-player2 = {
-    score: 0,
-    height: 48,
-    width: 6,
-    speed: 200
-};
+class Player extends Egg.Sprite {
+    score: number;
+    speed: number;
+    width: number;
+    height: number;
+    scoreDisplay: any;
+
+    constructor(args) {
+        super(args);
+        this.score = 0;
+        this.height = 48;
+        this.width = 6;
+        this.speed = 250;
+    }
+}
+
+var player1:Player;
+var player2:Player;
 
 var ball;
 
@@ -87,21 +99,29 @@ function start() {
     Egg.setBackground(0x223322);
 
     var ballTex = new Egg.Texture("ball.png");
-    ball = new Ball(ballTex);
-    console.log(ball);
+    ball = new Ball({
+        texture: ballTex,
+        hotspot: { x: 6, y: 6 }
+    });
     Egg.stage.addChild(ball.innerSprite);
 
-    var paddleTex = Egg.loadTexture("paddle.png");
+    var paddleTex = new Egg.Texture("paddle.png");
 
-    player1.sprite = Egg.makeSprite(paddleTex);
-    player1.sprite.position.x = player1.width * 3;
-    player1.sprite.position.y = Egg.config.height / 2 - player1.height / 2;
-    Egg.stage.addChild(player1.sprite);
+    player1 = new Player({
+        texture: paddleTex,
+        hotspot: { x: 3, y: 24 },
+        position: { x: 6 * 3, y: Egg.config['height'] / 2 - 48 / 2 }
+    });
 
-    player2.sprite = Egg.makeSprite(paddleTex);
-    player2.sprite.position.x = Egg.config.width - player2.width * 3 - 1;
-    player2.sprite.position.y = Egg.config.height / 2 - player2.height / 2;
-    Egg.stage.addChild(player2.sprite);
+    Egg.stage.addChild(player1.innerSprite);
+
+    player2 = new Player({
+        texture: paddleTex,
+        hotspot: { x: 3, y: 24 },
+        position: { x: Egg.config['width'] - 6 * 3 - 1, y: Egg.config['height'] / 2 - 48 / 2 }
+    });
+
+    Egg.stage.addChild(player2.innerSprite);
 
     player1.scoreDisplay = window.document.createElement('div');
     player1.scoreDisplay.style.fontSize = '40px';
@@ -131,26 +151,26 @@ function frame(dt) {
         Egg.quit();
     }
 
-    // ball.step(dt);
-    // ball.bounce();
-    //
-    // if (Egg.button['p1_up']) {
-    //     player1.sprite.position.y -= player1.speed * dt;
-    // }
-    // if (Egg.button['p1_down']) {
-    //     player1.sprite.position.y += player1.speed * dt;
-    // }
-    //
-    // if (Egg.button['p2_up']) {
-    //     player2.sprite.position.y -= player2.speed * dt;
-    // }
-    // if (Egg.button['p2_down']) {
-    //     player2.sprite.position.y += player2.speed * dt;
-    // }
+    ball.step(dt);
+    ball.bounce();
+
+    if (Egg.button['p1_up']) {
+        player1.innerSprite.position.y -= player1.speed * dt;
+    }
+    if (Egg.button['p1_down']) {
+        player1.innerSprite.position.y += player1.speed * dt;
+    }
+
+    if (Egg.button['p2_up']) {
+        player2.innerSprite.position.y -= player2.speed * dt;
+    }
+    if (Egg.button['p2_down']) {
+        player2.innerSprite.position.y += player2.speed * dt;
+    }
 }
 
 function resetBall() {
-    ball.setPosition(Egg.config.width / 2, Egg.config.height / 2);
+    ball.setPosition(Egg.config['width'] / 2, Egg.config['height'] / 2);
     ball.velocity = 250;
     ball.angle = Math.random() * (Math.PI / 2);
     if (Math.random() < 0.5) {
@@ -159,7 +179,6 @@ function resetBall() {
         ball.angle -= 3 * Math.PI / 4;
     }
     ball.normalizeAngle();
-    console.log("resetBall", ball);
 }
 
 function updateScores() {

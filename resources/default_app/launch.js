@@ -31,14 +31,8 @@ for (var i in argv) {
     }
 }
 
-// set up general handlers
-app.on('window-all-closed', function() {
-  app.quit();
-});
-
 function setup() {
     if (options.buildGame) {
-        console.log("foo");
         actions.unshift(build.bind(null, gamePath));
     }
     if (options.build) {
@@ -49,6 +43,10 @@ function setup() {
 }
 
 function next() {
+    if (actions.length === 0) {
+        return app.quit();
+    }
+
     var action = actions.shift();
     action();
 }
@@ -87,6 +85,10 @@ function play() {
         params += "&debug=1";
     }
     if (options.console) window.toggleDevTools();
+
+    window.once('close', function() {
+        next();
+    });
 
     window.loadUrl("file://" + __dirname + "/index.html?" + params);
 }
