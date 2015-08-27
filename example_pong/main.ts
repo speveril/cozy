@@ -1,42 +1,22 @@
-ball = {
+function Ball(args) {
+    Egg.Sprite.call(this, args);
+}
+Ball.__proto__ = Egg.Sprite.prototype;
+
+Ball.prototype = {
     velocity: 0,
     angle: 0,
-    radius: 6,
-    sprite: null,
-    position: { x: 0, y: 0},
-
-    setPosition: function(x, y) {
-        this.position.x = x;
-        this.position.y = y;
-        this.correctPosition();
-    },
-
-    adjustPosition: function(x, y) {
-        this.position.x += x;
-        this.position.y += y;
-        this.correctPosition();
-    },
-
-    correctPosition: function() {
-        this.sprite.x = this.position.x - this.radius;
-        this.sprite.y = this.position.y - this.radius;
-    },
-
-    normalizeAngle: function() {
-        while (this.angle < 0) {
-            this.angle += (Math.PI * 2);
-        }
-
-        while (this.angle >= Math.PI * 2) {
-            this.angle -= (Math.PI * 2);
-        }
-    },
 
     step: function(dt) {
         this.adjustPosition(
             Math.sin(this.angle) * this.velocity * dt,
             -Math.cos(this.angle) * this.velocity * dt
         );
+    },
+
+    normalizeAngle: function() {
+        while (this.angle < 0) this.angle += (Math.PI * 2);
+        while (this.angle >= Math.PI * 2) this.angle -= (Math.PI * 2);
     },
 
     bounce: function() {
@@ -101,12 +81,15 @@ player2 = {
     speed: 200
 };
 
+var ball;
+
 function start() {
     Egg.setBackground(0x223322);
 
-    var ballTex = Egg.loadTexture("ball.png");
-    ball.sprite = Egg.makeSprite(ballTex);
-    Egg.stage.addChild(ball.sprite);
+    var ballTex = new Egg.Texture("ball.png");
+    ball = new Ball(ballTex);
+    console.log(ball);
+    Egg.stage.addChild(ball.innerSprite);
 
     var paddleTex = Egg.loadTexture("paddle.png");
 
@@ -148,22 +131,22 @@ function frame(dt) {
         Egg.quit();
     }
 
-    ball.step(dt);
-    ball.bounce();
-
-    if (Egg.button['p1_up']) {
-        player1.sprite.position.y -= player1.speed * dt;
-    }
-    if (Egg.button['p1_down']) {
-        player1.sprite.position.y += player1.speed * dt;
-    }
-
-    if (Egg.button['p2_up']) {
-        player2.sprite.position.y -= player2.speed * dt;
-    }
-    if (Egg.button['p2_down']) {
-        player2.sprite.position.y += player2.speed * dt;
-    }
+    // ball.step(dt);
+    // ball.bounce();
+    //
+    // if (Egg.button['p1_up']) {
+    //     player1.sprite.position.y -= player1.speed * dt;
+    // }
+    // if (Egg.button['p1_down']) {
+    //     player1.sprite.position.y += player1.speed * dt;
+    // }
+    //
+    // if (Egg.button['p2_up']) {
+    //     player2.sprite.position.y -= player2.speed * dt;
+    // }
+    // if (Egg.button['p2_down']) {
+    //     player2.sprite.position.y += player2.speed * dt;
+    // }
 }
 
 function resetBall() {

@@ -1,0 +1,3 @@
+module Egg {
+    class Map {}
+}

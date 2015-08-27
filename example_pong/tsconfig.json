@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "removeComments": true,
+        "out": "example_pong/main.js",
+        "sourceMap": true
+    },
+    "files": [
+        "main.ts"
+    ]
+}
