@@ -16,7 +16,7 @@ var optionMap = {
     '--buildGame': 'buildGame',
     '--console':   'console',
     '--debug':     'debug',
-    '--new':       'new',
+    '--init':      'new',
     '-d':          'debug',
 };
 
@@ -75,14 +75,16 @@ function build(path) {
 }
 
 function makeNew() {
-    try {
-        var stats = fs.statSync(gamePath);
-        console.log("Couldn't make new game " + gamePath + ", it already exists.");
-    } catch (e) {
-        var templateDir = __dirname + "/game_template";
-        var gameDir = gamePath;
+    var templateDir = __dirname + "/game_template";
+    var gameDir = gamePath;
 
+    if (!fs.existsSync(gameDir)) {
         fs.mkdirSync(gameDir);
+    }
+
+    if (fs.existsSync(gameDir + "/" + "config.json")) {
+        throw new Error("Cannot initialize a game at " + gamePath + ", there's already one there!");
+    } else {
         var filesToCopy = fs.readdirSync(templateDir);
         filesToCopy.forEach(function(filename) {
             var contents = fs.readFileSync(templateDir + "/" + filename, { encoding: 'UTF-8' });
@@ -90,6 +92,7 @@ function makeNew() {
             fs.writeFileSync(gameDir + "/" + filename, contents);
         });
     }
+
 
     next();
 }
