@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "removeComments": true,
+        "out": "$GAMEPATH$/main.js",
+        "sourceMap": true
+    },
+    "files": [
+        "main.ts"
+    ]
+}

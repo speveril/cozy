@@ -16,6 +16,7 @@ var optionMap = {
     '--buildGame': 'buildGame',
     '--console':   'console',
     '--debug':     'debug',
+    '--new':       'new',
     '-d':          'debug',
 };
 
@@ -38,13 +39,17 @@ function setup() {
     if (options.build) {
         actions.unshift(build.bind(null, __dirname + '/src'));
     }
+    if (options.new) {
+        actions.pop();
+        actions.push(makeNew);
+    }
 
     next();
 }
 
 function next() {
     if (actions.length === 0) {
-        return app.quit();
+        return process.exit(0);
     }
 
     var action = actions.shift();
@@ -64,8 +69,29 @@ function build(path) {
             next();
         } else {
             console.log("Build failed.");
+            process.exit(1);
         }
     });
+}
+
+function makeNew() {
+    try {
+        var stats = fs.statSync(gamePath);
+        console.log("Couldn't make new game " + gamePath + ", it already exists.");
+    } catch (e) {
+        var templateDir = __dirname + "/game_template";
+        var gameDir = gamePath;
+
+        fs.mkdirSync(gameDir);
+        var filesToCopy = fs.readdirSync(templateDir);
+        filesToCopy.forEach(function(filename) {
+            var contents = fs.readFileSync(templateDir + "/" + filename, { encoding: 'UTF-8' });
+            contents = contents.replace(/\$GAMEPATH\$/g, gamePath);
+            fs.writeFileSync(gameDir + "/" + filename, contents);
+        });
+    }
+
+    next();
 }
 
 function play() {
