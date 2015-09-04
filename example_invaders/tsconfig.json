@@ -2,7 +2,8 @@
     "compilerOptions": {
         "removeComments": true,
         "out": "example_invaders/main.js",
-        "sourceMap": true
+        "sourceMap": true,
+        "target": "ES5"
     },
     "files": [
         "main.ts"
