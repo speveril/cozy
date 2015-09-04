@@ -94,23 +94,28 @@ var player1:Player;
 var player2:Player;
 
 var ball;
+var stage;
 
 function start() {
+    Egg.loadTextures({
+        "ball": "ball.png",
+        "paddle": "paddle.png"
+    }, beginGame);
+}
+
+function beginGame() {
     Egg.setBackground(0x223322);
 
-    var stage = Egg.addLayer();
+    stage = Egg.addLayer();
 
-    var ballTex = new Egg.Texture("ball.png");
     ball = new Ball({
-        texture: ballTex,
+        texture: Egg.textures['ball'],
         hotspot: { x: 6, y: 6 }
     });
     stage.addSprite(ball);
 
-    var paddleTex = new Egg.Texture("paddle.png");
-
     player1 = new Player({
-        texture: paddleTex,
+        texture: Egg.textures['paddle'],
         hotspot: { x: 3, y: 24 },
         position: { x: 6 * 3, y: Egg.config['height'] / 2 - 48 / 2 }
     });
@@ -118,7 +123,7 @@ function start() {
     stage.addSprite(player1);
 
     player2 = new Player({
-        texture: paddleTex,
+        texture: Egg.textures['paddle'],
         hotspot: { x: 3, y: 24 },
         position: { x: Egg.config['width'] - 6 * 3 - 1, y: Egg.config['height'] / 2 - 48 / 2 }
     });
@@ -146,6 +151,8 @@ function start() {
     updateScores();
 
     resetBall();
+
+    Egg.unpause();
 }
 
 function frame(dt) {
