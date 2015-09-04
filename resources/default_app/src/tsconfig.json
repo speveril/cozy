@@ -1,9 +1,10 @@
 {
     "compilerOptions": {
-        "removeComments": true,
         "out": "resources/default_app/Egg.js",
+        "removeComments": true,
         "sourceMap": true,
-        "declaration": true
+        "declaration": true,
+        "target": "ES5"
     },
     "files": [
         "Egg.ts"

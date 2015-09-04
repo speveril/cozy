@@ -26,13 +26,13 @@ module Egg {
             this.positionInnerSprite();
         }
 
-        setPosition(x, y) {
+        setPosition(x:number, y:number) {
             this.position.x = x;
             this.position.y = y;
             this.positionInnerSprite();
         }
 
-        adjustPosition(x, y) {
+        adjustPosition(x:number, y:number) {
             this.position.x += x;
             this.position.y += y;
             this.positionInnerSprite();
@@ -41,6 +41,28 @@ module Egg {
         private positionInnerSprite() {
             this.innerSprite.x = this.position.x - this.hotspot.x;
             this.innerSprite.y = this.position.y - this.hotspot.y;
+        }
+
+        overlaps(sp:Sprite) {
+            var me = {
+                left: this.innerSprite.position.x,
+                right: this.innerSprite.position.x + this.innerSprite.width,
+                top: this.innerSprite.position.y,
+                bottom: this.innerSprite.position.y + this.innerSprite.height
+            };
+            var them = {
+                left: sp.innerSprite.position.x,
+                right: sp.innerSprite.position.x + sp.innerSprite.width,
+                top: sp.innerSprite.position.y,
+                bottom: sp.innerSprite.position.y + sp.innerSprite.height
+            }
+
+            return (
+                me.left < them.right
+                && me.right > them.left
+                && me.top < them.bottom
+                && me.bottom > them.top
+            );
         }
     }
 }

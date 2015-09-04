@@ -98,12 +98,14 @@ var ball;
 function start() {
     Egg.setBackground(0x223322);
 
+    var stage = Egg.addLayer();
+
     var ballTex = new Egg.Texture("ball.png");
     ball = new Ball({
         texture: ballTex,
         hotspot: { x: 6, y: 6 }
     });
-    Egg.stage.addChild(ball.innerSprite);
+    stage.addSprite(ball);
 
     var paddleTex = new Egg.Texture("paddle.png");
 
@@ -113,7 +115,7 @@ function start() {
         position: { x: 6 * 3, y: Egg.config['height'] / 2 - 48 / 2 }
     });
 
-    Egg.stage.addChild(player1.innerSprite);
+    stage.addSprite(player1);
 
     player2 = new Player({
         texture: paddleTex,
@@ -121,7 +123,7 @@ function start() {
         position: { x: Egg.config['width'] - 6 * 3 - 1, y: Egg.config['height'] / 2 - 48 / 2 }
     });
 
-    Egg.stage.addChild(player2.innerSprite);
+    stage.addSprite(player2);
 
     player1.scoreDisplay = window.document.createElement('div');
     player1.scoreDisplay.style.fontSize = '40px';
@@ -147,24 +149,24 @@ function start() {
 }
 
 function frame(dt) {
-    if (Egg.button['exit']) {
+    if (Egg.button('exit')) {
         Egg.quit();
     }
 
     ball.step(dt);
     ball.bounce();
 
-    if (Egg.button['p1_up']) {
+    if (Egg.button('p1_up')) {
         player1.innerSprite.position.y -= player1.speed * dt;
     }
-    if (Egg.button['p1_down']) {
+    if (Egg.button('p1_down')) {
         player1.innerSprite.position.y += player1.speed * dt;
     }
 
-    if (Egg.button['p2_up']) {
+    if (Egg.button('p2_up')) {
         player2.innerSprite.position.y -= player2.speed * dt;
     }
-    if (Egg.button['p2_down']) {
+    if (Egg.button('p2_down')) {
         player2.innerSprite.position.y += player2.speed * dt;
     }
 }

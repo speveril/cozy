@@ -4,6 +4,7 @@
 /// <reference path="../lib/typescript/underscore.d.ts" />
 
 // TODO encapsulate these a bit better
+/// <reference path="Layer.ts" />
 /// <reference path="Map.ts" />
 /// <reference path="Sprite.ts" />
 /// <reference path="Texture.ts" />
@@ -16,22 +17,27 @@ function include(path) {
 }
 
 module Egg {
+    enum ButtonState { UP, DOWN, IGNORED };
+
     export var browserWindow: GitHubElectron.BrowserWindow;
 
     export var debug: boolean;
     export var key: Object;
-    export var button: Object;
-    export var buttonMap: Object;
+    var buttonMap: Object;
+    var __button: { [name:string]:ButtonState };
+    var paused: Boolean;
 
     // wtf, seriously
     export var game: string;
     export var Game: any;
-    export var config: Object;
     export var gameDir: string;
+
+    export var config: Object;
     export var lastTime: number;
+    export var layerStack: Array<Layer>;
+    export var textures: {}[];
 
     export var renderer:PIXI.WebGLRenderer;
-    export var stage: PIXI.Container;
 
     export function setup(opts:any) {
         console.log("Creating Egg Object");
@@ -41,8 +47,12 @@ module Egg {
         this.browserWindow = remote.getCurrentWindow();
 
         this.key = {};
-        this.button = {};
+        this.__button = {};
+        this.debouce = {};
         this.buttonMap = {};
+        this.textures = {};
+        this.layerStack = [];
+        this.paused = true;
     }
 
     export function run() {
@@ -77,7 +87,6 @@ module Egg {
                 this.buttonMap[key].push(button);
             }.bind(this))
         }.bind(this));
-        console.log(this.config['buttons'], this.buttonMap);
 
         // set up window
         var multX = screen.availWidth / this.config['width'],
@@ -96,7 +105,6 @@ module Egg {
         this.renderer = new PIXI.WebGLRenderer(this.config['width'], this.config['height']);
         this.renderer.backgroundColor = 0x888888;
         document.body.appendChild(this.renderer.view);
-        this.stage = new PIXI.Container();
         this.onResize();
 
         // set up animation loop
@@ -114,11 +122,23 @@ module Egg {
         var dt = Date.now() - this.lastTime;
         this.lastTime += dt;
 
+        if (this.paused) { return; }
+
         if (this.Game && this.Game.frame) {
             this.Game.frame(dt / 1000);
         }
 
-        this.renderer.render(this.stage);
+        _.each(this.layerStack, function(layer) {
+            this.renderer.render(layer.innerContainer);
+        }.bind(this));
+    }
+
+    export function pause() {
+        this.paused = true;
+    }
+
+    export function unpause() {
+        this.paused = false;
     }
 
     export function onKeyDown(event) {
@@ -128,7 +148,9 @@ module Egg {
 
         if (_.has(this.buttonMap, keyCode)) {
             _.each(this.buttonMap[keyCode], function(b) {
-                this.button[b] = true;
+                if (this.__button[b] !== ButtonState.IGNORED) {
+                    this.__button[b] = ButtonState.DOWN;
+                }
             }.bind(this));
         }
     }
@@ -142,7 +164,7 @@ module Egg {
 
         if (_.has(this.buttonMap, keyCode)) {
             _.each(this.buttonMap[keyCode], function(b) {
-                this.button[b] = false;
+                this.__button[b] = ButtonState.UP;
             }.bind(this));
         }
 
@@ -175,5 +197,36 @@ module Egg {
 
     export function projectFilePath(fname) {
         return gameDir + "/" + fname;
+    }
+
+    export function addLayer() {
+        var lyr = new Layer();
+        layerStack.push(lyr);
+        return lyr;
+    }
+
+    export function button(name):Boolean {
+        return (this.__button[name] === ButtonState.DOWN);
+    }
+
+    export function debounce(name) {
+        this.__button[name] = ButtonState.IGNORED;
+    }
+
+    export function loadTextures(assets, onComplete) {
+        console.log("Loading ", assets);
+        _.each(assets, function(path, name) {
+            PIXI.loader.add(name, Egg.projectFilePath(path));
+        })
+
+        PIXI.loader.load(function(loader, resources) {
+            console.log("Finished loading.");
+            _.each(resources, function(resource) {
+                this.textures[resource['name']] = new Texture(resource['texture']);
+            }.bind(this));
+            this.textures = _.extend(this.textures, textures);
+            console.log("loaded textures...", resources, "->", this.textures);
+            onComplete();
+        }.bind(this));
     }
 }

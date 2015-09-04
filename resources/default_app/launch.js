@@ -9,7 +9,7 @@ process.chdir(execPath);
 var argv = process.argv.slice(1);
 var gamePath = '.';
 var options = { debug: false }
-var actions = [ play ];
+var actions = [ ];
 
 var optionMap = {
     '--build':     'build',
@@ -32,16 +32,20 @@ for (var i in argv) {
     }
 }
 
+app.on('ready', setup);
+
 function setup() {
-    if (options.buildGame) {
-        actions.unshift(build.bind(null, gamePath));
-    }
     if (options.build) {
-        actions.unshift(build.bind(null, __dirname + '/src'));
+        actions.push(build.bind(null, __dirname + '/src'));
     }
+    if (options.buildGame) {
+        actions.push(build.bind(null, gamePath));
+    }
+
     if (options.new) {
-        actions.pop();
         actions.push(makeNew);
+    } else {
+        actions.push(play);
     }
 
     next();
@@ -49,6 +53,7 @@ function setup() {
 
 function next() {
     if (actions.length === 0) {
+        console.log("Done!");
         return process.exit(0);
     }
 
@@ -63,6 +68,7 @@ function build(path) {
     var tsc = child.fork(__dirname + '/lib/typescript/tsc', ['--project', path]);
 
     // TODO add a new browserwindow that shows the results of the compile
+
     tsc.on('close', function(return_code) {
         if (!return_code) {
             console.log("Build success.");
@@ -76,20 +82,19 @@ function build(path) {
 
 function makeNew() {
     var templateDir = __dirname + "/game_template";
-    var gameDir = gamePath;
 
-    if (!fs.existsSync(gameDir)) {
-        fs.mkdirSync(gameDir);
+    if (!fs.existsSync(gamePath)) {
+        fs.mkdirSync(gamePath);
     }
 
-    if (fs.existsSync(gameDir + "/" + "config.json")) {
+    if (fs.existsSync(gamePath + "/" + "config.json")) {
         throw new Error("Cannot initialize a game at " + gamePath + ", there's already one there!");
     } else {
         var filesToCopy = fs.readdirSync(templateDir);
         filesToCopy.forEach(function(filename) {
             var contents = fs.readFileSync(templateDir + "/" + filename, { encoding: 'UTF-8' });
             contents = contents.replace(/\$GAMEPATH\$/g, gamePath);
-            fs.writeFileSync(gameDir + "/" + filename, contents);
+            fs.writeFileSync(gamePath + "/" + filename, contents);
         });
     }
 
@@ -121,6 +126,3 @@ function play() {
 
     window.loadUrl("file://" + __dirname + "/index.html?" + params);
 }
-
-// launch
-app.on('ready', setup);

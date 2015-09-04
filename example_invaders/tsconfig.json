@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "removeComments": true,
+        "out": "example_invaders/main.js",
+        "sourceMap": true
+    },
+    "files": [
+        "main.ts"
+    ]
+}

@@ -2,8 +2,11 @@ module Egg {
     export class Texture {
         innerTexture: PIXI.Texture;
 
-        constructor(path) {
-            this.innerTexture = PIXI.Texture.fromImage(Egg.projectFilePath(path));
+        constructor(inner) {
+            this.innerTexture = inner;
         }
+
+        get width():number { return this.innerTexture.width; }
+        get height():number { return this.innerTexture.width; }
     }
 }
