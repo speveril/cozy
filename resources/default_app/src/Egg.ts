@@ -214,18 +214,15 @@ module Egg {
     }
 
     export function loadTextures(assets, onComplete) {
-        console.log("Loading ", assets);
         _.each(assets, function(path, name) {
             PIXI.loader.add(name, Egg.projectFilePath(path));
         })
 
         PIXI.loader.load(function(loader, resources) {
-            console.log("Finished loading.");
             _.each(resources, function(resource) {
                 this.textures[resource['name']] = new Texture(resource['texture']);
             }.bind(this));
             this.textures = _.extend(this.textures, textures);
-            console.log("loaded textures...", resources, "->", this.textures);
             onComplete();
         }.bind(this));
     }
