@@ -3,3 +3,5 @@ resources/default_app/Egg.js.map
 resources/default_app/Egg.d.ts
 example_pong/*.js
 example_pong/*.js.map
+example_rpg/*.js
+example_rpg/*.js.map
