@@ -7,6 +7,6 @@ module Egg {
         }
 
         get width():number { return this.innerTexture.width; }
-        get height():number { return this.innerTexture.width; }
+        get height():number { return this.innerTexture.height; }
     }
 }

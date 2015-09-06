@@ -1,8 +1,12 @@
 module Egg {
     export class Sprite {
+        texture: PIXI.Texture;
+        textureFrame: PIXI.Rectangle;
         innerSprite: PIXI.Sprite;
         hotspot: PIXI.Point;
         position: PIXI.Point;
+        frameSize: PIXI.Point;
+        frameCounts: PIXI.Point;
 
         constructor(args) {
             /**
@@ -12,17 +16,25 @@ module Egg {
 
                     - optional -
                     hotspot: { x: <Number>, y: <Number> },
-                    position: { x: <Number>, y: <Number> }
+                    position: { x: <Number>, y: <Number> },
+                    frameSize: { x: <Number>, y: <Number> }
                 }
             **/
 
             args.hotspot = args.hotspot || {};
             args.position = args.position || {};
+            args.frameSize = args.frameSize || {};
 
-            this.innerSprite = new PIXI.Sprite(args.texture.innerTexture);
+            this.texture = new PIXI.Texture(args.texture.innerTexture);
+            this.innerSprite = new PIXI.Sprite(this.texture);
 
             this.hotspot = new PIXI.Point(args.hotspot.x || 0, args.hotspot.y || 0);
             this.position = new PIXI.Point(args.position.x || 0, args.position.y || 0 );
+            this.frameSize = new PIXI.Point(args.frameSize.x || args.texture.width, args.frameSize.y || args.texture.height);
+            this.textureFrame = new PIXI.Rectangle(0, 0, this.frameSize.x, this.frameSize.y);
+            this.frameCounts = new PIXI.Point(Math.floor(this.texture.width / this.frameSize.x), Math.floor(this.texture.height / this.frameSize.y));
+            this.texture.frame = this.textureFrame;
+
             this.positionInnerSprite();
         }
 
@@ -39,8 +51,15 @@ module Egg {
         }
 
         private positionInnerSprite() {
-            this.innerSprite.x = this.position.x - this.hotspot.x;
-            this.innerSprite.y = this.position.y - this.hotspot.y;
+            this.innerSprite.x = Math.floor(this.position.x - this.hotspot.x);
+            this.innerSprite.y = Math.floor(this.position.y - this.hotspot.y);
+        }
+
+        set frame(f:number) {
+            this.textureFrame.x = this.frameSize.x * (f % this.frameCounts.x);
+            this.textureFrame.y = this.frameSize.y *  Math.floor(f / this.frameCounts.y);
+            this.texture.frame = this.textureFrame;
+            console.log(this.texture.crop);
         }
 
         overlaps(sp:Sprite) {

@@ -1,6 +1,9 @@
 ///<reference path="../resources/default_app/Egg.d.ts" />
 
 module SimpleQuest {
+    export var sershaSprite:Egg.Sprite;
+    var debug:number;
+
     // -- start up --
     export function start() {
         // scrape all images under the project
@@ -31,8 +34,10 @@ module SimpleQuest {
     function loaded() {
         var layer1 = Egg.addLayer();
         console.log(Egg.textures);
-        var sershaSprite = new Egg.Sprite({
-            texture: Egg.textures['sprites/sersha.png']
+        sershaSprite = new Egg.Sprite({
+            texture: Egg.textures['sprites/sersha.png'],
+            position: { x:0.5, y:0.5 },
+            frameSize: { x:16, y:16 }
         });
         layer1.add(sershaSprite);
 
@@ -43,11 +48,16 @@ module SimpleQuest {
         })
         layer2.add(textboxSprite);
 
+        debug = 0;
         Egg.unpause();
     }
 
     // -- per-frame funcs --
     export function frame(dt) {
+        debug += dt;
+
+        if (Math.floor(debug - dt) !== Math.floor(debug))
+            sershaSprite.frame = 1 + (Math.floor(debug) % 4);
     }
 
 }
