@@ -8,12 +8,12 @@ module Egg {
             this.innerContainer = new PIXI.Container();
         }
 
-        addSprite(sp:Sprite) {
+        add(sp:Sprite) {
             this.sprites.push(sp);
             this.innerContainer.addChild(sp.innerSprite);
         }
 
-        removeSprite(sp:Sprite) {
+        remove(sp:Sprite) {
             var index = this.sprites.indexOf(sp);
             if (index !== -1) {
                 this.sprites.splice(index, 1);

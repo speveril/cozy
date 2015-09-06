@@ -11,16 +11,16 @@ module SimpleQuest {
             var dir = directories.shift();
             var files = Egg.Directory.read(dir);
             _.each(files, function(f) {
-                f = dir + "/" + f;
-                var stats = Egg.File.stat(f);
+                var fullPath = dir + "/" + f;
+                var stats = Egg.File.stat(fullPath);
                 if (stats.isDirectory()) {
-                    directories.push(f);
+                    directories.push(fullPath);
                     return;
                 }
 
-                var ext = Egg.File.extension(f).toLowerCase();
+                var ext = Egg.File.extension(fullPath).toLowerCase();
                 if (ext == '.png' || ext == '.jpg' || ext == '.gif') {
-                    textures[f] = f;
+                    textures[fullPath.substr(2)] = fullPath;
                 }
             }.bind(this));
         }
@@ -29,7 +29,21 @@ module SimpleQuest {
     }
 
     function loaded() {
-        
+        var layer1 = Egg.addLayer();
+        console.log(Egg.textures);
+        var sershaSprite = new Egg.Sprite({
+            texture: Egg.textures['sprites/sersha.png']
+        });
+        layer1.add(sershaSprite);
+
+        var layer2 = Egg.addLayer();
+        var textboxSprite = new Egg.Sprite({
+            texture: Egg.textures['sprites/textbox.png'],
+            position: { x:0, y:190 }
+        })
+        layer2.add(textboxSprite);
+
+        Egg.unpause();
     }
 
     // -- per-frame funcs --

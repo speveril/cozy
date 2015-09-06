@@ -34,8 +34,9 @@ module Egg {
 
     export var config: Object;
     export var lastTime: number;
-    export var layerStack: Array<Layer>;
     export var textures: {}[];
+    export var layerStack: Array<Layer>;
+    export var layerContainer: PIXI.Container;
 
     export var renderer:PIXI.WebGLRenderer;
 
@@ -51,8 +52,10 @@ module Egg {
         this.debouce = {};
         this.buttonMap = {};
         this.textures = {};
-        this.layerStack = [];
         this.paused = true;
+
+        this.layerStack = [];
+        this.layerContainer = new PIXI.Container();
     }
 
     export function run() {
@@ -129,7 +132,7 @@ module Egg {
         }
 
         _.each(this.layerStack, function(layer) {
-            this.renderer.render(layer.innerContainer);
+            this.renderer.render(layerContainer);
         }.bind(this));
     }
 
@@ -203,6 +206,7 @@ module Egg {
     export function addLayer() {
         var lyr = new Layer();
         layerStack.push(lyr);
+        layerContainer.addChild(lyr.innerContainer);
         return lyr;
     }
 
