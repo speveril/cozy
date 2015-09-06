@@ -1,13 +1,13 @@
-/// <reference path="../lib/typescript/github-electron.d.ts" />
-/// <reference path="../lib/typescript/node.d.ts" />
-/// <reference path="../lib/typescript/pixi.js.d.ts" />
-/// <reference path="../lib/typescript/underscore.d.ts" />
+/// <reference path="../lib/typescript/github-electron.d.ts"/>
+/// <reference path="../lib/typescript/node.d.ts"/>
+/// <reference path="../lib/typescript/pixi.js.d.ts"/>
+/// <reference path="../lib/typescript/underscore.d.ts"/>
 
-// TODO encapsulate these a bit better
-/// <reference path="Layer.ts" />
-/// <reference path="Map.ts" />
-/// <reference path="Sprite.ts" />
-/// <reference path="Texture.ts" />
+/// <reference path="File.ts"/>
+/// <reference path="Layer.ts"/>
+/// <reference path="Map.ts"/>
+/// <reference path="Sprite.ts"/>
+/// <reference path="Texture.ts"/>
 
 var fs = require('fs');
 var remote = require('remote');
@@ -57,7 +57,7 @@ module Egg {
 
     export function run() {
         process.chdir(this.game);
-        this.gameDir = "../../" + this.game;
+        this.gameDir = process.cwd();
 
         // read/parse config
         try {
@@ -196,6 +196,7 @@ module Egg {
     }
 
     export function projectFilePath(fname) {
+        console.log("->", gameDir + "/" + fname);
         return gameDir + "/" + fname;
     }
 
@@ -214,6 +215,11 @@ module Egg {
     }
 
     export function loadTextures(assets, onComplete) {
+        if (assets.length < 1) {
+            console.log("wut");
+            setTimeout(onComplete, 0);
+        }
+
         _.each(assets, function(path, name) {
             PIXI.loader.add(name, Egg.projectFilePath(path));
         })
