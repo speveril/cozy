@@ -35,7 +35,7 @@ module SimpleQuest {
         var layer1 = Egg.addLayer();
         console.log(Egg.textures);
         sershaSprite = new Egg.Sprite({
-            texture: Egg.textures['sprites/sersha.png'],
+            texture: 'sprites/sersha.png',
             position: { x:0.5, y:0.5 },
             frameSize: { x:16, y:16 },
             animations: {
@@ -55,7 +55,7 @@ module SimpleQuest {
 
         var layer2 = Egg.addLayer();
         var textboxSprite = new Egg.Sprite({
-            texture: Egg.textures['sprites/textbox.png'],
+            texture: 'sprites/textbox.png',
             position: { x:0, y:190 }
         })
         layer2.add(textboxSprite);

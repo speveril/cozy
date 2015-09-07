@@ -16,7 +16,7 @@ module Egg {
         /**
             constructor args: {
                 - required -
-                texture: <Texture>
+                texture: <Texture>/<string>
 
                 - optional -
                 hotspot: { x: <Number>, y: <Number> },
@@ -34,6 +34,9 @@ module Egg {
             args.position = args.position || {};
             args.frameSize = args.frameSize || {};
 
+            if (typeof args.texture === 'string') {
+                args.texture = Egg.textures[args.texture];
+            }
             this.texture = new PIXI.Texture(args.texture.innerTexture);
             this.innerSprite = new PIXI.Sprite(this.texture);
 
