@@ -62,16 +62,26 @@ module Egg {
             this.texture.frame = this.textureFrame;
         }
 
-        set animation(anim:any) {
+        set animation(anim:string) {
             if (this.animations[anim]) {
+                if (this.animations[anim] == this.currentAnimation) return;
                 this.currentAnimation = this.animations[anim];
                 this.animationScratch = {
                     counter: 0,
-                    lastFrame: null
+                    lastFrame: null,
+                    name: anim
                 };
             } else {
                 this.currentAnimation = null;
                 this.animationScratch = null;
+            }
+        }
+
+        get animation():string {
+            if (this.currentAnimation) {
+                return this.animationScratch['name'];
+            } else {
+                return undefined;
             }
         }
 
