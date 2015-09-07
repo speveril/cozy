@@ -8,16 +8,17 @@ module SimpleQuest {
         // scrape all images under the project
         var textures = {};
         var directories = ['.'];
+        var skip = ["./src_image", "./map/tiles.png"];
 
-        var skip = ["src_image"];
         while (directories.length > 0) {
             var dir = directories.shift();
             var files = Egg.Directory.read(dir);
             _.each(files, function(f) {
                 var fullPath = dir + "/" + f;
+                if (_.contains(skip, fullPath)) return;
+
                 var stats = Egg.File.stat(fullPath);
                 if (stats.isDirectory()) {
-                    if (_.contains(skip, f)) return;
                     directories.push(fullPath);
                     return;
                 }
