@@ -215,7 +215,6 @@ module Egg {
 
     export function loadTextures(assets, onComplete) {
         if (assets.length < 1) {
-            console.log("wut");
             setTimeout(onComplete, 0);
         }
 
