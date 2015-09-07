@@ -1,4 +1,4 @@
-///<reference path="../resources/default_app/Egg.d.ts" />
+///<reference path="../../resources/default_app/Egg.d.ts" />
 
 module SimpleQuest {
     var sershaSprite:Egg.Sprite;
