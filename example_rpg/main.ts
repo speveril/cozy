@@ -37,7 +37,19 @@ module SimpleQuest {
         sershaSprite = new Egg.Sprite({
             texture: Egg.textures['sprites/sersha.png'],
             position: { x:0.5, y:0.5 },
-            frameSize: { x:16, y:16 }
+            frameSize: { x:16, y:16 },
+            animations: {
+                stand_d: {
+                    frames: [0],
+                    loop: true
+                },
+                walk_d: {
+                    frames: [1, 2, 3, 4],
+                    loop: true
+                }
+            },
+            frameRate: 4,
+            currentAnimation: 'walk_d'
         });
         layer1.add(sershaSprite);
 
@@ -56,8 +68,9 @@ module SimpleQuest {
     export function frame(dt) {
         debug += dt;
 
-        if (Math.floor(debug - dt) !== Math.floor(debug))
-            sershaSprite.frame = 1 + (Math.floor(debug) % 4);
+        // if (Math.floor(debug - dt) !== Math.floor(debug)) {
+        //     sershaSprite.frame = 1 + (Math.floor(debug) % 4);
+        // }
     }
 
 }

@@ -8,6 +8,12 @@ module Egg {
             this.innerContainer = new PIXI.Container();
         }
 
+        update(dt:number):void {
+            this.sprites.forEach(function(s) {
+                s.update(dt);
+            });
+        }
+
         add(sp:Sprite) {
             this.sprites.push(sp);
             this.innerContainer.addChild(sp.innerSprite);

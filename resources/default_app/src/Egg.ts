@@ -110,13 +110,13 @@ module Egg {
         document.body.appendChild(this.renderer.view);
         this.onResize();
 
-        // set up animation loop
-        this.lastTime = Date.now();
-        this.frame();
-
         // start the game
         this.Game = include("/main.js");
         this.Game.start();
+
+        // set up animation loop
+        this.lastTime = Date.now();
+        this.frame();
     }
 
     export function frame() {
@@ -126,6 +126,10 @@ module Egg {
         this.lastTime += dt;
 
         if (this.paused) { return; }
+
+        _.each(this.layerStack, function(layer) {
+            layer.update(dt / 1000);
+        }.bind(this));
 
         if (this.Game && this.Game.frame) {
             this.Game.frame(dt / 1000);
