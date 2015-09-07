@@ -7,12 +7,7 @@
     </head>
     <body>
         <script>
-var opts = {};
-_.each(window.location.search.slice(1).split('&'), function(param) {
-    var chunks = param.split('=');
-    opts[chunks[0]] = chunks[1];
-});
-
+var opts = JSON.parse(window.location.search.slice(1).replace(/\%(\d+)/g, function(_,x) { return String.fromCharCode(parseInt(x, 16)); }));
 Egg.setup(opts);
 Egg.run();
         </script>

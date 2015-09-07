@@ -43,6 +43,7 @@ module Egg {
     export function setup(opts:any) {
         console.log("Creating Egg Object");
 
+        this.config = opts;
         this.debug = !!opts.debug;
         this.game = opts.game;
         this.browserWindow = remote.getCurrentWindow();
@@ -62,16 +63,6 @@ module Egg {
         process.chdir(this.game);
         this.gameDir = process.cwd();
 
-        // read/parse config
-        try {
-            this.config = JSON.parse(fs.readFileSync("config.json"));
-        } catch(e) {
-            alert("Couldn't load config.json in " + process.cwd());
-            window.close();
-        }
-
-        this.config['width'] = this.config['width'] || 320;
-        this.config['height'] = this.config['height'] || 240;
         this.config['buttons'] = this.config['buttons'] || {
             "left": [37],        // left arrow
             "up": [38],          // up arrow

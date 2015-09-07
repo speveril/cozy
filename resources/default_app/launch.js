@@ -115,26 +115,30 @@ function makeNew() {
 }
 
 function play() {
-    var window = new BrowserWindow({
-      width: 320,
-      height: 240,
-      title: 'Egg',
+    try {
+        params = JSON.parse(fs.readFileSync(gamePath + "/config.json"));
+    } catch(e) {
+        console.log("Couldn't load config.json in " + process.cwd());
+        window.close();
+    }
+    params['width'] = params['width'] || 320;
+    params['height'] = params['height'] || 240;
 
+    var window = new BrowserWindow({
+      width: params['width'],
+      height: params['height'],
+      title: params['title'] || 'Egg',
       'auto-hide-menu-bar': true,
       'use-content-size': true,
-    //   'frame': false,
-    //   'fullscreen': true
+      'fullscreen': params['fullscreen'] || false
     });
-
-    params = "game=" + gamePath;
-    if (options.debug) {
-        params += "&debug=1";
-    }
+    params.game = gamePath;
+    if (options.debug) params.debug = true
     if (options.console) window.toggleDevTools();
 
     window.once('close', function() {
         next();
     });
 
-    window.loadUrl("file://" + __dirname + "/index.html?" + params);
+    window.loadUrl("file://" + __dirname + "/index.html?" + JSON.stringify(params));
 }
