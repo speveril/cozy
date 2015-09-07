@@ -9,6 +9,7 @@ module SimpleQuest {
         var textures = {};
         var directories = ['.'];
 
+        var skip = ["src_image"];
         while (directories.length > 0) {
             var dir = directories.shift();
             var files = Egg.Directory.read(dir);
@@ -16,6 +17,7 @@ module SimpleQuest {
                 var fullPath = dir + "/" + f;
                 var stats = Egg.File.stat(fullPath);
                 if (stats.isDirectory()) {
+                    if (_.contains(skip, f)) return;
                     directories.push(fullPath);
                     return;
                 }
