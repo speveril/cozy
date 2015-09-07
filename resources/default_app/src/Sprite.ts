@@ -86,7 +86,6 @@ module Egg {
                     f = f % this.currentAnimation['frames'].length;
 
                     if (this.animationScratch['lastFrame'] !== f) {
-                        console.log("->", f + ":", this.currentAnimation['frames'][f]);
                         this.frame = this.currentAnimation['frames'][f];
                         this.animationScratch['lastFrame'] = f;
                     }

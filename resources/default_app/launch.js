@@ -64,6 +64,18 @@ function next() {
 function build(path) {
     console.log("Building", path);
 
+    // TODO copy all the stuff we need into a lib/ directory in the game
+    //   - need to add the d.ts files for PIXI, node, etc
+    // var filesToCopy = [
+    //     'Egg.js',
+    //     'Egg.js.map',
+    //     'Egg.d.ts'
+    // ];
+    // filesToCopy.forEach(function(filename) {
+    //     var contents = fs.readFileSync(__dirname + "/" + filename, { encoding: 'UTF-8' });
+    //     fs.writeFileSync(gamePath + "/" + filename, contents);
+    // });
+
     var child = require('child_process');
     var tsc = child.fork(__dirname + '/lib/typescript/tsc', ['--project', path]);
 
