@@ -4,34 +4,68 @@ module SimpleQuest {
         obstructions:Array<any>; // really it stores shapes
     }
 
+    export class MapTileset {
+        static registry:{ [name:string]: MapTileset } = {};
+        index:number;
+        texture:string;
+
+        static loadFromFile(path:string) {
+            if (!MapTileset.registry[path]) {
+                MapTileset.registry[path] = new MapTileset();
+                // TODO finish this; I'll need it for animation
+            }
+            return MapTileset.registry[path];
+        }
+    }
+
     export class MapTile extends Egg.Sprite {}
 
     export class Map {
         layers:Array<MapLayer>;
         size:PIXI.Point;
         tileSize:PIXI.Point;
-        tilesets:Array<any>;
+        tilesets:Array<MapTileset>;
 
         static loadFromFile(path:string) {
-            var data = JSON.parse(Egg.File.read(path));
+            var parser = new DOMParser();
             var dataDirectory = path.substr(0, path.lastIndexOf('/') + 1);
+
+            var data = parser.parseFromString(Egg.File.read(path), "text/xml");
+            var mapEl = data.getElementsByTagName('map')[0];
+
             var map = new Map({
-                width: data['width'],
-                height: data['height'],
-                tileWidth: data['tilewidth'],
-                tileHeight: data['tileheight'],
+                width: parseInt(mapEl.getAttribute('width'), 10),
+                height: parseInt(mapEl.getAttribute('height'), 10),
+                tileWidth: parseInt(mapEl.getAttribute('tilewidth'), 10),
+                tileHeight: parseInt(mapEl.getAttribute('tileheight'), 10)
             });
 
-            _.each(data['tilesets'], function(tilesetData) {
-                map.addTileSet(tilesetData['firstgid'], dataDirectory + tilesetData['image']);
+            _.each(mapEl.getElementsByTagName('tileset'), function(tilesetEl:HTMLElement) {
+                var firstgid, image;
+                if (tilesetEl.getAttribute('source')) {
+                    var TSXparser = new DOMParser();
+                    var TSXdata = parser.parseFromString(Egg.File.read(dataDirectory + tilesetEl.getAttribute('source')), "text/xml");
+                    image = TSXdata.getElementsByTagName('image')[0].getAttribute('source');
+                    firstgid = tilesetEl.getAttribute('firstgid');
+                    // TODO load an actual MapTileset here, with animations!
+                }
+
+                // TODO support non-external tilesets; not sure what they look like yet
+
+                map.addTileSet(parseInt(firstgid, 10), dataDirectory + image);
             });
 
-            _.each(data['layers'], function(layerData) {
-                if (layerData['type'] === 'tilelayer') {
-                    var layer = new MapLayer();
-                    layer.tiles = layerData['data'];
-                    map.addLayer(layer);
-                } // TODO support other types
+            _.each(mapEl.getElementsByTagName('layer'), function(layerEl:HTMLElement) {
+                // TODO this assumes encoding="csv" but that may not be true
+                var dataEl:HTMLElement = <HTMLElement>layerEl.getElementsByTagName('data')[0];
+                var tileString = dataEl.innerHTML.replace(/\s/g, '');
+
+                var layer = new MapLayer();
+                layer.tiles = [];
+                _.each(tileString.split(','), function(x) {
+                    layer.tiles.push(parseInt(x, 10));
+                });
+                map.addLayer(layer);
             });
 
             return map;
@@ -90,17 +124,18 @@ module SimpleQuest {
         }
 
         addTileSet(firstIndex:number, textureName:string):void {
-            this.tilesets.push({ index:firstIndex, texture:textureName });
+            var tileset = new MapTileset();
+            tileset.index = firstIndex;
+            tileset.texture = textureName;
+            this.tilesets.push(tileset);
         }
-
-
 
         private lookupTileInfo(index:number):any {
             if (index === 0) return null;
             for (var i:number = this.tilesets.length - 1; i >= 0; i--) {
-                if (index >= this.tilesets[i]['index']) return {
-                    texture: this.tilesets[i]['texture'],
-                    frame: index - this.tilesets[i]['index']
+                if (index >= this.tilesets[i].index) return {
+                    texture: this.tilesets[i].texture,
+                    frame: index - this.tilesets[i].index
                 };
             }
             return null;
