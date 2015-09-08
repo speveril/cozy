@@ -1,4 +1,5 @@
 ///<reference path="../../resources/default_app/Egg.d.ts" />
+///<reference path="Map.ts"/>
 
 module SimpleQuest {
     var sershaSprite:Egg.Sprite;
@@ -34,7 +35,10 @@ module SimpleQuest {
     }
 
     function loaded() {
-        var layer1 = Egg.addLayer();
+        var map = Map.loadFromFile("map/town.json");
+        map.open();
+
+        var spriteLayer = Egg.addLayer();
 
         sershaSprite = new Egg.Sprite({
             texture: 'sprites/sersha.png',
@@ -53,7 +57,7 @@ module SimpleQuest {
             frameRate: 8,
             currentAnimation: 'stand_d'
         });
-        layer1.add(sershaSprite);
+        spriteLayer.add(sershaSprite);
 
         // var layer2 = Egg.addLayer();
         // var textboxSprite = new Egg.Sprite({

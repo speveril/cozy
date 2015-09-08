@@ -205,6 +205,11 @@ module Egg {
         return lyr;
     }
 
+    export function clearLayers() {
+        layerStack = [];
+        layerContainer.removeChildren();
+    }
+
     export function button(name):Boolean {
         return (this.__button[name] === ButtonState.DOWN);
     }

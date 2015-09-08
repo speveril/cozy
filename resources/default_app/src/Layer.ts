@@ -14,9 +14,11 @@ module Egg {
             });
         }
 
-        add(sp:Sprite) {
-            this.sprites.push(sp);
-            this.innerContainer.addChild(sp.innerSprite);
+        add(thing:any) {
+            if (thing instanceof Sprite) {
+                this.sprites.push(thing);
+                this.innerContainer.addChild(thing.innerSprite);
+            }
         }
 
         remove(sp:Sprite) {
