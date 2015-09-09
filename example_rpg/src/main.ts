@@ -35,7 +35,7 @@ module SimpleQuest {
     }
 
     function loaded() {
-        var map = Map.loadFromFile("map/town_.tmx");
+        var map = Map.loadFromFile("map/town.tmx");
         map.open();
 
         var spriteLayer = Egg.addLayer();
