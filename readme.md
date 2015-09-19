@@ -21,10 +21,9 @@ Ultimately the development is driven by what I want out of the engine. I have a 
 
 ## Roadmap/TODOs
 
-- Loading tile maps (probably Tiled .json formats to begin with)
-- A "native" sprite JSON format
-- "Kit" system -- optional plugin style things for your game ?
 - RPG-style "kit" (top-down movement system and obstructions, event zones, etc)
+- "Kit" system -- optional plugin style things for your game ?
+- A "native" sprite JSON format
 - Event system (to allow multi-stage events spanning many frames)
 
 Maybe/probably?
