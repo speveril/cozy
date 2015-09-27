@@ -37,10 +37,10 @@ Maybe/probably?
 
 ## Examples
 
-- example_pong: A simple 2-player pong game
-- example_invaders: A partial Space Invaders clone
-- example_rpg: SimpleQuest, a small RPG
-  - Uses the Tiny16 tileset created by Lanea Zimmerman (http://opengameart.org/content/tiny-16-basic)
+- **example_pong**: A simple 2-player pong game
+- **example_invaders**: A partial Space Invaders clone
+- **example_rpg**: SimpleQuest, a small RPG
+    - Uses the Tiny16 tileset created by Lanea Zimmerman (http://opengameart.org/content/tiny-16-basic)
 
 
 ## Who is responsible for this mess
