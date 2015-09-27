@@ -17,13 +17,15 @@ Ultimately the development is driven by what I want out of the engine. I have a 
 - PIXI.js: <http://www.pixijs.com/>
 - Electron: <https://github.com/atom/electron>
 - Underscore: <http://underscorejs.org>
+- Typescript: <http://typescriptlang.org>
 
 
 ## Roadmap/TODOs
 
-- RPG-style "kit" (top-down movement system and obstructions, event zones, etc)
-- "Kit" system -- optional plugin style things for your game ?
+- Loading tile maps (probably Tiled .json formats to begin with)
 - A "native" sprite JSON format
+- "Kit" system -- optional plugin style things for your game ?
+- RPG-style "kit" (top-down movement system and obstructions, event zones, etc)
 - Event system (to allow multi-stage events spanning many frames)
 
 Maybe/probably?
@@ -31,6 +33,14 @@ Maybe/probably?
 - Side-scrolling platformer kit
 - Slim down Electron so the executable isn't so huge
 - Replace rendering engine with something SDL-based
+
+
+## Examples
+
+- example_pong: A simple 2-player pong game
+- example_invaders: A partial Space Invaders clone
+- example_rpg: SimpleQuest, a small RPG
+  - Uses the Tiny16 tileset created by Lanea Zimmerman (http://opengameart.org/content/tiny-16-basic)
 
 
 ## Who is responsible for this mess
