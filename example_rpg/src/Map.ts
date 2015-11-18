@@ -1,7 +1,8 @@
 module SimpleQuest {
     export class MapLayer {
         tiles:Array<number>;
-        obstructions:Array<any>; // really it stores shapes
+        obstructions:Array<any>; // actually lines
+        displayLayer:Egg.Layer;
     }
 
     export class MapTileset {
@@ -22,6 +23,7 @@ module SimpleQuest {
 
     export class Map {
         layers:Array<MapLayer>;
+        layerLookup:{ [name:string]: MapLayer };
         size:PIXI.Point;
         tileSize:PIXI.Point;
         tilesets:Array<MapTileset>;
@@ -40,33 +42,81 @@ module SimpleQuest {
                 tileHeight: parseInt(mapEl.getAttribute('tileheight'), 10)
             });
 
-            _.each(mapEl.getElementsByTagName('tileset'), function(tilesetEl:HTMLElement) {
-                var firstgid, image;
-                if (tilesetEl.getAttribute('source')) {
-                    var TSXparser = new DOMParser();
-                    var TSXdata = parser.parseFromString(Egg.File.read(dataDirectory + tilesetEl.getAttribute('source')), "text/xml");
-                    image = TSXdata.getElementsByTagName('image')[0].getAttribute('source');
-                    firstgid = tilesetEl.getAttribute('firstgid');
-                    // TODO load an actual MapTileset here, with animations!
+            _.each(mapEl.children, function(el:HTMLElement) {
+                switch (el.tagName) {
+                    case "tileset":
+                        var firstgid, image;
+                        if (el.getAttribute('source')) {
+                            var TSXparser = new DOMParser();
+                            var TSXdata = parser.parseFromString(Egg.File.read(dataDirectory + el.getAttribute('source')), "text/xml");
+                            image = TSXdata.getElementsByTagName('image')[0].getAttribute('source');
+                            firstgid = el.getAttribute('firstgid');
+                            // TODO load an actual MapTileset here, with animations!
+                        }
+
+                        // TODO support non-external tilesets; not sure what they look like yet
+
+                        map.addTileSet(parseInt(firstgid, 10), dataDirectory + image);
+                        break;
+                    case "layer":
+                        // TODO this assumes encoding="csv" but that may not be true
+                        var dataEl:HTMLElement = <HTMLElement>el.getElementsByTagName('data')[0];
+                        var tileString = dataEl.innerHTML.replace(/\s/g, '');
+
+                        var layer = new MapLayer();
+                        layer.tiles = [];
+                        _.each(tileString.split(','), function(x) {
+                            layer.tiles.push(parseInt(x, 10));
+                        });
+                        map.addLayer(layer);
+                        break;
+                    case "objectgroup":
+                        var layer = new MapLayer();
+                        layer.obstructions = [];
+                        _.each(el.children, function(objectEl:HTMLElement) {
+                            var x = parseInt(objectEl.getAttribute('x'), 10),
+                                y = parseInt(objectEl.getAttribute('y'), 10);
+
+                            switch(objectEl.getAttribute('type')) {
+                                case "event":
+                                case "trigger":
+                                    // TODO
+                                    break;
+                                default:
+                                    if (objectEl.hasAttribute('width') && objectEl.hasAttribute('height')) {
+                                        var w = parseInt(objectEl.getAttribute('width'), 10),
+                                            h = parseInt(objectEl.getAttribute('height'), 10);
+                                        layer.obstructions.push([{x:x, y:y},{x:x+w,y:y}]);
+                                        layer.obstructions.push([{x:x, y:y},{x:x,y:y+h}]);
+                                        layer.obstructions.push([{x:x, y:y+h},{x:x+w,y:y+h}]);
+                                        layer.obstructions.push([{x:x+h, y:y},{x:x+w,y:y+h}]);
+                                    } else {
+                                        _.each(objectEl.children, function(defEl:HTMLElement) {
+                                            switch(defEl.tagName) {
+                                                case 'polyline':
+                                                    var points = defEl.getAttribute('points').split(" ");
+                                                    var last_pt = null;
+                                                    _.each(points, function(pt) {
+                                                        pt = pt.split(",");
+                                                        pt = { x:parseInt(pt[0], 10) + x, y:parseInt(pt[1], 10) + y };
+                                                        if (last_pt !== null) {
+                                                            layer.obstructions.push([last_pt, pt]);
+                                                        }
+                                                        last_pt = pt;
+                                                    }.bind(this));
+                                                    break;
+                                            }
+                                        }.bind(this));
+                                    }
+                            }
+                        }.bind(this));
+                        map.addLayer(layer);
+                        map.layerLookup[el.getAttribute("name")] = layer;
+                        break;
+                    default:
+                        console.log("Got a '" + el.tagName + "' in the map, not sure what to do with it so I'm ignoring it.");
                 }
-
-                // TODO support non-external tilesets; not sure what they look like yet
-
-                map.addTileSet(parseInt(firstgid, 10), dataDirectory + image);
-            });
-
-            _.each(mapEl.getElementsByTagName('layer'), function(layerEl:HTMLElement) {
-                // TODO this assumes encoding="csv" but that may not be true
-                var dataEl:HTMLElement = <HTMLElement>layerEl.getElementsByTagName('data')[0];
-                var tileString = dataEl.innerHTML.replace(/\s/g, '');
-
-                var layer = new MapLayer();
-                layer.tiles = [];
-                _.each(tileString.split(','), function(x) {
-                    layer.tiles.push(parseInt(x, 10));
-                });
-                map.addLayer(layer);
-            });
+            }.bind(this));
 
             return map;
         }
@@ -74,10 +124,10 @@ module SimpleQuest {
         constructor(args) {
             this.layers = [];
             this.tilesets = [];
+            this.layerLookup = {};
 
             this.size = new PIXI.Point(args.width || 0, args.height || 0);
             this.tileSize = new PIXI.Point(args.tileWidth || 16, args.tileHeight || 16);
-            console.log(this.tileSize);
         }
 
         open():void {
@@ -85,8 +135,10 @@ module SimpleQuest {
 
             _.each(this.layers, function(mapLayer) {
                 var layer = Egg.addLayer();
+                mapLayer.displayLayer = layer;
                 var x = 0,
                     y = 0;
+
                 _.each(mapLayer.tiles, function(tileIndex) {
                     if (tileIndex > 0) {
                         var tileInfo = this.lookupTileInfo(tileIndex);
@@ -139,6 +191,10 @@ module SimpleQuest {
                 };
             }
             return null;
+        }
+
+        getLayerByName(name:string):MapLayer {
+            return this.layerLookup[name];
         }
     }
 }

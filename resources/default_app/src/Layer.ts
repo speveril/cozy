@@ -17,6 +17,7 @@ module Egg {
         add(thing:any) {
             if (thing instanceof Sprite) {
                 this.sprites.push(thing);
+                thing.layer = this;
                 this.innerContainer.addChild(thing.innerSprite);
             }
         }

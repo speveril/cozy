@@ -7,6 +7,7 @@ module Egg {
         position: PIXI.Point;
         frameSize: PIXI.Point;
         frameCounts: PIXI.Point;
+        layer: Egg.Layer;
 
         animations: {};
         currentAnimation: {};

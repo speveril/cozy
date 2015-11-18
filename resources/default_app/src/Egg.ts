@@ -129,6 +129,10 @@ module Egg {
         _.each(this.layerStack, function(layer) {
             this.renderer.render(layerContainer);
         }.bind(this));
+
+        if (this.Game && this.Game.postRender) {
+            this.Game.postRender(dt / 1000);
+        }
     }
 
     export function pause() {

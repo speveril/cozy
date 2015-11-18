@@ -58,8 +58,7 @@
 0,0,0,0,0,0,0,0,0,0,0,85,85,85,85,85,0,0,0,0
 </data>
  </layer>
- <objectgroup name="#sprites"/>
- <objectgroup name="#obstructions">
+ <objectgroup name="#spritelayer">
   <object id="1" x="80" y="64">
    <polyline points="0,0 0,16 -80,16"/>
   </object>
@@ -71,8 +70,6 @@
   </object>
   <object id="4" x="224" y="96" width="16" height="16"/>
   <object id="5" x="128" y="128" width="16" height="16"/>
- </objectgroup>
- <objectgroup name="#events">
   <object id="19" name="open_door" type="event" x="80" y="64" width="16" height="16"/>
   <object id="20" name="open_door" type="event" x="208" y="96" width="16" height="16"/>
   <object id="21" name="open_door" type="event" x="240" y="96" width="16" height="16"/>
