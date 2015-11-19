@@ -19,35 +19,18 @@ function distToSegment(p, v, w) { return Math.sqrt(distToSegmentSquared(p, v, w)
 
 module SimpleQuest {
     export class Entity {
+        private spriteDef:any; // can be an object or a string
         public sprite:Egg.Sprite;
         public layer:MapLayer;
         public speed:number;
 
         constructor(args) {
-            this.speed = args.speed || 64;
+            this.spriteDef = args.sprite;
+            this.speed = args.speed || 100;
         }
 
         place(x:number, y:number, lyr:MapLayer):void {
-            // TODO this needs to come from a .sprite file
-            // this.sprite = new Egg.Sprite({
-            //     texture: 'sprites/sersha.png',
-            //     position: { x: x, y: y },
-            //     frameSize: { x:16, y:16 },
-            //     hotspot: { x:8, y:15 },
-            //     animations: {
-            //         stand_u: { loop: true, frames: [5] },
-            //         stand_r: { loop: true, frames: [10] },
-            //         stand_d: { loop: true, frames: [0] },
-            //         stand_l: { loop: true, frames: [15] },
-            //         walk_u: { loop: true, frames: [6, 7, 8, 9] },
-            //         walk_r: { loop: true, frames: [11, 12, 13, 14] },
-            //         walk_d: { loop: true, frames: [1, 2, 3, 4] },
-            //         walk_l: { loop: true, frames: [16, 17, 18, 19] }
-            //     },
-            //     frameRate: 8,
-            //     currentAnimation: 'stand_d'
-            // });
-            this.sprite = new Egg.Sprite("sprites/sersha.sprite");
+            this.sprite = new Egg.Sprite(this.spriteDef);
             this.sprite.setPosition(x, y);
             this.layer = lyr;
             this.layer.displayLayer.add(this.sprite);

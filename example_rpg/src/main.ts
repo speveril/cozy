@@ -43,7 +43,10 @@ module SimpleQuest {
         map = Map.loadFromFile("map/town.tmx");
         map.open();
 
-        player = new Entity({});
+        player = new Entity({
+            sprite: "sprites/sersha.sprite",
+            speed: 64
+        });
         player.place(10.5 * 16, 7.5 * 16, map.getLayerByName('#spritelayer'));
 
         // var layer2 = Egg.addLayer();
@@ -71,6 +74,8 @@ module SimpleQuest {
         if (dx !== 0 && dy !== 0) {
             dx *= 0.707;
             dy *= 0.707;
+            // correct for shuddering on diagonal movement; I kind of hate this hack
+            player.sprite.setPosition(Math.round(player.sprite.position.x), Math.round(player.sprite.position.y));
         }
 
         player.move(dx, dy);
