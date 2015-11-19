@@ -20,13 +20,20 @@ module RPG {
                     var spr = new MapTile({
                         texture: tileInfo['texture'],
                         position: { x: x * this.map.tileSize.x, y: y * this.map.tileSize.y },
-                        frameSize: this.map.tileSize
+                        frameSize: this.map.tileSize,
+                        animations: tileInfo.animations
                     });
                     spr.frame = tileInfo.frame;
+                    if (tileInfo.animations[tileInfo.frame]) {
+                        spr.animation = tileInfo.frame;
+                    }
                     this.displayLayer.add(spr);
                     this.tileLookup[i] = spr;
                 } else {
                     this.tileLookup[i].frame = tileInfo.frame;
+                    if (tileInfo.animations[tileInfo.frame]) {
+                        this.tileLookup[i].animation = tileInfo.frame;
+                    }
                 }
             } else {
                 if (this.tileLookup[i]) {
@@ -49,13 +56,34 @@ module RPG {
         static registry:{ [name:string]: MapTileset } = {};
         index:number;
         texture:string;
+        animations:{ [name:string]: any } = {};
 
-        static loadFromFile(path:string) {
+        static loadFromFile(path:string, file:string) {
+            var fullpath = path + file;
             if (!MapTileset.registry[path]) {
-                MapTileset.registry[path] = new MapTileset();
-                // TODO finish this; I'll need it for animation
+                var ts = new MapTileset();
+                var parser = new DOMParser();
+                var data = parser.parseFromString(Egg.File.read(fullpath), "text/xml");
+                ts.texture = path + data.getElementsByTagName('image')[0].getAttribute('source');
+                _.each(data.getElementsByTagName('tile'), function(tile:HTMLElement) {
+                    _.each(tile.getElementsByTagName('animation'), function(animData:HTMLElement) {
+                        var animation = [];
+                        _.each(animData.getElementsByTagName('frame'), function(frameData:HTMLElement) {
+                            animation.push([
+                                parseInt(frameData.getAttribute('tileid'),10),
+                                parseInt(frameData.getAttribute('duration'),10)/1000
+                            ]);
+                        });
+                        ts.animations[tile.getAttribute("id")] = {
+                            loop: true,
+                            frames: animation
+                        };
+                    });
+                });
+
+                MapTileset.registry[fullpath] = ts;
             }
-            return MapTileset.registry[path];
+            return MapTileset.registry[fullpath];
         }
     }
 
@@ -83,18 +111,12 @@ module RPG {
             _.each(mapEl.children, function(el:HTMLElement) {
                 switch (el.tagName) {
                     case "tileset":
-                        var firstgid, image;
                         if (el.getAttribute('source')) {
-                            var TSXparser = new DOMParser();
-                            var TSXdata = parser.parseFromString(Egg.File.read(dataDirectory + el.getAttribute('source')), "text/xml");
-                            image = TSXdata.getElementsByTagName('image')[0].getAttribute('source');
-                            firstgid = el.getAttribute('firstgid');
-                            // TODO load an actual MapTileset here, with animations!
+                            var ts = MapTileset.loadFromFile(dataDirectory, el.getAttribute('source'));
+                            this.addTileSet(parseInt(el.getAttribute('firstgid'), 10), ts);
                         }
-
                         // TODO support non-external tilesets; not sure what they look like yet
 
-                        this.addTileSet(parseInt(firstgid, 10), dataDirectory + image);
                         break;
                     case "layer":
                         // TODO this assumes encoding="csv" but that may not be true
@@ -215,11 +237,9 @@ module RPG {
             }
         }
 
-        addTileSet(firstIndex:number, textureName:string):void {
-            var tileset = new MapTileset();
-            tileset.index = firstIndex;
-            tileset.texture = textureName;
-            this.tilesets.push(tileset);
+        addTileSet(firstIndex:number, ts:MapTileset):void {
+            ts.index = firstIndex;
+            this.tilesets.push(ts);
         }
 
         lookupTileInfo(index:number):any {
@@ -227,7 +247,8 @@ module RPG {
             for (var i:number = this.tilesets.length - 1; i >= 0; i--) {
                 if (index >= this.tilesets[i].index) return {
                     texture: this.tilesets[i].texture,
-                    frame: index - this.tilesets[i].index
+                    frame: index - this.tilesets[i].index,
+                    animations: this.tilesets[i].animations
                 };
             }
             return null;

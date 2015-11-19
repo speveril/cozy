@@ -32,7 +32,7 @@ module Egg {
             if (typeof args === "string") {
                 args = JSON.parse(File.read(args));
             }
-            
+
             if (!args.texture) throw new Error("Sprite must be instantiated with a 'texture'");
 
             args.hotspot = args.hotspot || {};
@@ -73,7 +73,7 @@ module Egg {
                 this.currentAnimation = this.animations[anim];
                 this.animationScratch = {
                     counter: 0,
-                    lastFrame: null,
+                    currentFrame: null,
                     name: anim
                 };
             } else {
@@ -92,18 +92,26 @@ module Egg {
 
         update(dt):void {
             if (this.currentAnimation) {
-                this.animationScratch['counter'] += (dt * this.frameRate);
-                var f = Math.floor(this.animationScratch['counter']);
+                var f = this.animationScratch['currentFrame'] || 0;
 
-                if (!this.currentAnimation['loop'] && f >= this.currentAnimation['frames'].length) {
-                    this.animation = null;
-                } else {
-                    f = f % this.currentAnimation['frames'].length;
+                this.animationScratch['counter'] += dt;
 
-                    if (this.animationScratch['lastFrame'] !== f) {
-                        this.frame = this.currentAnimation['frames'][f];
-                        this.animationScratch['lastFrame'] = f;
+                while (this.animationScratch['counter'] > this.currentAnimation['frames'][f][1]) {
+                    this.animationScratch['counter'] -= this.currentAnimation['frames'][f][1];
+                    f++;
+
+                    if (f >= this.currentAnimation['frames'].length) {
+                        if (!this.currentAnimation['loop']) {
+                            this.animation = null;
+                        } else {
+                            f = 0;
+                        }
                     }
+                }
+
+                if (this.animationScratch['currentFrame'] !== f) {
+                    this.frame = this.currentAnimation['frames'][f][0];
+                    this.animationScratch['currentFrame'] = f;
                 }
             }
         }
