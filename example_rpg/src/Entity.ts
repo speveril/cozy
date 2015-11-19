@@ -21,6 +21,8 @@ module SimpleQuest {
     export class Entity {
         private spriteDef:any; // can be an object or a string
         public triggersEvents:boolean;
+        public respectsObstructions:boolean;
+
         public sprite:Egg.Sprite;
         public layer:MapLayer;
         public speed:number;
@@ -28,7 +30,8 @@ module SimpleQuest {
         constructor(args) {
             this.spriteDef = args.sprite;
             this.speed = args.speed || 100;
-            this.triggersEvents = args.triggersEvents || false;
+            this.triggersEvents = (args.triggersEvents !== undefined ? args.triggersEvents : false);
+            this.respectsObstructions = (args.respectsObstructions !== undefined ? args.respectsObstructions : true);
         }
 
         place(x:number, y:number, lyr:MapLayer):void {
@@ -46,6 +49,11 @@ module SimpleQuest {
                 if (dx > 0 && dy === 0) this.sprite.animation = "walk_r";
                 if (dy < 0) this.sprite.animation = "walk_u";
                 if (dy > 0) this.sprite.animation = "walk_d";
+
+                if (!this.respectsObstructions) {
+                    this.sprite.adjustPosition(dx, dy);
+                    return;
+                }
 
                 var ang = Math.atan2(dy, dx);
                 var dist = Math.sqrt(dx * dx + dy * dy);
@@ -78,6 +86,10 @@ module SimpleQuest {
                 }
             } else {
                 this.sprite.animation = this.sprite.animation.replace('walk', 'stand');
+            }
+
+            if (this.triggersEvents) {
+
             }
         }
     }

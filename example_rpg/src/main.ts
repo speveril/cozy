@@ -7,7 +7,7 @@ module SimpleQuest {
     var map:Map;
     var spriteLayer:MapLayer;
     var graphics:PIXI.Graphics;
-    var player:Entity;
+    export var player:Entity;
 
     // -- start up --
     export function start() {
@@ -43,7 +43,8 @@ module SimpleQuest {
         player = new Entity({
             sprite: "sprites/sersha.sprite",
             speed: 64,
-            triggersEvents: true
+            triggersEvents: true,
+            respectsObstructions: true
         });
 
         map = Map.loadFromFile("map/town.tmx");
