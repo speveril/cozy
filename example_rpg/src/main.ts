@@ -1,13 +1,12 @@
 ///<reference path="../../resources/default_app/Egg.d.ts" />
+///<reference path="rpg/RPGKit.ts"/>
 ///<reference path="Map.ts"/>
-///<reference path="Entity.ts"/>
 
 module SimpleQuest {
     var sershaSprite:Egg.Sprite;
     var map:Map;
-    var spriteLayer:MapLayer;
     var graphics:PIXI.Graphics;
-    export var player:Entity;
+    export var player:RPG.Entity;
 
     // -- start up --
     export function start() {
@@ -40,14 +39,14 @@ module SimpleQuest {
     }
 
     function loaded() {
-        player = new Entity({
+        player = new RPG.Entity({
             sprite: "sprites/sersha.sprite",
             speed: 64,
             triggersEvents: true,
             respectsObstructions: true
         });
 
-        map = Map.loadFromFile("map/town.tmx");
+        map = new Map({ file: "map/town.tmx" });
         map.open();
         player.place(10.5 * 16, 7.5 * 16, map.getLayerByName('#spritelayer'));
 
@@ -85,7 +84,7 @@ module SimpleQuest {
 
     // export function postRender(dt) {
     //     // DEBUG OBSTRUCTION DRAWING
-    //     var obstructions = spriteLayer.obstructions;
+    //     var obstructions = player.layer.obstructions;
     //
     //     graphics.clear();
     //     graphics.lineStyle(1, 0x00FF00);

@@ -17,7 +17,7 @@ function closestPointOnLine(p, v, w) {
 function distToSegmentSquared(p, v, w) { return dist2(p, closestPointOnLine(p, v, w)); }
 function distToSegment(p, v, w) { return Math.sqrt(distToSegmentSquared(p, v, w)); }
 
-module SimpleQuest {
+module RPG {
     export class Entity {
         private spriteDef:any; // can be an object or a string
         public triggersEvents:boolean;
@@ -89,7 +89,16 @@ module SimpleQuest {
             }
 
             if (this.triggersEvents) {
-
+                _.each(this.layer.events, function(e) {
+                    if (e.rect.contains(this.sprite.position.x, this.sprite.position.y)) {
+                        if (this.layer.map[e.name]) {
+                            this.layer.map[e.name]({
+                                sprite: this,
+                                event: e
+                            });
+                        }
+                    }
+                }.bind(this));
             }
         }
     }
