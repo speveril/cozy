@@ -20,6 +20,7 @@ function distToSegment(p, v, w) { return Math.sqrt(distToSegmentSquared(p, v, w)
 module SimpleQuest {
     export class Entity {
         private spriteDef:any; // can be an object or a string
+        public triggersEvents:boolean;
         public sprite:Egg.Sprite;
         public layer:MapLayer;
         public speed:number;
@@ -27,6 +28,7 @@ module SimpleQuest {
         constructor(args) {
             this.spriteDef = args.sprite;
             this.speed = args.speed || 100;
+            this.triggersEvents = args.triggersEvents || false;
         }
 
         place(x:number, y:number, lyr:MapLayer):void {

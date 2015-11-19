@@ -40,13 +40,14 @@ module SimpleQuest {
     }
 
     function loaded() {
-        map = Map.loadFromFile("map/town.tmx");
-        map.open();
-
         player = new Entity({
             sprite: "sprites/sersha.sprite",
-            speed: 64
+            speed: 64,
+            triggersEvents: true
         });
+
+        map = Map.loadFromFile("map/town.tmx");
+        map.open();
         player.place(10.5 * 16, 7.5 * 16, map.getLayerByName('#spritelayer'));
 
         // var layer2 = Egg.addLayer();
@@ -56,8 +57,8 @@ module SimpleQuest {
         // })
         // layer2.add(textboxSprite);
 
-        graphics = new PIXI.Graphics();
-        graphics.fillAlpha = 0;
+        // graphics = new PIXI.Graphics();
+        // graphics.fillAlpha = 0;
 
         Egg.unpause();
     }
