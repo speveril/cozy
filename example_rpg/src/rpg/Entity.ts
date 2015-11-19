@@ -94,7 +94,9 @@ module RPG {
                         if (this.layer.map[e.name]) {
                             this.layer.map[e.name]({
                                 sprite: this,
-                                event: e
+                                event: e,
+                                x: this.sprite.position.x, y: this.sprite.position.y,
+                                tx: Math.floor(this.sprite.position.x / this.layer.map.tileSize.x), ty: Math.floor(this.sprite.position.y / this.layer.map.tileSize.y)
                             });
                         }
                     }

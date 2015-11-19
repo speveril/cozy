@@ -5,13 +5,12 @@ module SimpleQuest {
         potsSmashed:number = 0;
 
         open_door(args) {
-            console.log("open_door", args);
-            // if (this.layers[1].getTile(args.x, args.y) == 5) {
-            //     this.layers[1].setTile(args.x, args.y, 6);
-            // } else if (map.layers[1].getTile(args.x, args.y) == 21) {
-            //     this.layers[1].setTile(args.x, args.y, 22);
-            //     this.setObs(args.x, args.y, 0);
-            // }
+            if (this.layers[1].getTile(args.tx, args.ty) == 5) {
+                this.layers[1].setTile(args.tx, args.ty, 6);
+            } else if (map.layers[1].getTile(args.tx, args.ty) == 21) {
+                this.layers[1].setTile(args.tx, args.ty, 22);
+                // this.setObs(args.x, args.y, 0);
+            }
         }
 
         trigger_pot(args) {

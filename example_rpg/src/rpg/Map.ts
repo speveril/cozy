@@ -2,17 +2,40 @@ module RPG {
     export class MapLayer {
         map:Map = null;
         tiles:Array<number>;
+        tileLookup:Array<MapTile>;
         obstructions:Array<any>; // actually point pairs
         events:Array<MapEvent>;
         displayLayer:Egg.Layer;
-
 
         getTile(x:number, y:number):number {
             return this.tiles[x + (this.map.size.x * y)];
         }
 
         setTile(x:number, y:number, t:number):void {
-            // do nothing right now
+            var i = x + (this.map.size.x * y);
+
+            var tileInfo = this.map.lookupTileInfo(t);
+            if (tileInfo && Egg.textures[tileInfo.texture]) {
+                if (!this.tileLookup[i]) {
+                    var spr = new MapTile({
+                        texture: tileInfo['texture'],
+                        position: { x: x * this.map.tileSize.x, y: y * this.map.tileSize.y },
+                        frameSize: this.map.tileSize
+                    });
+                    spr.frame = tileInfo.frame;
+                    this.displayLayer.add(spr);
+                    this.tileLookup[i] = spr;
+                } else {
+                    this.tileLookup[i].frame = tileInfo.frame;
+                }
+            } else {
+                if (this.tileLookup[i]) {
+                    this.displayLayer.remove(this.tileLookup[i]);
+                    this.tileLookup[i] = null;
+                }
+            }
+
+            this.tiles[i] = t;
         }
 
     }
@@ -81,6 +104,7 @@ module RPG {
                         var layer = new MapLayer();
                         layer.map = this;
                         layer.tiles = [];
+                        layer.tileLookup = [];
                         _.each(tileString.split(','), function(x) {
                             layer.tiles.push(parseInt(x, 10));
                         });
@@ -167,18 +191,7 @@ module RPG {
                     y = 0;
 
                 _.each(mapLayer.tiles, function(tileIndex) {
-                    if (tileIndex > 0) {
-                        var tileInfo = this.lookupTileInfo(tileIndex);
-                        if (tileInfo && Egg.textures[tileInfo.texture]) {
-                            var spr = new MapTile({
-                                texture: tileInfo['texture'],
-                                position: { x: x * this.tileSize.x, y: y * this.tileSize.y },
-                                frameSize: this.tileSize
-                            });
-                            spr.frame = tileInfo.frame;
-                            layer.add(spr);
-                        }
-                    }
+                    mapLayer.setTile(x, y, tileIndex);
 
                     x++;
                     if (x >= this.size.x) {
@@ -209,7 +222,7 @@ module RPG {
             this.tilesets.push(tileset);
         }
 
-        private lookupTileInfo(index:number):any {
+        lookupTileInfo(index:number):any {
             if (index === 0) return null;
             for (var i:number = this.tilesets.length - 1; i >= 0; i--) {
                 if (index >= this.tilesets[i].index) return {
