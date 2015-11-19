@@ -1,7 +1,7 @@
 module SimpleQuest {
     export class MapLayer {
         tiles:Array<number>;
-        obstructions:Array<any>; // actually lines
+        obstructions:Array<any>; // actually point pairs
         displayLayer:Egg.Layer;
     }
 

@@ -29,6 +29,10 @@ module Egg {
             }
         **/
         constructor(args) {
+            if (typeof args === "string") {
+                args = JSON.parse(File.read(args));
+            }
+            
             if (!args.texture) throw new Error("Sprite must be instantiated with a 'texture'");
 
             args.hotspot = args.hotspot || {};
