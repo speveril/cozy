@@ -202,9 +202,13 @@ module Egg {
         return gameDir + "/" + fname;
     }
 
-    export function addLayer() {
+    export function addLayer(index?:number) {
         var lyr = new Layer();
-        layerStack.push(lyr);
+        if (index === undefined) {
+            layerStack.push(lyr);
+        } else {
+            layerStack.splice(index, 0, lyr);
+        }
         layerContainer.addChild(lyr.innerContainer);
         return lyr;
     }

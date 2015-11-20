@@ -15,20 +15,19 @@ module SimpleQuest {
         }
 
         trigger_pot(args) {
-            console.log("trigger_pot", args);
             var t = this.layers[1].getTile(args.tx, args.ty);
             if (t == 53) {
                 this.layers[1].setTile(args.tx, args.ty, t + 1);
                 // this.setObs(args.x, args.y, 0);
                 this.potsSmashed++;
-                // if (this.potsSmashed == 4) {
-                //     Textbox.show("You've broken all the pots.\n\nAre you proud of yourself now?");
-                // }
+                RPG.Textbox.show("smash!");
+                if (this.potsSmashed == 4) {
+                    RPG.Textbox.show("You've broken all the pots.\n\nAre you proud of yourself now?");
+                }
             }
         }
 
         trigger_chest(args) {
-            console.log("trigger_chest", args);
             var t = this.layers[1].getTile(args.tx, args.ty);
             if (t == 37) {
                 this.layers[1].setTile(args.tx, args.ty, t + 1);
@@ -38,44 +37,42 @@ module SimpleQuest {
 
         // -- map switches
 
-        // enter_town(args) {
-        //     if (playerSprite.dir == direction.RIGHT) {
-        //         mapSwitch("map/town.json", 1, 6);
-        //     } else {
-        //         mapSwitch("map/town.json", 8, 1);
-        //     }
-        //
-        //     ms_potsSmashed = 0;
-        //     camera_options.follow = false;
-        // }
-        //
-        // exit_town(args) {
-        //     if (args.y < 1) {
-        //         mapSwitch("map/overworld.json", 14, 12);
-        //     } else {
-        //         mapSwitch("map/overworld.json", 13, 13);
-        //     }
-        //
-        //     camera_options.follow = false;
-        // }
-        //
-        // enter_forest(args) {
-        //     if (args.x == 13 && args.y == 8) {
-        //         mapSwitch("map/forest.json", 7, 43);
-        //     } else {
-        //         mapSwitch("map/forest.json", 32, 1);
-        //     }
-        //
-        //     camera_options.follow = true;
-        // }
-        //
-        // exit_forest(args) {
-        //     if (args.y == 0) {
-        //         mapSwitch("map/overworld.json", 16, 5);
-        //     } else {
-        //         mapSwitch("map/overworld.json", 13, 9)
-        //     }
-        // }
+        enter_town(args) {
+            if (RPG.player.dir == 'r') {
+                RPG.startMap(new Map("map/town.tmx"), 1, 6);
+            } else {
+                RPG.startMap(new Map("map/town.tmx"), 8, 1);
+            }
+
+            this.potsSmashed = 0;
+            // camera_options.follow = false;
+        }
+
+        exit_town(args) {
+            if (args.ty < 2) {
+                RPG.startMap(new Map("map/overworld.tmx"), 14, 12);
+            } else {
+                RPG.startMap(new Map("map/overworld.tmx"), 13, 13);
+            }
+            // camera_options.follow = false;
+        }
+
+        enter_forest(args) {
+            if (args.tx == 13 && args.ty == 8) {
+                RPG.startMap(new Map("map/forest.tmx"), 7, 43);
+            } else {
+                RPG.startMap(new Map("map/forest.tmx"), 32, 1);
+            }
+            // camera_options.follow = true;
+        }
+
+        exit_forest(args) {
+            if (args.ty == 0) {
+                RPG.startMap(new Map("map/overworld.tmx"), 16, 5);
+            } else {
+                RPG.startMap(new Map("map/overworld.tmx"), 13, 9)
+            }
+        }
 
         // -- specific world manipulation
 

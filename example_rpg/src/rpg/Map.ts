@@ -103,10 +103,8 @@ module RPG {
             var data = parser.parseFromString(Egg.File.read(path), "text/xml");
             var mapEl = data.getElementsByTagName('map')[0];
 
-            this.size.x = parseInt(mapEl.getAttribute('width'), 10);
-            this.size.y = parseInt(mapEl.getAttribute('height'), 10);
-            this.tileSize.x = parseInt(mapEl.getAttribute('tilewidth'), 10);
-            this.tileSize.x = parseInt(mapEl.getAttribute('tileheight'), 10);
+            this.size = new PIXI.Point(parseInt(mapEl.getAttribute('width'), 10), parseInt(mapEl.getAttribute('height'), 10));
+            this.tileSize = new PIXI.Point(parseInt(mapEl.getAttribute('tilewidth'), 10), parseInt(mapEl.getAttribute('tileheight'), 10));
 
             _.each(mapEl.children, function(el:HTMLElement) {
                 switch (el.tagName) {
@@ -195,11 +193,11 @@ module RPG {
             this.tilesets = [];
             this.layerLookup = {};
 
-            this.size = new PIXI.Point(args.width || 0, args.height || 0);
-            this.tileSize = new PIXI.Point(args.tileWidth || 16, args.tileHeight || 16);
-
-            if (!!args.file) {
-                this.loadFromFile(args.file);
+            if (typeof args === 'string') {
+                this.loadFromFile(args);
+            } else {
+                this.size = new PIXI.Point(args.width || 0, args.height || 0);
+                this.tileSize = new PIXI.Point(args.tileWidth || 16, args.tileHeight || 16);
             }
         }
 

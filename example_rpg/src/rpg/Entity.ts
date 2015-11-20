@@ -27,6 +27,10 @@ module RPG {
         public layer:MapLayer;
         public speed:number;
 
+        get dir():string {
+            return this.sprite.animation.slice(-1);
+        }
+
         constructor(args) {
             this.spriteDef = args.sprite;
             this.speed = args.speed || 100;

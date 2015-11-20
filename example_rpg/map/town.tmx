@@ -74,10 +74,10 @@
   <object id="20" name="open_door" type="event" x="208" y="96" width="16" height="16"/>
   <object id="21" name="open_door" type="event" x="240" y="96" width="16" height="16"/>
   <object id="22" name="open_door" type="event" x="192" y="160" width="16" height="16"/>
-  <object id="23" name="trigger_pot" type="trigger" x="96" y="144" width="16" height="16"/>
-  <object id="24" name="trigger_pot" type="trigger" x="192" y="80" width="16" height="16"/>
-  <object id="25" name="trigger_pot" type="trigger" x="256" y="80" width="16" height="16"/>
-  <object id="26" name="trigger_pot" type="trigger" x="224" y="192" width="16" height="16"/>
+  <object id="23" name="trigger_pot" type="event" x="96" y="144" width="16" height="16"/>
+  <object id="24" name="trigger_pot" type="event" x="192" y="80" width="16" height="16"/>
+  <object id="25" name="trigger_pot" type="event" x="256" y="80" width="16" height="16"/>
+  <object id="26" name="trigger_pot" type="event" x="224" y="192" width="16" height="16"/>
   <object id="27" name="sign_house" type="trigger" x="96" y="64" width="16" height="16"/>
   <object id="28" name="sign_shops" type="trigger" x="224" y="96" width="16" height="16"/>
   <object id="29" name="trigger_rocks" type="trigger" x="272" y="32" width="16" height="16"/>
