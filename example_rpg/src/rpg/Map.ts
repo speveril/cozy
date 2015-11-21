@@ -58,7 +58,7 @@ module RPG {
         texture:string;
         animations:{ [name:string]: any } = {};
 
-        static loadFromFile(path:string, file:string) {
+        static loadFromTSX(path:string, file:string) {
             var fullpath = path + file;
             if (!MapTileset.registry[path]) {
                 var ts = new MapTileset();
@@ -96,7 +96,7 @@ module RPG {
         tileSize:PIXI.Point;
         tilesets:Array<MapTileset>;
 
-        loadFromFile(path:string) {
+        loadFromTMX(path:string) {
             var parser = new DOMParser();
             var dataDirectory = path.substr(0, path.lastIndexOf('/') + 1);
 
@@ -110,7 +110,7 @@ module RPG {
                 switch (el.tagName) {
                     case "tileset":
                         if (el.getAttribute('source')) {
-                            var ts = MapTileset.loadFromFile(dataDirectory, el.getAttribute('source'));
+                            var ts = MapTileset.loadFromTSX(dataDirectory, el.getAttribute('source'));
                             this.addTileSet(parseInt(el.getAttribute('firstgid'), 10), ts);
                         }
                         // TODO support non-external tilesets; not sure what they look like yet
@@ -194,7 +194,7 @@ module RPG {
             this.layerLookup = {};
 
             if (typeof args === 'string') {
-                this.loadFromFile(args);
+                this.loadFromTMX(args);
             } else {
                 this.size = new PIXI.Point(args.width || 0, args.height || 0);
                 this.tileSize = new PIXI.Point(args.tileWidth || 16, args.tileHeight || 16);

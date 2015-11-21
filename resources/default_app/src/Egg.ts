@@ -198,7 +198,6 @@ module Egg {
     }
 
     export function projectFilePath(fname) {
-        console.log("->", gameDir + "/" + fname);
         return gameDir + "/" + fname;
     }
 

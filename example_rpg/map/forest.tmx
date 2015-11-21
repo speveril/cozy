@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="45" tilewidth="16" tileheight="16" nextobjectid="30">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="45" tilewidth="16" tileheight="16" nextobjectid="31">
  <tileset firstgid="1" source="tileset.tsx"/>
  <layer name="background" width="40" height="45">
   <data encoding="csv">
@@ -201,6 +201,6 @@
    <polyline points="0,0 0,32 32,32 32,48 48,48 48,64 64,64 64,96 48,96 48,112 16,112 16,128"/>
   </object>
   <object id="27" name="exit_forest" type="event" x="112" y="704" width="16" height="16"/>
-  <object id="29" name="exit_forest" type="event" x="512" y="16" width="16"/>
+  <object id="29" name="exit_forest" type="event" x="512" y="0" width="16" height="16"/>
  </objectgroup>
 </map>

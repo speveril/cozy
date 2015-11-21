@@ -1,9 +1,9 @@
 ///<reference path="rpg/RPGKit.ts"/>
 
 module SimpleQuest {
-    export class Map extends RPG.Map {
-        potsSmashed:number = 0;
+    var potsSmashed:Array<any> = [];
 
+    export class Map extends RPG.Map {
         open_door(args) {
             var t = this.layers[1].getTile(args.tx, args.ty);
             if (t == 5) {
@@ -19,9 +19,9 @@ module SimpleQuest {
             if (t == 53) {
                 this.layers[1].setTile(args.tx, args.ty, t + 1);
                 // this.setObs(args.x, args.y, 0);
-                this.potsSmashed++;
+                potsSmashed.push([args.tx,args.ty]);
                 RPG.Textbox.show("smash!");
-                if (this.potsSmashed == 4) {
+                if (potsSmashed.length == 4) {
                     RPG.Textbox.show("You've broken all the pots.\n\nAre you proud of yourself now?");
                 }
             }
@@ -31,7 +31,7 @@ module SimpleQuest {
             var t = this.layers[1].getTile(args.tx, args.ty);
             if (t == 37) {
                 this.layers[1].setTile(args.tx, args.ty, t + 1);
-                // Textbox.show("There was nothing in the chest. How disappointing.");
+                RPG.Textbox.show("There was nothing in the chest.\n\nHow disappointing.");
             }
         }
 
@@ -44,8 +44,9 @@ module SimpleQuest {
                 RPG.startMap(new Map("map/town.tmx"), 8, 1);
             }
 
-            this.potsSmashed = 0;
-            // camera_options.follow = false;
+            _.each(potsSmashed, function(pt) {
+                RPG.map.layers[1].setTile(pt.x, pt.y, 56);
+            }.bind(this));
         }
 
         exit_town(args) {
@@ -54,16 +55,14 @@ module SimpleQuest {
             } else {
                 RPG.startMap(new Map("map/overworld.tmx"), 13, 13);
             }
-            // camera_options.follow = false;
         }
 
         enter_forest(args) {
-            if (args.tx == 13 && args.ty == 8) {
+            if (args.tx == 13 && args.ty == 7) {
                 RPG.startMap(new Map("map/forest.tmx"), 7, 43);
             } else {
                 RPG.startMap(new Map("map/forest.tmx"), 32, 1);
             }
-            // camera_options.follow = true;
         }
 
         exit_forest(args) {
@@ -76,16 +75,16 @@ module SimpleQuest {
 
         // -- specific world manipulation
 
-        // sign_house(args) {
-        //     Textbox.show("An empty house");
-        // }
-        //
-        // sign_shops(args) {
-        //     Textbox.show("Shopping is fun!");
-        // }
-        //
-        // trigger_rocks(args) {
-        //     Textbox.show("I... found some rocks");
-        // }
+        sign_house(args) {
+            RPG.Textbox.show("An empty house");
+        }
+
+        sign_shops(args) {
+            RPG.Textbox.show("Shopping is fun!");
+        }
+
+        trigger_rocks(args) {
+            RPG.Textbox.show("I... found some rocks");
+        }
     }
 }

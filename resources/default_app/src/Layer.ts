@@ -14,6 +14,11 @@ module Egg {
             });
         }
 
+        offset(x:number, y:number) {
+            this.innerContainer.position.x = Math.floor(x);
+            this.innerContainer.position.y = Math.floor(y);
+        }
+
         add(thing:any) {
             if (thing instanceof Sprite) {
                 this.sprites.push(thing);

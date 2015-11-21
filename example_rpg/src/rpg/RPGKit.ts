@@ -6,11 +6,13 @@ module RPG {
     export var player:Entity;
     export var map:Map;
     export var UILayer:Egg.Layer;
-    export var loadSkip = [];
+    export var loadSkip:Array<string> = [];
+    export var cameraHalfSize:PIXI.Point;
 
     export function start(loaded:Function) {
         var textures = {};
         var directories = ['.'];
+        cameraHalfSize = new PIXI.Point(Egg.config['width'] / 2, Egg.config['height'] / 2);
 
         // scrape all images under the project
         while (directories.length > 0) {
@@ -52,6 +54,21 @@ module RPG {
         }
 
         RPG.player.move(dx, dy);
+
+        // position camera
+        var cx = RPG.player.sprite.position.x - cameraHalfSize.x;
+        var cy = RPG.player.sprite.position.y - cameraHalfSize.y;
+        var cameraBox = new PIXI.Rectangle(0, 0, map.size.x * map.tileSize.x, map.size.y * map.tileSize.y);
+
+        cx = Math.max(cameraBox.x, cx);
+        cx = Math.min(cameraBox.x + cameraBox.width - cameraHalfSize.x * 2, cx);
+
+        cy = Math.max(cameraBox.y, cy);
+        cy = Math.min(cameraBox.y + cameraBox.height - cameraHalfSize.y * 2, cy);
+
+        _.each(map.layers, function(layer) {
+            layer.displayLayer.offset(-cx, -cy);
+        });
     }
 
     export function startMap(newMap:Map|string, x?:number, y?:number, layerName?:string) {
@@ -61,7 +78,7 @@ module RPG {
             map = newMap;
         }
         map.open();
-        player.place((x + 0.5) * 16, (y + 0.5) * 16, map.getLayerByName(layerName || '#spritelayer'));
+        player.place((x + 0.5) * map.tileSize.x, (y + 0.5) * map.tileSize.y, map.getLayerByName(layerName || '#spritelayer'));
 
         UILayer = new Egg.Layer();
     }
