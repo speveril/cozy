@@ -7,12 +7,12 @@ module RPG {
     export var map:Map;
     export var UILayer:Egg.Layer;
     export var loadSkip:Array<string> = [];
-    export var cameraHalfSize:PIXI.Point;
+    export var cameraHalf:PIXI.Point;
 
     export function start(loaded:Function) {
         var textures = {};
         var directories = ['.'];
-        cameraHalfSize = new PIXI.Point(Egg.config['width'] / 2, Egg.config['height'] / 2);
+        cameraHalf = new PIXI.Point(Egg.config['width'] / 2, Egg.config['height'] / 2);
 
         // scrape all images under the project
         while (directories.length > 0) {
@@ -56,18 +56,18 @@ module RPG {
         RPG.player.move(dx, dy);
 
         // position camera
-        var cx = RPG.player.sprite.position.x - cameraHalfSize.x;
-        var cy = RPG.player.sprite.position.y - cameraHalfSize.y;
+        var cx = RPG.player.sprite.position.x;
+        var cy = RPG.player.sprite.position.y;
         var cameraBox = new PIXI.Rectangle(0, 0, map.size.x * map.tileSize.x, map.size.y * map.tileSize.y);
 
-        cx = Math.max(cameraBox.x, cx);
-        cx = Math.min(cameraBox.x + cameraBox.width - cameraHalfSize.x * 2, cx);
+        cx = Math.max(cameraBox.x + cameraHalf.x, cx);
+        cx = Math.min(cameraBox.x + cameraBox.width - cameraHalf.x, cx);
 
-        cy = Math.max(cameraBox.y, cy);
-        cy = Math.min(cameraBox.y + cameraBox.height - cameraHalfSize.y * 2, cy);
+        cy = Math.max(cameraBox.y + cameraHalf.y, cy);
+        cy = Math.min(cameraBox.y + cameraBox.height - cameraHalf.y, cy);
 
         _.each(map.layers, function(layer) {
-            layer.displayLayer.offset(-cx, -cy);
+            layer.displayLayer.offset(-cx + cameraHalf.x, -cy + cameraHalf.y);
         });
     }
 
