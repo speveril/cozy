@@ -2,6 +2,7 @@
 /// <reference path="../lib/typescript/node.d.ts"/>
 /// <reference path="../lib/typescript/pixi.js.d.ts"/>
 /// <reference path="../lib/typescript/underscore.d.ts"/>
+/// <reference path="../lib/typescript/es6-promise.d.ts"/>
 
 /// <reference path="File.ts"/>
 /// <reference path="Layer.ts"/>
@@ -11,6 +12,7 @@
 
 var fs = require('fs');
 var remote = require('remote');
+require('es6-promise').polyfill();
 
 function include(path) {
     return require(process.cwd() + "/" + path);
