@@ -23,7 +23,6 @@ Ultimately the development is driven by what I want out of the engine. I have a 
 ## Roadmap/TODOs
 
 - RPG-style "kit" (top-down movement system and obstructions, event zones, etc)
-- A "native" sprite JSON format
 - Event system (to allow multi-stage events spanning many frames)
 
 Maybe/probably?
