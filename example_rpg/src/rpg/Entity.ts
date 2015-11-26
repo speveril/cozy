@@ -26,6 +26,7 @@ module RPG {
         public sprite:Egg.Sprite;
         public layer:MapLayer;
         public speed:number;
+        public radius:number;
 
         get dir():string {
             return this.sprite.animation.slice(-1);
@@ -40,6 +41,7 @@ module RPG {
             this.speed = args.speed || 100;
             this.triggersEvents = (args.triggersEvents !== undefined ? args.triggersEvents : false);
             this.respectsObstructions = (args.respectsObstructions !== undefined ? args.respectsObstructions : true);
+            this.radius = args.radius || args.sprite.radius || 8;
         }
 
         place(x:number, y:number, lyr:MapLayer):void {
@@ -50,7 +52,7 @@ module RPG {
         }
 
         move(dx:number, dy:number):void {
-            var i, ang = 0, radius = 8;
+            var i, ang = 0;
 
             if (dy !== 0 || dx !== 0) {
                 if (dx < 0 && dy === 0) this.sprite.animation = "walk_l";
@@ -78,10 +80,10 @@ module RPG {
                     for (i = 0; i < obstructions.length; i++) {
                         var closest = closestPointOnLine(projectedPosition, obstructions[i].a, obstructions[i].b);
                         d = Math.sqrt(dist2(projectedPosition, closest));
-                        if (d < radius) {
+                        if (d < this.radius) {
                             var ang = Math.atan2(projectedPosition.y - closest.y, projectedPosition.x - closest.x);
-                            projectedPosition.x += Math.cos(ang) * (radius - d);
-                            projectedPosition.y += Math.sin(ang) * (radius - d);
+                            projectedPosition.x += Math.cos(ang) * (this.radius - d);
+                            projectedPosition.y += Math.sin(ang) * (this.radius - d);
                         }
                     }
 
