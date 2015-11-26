@@ -1,10 +1,12 @@
 module RPG {
     export class MapLayer {
+        // break this out into child classes, TileLayer and EntityLayer?
         map:Map = null;
         tiles:Array<number>;
         tileLookup:Array<MapTile>;
         obstructions:Array<any>; // actually point pairs
         events:Array<MapEvent>;
+        triggers:Array<MapEvent>;
         displayLayer:Egg.Layer;
 
         getTile(x:number, y:number):number {
@@ -48,6 +50,11 @@ module RPG {
     }
 
     export class MapEvent {
+        name:string;
+        rect:PIXI.Rectangle;
+    }
+
+    export class MapTrigger {
         name:string;
         rect:PIXI.Rectangle;
     }
@@ -135,6 +142,7 @@ module RPG {
                         layer.map = this;
                         layer.obstructions = [];
                         layer.events = [];
+                        layer.triggers = [];
                         _.each(el.children, function(objectEl:HTMLElement) {
                             var x = parseInt(objectEl.getAttribute('x'), 10),
                                 y = parseInt(objectEl.getAttribute('y'), 10);
@@ -149,7 +157,12 @@ module RPG {
                                     layer.events.push(ev);
                                     break;
                                 case "trigger":
-                                    // TODO
+                                    var w = parseInt(objectEl.getAttribute('width'), 10),
+                                        h = parseInt(objectEl.getAttribute('height'), 10),
+                                        ev = new MapEvent();
+                                    ev.name = objectEl.getAttribute('name');
+                                    ev.rect = new PIXI.Rectangle(x, y, w, h);
+                                    layer.triggers.push(ev);
                                     break;
                                 default:
                                     if (objectEl.hasAttribute('width') && objectEl.hasAttribute('height')) {

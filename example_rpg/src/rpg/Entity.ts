@@ -31,6 +31,10 @@ module RPG {
             return this.sprite.animation.slice(-1);
         }
 
+        get position():PIXI.Point {
+            return this.sprite.position;
+        }
+
         constructor(args) {
             this.spriteDef = args.sprite;
             this.speed = args.speed || 100;

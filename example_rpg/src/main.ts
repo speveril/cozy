@@ -15,6 +15,7 @@ module SimpleQuest {
 
             RPG.startMap(new Map("map/town.tmx"), 10, 7);
 
+            RPG.controls = RPG.ControlMode.Map;
             Egg.unpause();
         });
     }
