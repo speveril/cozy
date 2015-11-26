@@ -4,7 +4,7 @@ module RPG {
         map:Map = null;
         tiles:Array<number>;
         tileLookup:Array<MapTile>;
-        obstructions:Array<any>; // actually point pairs
+        obstructions:Array<MapObstruction>;
         events:Array<MapEvent>;
         triggers:Array<MapEvent>;
         displayLayer:Egg.Layer;
@@ -46,7 +46,16 @@ module RPG {
 
             this.tiles[i] = t;
         }
+    }
 
+    export class MapObstruction {
+        a:PIXI.Point;
+        b:PIXI.Point;
+
+        constructor(a:PIXI.Point, b:PIXI.Point) {
+            this.a = a;
+            this.b = b;
+        }
     }
 
     export class MapEvent {
@@ -168,21 +177,21 @@ module RPG {
                                     if (objectEl.hasAttribute('width') && objectEl.hasAttribute('height')) {
                                         var w = parseInt(objectEl.getAttribute('width'), 10),
                                             h = parseInt(objectEl.getAttribute('height'), 10);
-                                        layer.obstructions.push([{x:x, y:y},{x:x+w,y:y}]);
-                                        layer.obstructions.push([{x:x, y:y},{x:x,y:y+h}]);
-                                        layer.obstructions.push([{x:x, y:y+h},{x:x+w,y:y+h}]);
-                                        layer.obstructions.push([{x:x+h, y:y},{x:x+w,y:y+h}]);
+                                        layer.obstructions.push(new MapObstruction(new PIXI.Point(x,y), new PIXI.Point(x+w,y)));
+                                        layer.obstructions.push(new MapObstruction(new PIXI.Point(x,y), new PIXI.Point(x,y+h)));
+                                        layer.obstructions.push(new MapObstruction(new PIXI.Point(x,y+h), new PIXI.Point(x+w,y+h)));
+                                        layer.obstructions.push(new MapObstruction(new PIXI.Point(x+w,y), new PIXI.Point(x+w,y+h)));
                                     } else {
                                         _.each(objectEl.children, function(defEl:HTMLElement) {
                                             switch(defEl.tagName) {
                                                 case 'polyline':
                                                     var points = defEl.getAttribute('points').split(" ");
-                                                    var last_pt = null;
+                                                    var last_pt:PIXI.Point = null;
                                                     _.each(points, function(pt) {
                                                         pt = pt.split(",");
-                                                        pt = { x:parseInt(pt[0], 10) + x, y:parseInt(pt[1], 10) + y };
+                                                        pt = new PIXI.Point(parseInt(pt[0], 10) + x, parseInt(pt[1], 10) + y );
                                                         if (last_pt !== null) {
-                                                            layer.obstructions.push([last_pt, pt]);
+                                                            layer.obstructions.push(new MapObstruction(last_pt, pt));
                                                         }
                                                         last_pt = pt;
                                                     }.bind(this));
