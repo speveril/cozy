@@ -2,14 +2,16 @@
 
 module SimpleQuest {
     var potsSmashed:Array<any> = [];
+    var switchesFlipped:any = {};
+    var spriteLayer:RPG.MapLayer;
 
     export class Map extends RPG.Map {
         open() {
             super.open();
+            spriteLayer = RPG.map.getLayerByName("#spritelayer");
 
             // TODO this is such a dumb way to do this; need to split this out
             if (this.filename === 'map/town.tmx') {
-                var spriteLayer = RPG.map.getLayerByName("#spritelayer");
                 _.each(potsSmashed, function(coords) {
                     var tx = Math.floor(coords[0] / this.tileSize.x);
                     var ty = Math.floor(coords[1] / this.tileSize.y);
@@ -19,6 +21,19 @@ module SimpleQuest {
                         spriteLayer.getTriggerByPoint(coords[0], coords[1]).solid = false;
                     }
                 }.bind(this));
+            } else if(this.filename === 'map/forest.tmx') {
+                if (switchesFlipped['trigger_forest_door_switch']) {
+                    var trigger = spriteLayer.getTriggersByName('trigger_forest_door_switch')[0];
+                    var tx = Math.floor(trigger.rect.x / this.tileSize.x);
+                    var ty = Math.floor(trigger.rect.y / this.tileSize.y);
+                    this.layers[1].setTile(tx, ty, this.layers[1].getTile(tx, ty) + 2);
+
+                    trigger = spriteLayer.getTriggersByName('locked_door')[0];
+                    tx = Math.floor(trigger.rect.x / this.tileSize.x);
+                    ty = Math.floor(trigger.rect.y / this.tileSize.y);
+                    this.layers[1].setTile(tx, ty, this.layers[1].getTile(tx, ty) + 3);
+                    trigger.solid = false;
+                }
             }
         }
 
@@ -149,6 +164,47 @@ module SimpleQuest {
                 }.bind(this))
                 .then(function() {
                     RPG.Textbox.show("... some rocks.");
+                    return RPG.Scene.waitForButton("confirm");
+                }.bind(this))
+                .then(function() {
+                    RPG.Textbox.hide();
+                    RPG.Scene.finish();
+                }.bind(this));
+        }
+
+        trigger_well(args) {
+            RPG.Scene.start()
+                .then(function() {
+                    RPG.Textbox.show("HP and MP restored!\n\nThis means nothing to you.");
+                    return RPG.Scene.waitForButton("confirm");
+                }.bind(this))
+                .then(function() {
+                    RPG.Textbox.hide();
+                    RPG.Scene.finish();
+                }.bind(this));
+        }
+
+        trigger_forest_door_switch(args) {
+            if (switchesFlipped['trigger_forest_door_switch']) return;
+
+            switchesFlipped['trigger_forest_door_switch'] = true;
+            var t = this.layers[1].getTile(args.tx, args.ty);
+            RPG.Scene.start()
+                .then(function() {
+                    this.layers[1].setTile(args.tx, args.ty, t + 1);
+                    return RPG.Scene.waitForTime(0.5);
+                }.bind(this))
+                .then(function() {
+                    this.layers[1].setTile(args.tx, args.ty, t + 2);
+                    return RPG.Scene.waitForTime(0.5);
+                }.bind(this))
+                .then(function() {
+                    var door = spriteLayer.getTriggersByName('locked_door')[0];
+                    var tx = Math.floor(door.rect.x / this.tileSize.x);
+                    var ty = Math.floor(door.rect.y / this.tileSize.y);
+                    this.layers[1].setTile(tx, ty, this.layers[1].getTile(tx, ty) + 1);
+                    door.solid = false;
+                    RPG.Textbox.show("I heard something open somewhere in the distance.");
                     return RPG.Scene.waitForButton("confirm");
                 }.bind(this))
                 .then(function() {

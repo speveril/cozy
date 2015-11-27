@@ -6,7 +6,7 @@ module RPG {
         tileLookup:Array<MapTile>;
         obstructions:Array<MapObstruction>;
         events:Array<MapEvent>;
-        triggers:Array<MapEvent>;
+        triggers:Array<MapTrigger>;
         displayLayer:Egg.Layer;
 
         getTile(x:number, y:number):number {
@@ -52,17 +52,31 @@ module RPG {
                 return (trigger.rect.contains(x, y) && this.map[trigger.name]);
             }.bind(this)));
         }
+
+        getTriggersByName(name:string):MapTrigger[] {
+            return _.filter(this.triggers, function(t) {
+                return (t.name != null && t.name === name);
+            })
+        }
+
+        getObstructionsByName(name:string):MapObstruction[] {
+            return _.filter(this.obstructions, function(o) {
+                return (o.name !== null && o.name === name);
+            });
+        }
     }
 
     export class MapObstruction {
         a:PIXI.Point;
         b:PIXI.Point;
         active:boolean;
+        name:string;
 
-        constructor(a:PIXI.Point, b:PIXI.Point) {
+        constructor(a:PIXI.Point, b:PIXI.Point, name?:string) {
             this.a = a;
             this.b = b;
             this.active = true;
+            this.name = name || null;
         }
     }
 
@@ -215,13 +229,14 @@ module RPG {
                                     layer.triggers.push(tr);
                                     break;
                                 default:
+                                    var name = objectEl.hasAttribute('name') ? objectEl.getAttribute('name') : null;
                                     if (objectEl.hasAttribute('width') && objectEl.hasAttribute('height')) {
                                         var w = parseInt(objectEl.getAttribute('width'), 10),
                                             h = parseInt(objectEl.getAttribute('height'), 10);
-                                        layer.obstructions.push(new MapObstruction(new PIXI.Point(x,y), new PIXI.Point(x+w,y)));
-                                        layer.obstructions.push(new MapObstruction(new PIXI.Point(x,y), new PIXI.Point(x,y+h)));
-                                        layer.obstructions.push(new MapObstruction(new PIXI.Point(x,y+h), new PIXI.Point(x+w,y+h)));
-                                        layer.obstructions.push(new MapObstruction(new PIXI.Point(x+w,y), new PIXI.Point(x+w,y+h)));
+                                        layer.obstructions.push(new MapObstruction(new PIXI.Point(x,y), new PIXI.Point(x+w,y), name));
+                                        layer.obstructions.push(new MapObstruction(new PIXI.Point(x,y), new PIXI.Point(x,y+h), name));
+                                        layer.obstructions.push(new MapObstruction(new PIXI.Point(x,y+h), new PIXI.Point(x+w,y+h), name));
+                                        layer.obstructions.push(new MapObstruction(new PIXI.Point(x+w,y), new PIXI.Point(x+w,y+h), name));
                                     } else {
                                         _.each(objectEl.children, function(defEl:HTMLElement) {
                                             switch(defEl.tagName) {
@@ -232,7 +247,7 @@ module RPG {
                                                         pt = pt.split(",");
                                                         pt = new PIXI.Point(parseInt(pt[0], 10) + x, parseInt(pt[1], 10) + y );
                                                         if (last_pt !== null) {
-                                                            layer.obstructions.push(new MapObstruction(last_pt, pt));
+                                                            layer.obstructions.push(new MapObstruction(last_pt, pt, name));
                                                         }
                                                         last_pt = pt;
                                                     }.bind(this));
