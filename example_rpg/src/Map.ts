@@ -6,6 +6,16 @@ module SimpleQuest {
     export class Map extends RPG.Map {
         open() {
             super.open();
+
+            // TODO this is such a dumb way to do this; need to split this out
+            if (this.filename === 'map/town.tmx') {
+                _.each(potsSmashed, function(coords) {
+                    var t = this.layers[1].getTile(coords[0], coords[1]);
+                    if (t == 53) {
+                        this.layers[1].setTile(coords[0], coords[1], t + 3);
+                    }
+                }.bind(this));
+            }
         }
 
         open_door(args) {

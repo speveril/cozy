@@ -111,8 +111,10 @@ module RPG {
         size:PIXI.Point;
         tileSize:PIXI.Point;
         tilesets:Array<MapTileset>;
+        filename:string = null;
 
         loadFromTMX(path:string) {
+            this.filename = path;
             var parser = new DOMParser();
             var dataDirectory = path.substr(0, path.lastIndexOf('/') + 1);
 
