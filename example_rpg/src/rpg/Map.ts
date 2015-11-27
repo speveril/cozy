@@ -46,15 +46,23 @@ module RPG {
 
             this.tiles[i] = t;
         }
+
+        getTriggerByPoint(x:number, y:number):MapTrigger {
+            return <MapTrigger>(_.find(this.triggers, function(trigger) {
+                return (trigger.rect.contains(x, y) && this.map[trigger.name]);
+            }.bind(this)));
+        }
     }
 
     export class MapObstruction {
         a:PIXI.Point;
         b:PIXI.Point;
+        active:boolean;
 
         constructor(a:PIXI.Point, b:PIXI.Point) {
             this.a = a;
             this.b = b;
+            this.active = true;
         }
     }
 
@@ -66,6 +74,19 @@ module RPG {
     export class MapTrigger {
         name:string;
         rect:PIXI.Rectangle;
+        obstructions:Array<MapObstruction>;
+        private _solid:boolean = true;
+
+        get solid():boolean {
+            return this._solid;
+        }
+
+        set solid(v:boolean) {
+            this._solid = v;
+            _.each(this.obstructions, function(o) {
+                o.active = v;
+            });
+        }
     }
 
     export class MapTileset {
@@ -170,10 +191,28 @@ module RPG {
                                 case "trigger":
                                     var w = parseInt(objectEl.getAttribute('width'), 10),
                                         h = parseInt(objectEl.getAttribute('height'), 10),
-                                        ev = new MapEvent();
-                                    ev.name = objectEl.getAttribute('name');
-                                    ev.rect = new PIXI.Rectangle(x, y, w, h);
-                                    layer.triggers.push(ev);
+                                        tr = new MapTrigger();
+                                    tr.name = objectEl.getAttribute('name');
+                                    tr.rect = new PIXI.Rectangle(x, y, w, h);
+                                    if (objectEl.hasAttribute('solid')) {
+                                        tr.solid = (objectEl.getAttribute('solid') === 'true' || objectEl.getAttribute('solid') === '1');
+                                    }
+
+                                    tr.obstructions = [];
+                                    var o:MapObstruction = new MapObstruction(new PIXI.Point(x,y), new PIXI.Point(x+w,y));
+                                    layer.obstructions.push(o);
+                                    tr.obstructions.push(o);
+                                    o = new MapObstruction(new PIXI.Point(x,y), new PIXI.Point(x,y+h));
+                                    layer.obstructions.push(o);
+                                    tr.obstructions.push(o);
+                                    o = new MapObstruction(new PIXI.Point(x,y+h), new PIXI.Point(x+w,y+h))
+                                    layer.obstructions.push(o);
+                                    tr.obstructions.push(o);
+                                    o = new MapObstruction(new PIXI.Point(x+w,y), new PIXI.Point(x+w,y+h));
+                                    layer.obstructions.push(o);
+                                    tr.obstructions.push(o);
+
+                                    layer.triggers.push(tr);
                                     break;
                                 default:
                                     if (objectEl.hasAttribute('width') && objectEl.hasAttribute('height')) {

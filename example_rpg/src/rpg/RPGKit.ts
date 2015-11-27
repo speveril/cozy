@@ -62,6 +62,7 @@ module RPG {
 
             // handle other input
             if (Egg.button('confirm')) {
+                Egg.debounce('confirm');
                 var tx = player.position.x;
                 var ty = player.position.y;
                 switch (player.dir) {
@@ -70,17 +71,15 @@ module RPG {
                     case 'l': tx -= map.tileSize.x; break;
                     case 'r': tx += map.tileSize.x; break;
                 }
-                _.each(player.layer.triggers, function(trigger) {
-                    if (trigger.rect.contains(tx, ty) && player.layer.map[trigger.name]) {
-                        Egg.debounce('confirm');
-                        player.layer.map[trigger.name]({
-                            sprite: this,
-                            trigger: trigger,
-                            x: tx, y: ty,
-                            tx: Math.floor(tx / map.tileSize.x), ty: Math.floor(ty / map.tileSize.y)
-                        });
-                    }
-                });
+                var trigger = player.layer.getTriggerByPoint(tx, ty);
+                if (trigger) {
+                    player.layer.map[trigger.name]({
+                        sprite: this,
+                        trigger: trigger,
+                        x: tx, y: ty,
+                        tx: Math.floor(tx / map.tileSize.x), ty: Math.floor(ty / map.tileSize.y)
+                    });
+                }
             }
 
             // position camera

@@ -9,10 +9,14 @@ module SimpleQuest {
 
             // TODO this is such a dumb way to do this; need to split this out
             if (this.filename === 'map/town.tmx') {
+                var spriteLayer = RPG.map.getLayerByName("#spritelayer");
                 _.each(potsSmashed, function(coords) {
-                    var t = this.layers[1].getTile(coords[0], coords[1]);
+                    var tx = Math.floor(coords[0] / this.tileSize.x);
+                    var ty = Math.floor(coords[1] / this.tileSize.y);
+                    var t = this.layers[1].getTile(tx, ty);
                     if (t == 53) {
-                        this.layers[1].setTile(coords[0], coords[1], t + 3);
+                        this.layers[1].setTile(tx, ty, t + 3);
+                        spriteLayer.getTriggerByPoint(coords[0], coords[1]).solid = false;
                     }
                 }.bind(this));
             }
@@ -33,7 +37,8 @@ module SimpleQuest {
             if (t == 53) {
                 this.layers[1].setTile(args.tx, args.ty, t + 1);
                 // this.setObs(args.x, args.y, 0);
-                potsSmashed.push([args.tx,args.ty]);
+                potsSmashed.push([args.x, args.y]);
+                args.trigger.solid = false;
                 RPG.Scene.start()
                     .then(function() {
                         RPG.Textbox.show("Smash!");

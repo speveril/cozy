@@ -78,6 +78,9 @@ module RPG {
                     var projectedPosition = { x: this.sprite.position.x + dx * (1 - travelled), y: this.sprite.position.y + dy * (1 - travelled) };
 
                     for (i = 0; i < obstructions.length; i++) {
+                        if (!obstructions[i].active) {
+                            continue;
+                        }
                         var closest = closestPointOnLine(projectedPosition, obstructions[i].a, obstructions[i].b);
                         d = Math.sqrt(dist2(projectedPosition, closest));
                         if (d < this.radius) {
