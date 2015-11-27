@@ -97,6 +97,8 @@ module RPG {
             _.each(map.layers, function(layer) {
                 layer.displayLayer.offset(-cx + cameraHalf.x, -cy + cameraHalf.y);
             });
+        } else if (controls === ControlMode.Scene && Scene.currentScene) {
+            Scene.update(dt);
         }
     }
 

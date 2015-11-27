@@ -4,6 +4,10 @@ module SimpleQuest {
     var potsSmashed:Array<any> = [];
 
     export class Map extends RPG.Map {
+        open() {
+            super.open();
+        }
+
         open_door(args) {
             var t = this.layers[1].getTile(args.tx, args.ty);
             if (t == 5) {
@@ -20,10 +24,21 @@ module SimpleQuest {
                 this.layers[1].setTile(args.tx, args.ty, t + 1);
                 // this.setObs(args.x, args.y, 0);
                 potsSmashed.push([args.tx,args.ty]);
-                RPG.Textbox.show("smash!");
-                if (potsSmashed.length == 4) {
-                    RPG.Textbox.show("You've broken all the pots.\n\nAre you proud of yourself now?");
-                }
+                RPG.Scene.start()
+                    .then(function() {
+                        RPG.Textbox.show("Smash!");
+                        return RPG.Scene.waitForButton("confirm");
+                    }.bind(this))
+                    .then(function() {
+                        if (potsSmashed.length === 4) {
+                            RPG.Textbox.show("You've broken all the pots.\n\nAre you proud of yourself now?");
+                            return RPG.Scene.waitForButton("confirm");
+                        }
+                    }.bind(this))
+                    .then(function() {
+                        RPG.Textbox.hide();
+                        RPG.Scene.finish();
+                    }.bind(this));
             }
         }
 
@@ -31,7 +46,15 @@ module SimpleQuest {
             var t = this.layers[1].getTile(args.tx, args.ty);
             if (t == 37) {
                 this.layers[1].setTile(args.tx, args.ty, t + 1);
-                RPG.Textbox.show("There was nothing in the chest.\n\nHow disappointing.");
+                RPG.Scene.start()
+                    .then(function() {
+                        RPG.Textbox.show("There was nothing in the chest.\n\nHow disappointing.");
+                        return RPG.Scene.waitForButton("confirm");
+                    }.bind(this))
+                    .then(function() {
+                        RPG.Textbox.hide();
+                        RPG.Scene.finish();
+                    }.bind(this));
             }
         }
 
@@ -76,23 +99,47 @@ module SimpleQuest {
         // -- specific world manipulation
 
         sign_house(args) {
-            console.log("sign_house");
-            RPG.Textbox.show("An empty house\nB\nC");
-            // var scene = new RPG.Scene()
-            //     .then(function() {
-            //         RPG.Textbox.show("An empty house");
-            //     }.bind(this))
-            //     .then(function() {
-            //         scene.finish();
-            //     });
+            RPG.Scene.start()
+                .then(function() {
+                    RPG.Textbox.show("An empty house");
+                    return RPG.Scene.waitForButton("confirm");
+                }.bind(this))
+                .then(function() {
+                    RPG.Textbox.hide();
+                    RPG.Scene.finish();
+                }.bind(this));
         }
 
         sign_shops(args) {
-            RPG.Textbox.show("Shopping is fun!");
+            RPG.Scene.start()
+                .then(function() {
+                    RPG.Textbox.show("Shopping is fun!");
+                    return RPG.Scene.waitForButton("confirm");
+                }.bind(this))
+                .then(function() {
+                    RPG.Textbox.hide();
+                    RPG.Scene.finish();
+                }.bind(this));
         }
 
         trigger_rocks(args) {
-            RPG.Textbox.show("I... found some rocks");
+            RPG.Scene.start()
+                .then(function() {
+                    RPG.Textbox.show("I found...");
+                    return RPG.Scene.waitForButton("confirm");
+                }.bind(this))
+                .then(function() {
+                    RPG.Textbox.hide();
+                    return RPG.Scene.waitForTime(2.5);
+                }.bind(this))
+                .then(function() {
+                    RPG.Textbox.show("... some rocks.");
+                    return RPG.Scene.waitForButton("confirm");
+                }.bind(this))
+                .then(function() {
+                    RPG.Textbox.hide();
+                    RPG.Scene.finish();
+                }.bind(this));
         }
     }
 }

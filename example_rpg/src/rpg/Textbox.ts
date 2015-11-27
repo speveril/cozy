@@ -17,6 +17,10 @@ module RPG {
         };
 
         static show(text:string) {
+            if (this.sprite || this.text) {
+                this.hide();
+            }
+
             this.message = text;
             this.sprite = new Egg.Sprite({
                 texture: 'sprites/textbox.png',
@@ -34,6 +38,9 @@ module RPG {
         static hide() {
             RPG.UILayer.remove(this.sprite);
             RPG.UILayer.innerContainer.removeChild(this.text);
+
+            this.sprite = null;
+            this.text = null;
         }
     }
 }
