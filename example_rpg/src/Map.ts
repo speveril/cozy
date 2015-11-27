@@ -76,7 +76,15 @@ module SimpleQuest {
         // -- specific world manipulation
 
         sign_house(args) {
-            RPG.Textbox.show("An empty house");
+            console.log("sign_house");
+            RPG.Textbox.show("An empty house\nB\nC");
+            // var scene = new RPG.Scene()
+            //     .then(function() {
+            //         RPG.Textbox.show("An empty house");
+            //     }.bind(this))
+            //     .then(function() {
+            //         scene.finish();
+            //     });
         }
 
         sign_shops(args) {

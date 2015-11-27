@@ -1,5 +1,6 @@
 ///<reference path="Map.ts"/>
 ///<reference path="Entity.ts"/>
+///<reference path="Scene.ts"/>
 ///<reference path="Textbox.ts"/>
 
 module RPG {
@@ -71,6 +72,7 @@ module RPG {
                 }
                 _.each(player.layer.triggers, function(trigger) {
                     if (trigger.rect.contains(tx, ty) && player.layer.map[trigger.name]) {
+                        Egg.debounce('confirm');
                         player.layer.map[trigger.name]({
                             sprite: this,
                             trigger: trigger,
@@ -105,8 +107,8 @@ module RPG {
             map = newMap;
         }
         map.open();
-        player.place((x + 0.5) * map.tileSize.x, (y + 0.5) * map.tileSize.y, map.getLayerByName(layerName || '#spritelayer'));
+        UILayer = Egg.addLayer();
 
-        UILayer = new Egg.Layer();
+        player.place((x + 0.5) * map.tileSize.x, (y + 0.5) * map.tileSize.y, map.getLayerByName(layerName || '#spritelayer'));
     }
 }

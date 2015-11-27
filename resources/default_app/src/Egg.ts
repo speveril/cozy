@@ -52,7 +52,6 @@ module Egg {
 
         this.key = {};
         this.__button = {};
-        this.debouce = {};
         this.buttonMap = {};
         this.textures = {};
         this.paused = true;
