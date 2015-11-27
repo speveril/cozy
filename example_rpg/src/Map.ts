@@ -212,5 +212,19 @@ module SimpleQuest {
                     RPG.Scene.finish();
                 }.bind(this));
         }
+
+        locked_door(args) {
+            if (switchesFlipped['trigger_forest_door_switch']) return;
+
+            RPG.Scene.start()
+                .then(function() {
+                    RPG.Textbox.show("This door is locked. It must be opened somewhere else.");
+                    return RPG.Scene.waitForButton("confirm");
+                }.bind(this))
+                .then(function() {
+                    RPG.Textbox.hide();
+                    RPG.Scene.finish();
+                }.bind(this));
+        }
     }
 }
