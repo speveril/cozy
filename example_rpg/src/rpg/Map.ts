@@ -54,15 +54,11 @@ module RPG {
         }
 
         getTriggersByName(name:string):MapTrigger[] {
-            return _.filter(this.triggers, function(t) {
-                return (t.name != null && t.name === name);
-            })
+            return _.where(this.triggers, { name: name });
         }
 
         getObstructionsByName(name:string):MapObstruction[] {
-            return _.filter(this.obstructions, function(o) {
-                return (o.name !== null && o.name === name);
-            });
+            return _.where(this.obstructions, { name: name });
         }
     }
 
