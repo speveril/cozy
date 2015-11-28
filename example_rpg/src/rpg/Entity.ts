@@ -45,7 +45,12 @@ module RPG {
         }
 
         place(x:number, y:number, lyr:MapLayer):void {
-            this.sprite = new Egg.Sprite(this.spriteDef);
+            if (this.sprite) {
+                this.layer.displayLayer.remove(this.sprite);
+            } else {
+                this.sprite = new Egg.Sprite(this.spriteDef);
+            }
+
             this.sprite.setPosition(x, y);
             this.layer = lyr;
             this.layer.displayLayer.add(this.sprite);

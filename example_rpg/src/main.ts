@@ -2,6 +2,8 @@
 ///<reference path="rpg/RPGKit.ts"/>
 ///<reference path="Map.ts"/>
 
+window['RPG'] = RPG;
+
 module SimpleQuest {
     export function start() {
         RPG.loadSkip = ["./src_image"];

@@ -6,7 +6,8 @@ module Egg {
         static read(f:string):string { return fs.readFileSync(f, { encoding: 'UTF-8' }); }
         static write(f:string, contents:string):void { return fs.writeFileSync(f, contents); }
         static stat(f:string) { return fs.statSync(f); }
-        static extension(f) { return path.extname(f); }
+        static extension(f):string { return path.extname(f); }
+        static filename(f):string { return path.basename(f); }
     }
 
     export class Directory {

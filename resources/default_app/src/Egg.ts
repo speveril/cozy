@@ -13,6 +13,7 @@
 var fs = require('fs');
 var remote = require('remote');
 require('es6-promise').polyfill();
+declare var FontFace:any;
 
 function include(path) {
     return require(process.cwd() + "/" + path);
@@ -102,13 +103,24 @@ module Egg {
         document.body.appendChild(this.renderer.view);
         this.onResize();
 
-        // start the game
-        this.Game = include("/main.js");
-        this.Game.start();
+        var fonts = [];
+        _.each(this.config['fonts'], function(path, name) {
+            var style = document.createElement('style');
+            style.innerText = "@font-face { font-family: " + name + "; src: url(../../example_rpg/" + path + ") }";
+            document.head.appendChild(style);
+            fonts.push(new FontFace(name, "url(../../example_rpg/" + path + ")").load());
+        });
 
-        // set up animation loop
-        this.lastTime = Date.now();
-        this.frame();
+        Promise.all(fonts)
+            .then(function() {
+                // start the game
+                this.Game = include("/main.js");
+                this.Game.start();
+
+                // set up animation loop
+                this.lastTime = Date.now();
+                this.frame();
+            }.bind(this));
     }
 
     export function frame() {

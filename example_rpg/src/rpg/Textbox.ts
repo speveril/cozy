@@ -3,10 +3,10 @@ module RPG {
         private static sprite:Egg.Sprite;
         private static text:PIXI.Text;
         private static message:string;
-        public static style:Object = {
-            font: "normal 9pt Calibri",
+        public static style:any = {
+            font: 'normal 10px sans-serif',
             fill: "#ffffff",
-            // stroke: "#444444",
+            stroke: "1px solid #000000",
             align: "left",
             wordWrap: false,
             wordWrapWidth: 320,
@@ -31,7 +31,7 @@ module RPG {
             // TODO clean up, move into Egg
             this.text = new PIXI.Text(this.message, this.style);
             this.text.position.x = 10;
-            this.text.position.y = 195;
+            this.text.position.y = 195.5;
             RPG.UILayer.innerContainer.addChild(this.text);
         }
 

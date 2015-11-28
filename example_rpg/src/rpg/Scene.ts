@@ -25,6 +25,7 @@ module RPG {
 
         static start() {
             this.promise = new Promise(function(resolve, reject) {
+                RPG.player.sprite.animation = "stand_" + RPG.player.dir;
                 this.restoreControls = RPG.controls;
                 this.currentScene = this;
                 RPG.controls = RPG.ControlMode.Scene

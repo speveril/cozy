@@ -14,6 +14,7 @@ module RPG {
 
     export function start(loaded:Function) {
         var textures = {};
+        var fonts = [];
         var directories = ['.'];
         cameraHalf = new PIXI.Point(Egg.config['width'] / 2, Egg.config['height'] / 2);
 

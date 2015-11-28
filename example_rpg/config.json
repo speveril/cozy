@@ -2,5 +2,11 @@
     "title": "SimpleQuest",
     "width": 320,
     "height": 240,
-    "fullscreen": false
+    "fullscreen": false,
+    "fonts": {
+        "PressStart": "font/prstartk.ttf",
+        "Fipps": "font/Fipps-Regular.otf",
+        "GreenScreen": "font/Greenscr.ttf",
+        "default": "font/Greenscr.ttf"
+    }
 }

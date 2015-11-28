@@ -226,5 +226,44 @@ module SimpleQuest {
                     RPG.Scene.finish();
                 }.bind(this));
         }
+
+        key_door(args) {
+            // var switchName = 'key_door_' + args.tx + "_" + args.ty;
+            // if (switchesFlipped[switchName]) return;
+
+            RPG.Scene.start()
+                .then(function() {
+                    RPG.Textbox.show("This door is locked.");
+                    return RPG.Scene.waitForButton("confirm");
+                }.bind(this))
+                .then(function() {
+                    RPG.Textbox.show("Good thing I carry around this magical Omnikey!");
+                    return RPG.Scene.waitForButton("confirm");
+                }.bind(this))
+                .then(function() {
+                    RPG.Textbox.show("*click*");
+                    this.layers[1].setTile(args.tx, args.ty, this.layers[1].getTile(args.tx, args.ty) + 1);
+                    args.trigger.solid = false;
+                    return RPG.Scene.waitForButton("confirm");
+                }.bind(this))
+                .then(function() {
+                    RPG.Textbox.hide();
+                    RPG.Scene.finish();
+                }.bind(this));
+        }
+
+        switch_layers(args) {
+            var sl = spriteLayer;
+
+            if (RPG.player.dir === 'u') {
+                spriteLayer = this.getLayerByName("#spritelayer-upper");
+            } else if (RPG.player.dir === 'd') {
+                spriteLayer = this.getLayerByName("#spritelayer");
+            }
+
+            if (spriteLayer !== sl) {
+                RPG.player.place(RPG.player.position.x, RPG.player.position.y, spriteLayer);
+            }
+        }
     }
 }
