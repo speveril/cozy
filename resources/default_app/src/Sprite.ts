@@ -63,7 +63,7 @@ module Egg {
 
         set frame(f:number) {
             this.textureFrame.x = this.frameSize.x * (f % this.frameCounts.x);
-            this.textureFrame.y = this.frameSize.y *  Math.floor(f / this.frameCounts.y);
+            this.textureFrame.y = this.frameSize.y *  Math.floor(f / this.frameCounts.x);
             this.texture.frame = this.textureFrame;
         }
 

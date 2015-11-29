@@ -8,6 +8,7 @@ module RPG {
         events:Array<MapEvent>;
         triggers:Array<MapTrigger>;
         displayLayer:Egg.Layer;
+        entities:Array<any>;
 
         getTile(x:number, y:number):number {
             return this.tiles[x + (this.map.size.x * y)];
@@ -171,20 +172,24 @@ module RPG {
                         var tileString = dataEl.innerHTML.replace(/\s/g, '');
 
                         var layer = new MapLayer();
+                        this.addLayer(layer);
+                        this.layerLookup[el.getAttribute("name")] = layer;
                         layer.map = this;
                         layer.tiles = [];
                         layer.tileLookup = [];
                         _.each(tileString.split(','), function(x) {
                             layer.tiles.push(parseInt(x, 10));
                         });
-                        this.addLayer(layer);
                         break;
                     case "objectgroup":
                         var layer = new MapLayer();
+                        this.addLayer(layer);
+                        this.layerLookup[el.getAttribute("name")] = layer;
                         layer.map = this;
                         layer.obstructions = [];
                         layer.events = [];
                         layer.triggers = [];
+                        layer.entities = [];
                         _.each(el.children, function(objectEl:HTMLElement) {
                             var x = parseInt(objectEl.getAttribute('x'), 10),
                                 y = parseInt(objectEl.getAttribute('y'), 10);
@@ -224,6 +229,18 @@ module RPG {
 
                                     layer.triggers.push(tr);
                                     break;
+                                case "entity":
+                                    var x = parseInt(objectEl.getAttribute('x')) + parseInt(objectEl.getAttribute('width'), 10) / 2,
+                                        y = parseInt(objectEl.getAttribute('y')) + parseInt(objectEl.getAttribute('height'), 10) / 2,
+                                        propertiesEl = <HTMLElement>objectEl.children[0],
+                                        args = {};
+                                    if (propertiesEl) {
+                                        _.each(propertiesEl.children, function(property) {
+                                            args[property.getAttribute('name')] = property.getAttribute('value');
+                                        });
+                                    }
+                                    layer.entities.push([new Entity(args), x, y]);
+                                    break;
                                 default:
                                     var name = objectEl.hasAttribute('name') ? objectEl.getAttribute('name') : null;
                                     if (objectEl.hasAttribute('width') && objectEl.hasAttribute('height')) {
@@ -253,8 +270,6 @@ module RPG {
                                     }
                             }
                         }.bind(this));
-                        this.addLayer(layer);
-                        this.layerLookup[el.getAttribute("name")] = layer;
                         break;
                     default:
                         console.log("Got a '" + el.tagName + "' in the map, not sure what to do with it so I'm ignoring it.");
@@ -292,6 +307,10 @@ module RPG {
                         x = 0;
                         y++;
                     }
+                }.bind(this));
+
+                _.each(mapLayer.entities, function(entity:Entity) {
+                    entity[0].place(entity[1], entity[2], mapLayer);
                 }.bind(this));
             }.bind(this));
         }
