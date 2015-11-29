@@ -239,7 +239,9 @@ module RPG {
                                             args[property.getAttribute('name')] = property.getAttribute('value');
                                         });
                                     }
-                                    layer.entities.push([new Entity(args), x, y]);
+                                    var e = new Entity(args);
+                                    e.spawn = new PIXI.Point(x, y);
+                                    layer.entities.push(e);
                                     break;
                                 default:
                                     var name = objectEl.hasAttribute('name') ? objectEl.getAttribute('name') : null;
@@ -310,7 +312,7 @@ module RPG {
                 }.bind(this));
 
                 _.each(mapLayer.entities, function(entity:Entity) {
-                    entity[0].place(entity[1], entity[2], mapLayer);
+                    entity.place(entity.spawn.x, entity.spawn.y, mapLayer);
                 }.bind(this));
             }.bind(this));
         }

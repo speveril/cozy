@@ -28,6 +28,8 @@ module RPG {
         public speed:number;
         public radius:number;
 
+        public spawn:PIXI.Point;
+
         get dir():string {
             return this.sprite.animation.slice(-1);
         }
@@ -54,6 +56,10 @@ module RPG {
             this.sprite.setPosition(x, y);
             this.layer = lyr;
             this.layer.displayLayer.add(this.sprite);
+
+            if (!_.contains(this.layer.entities, this)) {
+                this.layer.entities.push(this);
+            }
         }
 
         move(dx:number, dy:number):void {
@@ -76,6 +82,7 @@ module RPG {
                 var iter = 0;
                 var d;
                 var obstructions = this.layer.obstructions;
+                var entities = this.layer.entities;
 
                 while (travelled < 0.999 && iter < 20) {
                     iter++;
@@ -92,6 +99,15 @@ module RPG {
                             var ang = Math.atan2(projectedPosition.y - closest.y, projectedPosition.x - closest.x);
                             projectedPosition.x += Math.cos(ang) * (this.radius - d);
                             projectedPosition.y += Math.sin(ang) * (this.radius - d);
+                        }
+                    }
+                    for (i = 0; i < entities.length; i++) {
+                        if (entities[i] === this) continue;
+                        d = Math.sqrt(dist2(projectedPosition, entities[i].sprite.position));
+                        if (d < this.radius + entities[i].radius) {
+                            var ang = Math.atan2(projectedPosition.y - entities[i].sprite.position.y, projectedPosition.x - entities[i].sprite.position.x);
+                            projectedPosition.x += Math.cos(ang) * (this.radius + entities[i].radius - d);
+                            projectedPosition.y += Math.sin(ang) * (this.radius + entities[i].radius - d);
                         }
                     }
 
