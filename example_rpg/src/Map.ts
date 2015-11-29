@@ -6,6 +6,26 @@ module SimpleQuest {
     var spriteLayer:RPG.MapLayer;
 
     export class Map extends RPG.Map {
+        doScene(steps:Array<any>) {
+            var s = RPG.Scene.start();
+
+            _.each(steps, function(step) {
+                if (typeof step === "string") {
+                    s = s.then(function() {
+                        RPG.Textbox.show(step);
+                        return RPG.Scene.waitForButton("confirm");
+                    });
+                } else {
+                    s = s.then(step);
+                }
+            }.bind(this));
+
+            return s.then(function() {
+                RPG.Textbox.hide();
+                RPG.Scene.finish();
+            }.bind(this));
+        }
+
         open() {
             super.open();
             spriteLayer = RPG.map.getLayerByName("#spritelayer");
@@ -41,9 +61,6 @@ module SimpleQuest {
             var t = this.layers[1].getTile(args.tx, args.ty);
             if (t == 5) {
                 this.layers[1].setTile(args.tx, args.ty, 6);
-            } else if (t == 21) {
-                this.layers[1].setTile(args.tx, args.ty, 22);
-                // this.setObs(args.x, args.y, 0);
             }
         }
 
@@ -51,24 +68,14 @@ module SimpleQuest {
             var t = this.layers[1].getTile(args.tx, args.ty);
             if (t == 53) {
                 this.layers[1].setTile(args.tx, args.ty, t + 1);
-                // this.setObs(args.x, args.y, 0);
                 potsSmashed.push([args.x, args.y]);
                 args.trigger.solid = false;
-                RPG.Scene.start()
-                    .then(function() {
-                        RPG.Textbox.show("Smash!");
-                        return RPG.Scene.waitForButton("confirm");
-                    }.bind(this))
-                    .then(function() {
-                        if (potsSmashed.length === 4) {
-                            RPG.Textbox.show("You've broken all the pots.\n\nAre you proud of yourself now?");
-                            return RPG.Scene.waitForButton("confirm");
-                        }
-                    }.bind(this))
-                    .then(function() {
-                        RPG.Textbox.hide();
-                        RPG.Scene.finish();
-                    }.bind(this));
+                if (potsSmashed.length === 4) {
+                    this.doScene([
+                        "You've broken all the pots.",
+                        "Are you proud of yourself now?"
+                    ]);
+                }
             }
         }
 
@@ -121,59 +128,28 @@ module SimpleQuest {
         // -- specific world manipulation
 
         sign_house(args) {
-            RPG.Scene.start()
-                .then(function() {
-                    RPG.Textbox.show("Mayor's House");
-                    return RPG.Scene.waitForButton("confirm");
-                }.bind(this))
-                .then(function() {
-                    RPG.Textbox.hide();
-                    RPG.Scene.finish();
-                }.bind(this));
+            this.doScene([
+                "<center>Mayor's Office\n\nThe mayor is: IN</center>"
+            ]);
         }
 
         sign_shops(args) {
-            RPG.Scene.start()
-                .then(function() {
-                    RPG.Textbox.show("Shopping is fun!");
-                    return RPG.Scene.waitForButton("confirm");
-                }.bind(this))
-                .then(function() {
-                    RPG.Textbox.hide();
-                    RPG.Scene.finish();
-                }.bind(this));
+            this.doScene([
+                "<center>Carp's Bend\nShopping Centre</center>"
+            ]);
         }
 
         trigger_rocks(args) {
-            RPG.Scene.start()
-                .then(function() {
-                    RPG.Textbox.show("I found...");
-                    return RPG.Scene.waitForButton("confirm");
-                }.bind(this))
-                .then(function() {
-                    RPG.Textbox.hide();
-                    return RPG.Scene.waitForTime(2.5);
-                }.bind(this))
-                .then(function() {
-                    RPG.Textbox.show("... some rocks.");
-                    return RPG.Scene.waitForButton("confirm");
-                }.bind(this))
-                .then(function() {
-                    RPG.Textbox.hide();
-                    RPG.Scene.finish();
-                }.bind(this));
+            this.doScene([
+                "<center>\nFound some... rocks.</center>",
+            ]);
         }
 
         trigger_well(args) {
-            RPG.Scene.start()
-                .then(function() {
-                    RPG.Textbox.show("HP and MP restored!\n\nThis means nothing to you.");
-                    return RPG.Scene.waitForButton("confirm");
-                }.bind(this))
-                .then(function() {
-                    RPG.Textbox.hide();
-                    RPG.Scene.finish();
-                }.bind(this));
+            this.doScene([
+                "\n<center>HP and MP restored!</center>",
+                "This means nothing to you."
+            ]);
         }
 
         trigger_forest_door_switch(args) {
@@ -181,67 +157,46 @@ module SimpleQuest {
 
             switchesFlipped['trigger_forest_door_switch'] = true;
             var t = this.layers[1].getTile(args.tx, args.ty);
-            RPG.Scene.start()
-                .then(function() {
+            this.doScene([
+                function() {
                     this.layers[1].setTile(args.tx, args.ty, t + 1);
                     return RPG.Scene.waitForTime(0.5);
-                }.bind(this))
-                .then(function() {
+                }.bind(this),
+                function() {
                     this.layers[1].setTile(args.tx, args.ty, t + 2);
                     return RPG.Scene.waitForTime(0.5);
-                }.bind(this))
-                .then(function() {
+                }.bind(this),
+                function() {
                     var door = spriteLayer.getTriggersByName('locked_door')[0];
                     var tx = Math.floor(door.rect.x / this.tileSize.x);
                     var ty = Math.floor(door.rect.y / this.tileSize.y);
                     this.layers[1].setTile(tx, ty, this.layers[1].getTile(tx, ty) + 1);
                     door.solid = false;
-                    RPG.Textbox.show("I heard something open somewhere in the distance.");
-                    return RPG.Scene.waitForButton("confirm");
-                }.bind(this))
-                .then(function() {
-                    RPG.Textbox.hide();
-                    RPG.Scene.finish();
-                }.bind(this));
+                },
+                "Something opened in the distance."
+            ]);
         }
 
         locked_door(args) {
             if (switchesFlipped['trigger_forest_door_switch']) return;
 
-            RPG.Scene.start()
-                .then(function() {
-                    RPG.Textbox.show("This door is locked. It must be opened somewhere else.");
-                    return RPG.Scene.waitForButton("confirm");
-                }.bind(this))
-                .then(function() {
-                    RPG.Textbox.hide();
-                    RPG.Scene.finish();
-                }.bind(this));
+            this.doScene([
+                "This door is locked. It must be opened somewhere else."
+            ]);
         }
 
         key_door(args) {
             // var switchName = 'key_door_' + args.tx + "_" + args.ty;
             // if (switchesFlipped[switchName]) return;
 
-            RPG.Scene.start()
-                .then(function() {
-                    RPG.Textbox.show("This door is locked.");
-                    return RPG.Scene.waitForButton("confirm");
-                }.bind(this))
-                .then(function() {
-                    RPG.Textbox.show("Good thing I carry around this magical Omnikey!");
-                    return RPG.Scene.waitForButton("confirm");
-                }.bind(this))
-                .then(function() {
-                    RPG.Textbox.show("*click*");
+            this.doScene([
+                "This door is locked.",
+                "\n<center>Used Magical Plotkey!</center>",
+                function() {
                     this.layers[1].setTile(args.tx, args.ty, this.layers[1].getTile(args.tx, args.ty) + 1);
                     args.trigger.solid = false;
-                    return RPG.Scene.waitForButton("confirm");
-                }.bind(this))
-                .then(function() {
-                    RPG.Textbox.hide();
-                    RPG.Scene.finish();
-                }.bind(this));
+                }.bind(this)
+            ]);
         }
 
         switch_layers(args) {
@@ -259,107 +214,58 @@ module SimpleQuest {
         }
 
         shopkeeper_left(args) {
-            RPG.Scene.start()
-                .then(function() {
-                    RPG.Textbox.show("Don't you just love shopping?!");
-                    return RPG.Scene.waitForButton("confirm");
-                }.bind(this))
-                .then(function() {
-                    RPG.Textbox.hide();
-                    RPG.Scene.finish();
-                }.bind(this));
+            this.doScene([
+                "SHOPKEEP: Don't you just love shopping?!"
+            ]);
         }
 
         shopkeeper_right(args) {
-            RPG.Scene.start()
-                .then(function() {
-                    RPG.Textbox.show("Buy somethin', will ya!");
-                    return RPG.Scene.waitForButton("confirm");
-                }.bind(this))
-                .then(function() {
-                    RPG.Textbox.hide();
-                    RPG.Scene.finish();
-                }.bind(this));
+            this.doScene([
+                "SHOPKEEP: Buy somethin', will ya!"
+            ]);
         }
 
         villager_well(args) {
-            RPG.Scene.start()
-                .then(function() {
-                    RPG.Textbox.show("Fresh water is good for you!\nI'm so glad we have this well.");
-                    return RPG.Scene.waitForButton("confirm");
-                }.bind(this))
-                .then(function() {
-                    RPG.Textbox.hide();
-                    RPG.Scene.finish();
-                }.bind(this));
+            this.doScene([
+                "VILLAGER: Fresh water is good for you!\nI'm so glad we have this well."
+            ]);
         }
 
         villager_mayor(args) {
-            RPG.Scene.start()
-                .then(function() {
-                    RPG.Textbox.show("Welcome to Carp's Bend.");
-                    return RPG.Scene.waitForButton("confirm");
-                }.bind(this))
-                .then(function() {
-                    RPG.Textbox.show("Do you happen to slay dragons? We've been having trouble with a dragon that lives up north on Mount Danger.");
-                    return RPG.Scene.waitForButton("confirm");
-                }.bind(this))
-                .then(function() {
-                    RPG.Textbox.show("You would do us a great service by defeating this dragon...");
-                    return RPG.Scene.waitForButton("confirm");
-                }.bind(this))
-                .then(function() {
-                    RPG.Textbox.show("Your name would be remembered in song for at least a month or two!");
-                    return RPG.Scene.waitForButton("confirm");
-                }.bind(this))
-                .then(function() {
-                    RPG.Textbox.hide();
-                    RPG.Scene.finish();
-                }.bind(this));
+            this.doScene([
+                "MAYOR JOAN: Welcome to Carp's Bend.",
+                "MAYOR JOAN: Do you happen to have any experience in slaying dragons?",
+                "MAYOR JOAN: We've been having trouble with a dragon that lives up north on Mount Danger.",
+                "MAYOR JOAN: You would do us a great service by defeating this dragon...",
+                "MAYOR JOAN: Your name would be remembered in song for at least a week or two!"
+            ]);
         }
 
         villager_south_house(args) {
-            RPG.Scene.start()
-                .then(function() {
-                    RPG.Textbox.show("The dragon attacks have been getting worse lately.");
-                    return RPG.Scene.waitForButton("confirm");
-                }.bind(this))
-                .then(function() {
-                    RPG.Textbox.show("At least I have a house! Most people in this town just seem to sleep outside.");
-                    return RPG.Scene.waitForButton("confirm");
-                }.bind(this))
-                .then(function() {
-                    RPG.Textbox.hide();
-                    RPG.Scene.finish();
-                }.bind(this));
+            this.doScene([
+                "VILLAGER: The dragon attacks have been getting worse lately.",
+                "VILLAGER: At least I have a house! Most people in this town just seem to sleep outside."
+            ]);
         }
 
         villager_fisher(args) {
-            RPG.Scene.start()
-                .then(function() {
-                    RPG.Textbox.show("We like to fish, here in Carp's Bend.");
-                    return RPG.Scene.waitForButton("confirm");
-                }.bind(this))
-                .then(function() {
-                    RPG.Textbox.hide();
-                    RPG.Scene.finish();
-                }.bind(this));
+            this.doScene([
+                "FISHERMAN: We like to fish, here in Carp's Bend."
+            ]);
         }
 
         villager_bushes(args) {
-            RPG.Scene.start()
-                .then(function() {
-                    RPG.Textbox.show("Whoa there, lady. This here's private property.");
-                    return RPG.Scene.waitForButton("confirm");
-                }.bind(this))
-                .then(function() {
-                    RPG.Textbox.show("Go find your own dang bushes!");
-                    return RPG.Scene.waitForButton("confirm");
-                }.bind(this))
-                .then(function() {
-                    RPG.Textbox.hide();
-                    RPG.Scene.finish();
-                }.bind(this));
+            this.doScene([
+                "VILLAGER: Whoa there, lady. This here's private property.",
+                "VILLAGER: Go find your own dang bushes!"
+            ])
+        }
+
+        examine_statue(args) {
+            this.doScene([
+                "The statues seem ancient, but are in remarkably good repair.",
+                "It is not clear what they are supposed to represent, though."
+            ])
         }
     }
 }
