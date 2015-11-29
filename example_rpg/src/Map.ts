@@ -289,5 +289,17 @@ module SimpleQuest {
                     RPG.Scene.finish();
                 }.bind(this));
         }
+
+        villager_well(args) {
+            RPG.Scene.start()
+                .then(function() {
+                    RPG.Textbox.show("Fresh water is good for you!\nI'm so glad we have this well.");
+                    return RPG.Scene.waitForButton("confirm");
+                }.bind(this))
+                .then(function() {
+                    RPG.Textbox.hide();
+                    RPG.Scene.finish();
+                }.bind(this));
+        }
     }
 }

@@ -2,15 +2,25 @@
     margin: 0;
     padding: 0;
     -webkit-user-select: none;
+    image-rendering: inherit;
 }
 
 body {
     background: #000;
+    position: relative;
+    overflow: hidden;
 }
 
 canvas {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%);
+    top: 0;
+    left: 0;
+}
+
+div.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-origin: top left;
+    image-rendering: pixelated;
 }

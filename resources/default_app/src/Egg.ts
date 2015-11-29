@@ -42,6 +42,7 @@ module Egg {
     export var layerContainer: PIXI.Container;
 
     export var renderer:PIXI.WebGLRenderer;
+    export var overlay:HTMLElement;
 
     export function setup(opts:any) {
         console.log("Creating Egg Object");
@@ -101,6 +102,11 @@ module Egg {
         this.renderer = new PIXI.WebGLRenderer(this.config['width'], this.config['height']);
         this.renderer.backgroundColor = 0x888888;
         document.body.appendChild(this.renderer.view);
+
+        this.overlay = document.createElement("div");
+        this.overlay.className = "overlay";
+        document.body.appendChild(this.overlay);
+
         this.onResize();
 
         var fonts = [];
@@ -196,6 +202,16 @@ module Egg {
             mult    = Math.floor(Math.min(multX, multY));
         this.renderer.resolution = mult;
         this.renderer.resize(this.config['width'], this.config['height']);
+
+        this.overlay.style.transform = "scale(" + mult + ")";
+        this.overlay.style.width = this.config['width'];
+        this.overlay.style.height = this.config['height'];
+
+        document.body.style.margin = "" + (newSize[1] - mult * this.config['height']) / 2 + "px " + (newSize[0] - mult * this.config['width']) / 2 + "px";
+
+        document.body.style.display = 'none';
+        document.body.offsetHeight;
+        document.body.style.display = '';
     }
 
     export function setTitle(title) {

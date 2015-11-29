@@ -5,8 +5,6 @@
     "fullscreen": false,
     "fonts": {
         "PressStart": "font/prstartk.ttf",
-        "Fipps": "font/Fipps-Regular.otf",
-        "GreenScreen": "font/Greenscr.ttf",
-        "default": "font/Greenscr.ttf"
+        "GreenScreen": "font/Greenscr.ttf"
     }
 }
