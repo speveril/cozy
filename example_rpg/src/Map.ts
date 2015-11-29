@@ -91,11 +91,7 @@ module SimpleQuest {
         // -- map switches
 
         enter_town(args) {
-            if (RPG.player.dir == 'r') {
-                RPG.startMap(new Map("map/town.tmx"), 1, 6);
-            } else {
-                RPG.startMap(new Map("map/town.tmx"), 8, 1);
-            }
+            RPG.startMap(new Map("map/town.tmx"), 8, 1);
 
             _.each(potsSmashed, function(pt) {
                 RPG.map.layers[1].setTile(pt.x, pt.y, 56);
@@ -103,11 +99,7 @@ module SimpleQuest {
         }
 
         exit_town(args) {
-            if (args.ty < 2) {
-                RPG.startMap(new Map("map/overworld.tmx"), 14, 12);
-            } else {
-                RPG.startMap(new Map("map/overworld.tmx"), 13, 13);
-            }
+            RPG.startMap(new Map("map/overworld.tmx"), 14, 12);
         }
 
         enter_forest(args) {
