@@ -2,11 +2,16 @@
 ///<reference path="rpg/RPGKit.ts"/>
 ///<reference path="Map.ts"/>
 ///<reference path="../map/town.ts"/>
+///<reference path="../map/forest.ts"/>
+///<reference path="../map/overworld.ts"/>
+
 
 window['RPG'] = RPG;
 
 module SimpleQuest {
     export function start() {
+        Map.persistent['global'] = {};
+
         RPG.loadSkip = ["./src_image"];
         RPG.start(function() {
             RPG.player = new RPG.Entity({

@@ -40,6 +40,7 @@ Maybe/probably?
 - It'd be nice if the persistent stuff in map was easier to use in general
 - Should I treat other entities for purposes of collisions as circles?
 - Move the dist/closestpoint/etc functions in Entity into a general util somewhere
+- Can I just slurp in all of the map .ts files automatically instead of having to reference each one?
 
 
 ## Examples

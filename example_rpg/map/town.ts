@@ -9,7 +9,7 @@ module SimpleQuest {
         }
 
         exit_town(args) {
-            this.map_switch(new Map("map/overworld.tmx"), 14, 12);
+            this.map_switch(new Map_Overworld, 14, 12);
         }
 
         sign_house(args) {
