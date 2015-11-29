@@ -126,15 +126,13 @@ module RPG {
 
             if (this.triggersEvents) {
                 _.each(this.layer.events, function(e) {
-                    if (e.rect.contains(this.sprite.position.x, this.sprite.position.y)) {
-                        if (this.layer.map[e.name]) {
-                            this.layer.map[e.name]({
-                                entity: this,
-                                event: e,
-                                x: this.sprite.position.x, y: this.sprite.position.y,
-                                tx: Math.floor(this.sprite.position.x / this.layer.map.tileSize.x), ty: Math.floor(this.sprite.position.y / this.layer.map.tileSize.y)
-                            });
-                        }
+                    if (e.active && e.rect.contains(this.sprite.position.x, this.sprite.position.y) && this.layer.map[e.name]) {
+                        this.layer.map[e.name]({
+                            entity: this,
+                            event: e,
+                            x: this.sprite.position.x, y: this.sprite.position.y,
+                            tx: Math.floor(this.sprite.position.x / this.layer.map.tileSize.x), ty: Math.floor(this.sprite.position.y / this.layer.map.tileSize.y)
+                        });
                     }
                 }.bind(this));
             }

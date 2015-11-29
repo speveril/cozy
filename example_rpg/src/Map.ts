@@ -1,10 +1,10 @@
-///<reference path="rpg/RPGKit.ts"/>
+// /<reference path="rpg/RPGKit.ts"/>
 
 module SimpleQuest {
     var threats:any = {
         "forest_A": {
-            "dist_min": 5,
-            "dist_max": 12,
+            "dist_min": 25,
+            "dist_max": 100,
             "enemies": [
                 ["Bunny", "Bunny", "Bunny Captain"],
                 ["Mosquito", "Mosquito"],
@@ -12,8 +12,8 @@ module SimpleQuest {
             ]
         },
         "forest_B": {
-            "dist_min": 3,
-            "dist_max": 8,
+            "dist_min": 20,
+            "dist_max": 50,
             "enemies": [
                 ["Ruiner"],
                 ["Haunt", "Haunt"],
@@ -21,8 +21,8 @@ module SimpleQuest {
             ]
         },
         "forest_C": {
-            "dist_min": 5,
-            "dist_max": 12,
+            "dist_min": 25,
+            "dist_max": 85,
             "enemies": [
                 ["Bushling", "Bushling", "Bushling"],
                 ["Bunny Captain", "Bunny Lord", "Bunny Captain"],
@@ -31,30 +31,55 @@ module SimpleQuest {
         }
     };
 
-    var potsSmashed:Array<any> = [];
     var switchesFlipped:any = {};
-    var spriteLayer:RPG.MapLayer;
-    var threatGroup:string;
-    var nextBattle:number;
-    var lastPlayerPosition:PIXI.Point;
 
     export class Map extends RPG.Map {
+        static persistent:any = {};
+
+        private threatGroup:string;
+        private nextBattle:number;
+        private lastPlayerPosition:PIXI.Point;
+
         open() {
             super.open();
-            spriteLayer = RPG.map.getLayerByName("#spritelayer");
 
-            // TODO this is such a dumb way to do this; need to split this out
-            if (this.filename === 'map/town.tmx') {
-                _.each(potsSmashed, function(coords) {
-                    var tx = Math.floor(coords[0] / this.tileSize.x);
-                    var ty = Math.floor(coords[1] / this.tileSize.y);
-                    var t = this.layers[1].getTile(tx, ty);
+            if (!Map.persistent[this.filename]) {
+                Map.persistent[this.filename] = {};
+            }
+
+            _.each(Map.persistent[this.filename].smashedPots, function(coords) {
+                var tx = coords[0], ty = coords[1];
+                _.each(this.layers, function(lyr:RPG.MapLayer, i) {
+                    var t = lyr.getTile(tx, ty);
                     if (t == 53) {
-                        this.layers[1].setTile(tx, ty, t + 3);
-                        spriteLayer.getTriggerByPoint(coords[0], coords[1]).solid = false;
+                        lyr.setTile(tx, ty, t + 3);
+                    }
+
+                    var tr = lyr.getTriggerByPoint((tx + 0.5) * this.tileSize.x, (ty + 0.5) * this.tileSize.y);
+                    if (tr && tr.name === 'smash_pot') {
+                        tr.solid = false;
+                        tr.active = false;
                     }
                 }.bind(this));
-            } else if(this.filename === 'map/forest.tmx') {
+            }.bind(this));
+
+            _.each(Map.persistent[this.filename].openedChests, function(coords) {
+                var tx = coords[0], ty = coords[1];
+                _.each(this.layers, function(lyr:RPG.MapLayer, i) {
+                    var t = lyr.getTile(tx, ty);
+                    if (t == 37) {
+                        lyr.setTile(tx, ty, t + 1);
+                    }
+                    var tr = lyr.getTriggerByPoint((tx + 0.5) * this.tileSize.x, (ty + 0.5) * this.tileSize.y);
+                    if (tr && tr.name === 'open_chest') {
+                        tr.active = false;
+                    }
+                }.bind(this));
+            }.bind(this));
+
+            // TODO this is such a dumb way to do this; need to split this out
+            var spriteLayer = RPG.map.getLayerByName("#spritelayer");
+            if(this.filename === 'map/forest.tmx') {
                 if (switchesFlipped['trigger_forest_door_switch']) {
                     var trigger = spriteLayer.getTriggersByName('trigger_forest_door_switch')[0];
                     var tx = Math.floor(trigger.rect.x / this.tileSize.x);
@@ -68,27 +93,28 @@ module SimpleQuest {
                     trigger.solid = false;
                 }
             }
-            threatGroup = null;
+
+            this.threatGroup = null;
         }
 
         update(dt) {
             super.update(dt);
 
-            if (threatGroup !== null) {
-                var d = Math.sqrt(dist(lastPlayerPosition, RPG.player.position));
-                nextBattle -= d;
+            if (this.threatGroup) {
+                var d = dist(this.lastPlayerPosition, RPG.player.position);
+                this.nextBattle -= d;
 
-                if (nextBattle < 0) {
-                    var groupDef = threats[threatGroup];
+                if (this.nextBattle < 0) {
+                    var groupDef = threats[this.threatGroup];
                     var enemies = groupDef.enemies[Math.floor(Math.random() * groupDef.enemies.length)];
 
                     console.log("FIGHT:", enemies);
 
-                    nextBattle = this.tileSize.x * (groupDef['dist_min'] + Math.random() * groupDef['dist_max']);
+                    this.nextBattle = this.tileSize.x * (groupDef['dist_min'] + Math.random() * groupDef['dist_max']);
                 }
 
-                lastPlayerPosition.x = RPG.player.position.x;
-                lastPlayerPosition.y = RPG.player.position.y;
+                this.lastPlayerPosition.x = RPG.player.position.x;
+                this.lastPlayerPosition.y = RPG.player.position.y;
             }
         }
 
@@ -118,16 +144,16 @@ module SimpleQuest {
             var group = args.event.properties['group'];
             if (group === 'null') group = null;
 
-            if (threatGroup !== args.event.properties['group']) {
-                threatGroup = args.event.properties['group'];
+            if (this.threatGroup !== args.event.properties['group']) {
+                this.threatGroup = args.event.properties['group'];
 
-                if (threatGroup !== null) {
-                    var groupDef = threats[threatGroup];
-                    nextBattle = this.tileSize.x * (groupDef['dist_min'] + Math.random() * groupDef['dist_max']);
-                    lastPlayerPosition = new PIXI.Point(RPG.player.position.x, RPG.player.position.y);
+                if (this.threatGroup !== null) {
+                    var groupDef = threats[this.threatGroup];
+                    this.nextBattle = this.tileSize.x * (groupDef['dist_min'] + Math.random() * groupDef['dist_max']);
+                    this.lastPlayerPosition = new PIXI.Point(RPG.player.position.x, RPG.player.position.y);
                 } else {
-                    nextBattle = null;
-                    lastPlayerPosition = null;
+                    this.nextBattle = null;
+                    this.lastPlayerPosition = null;
                 }
             }
         }
@@ -139,13 +165,34 @@ module SimpleQuest {
             }
         }
 
-        trigger_pot(args) {
-            var t = this.layers[1].getTile(args.tx, args.ty);
-            if (t == 53) {
-                this.layers[1].setTile(args.tx, args.ty, t + 1);
-                potsSmashed.push([args.x, args.y]);
+        smash_pot(args) {
+            var smashed = Map.persistent[this.filename].smashedPots;
+            if (!smashed) {
+                smashed = Map.persistent[this.filename].smashedPots = [];
+
+                Map.persistent[this.filename].potCount = 0;
+                _.each(this.layers, function(lyr) {
+                    _.each(lyr.triggers, function(t) {
+                        if (t.name === 'smash_pot') {
+                            Map.persistent[this.filename].potCount++;
+                        }
+                    }.bind(this));
+                }.bind(this));
+            }
+
+            if (!_.find(smashed, function(o) { return o[0] === args.tx && o[1] === args.ty; })) {
+                _.each(this.layers, function(lyr) {
+                    var t = lyr.getTile(args.tx, args.ty);
+                    if (t == 53) {
+                        lyr.setTile(args.tx, args.ty, t + 1);
+                    }
+                }.bind(this));
+
+                smashed.push([args.tx, args.ty]);
                 args.trigger.solid = false;
-                if (potsSmashed.length === 4) {
+                args.trigger.active = false;
+
+                if (smashed.length === Map.persistent[this.filename].potCount) {
                     this.doScene([
                         "You've broken all the pots.",
                         "Are you proud of yourself now?"
@@ -154,12 +201,25 @@ module SimpleQuest {
             }
         }
 
-        trigger_chest(args) {
-            var t = this.layers[1].getTile(args.tx, args.ty);
-            if (t == 37) {
-                this.layers[1].setTile(args.tx, args.ty, t + 1);
+        open_chest(args) {
+            var opened = Map.persistent[this.filename].openedChests;
+            if (!opened) {
+                opened = Map.persistent[this.filename].openedChests = [];
+            }
+
+            if (!_.find(opened, function(o) { return o[0] === args.tx && o[1] === args.ty; })) {
+                _.each(this.layers, function(lyr) {
+                    var t = lyr.getTile(args.tx, args.ty);
+                    if (t == 37) {
+                        lyr.setTile(args.tx, args.ty, t + 1);
+                    }
+                }.bind(this));
+
+                opened.push([args.tx, args.ty]);
+                args.trigger.active = false;
+
                 this.doScene([
-                    "\n<center>The chest was empty!</center><span style=\"font-size:85%\">How disappointing.</font>",
+                    "\n<center>The chest was empty!\n<span style=\"font-size:60%\">How disappointing.</font></center>",
                 ]);
             }
         }
@@ -176,14 +236,24 @@ module SimpleQuest {
             ]);
         }
 
+        switch_layers(args) {
+            var spriteLayer;
+
+            if (RPG.player.dir === 'u') {
+                spriteLayer = this.getLayerByName("#spritelayer-upper");
+            } else if (RPG.player.dir === 'd') {
+                spriteLayer = this.getLayerByName("#spritelayer");
+            }
+
+            if (spriteLayer !== RPG.player.layer) {
+                RPG.player.place(RPG.player.position.x, RPG.player.position.y, spriteLayer);
+            }
+        }
+
         // -- map switches
 
         enter_town(args) {
-            this.map_switch(new Map("map/town.tmx"), 8, 1);
-        }
-
-        exit_town(args) {
-            this.map_switch(new Map("map/overworld.tmx"), 14, 12);
+            this.map_switch(new Map_Town(), 8, 1);
         }
 
         enter_forest(args) {
@@ -204,31 +274,6 @@ module SimpleQuest {
 
         // -- specific world manipulation
 
-        sign_house(args) {
-            this.doScene([
-                "<center>Mayor's Office\n\nThe mayor is: IN</center>"
-            ]);
-        }
-
-        sign_shops(args) {
-            this.doScene([
-                "<center>Carp's Bend\nShopping Centre</center>"
-            ]);
-        }
-
-        trigger_rocks(args) {
-            this.doScene([
-                "<center>\nFound some... rocks.</center>",
-            ]);
-        }
-
-        trigger_well(args) {
-            this.doScene([
-                "\n<center>HP and MP restored!</center>",
-                "This means nothing to you."
-            ]);
-        }
-
         trigger_forest_door_switch(args) {
             if (switchesFlipped['trigger_forest_door_switch']) return;
 
@@ -244,7 +289,7 @@ module SimpleQuest {
                     return RPG.Scene.waitForTime(0.5);
                 }.bind(this),
                 function() {
-                    var door = spriteLayer.getTriggersByName('locked_door')[0];
+                    var door = RPG.player.layer.getTriggersByName('locked_door')[0];
                     var tx = Math.floor(door.rect.x / this.tileSize.x);
                     var ty = Math.floor(door.rect.y / this.tileSize.y);
                     this.layers[1].setTile(tx, ty, this.layers[1].getTile(tx, ty) + 1);
@@ -289,68 +334,6 @@ module SimpleQuest {
                     args.trigger.solid = false;
                 }.bind(this)
             ]);
-        }
-
-        switch_layers(args) {
-            var sl = spriteLayer;
-
-            if (RPG.player.dir === 'u') {
-                spriteLayer = this.getLayerByName("#spritelayer-upper");
-            } else if (RPG.player.dir === 'd') {
-                spriteLayer = this.getLayerByName("#spritelayer");
-            }
-
-            if (spriteLayer !== sl) {
-                RPG.player.place(RPG.player.position.x, RPG.player.position.y, spriteLayer);
-            }
-        }
-
-        shopkeeper_left(args) {
-            this.doScene([
-                "SHOPKEEP: Don't you just love shopping?!"
-            ]);
-        }
-
-        shopkeeper_right(args) {
-            this.doScene([
-                "SHOPKEEP: Buy somethin', will ya!"
-            ]);
-        }
-
-        villager_well(args) {
-            this.doScene([
-                "VILLAGER: Fresh water is good for you!\nI'm so glad we have this well."
-            ]);
-        }
-
-        villager_mayor(args) {
-            this.doScene([
-                "MAYOR JOAN: Welcome to Carp's Bend.",
-                "MAYOR JOAN: Do you happen to have any experience in slaying dragons?",
-                "MAYOR JOAN: We've been having trouble with a dragon that lives up north on Mount Danger.",
-                "MAYOR JOAN: You would do us a great service by defeating this dragon...",
-                "MAYOR JOAN: Your name would be remembered in song for at least a week or two!"
-            ]);
-        }
-
-        villager_south_house(args) {
-            this.doScene([
-                "VILLAGER: The dragon attacks have been getting worse lately.",
-                "VILLAGER: At least I have a house! Most people in this town just seem to sleep outside."
-            ]);
-        }
-
-        villager_fisher(args) {
-            this.doScene([
-                "FISHERMAN: We like to fish, here in Carp's Bend."
-            ]);
-        }
-
-        villager_bushes(args) {
-            this.doScene([
-                "VILLAGER: Whoa there, lady. This here's private property.",
-                "VILLAGER: Go find your own dang bushes!"
-            ])
         }
 
         examine_statue(args) {

@@ -11,6 +11,7 @@ module RPG {
         entities:Array<any>;
 
         getTile(x:number, y:number):number {
+            if (!this.tiles) return 0;
             return this.tiles[x + (this.map.size.x * y)];
         }
 
@@ -50,7 +51,7 @@ module RPG {
 
         getTriggerByPoint(x:number, y:number):MapTrigger {
             return <MapTrigger>(_.find(this.triggers, function(trigger) {
-                return (trigger.rect.contains(x, y) && this.map[trigger.name]);
+                return trigger.active && trigger.rect.contains(x, y) && this.map[trigger.name];
             }.bind(this)));
         }
 
@@ -81,6 +82,7 @@ module RPG {
         name:string;
         rect:PIXI.Rectangle;
         properties:any;
+        active:boolean = true;
     }
 
     export class MapTrigger {
@@ -88,6 +90,7 @@ module RPG {
         rect:PIXI.Rectangle;
         obstructions:Array<MapObstruction>;
         properties:any;
+        active:boolean = true;
         private _solid:boolean = true;
 
         get solid():boolean {

@@ -24,6 +24,7 @@ Ultimately the development is driven by what I want out of the engine. I have a 
 
 - RPG-style "kit" (top-down movement system and obstructions, event zones, etc)
 - Event system (to allow multi-stage events spanning many frames)
+- Sound!
 
 Maybe/probably?
 
@@ -34,6 +35,8 @@ Maybe/probably?
 ## Things to consider/remember
 
 - Make it easier to work with the HTML elements in the overlay.
+- Events should really only trigger on entering the tile, not every frame (I was thinking of including "zones" for continuous fire events)
+- It'd be nice if the persistent stuff in map was easier to use in general
 - Should I treat other entities for purposes of collisions as circles?
 - Move the dist/closestpoint/etc functions in Entity into a general util somewhere
 

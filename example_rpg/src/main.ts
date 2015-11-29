@@ -1,6 +1,7 @@
 ///<reference path="../../resources/default_app/Egg.d.ts" />
 ///<reference path="rpg/RPGKit.ts"/>
 ///<reference path="Map.ts"/>
+///<reference path="../map/town.ts"/>
 
 window['RPG'] = RPG;
 
@@ -15,7 +16,8 @@ module SimpleQuest {
                 respectsObstructions: true
             });
 
-            RPG.startMap(new Map("map/town.tmx"), 10, 7);
+            // RPG.startMap(new Map("map/town.tmx"), 10, 7);
+            RPG.startMap(new Map_Town(), 10, 7);
             RPG.controls = RPG.ControlMode.Map;
             Egg.unpause();
         });
