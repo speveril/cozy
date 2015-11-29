@@ -31,6 +31,7 @@ Maybe/probably?
 - Side-scrolling platformer kit
 - Slim down Electron so the executable isn't so huge
 - Replace rendering engine with something SDL-based
+- Post-process filters, scaling filters (CRT emulation?)
 
 ## Things to consider/remember
 
