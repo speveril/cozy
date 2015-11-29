@@ -80,12 +80,14 @@ module RPG {
     export class MapEvent {
         name:string;
         rect:PIXI.Rectangle;
+        properties:any;
     }
 
     export class MapTrigger {
         name:string;
         rect:PIXI.Rectangle;
         obstructions:Array<MapObstruction>;
+        properties:any;
         private _solid:boolean = true;
 
         get solid():boolean {
@@ -198,19 +200,35 @@ module RPG {
                                 case "event":
                                     var w = parseInt(objectEl.getAttribute('width'), 10),
                                         h = parseInt(objectEl.getAttribute('height'), 10),
+                                        propertiesEl = <HTMLElement>objectEl.getElementsByTagName('properties')[0],
                                         ev = new MapEvent();
                                     ev.name = objectEl.getAttribute('name');
                                     ev.rect = new PIXI.Rectangle(x, y, w, h);
+                                    ev.properties = {};
+                                    if (propertiesEl) {
+                                        _.each(propertiesEl.children, function(property) {
+                                            ev.properties[property.getAttribute('name')] = property.getAttribute('value');
+                                        });
+                                    }
                                     layer.events.push(ev);
                                     break;
                                 case "trigger":
                                     var w = parseInt(objectEl.getAttribute('width'), 10),
                                         h = parseInt(objectEl.getAttribute('height'), 10),
+                                        propertiesEl = <HTMLElement>objectEl.getElementsByTagName('properties')[0],
                                         tr = new MapTrigger();
                                     tr.name = objectEl.getAttribute('name');
                                     tr.rect = new PIXI.Rectangle(x, y, w, h);
-                                    if (objectEl.hasAttribute('solid')) {
+                                    tr.properties = {};
+                                    if (propertiesEl) {
+                                        _.each(propertiesEl.children, function(property) {
+                                            tr.properties[property.getAttribute('name')] = property.getAttribute('value');
+                                        });
+                                    }
+
+                                    if (tr.properties['solid']) {
                                         tr.solid = (objectEl.getAttribute('solid') === 'true' || objectEl.getAttribute('solid') === '1');
+                                        delete(tr.properties['solid']);
                                     }
 
                                     tr.obstructions = [];
@@ -232,7 +250,7 @@ module RPG {
                                 case "entity":
                                     var x = parseInt(objectEl.getAttribute('x')) + parseInt(objectEl.getAttribute('width'), 10) / 2,
                                         y = parseInt(objectEl.getAttribute('y')) + parseInt(objectEl.getAttribute('height'), 10) / 2,
-                                        propertiesEl = <HTMLElement>objectEl.children[0],
+                                        propertiesEl = <HTMLElement>objectEl.getElementsByTagName('properties')[0],
                                         args = {
                                             name: objectEl.getAttribute('name')
                                         };
@@ -317,6 +335,9 @@ module RPG {
                     entity.place(entity.spawn.x, entity.spawn.y, mapLayer);
                 }.bind(this));
             }.bind(this));
+        }
+
+        update(dt):void {
         }
 
         setSize(x:number, y:number):void {

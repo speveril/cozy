@@ -1,31 +1,44 @@
 ///<reference path="rpg/RPGKit.ts"/>
 
 module SimpleQuest {
+    var threats:any = {
+        "forest_A": {
+            "dist_min": 5,
+            "dist_max": 12,
+            "enemies": [
+                ["Bunny", "Bunny", "Bunny Captain"],
+                ["Mosquito", "Mosquito"],
+                ["Bushling"]
+            ]
+        },
+        "forest_B": {
+            "dist_min": 3,
+            "dist_max": 8,
+            "enemies": [
+                ["Ruiner"],
+                ["Haunt", "Haunt"],
+                ["Giant Rat", "Giant Rat", "Giant Rat"]
+            ]
+        },
+        "forest_C": {
+            "dist_min": 5,
+            "dist_max": 12,
+            "enemies": [
+                ["Bushling", "Bushling", "Bushling"],
+                ["Bunny Captain", "Bunny Lord", "Bunny Captain"],
+                ["Forest Drake"]
+            ]
+        }
+    };
+
     var potsSmashed:Array<any> = [];
     var switchesFlipped:any = {};
     var spriteLayer:RPG.MapLayer;
+    var threatGroup:string;
+    var nextBattle:number;
+    var lastPlayerPosition:PIXI.Point;
 
     export class Map extends RPG.Map {
-        doScene(steps:Array<any>) {
-            var s = RPG.Scene.start();
-
-            _.each(steps, function(step) {
-                if (typeof step === "string") {
-                    s = s.then(function() {
-                        RPG.Textbox.show(step);
-                        return RPG.Scene.waitForButton("confirm");
-                    });
-                } else {
-                    s = s.then(step);
-                }
-            }.bind(this));
-
-            return s.then(function() {
-                RPG.Textbox.hide();
-                RPG.Scene.finish();
-            }.bind(this));
-        }
-
         open() {
             super.open();
             spriteLayer = RPG.map.getLayerByName("#spritelayer");
@@ -53,6 +66,66 @@ module SimpleQuest {
                     ty = Math.floor(trigger.rect.y / this.tileSize.y);
                     this.layers[1].setTile(tx, ty, this.layers[1].getTile(tx, ty) + 3);
                     trigger.solid = false;
+                }
+            }
+            threatGroup = null;
+        }
+
+        update(dt) {
+            super.update(dt);
+
+            if (threatGroup !== null) {
+                var d = Math.sqrt(dist(lastPlayerPosition, RPG.player.position));
+                nextBattle -= d;
+
+                if (nextBattle < 0) {
+                    var groupDef = threats[threatGroup];
+                    var enemies = groupDef.enemies[Math.floor(Math.random() * groupDef.enemies.length)];
+
+                    console.log("FIGHT:", enemies);
+
+                    nextBattle = this.tileSize.x * (groupDef['dist_min'] + Math.random() * groupDef['dist_max']);
+                }
+
+                lastPlayerPosition.x = RPG.player.position.x;
+                lastPlayerPosition.y = RPG.player.position.y;
+            }
+        }
+
+        doScene(steps:Array<any>) {
+            var s = RPG.Scene.start();
+
+            _.each(steps, function(step) {
+                if (typeof step === "string") {
+                    s = s.then(function() {
+                        RPG.Textbox.show(step);
+                        return RPG.Scene.waitForButton("confirm");
+                    });
+                } else {
+                    s = s.then(step);
+                }
+            }.bind(this));
+
+            return s.then(function() {
+                RPG.Textbox.hide();
+                RPG.Scene.finish();
+            }.bind(this));
+        }
+
+        set_threat(args) {
+            var group = args.event.properties['group'];
+            if (group === 'null') group = null;
+
+            if (threatGroup !== args.event.properties['group']) {
+                threatGroup = args.event.properties['group'];
+
+                if (threatGroup !== null) {
+                    var groupDef = threats[threatGroup];
+                    nextBattle = this.tileSize.x * (groupDef['dist_min'] + Math.random() * groupDef['dist_max']);
+                    lastPlayerPosition = new PIXI.Point(RPG.player.position.x, RPG.player.position.y);
+                } else {
+                    nextBattle = null;
+                    lastPlayerPosition = null;
                 }
             }
         }
@@ -172,7 +245,8 @@ module SimpleQuest {
                     var ty = Math.floor(door.rect.y / this.tileSize.y);
                     this.layers[1].setTile(tx, ty, this.layers[1].getTile(tx, ty) + 1);
                     door.solid = false;
-                },
+                    return RPG.Scene.waitForTime(0);
+                }.bind(this),
                 "Something opened in the distance."
             ]);
         }
@@ -185,13 +259,27 @@ module SimpleQuest {
             ]);
         }
 
-        key_door(args) {
-            // var switchName = 'key_door_' + args.tx + "_" + args.ty;
-            // if (switchesFlipped[switchName]) return;
+        key_door_A(args) {
+            var switchName = 'key_forest_door_A';
+            if (switchesFlipped[switchName]) return;
 
             this.doScene([
                 "This door is locked.",
-                "\n<center>Used Magical Plotkey!</center>",
+                "\n<center>Used Magical Plotkey!\n</center>",
+                function() {
+                    this.layers[1].setTile(args.tx, args.ty, this.layers[1].getTile(args.tx, args.ty) + 1);
+                    args.trigger.solid = false;
+                }.bind(this)
+            ]);
+        }
+
+        key_door_B(args) {
+            var switchName = 'key_forest_door_B';
+            if (switchesFlipped[switchName]) return;
+
+            this.doScene([
+                "This door is locked.",
+                "\n<center>Used Magical Plotkey #2!\n</center>",
                 function() {
                     this.layers[1].setTile(args.tx, args.ty, this.layers[1].getTile(args.tx, args.ty) + 1);
                     args.trigger.solid = false;

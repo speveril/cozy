@@ -43,6 +43,8 @@ module RPG {
     }
 
     export function frame(dt) {
+        map.update(dt);
+
         if (controls === ControlMode.Map && map && player) {
             // handle movement
             var dx = 0, dy = 0;
