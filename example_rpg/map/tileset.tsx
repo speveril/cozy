@@ -52,8 +52,8 @@
  </tile>
  <tile id="126">
   <animation>
-   <frame tileid="126" duration="250"/>
    <frame tileid="127" duration="250"/>
+   <frame tileid="126" duration="250"/>
   </animation>
  </tile>
  <tile id="205">
