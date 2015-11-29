@@ -64,7 +64,9 @@ module RPG {
         }
 
         static hide() {
-            this.box.remove();
+            if (this.box) {
+                this.box.remove();
+            }
 
             // RPG.UILayer.remove(this.sprite);
             // RPG.UILayer.innerContainer.removeChild(this.text);

@@ -101,8 +101,10 @@ module SimpleQuest {
                         RPG.Textbox.show(step);
                         return RPG.Scene.waitForButton("confirm");
                     });
-                } else {
+                } else if (typeof step === 'function') {
                     s = s.then(step);
+                } else {
+                    throw new Error("doScene() got something weird for a step; not sure what you want me to do with it.");
                 }
             }.bind(this));
 
@@ -156,45 +158,47 @@ module SimpleQuest {
             var t = this.layers[1].getTile(args.tx, args.ty);
             if (t == 37) {
                 this.layers[1].setTile(args.tx, args.ty, t + 1);
-                RPG.Scene.start()
-                    .then(function() {
-                        RPG.Textbox.show("There was nothing in the chest.\n\nHow disappointing.");
-                        return RPG.Scene.waitForButton("confirm");
-                    }.bind(this))
-                    .then(function() {
-                        RPG.Textbox.hide();
-                        RPG.Scene.finish();
-                    }.bind(this));
+                this.doScene([
+                    "\n<center>The chest was empty!</center><span style=\"font-size:85%\">How disappointing.</font>",
+                ]);
             }
+        }
+
+        map_switch(m, x, y) {
+            this.doScene([
+                function() {
+                    return RPG.Scene.waitForFadeOut(0.2);
+                }.bind(this),
+                function() {
+                    RPG.startMap(m, x, y);
+                    return RPG.Scene.waitForFadeIn(0.2);
+                }.bind(this)
+            ]);
         }
 
         // -- map switches
 
         enter_town(args) {
-            RPG.startMap(new Map("map/town.tmx"), 8, 1);
-
-            _.each(potsSmashed, function(pt) {
-                RPG.map.layers[1].setTile(pt.x, pt.y, 56);
-            }.bind(this));
+            this.map_switch(new Map("map/town.tmx"), 8, 1);
         }
 
         exit_town(args) {
-            RPG.startMap(new Map("map/overworld.tmx"), 14, 12);
+            this.map_switch(new Map("map/overworld.tmx"), 14, 12);
         }
 
         enter_forest(args) {
             if (args.tx == 13 && args.ty == 7) {
-                RPG.startMap(new Map("map/forest.tmx"), 7, 43);
+                this.map_switch(new Map("map/forest.tmx"), 7, 43);
             } else {
-                RPG.startMap(new Map("map/forest.tmx"), 32, 1);
+                this.map_switch(new Map("map/forest.tmx"), 32, 1);
             }
         }
 
         exit_forest(args) {
             if (args.ty == 0) {
-                RPG.startMap(new Map("map/overworld.tmx"), 16, 5);
+                this.map_switch(new Map("map/overworld.tmx"), 16, 5);
             } else {
-                RPG.startMap(new Map("map/overworld.tmx"), 13, 9)
+                this.map_switch(new Map("map/overworld.tmx"), 13, 9)
             }
         }
 
