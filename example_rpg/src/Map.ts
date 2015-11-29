@@ -265,5 +265,29 @@ module SimpleQuest {
                 RPG.player.place(RPG.player.position.x, RPG.player.position.y, spriteLayer);
             }
         }
+
+        shopkeeper_left(args) {
+            RPG.Scene.start()
+                .then(function() {
+                    RPG.Textbox.show("Don't you just love shopping?!");
+                    return RPG.Scene.waitForButton("confirm");
+                }.bind(this))
+                .then(function() {
+                    RPG.Textbox.hide();
+                    RPG.Scene.finish();
+                }.bind(this));
+        }
+
+        shopkeeper_right(args) {
+            RPG.Scene.start()
+                .then(function() {
+                    RPG.Textbox.show("Buy somethin', will ya!");
+                    return RPG.Scene.waitForButton("confirm");
+                }.bind(this))
+                .then(function() {
+                    RPG.Textbox.hide();
+                    RPG.Scene.finish();
+                }.bind(this));
+        }
     }
 }

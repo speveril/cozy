@@ -75,12 +75,23 @@ module RPG {
                 var trigger = player.layer.getTriggerByPoint(tx, ty);
                 if (trigger) {
                     player.layer.map[trigger.name]({
-                        sprite: this,
+                        entity: player,
                         trigger: trigger,
                         x: tx, y: ty,
                         tx: Math.floor(tx / map.tileSize.x), ty: Math.floor(ty / map.tileSize.y)
                     });
                 }
+
+                _.each(player.layer.entities, function(entity) {
+                    if (Math.sqrt(dist2({x:tx, y:ty}, entity.position)) < entity.radius && player.layer.map[entity.name]) {
+                        player.layer.map[entity.name]({
+                            entity: player,
+                            target: entity,
+                            x: tx, y: ty,
+                            tx: Math.floor(tx / map.tileSize.x), ty: Math.floor(ty / map.tileSize.y)
+                        });
+                    }
+                });
             }
 
             // position camera

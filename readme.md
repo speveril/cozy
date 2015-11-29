@@ -34,6 +34,7 @@ Maybe/probably?
 ## Things to consider/remember
 
 - Should I treat other entities for purposes of collisions as circles?
+- Move the dist/closestpoint/etc functions in Entity into a general util somewhere
 
 
 ## Examples

@@ -22,6 +22,7 @@ module RPG {
         private spriteDef:any; // can be an object or a string
         public triggersEvents:boolean;
         public respectsObstructions:boolean;
+        public name:string;
 
         public sprite:Egg.Sprite;
         public layer:MapLayer;
@@ -44,6 +45,7 @@ module RPG {
             this.triggersEvents = (args.triggersEvents !== undefined ? args.triggersEvents : false);
             this.respectsObstructions = (args.respectsObstructions !== undefined ? args.respectsObstructions : true);
             this.radius = args.radius || args.sprite.radius || 8;
+            this.name = args.name;
         }
 
         place(x:number, y:number, lyr:MapLayer):void {
@@ -103,7 +105,7 @@ module RPG {
                     }
                     for (i = 0; i < entities.length; i++) {
                         if (entities[i] === this) continue;
-                        d = Math.sqrt(dist2(projectedPosition, entities[i].sprite.position));
+                        d = Math.sqrt(dist2(projectedPosition, entities[i].position));
                         if (d < this.radius + entities[i].radius) {
                             var ang = Math.atan2(projectedPosition.y - entities[i].sprite.position.y, projectedPosition.x - entities[i].sprite.position.x);
                             projectedPosition.x += Math.cos(ang) * (this.radius + entities[i].radius - d);
@@ -127,7 +129,7 @@ module RPG {
                     if (e.rect.contains(this.sprite.position.x, this.sprite.position.y)) {
                         if (this.layer.map[e.name]) {
                             this.layer.map[e.name]({
-                                sprite: this,
+                                entity: this,
                                 event: e,
                                 x: this.sprite.position.x, y: this.sprite.position.y,
                                 tx: Math.floor(this.sprite.position.x / this.layer.map.tileSize.x), ty: Math.floor(this.sprite.position.y / this.layer.map.tileSize.y)

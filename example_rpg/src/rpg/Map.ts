@@ -233,7 +233,9 @@ module RPG {
                                     var x = parseInt(objectEl.getAttribute('x')) + parseInt(objectEl.getAttribute('width'), 10) / 2,
                                         y = parseInt(objectEl.getAttribute('y')) + parseInt(objectEl.getAttribute('height'), 10) / 2,
                                         propertiesEl = <HTMLElement>objectEl.children[0],
-                                        args = {};
+                                        args = {
+                                            name: objectEl.getAttribute('name')
+                                        };
                                     if (propertiesEl) {
                                         _.each(propertiesEl.children, function(property) {
                                             args[property.getAttribute('name')] = property.getAttribute('value');
