@@ -131,7 +131,7 @@ module SimpleQuest {
         sign_house(args) {
             RPG.Scene.start()
                 .then(function() {
-                    RPG.Textbox.show("An empty house");
+                    RPG.Textbox.show("Mayor's House");
                     return RPG.Scene.waitForButton("confirm");
                 }.bind(this))
                 .then(function() {
@@ -294,6 +294,74 @@ module SimpleQuest {
             RPG.Scene.start()
                 .then(function() {
                     RPG.Textbox.show("Fresh water is good for you!\nI'm so glad we have this well.");
+                    return RPG.Scene.waitForButton("confirm");
+                }.bind(this))
+                .then(function() {
+                    RPG.Textbox.hide();
+                    RPG.Scene.finish();
+                }.bind(this));
+        }
+
+        villager_mayor(args) {
+            RPG.Scene.start()
+                .then(function() {
+                    RPG.Textbox.show("Welcome to Carp's Bend.");
+                    return RPG.Scene.waitForButton("confirm");
+                }.bind(this))
+                .then(function() {
+                    RPG.Textbox.show("Do you happen to slay dragons? We've been having trouble with a dragon that lives up north on Mount Danger.");
+                    return RPG.Scene.waitForButton("confirm");
+                }.bind(this))
+                .then(function() {
+                    RPG.Textbox.show("You would do us a great service by defeating this dragon...");
+                    return RPG.Scene.waitForButton("confirm");
+                }.bind(this))
+                .then(function() {
+                    RPG.Textbox.show("Your name would be remembered in song for at least a month or two!");
+                    return RPG.Scene.waitForButton("confirm");
+                }.bind(this))
+                .then(function() {
+                    RPG.Textbox.hide();
+                    RPG.Scene.finish();
+                }.bind(this));
+        }
+
+        villager_south_house(args) {
+            RPG.Scene.start()
+                .then(function() {
+                    RPG.Textbox.show("The dragon attacks have been getting worse lately.");
+                    return RPG.Scene.waitForButton("confirm");
+                }.bind(this))
+                .then(function() {
+                    RPG.Textbox.show("At least I have a house! Most people in this town just seem to sleep outside.");
+                    return RPG.Scene.waitForButton("confirm");
+                }.bind(this))
+                .then(function() {
+                    RPG.Textbox.hide();
+                    RPG.Scene.finish();
+                }.bind(this));
+        }
+
+        villager_fisher(args) {
+            RPG.Scene.start()
+                .then(function() {
+                    RPG.Textbox.show("We like to fish, here in Carp's Bend.");
+                    return RPG.Scene.waitForButton("confirm");
+                }.bind(this))
+                .then(function() {
+                    RPG.Textbox.hide();
+                    RPG.Scene.finish();
+                }.bind(this));
+        }
+
+        villager_bushes(args) {
+            RPG.Scene.start()
+                .then(function() {
+                    RPG.Textbox.show("Whoa there, lady. This here's private property.");
+                    return RPG.Scene.waitForButton("confirm");
+                }.bind(this))
+                .then(function() {
+                    RPG.Textbox.show("Go find your own dang bushes!");
                     return RPG.Scene.waitForButton("confirm");
                 }.bind(this))
                 .then(function() {

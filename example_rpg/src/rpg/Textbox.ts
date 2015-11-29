@@ -29,8 +29,9 @@ module RPG {
             this.box.style.position = "absolute";
             this.box.style.bottom = "0px";
             this.box.style.left = "0px";
-            this.box.style.fontFamily = "GreenScreen";
-            this.box.style.fontSize = "10px";
+            this.box.style.fontFamily = "PressStart";
+            this.box.style.fontSize = "8px";
+            this.box.style.lineHeight = "180%";
             this.box.style.width = "320px";
             this.box.style.height = "50px";
             this.box.style.boxSizing = "border-box";
