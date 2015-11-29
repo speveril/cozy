@@ -2,20 +2,6 @@ module RPG {
     export class Textbox {
         private static sprite:Egg.Sprite;
         private static message:string;
-        // private static text:PIXI.Text;
-        // public static style:any = {
-        //     font: 'normal 10px PressStart',
-        //     fill: "#ffffff",
-        //     stroke: "#000000",
-        //     strokeThickness: 1,
-        //     align: "left",
-        //     wordWrap: false,
-        //     wordWrapWidth: 320,
-        //     dropShadow: true,
-        //     dropShadowColor: "#000000",
-        //     dropShadowAngle: Math.PI / 4,
-        //     dropShadowDistance: 1
-        // };
 
         private static box:HTMLElement;
 
@@ -24,6 +10,7 @@ module RPG {
                 this.hide();
             }
 
+            // TODO clean this mess up, allow games to import style sheets?
             this.box = document.createElement('div');
             this.box.innerHTML = text;
             this.box.style.position = "absolute";
@@ -41,38 +28,13 @@ module RPG {
             this.box.style.padding = "5px";
             this.box.style.whiteSpace = "pre-wrap";
 
-
             Egg.overlay.appendChild(this.box);
-
-            // if (this.sprite || this.text) {
-            //     this.hide();
-            // }
-            //
-            // this.message = text;
-            // this.sprite = new Egg.Sprite({
-            //     texture: 'sprites/textbox.png',
-            //     position: { x:0, y:190 }
-            // })
-            // RPG.UILayer.add(this.sprite);
-            //
-            // // TODO clean up, move into Egg
-            // this.text = new PIXI.Text(this.message, this.style);
-            // this.text.position.x = 7;
-            // this.text.position.y = 195;
-            //
-            // RPG.UILayer.innerContainer.addChild(this.text);
         }
 
         static hide() {
             if (this.box) {
                 this.box.remove();
             }
-
-            // RPG.UILayer.remove(this.sprite);
-            // RPG.UILayer.innerContainer.removeChild(this.text);
-            //
-            // this.sprite = null;
-            // this.text = null;
         }
     }
 }
