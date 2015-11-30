@@ -5,18 +5,18 @@ module Egg {
 
         constructor(fileName:string) {
             var contents = Egg.File.readBinary(fileName);
-            Audio.context.decodeAudioData(contents, function(buffer) {
-                this.buffer = buffer;
-            }.bind(this), function() {
-                console.log("Couldn't load sound file '" + fileName + "'.");
-            });
+            // Audio.context.decodeAudioData(contents, function(buffer) {
+            //     this.buffer = buffer;
+            // }.bind(this), function() {
+            //     console.log("Couldn't load sound file '" + fileName + "'.");
+            // });
         }
 
         play():void {
-            this.source = Audio.context.createBufferSource();
-            this.source.buffer = this.buffer;
-            this.source.connect(Audio.context.destination);
-            this.source.start(0);
+            // this.source = Audio.context.createBufferSource();
+            // this.source.buffer = this.buffer;
+            // this.source.connect(Audio.context.destination);
+            // this.source.start(0);
         }
     }
 

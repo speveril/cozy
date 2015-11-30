@@ -13,7 +13,6 @@
 
 var fs = require('fs');
 var remote = require('remote');
-require('es6-promise').polyfill();
 declare var FontFace:any;
 
 function include(path) {

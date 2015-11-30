@@ -15,6 +15,6 @@ app.on('ready', function() {
     'auto-hide-menu-bar': true,
     'use-content-size': true,
   });
-  mainWindow.loadUrl('file://' + __dirname + '/index.html');
+  mainWindow.loadURL('file://' + __dirname + '/index.html');
   mainWindow.focus();
 });

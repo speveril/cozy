@@ -140,5 +140,5 @@ function play() {
         next();
     });
 
-    window.loadUrl("file://" + __dirname + "/index.html?" + JSON.stringify(params));
+    window.loadURL("file://" + __dirname + "/index.html?" + JSON.stringify(params));
 }

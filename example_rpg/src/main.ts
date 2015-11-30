@@ -9,7 +9,7 @@
 window['RPG'] = RPG;
 
 module SimpleQuest {
-    export var sfx:{ [name:string]: Egg.Sound };
+    export var sfx:{ [name:string]: Egg.Sound } = {};
 
     export function start() {
         Map.persistent['global'] = {};
