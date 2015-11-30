@@ -4,6 +4,7 @@
 /// <reference path="../lib/typescript/underscore.d.ts"/>
 /// <reference path="../lib/typescript/es6-promise.d.ts"/>
 
+/// <reference path="Audio.ts"/>
 /// <reference path="File.ts"/>
 /// <reference path="Layer.ts"/>
 /// <reference path="Map.ts"/>
@@ -106,6 +107,9 @@ module Egg {
         this.overlay = document.createElement("div");
         this.overlay.className = "overlay";
         document.body.appendChild(this.overlay);
+
+        // set up audio
+        Egg.Audio.init();
 
         this.onResize();
 

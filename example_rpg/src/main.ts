@@ -9,8 +9,12 @@
 window['RPG'] = RPG;
 
 module SimpleQuest {
+    export var sfx:{ [name:string]: Egg.Sound };
+
     export function start() {
         Map.persistent['global'] = {};
+
+        sfx['kchoo'] = new Egg.Sound("./audio/sfx/kchoo.wav");
 
         RPG.loadSkip = ["./src_image"];
         RPG.start(function() {
