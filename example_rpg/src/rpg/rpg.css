@@ -1,0 +1,16 @@
+.textbox {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    font-family: PressStart;
+    font-size: 8px;
+    line-height: 180%;
+    width: 320px;
+    height: 50px;
+    box-sizing: border-box;
+    background-image: url(../../ui/textbox.png);
+    color: white;
+    text-shadow: 1px 1px 0px rgba(0, 0, 0, 1);
+    padding: 5px;
+    white-space: pre-wrap;
+}

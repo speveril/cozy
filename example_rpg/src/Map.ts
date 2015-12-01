@@ -172,6 +172,7 @@ module SimpleQuest {
                 smashed.push([args.tx, args.ty]);
                 args.trigger.solid = false;
                 args.trigger.active = false;
+                sfx['hit'].play();
 
                 if (smashed.length === Map.persistent[this.filename].potCount) {
                     this.doScene([
@@ -224,7 +225,7 @@ module SimpleQuest {
         }
 
         switch_layers(args) {
-            var spriteLayer;
+            var spriteLayer = RPG.player.layer;
 
             if (RPG.player.dir === 'u') {
                 spriteLayer = this.getLayerByName("#spritelayer-upper");

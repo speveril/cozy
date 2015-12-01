@@ -229,8 +229,9 @@ module Egg {
         this.browserWindow.close();
     }
 
+    // @DEPRECATE
     export function projectFilePath(fname) {
-        return gameDir + "/" + fname;
+        return File.projectFile(fname);
     }
 
     export function addLayer(index?:number) {
@@ -273,5 +274,13 @@ module Egg {
             this.textures = _.extend(this.textures, textures);
             onComplete();
         }.bind(this));
+    }
+
+    export function addStyleSheet(path:string):void {
+        var el = document.createElement('link');
+        el.rel = "stylesheet";
+        el.type = "text/css";
+        el.href = File.projectFile(path);
+        document.head.appendChild(el);
     }
 }

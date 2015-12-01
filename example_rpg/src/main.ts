@@ -5,7 +5,6 @@
 ///<reference path="../map/forest.ts"/>
 ///<reference path="../map/overworld.ts"/>
 
-
 window['RPG'] = RPG;
 
 module SimpleQuest {
@@ -14,7 +13,7 @@ module SimpleQuest {
     export function start() {
         Map.persistent['global'] = {};
 
-        sfx['kchoo'] = new Egg.Sound("./audio/sfx/kchoo.wav");
+        sfx['hit'] = new Egg.Sound("./audio/sfx/hit.wav");
 
         RPG.loadSkip = ["./src_image"];
         RPG.start(function() {
@@ -28,7 +27,12 @@ module SimpleQuest {
             // RPG.startMap(new Map("map/town.tmx"), 10, 7);
             RPG.startMap(new Map_Town(), 10, 7);
             RPG.controls = RPG.ControlMode.Map;
-            Egg.unpause();
+
+            var sfxLoaded = _.map(sfx, function(s) { return s.loaded(); });
+            Promise.all(sfxLoaded)
+                .then(function() {
+                    Egg.unpause();
+                }.bind(this));
         });
     }
 

@@ -13,6 +13,8 @@ module RPG {
     export var controls:ControlMode;
 
     export function start(loaded:Function) {
+        Egg.addStyleSheet("src/rpg/rpg.css");
+
         var textures = {};
         var fonts = [];
         var directories = ['.'];
