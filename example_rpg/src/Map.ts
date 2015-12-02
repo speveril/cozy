@@ -37,6 +37,7 @@ module SimpleQuest {
         private threatGroup:string;
         private nextBattle:number;
         private lastPlayerPosition:PIXI.Point;
+        public music:Egg.Music;
 
         open() {
             super.open();
@@ -218,6 +219,10 @@ module SimpleQuest {
                     return RPG.Scene.waitForFadeOut(0.2);
                 }.bind(this),
                 function() {
+                    if (m.music && m.music !== Egg.Audio.currentMusic) {
+                        Egg.Audio.currentMusic.stop();
+                        m.music.start();
+                    }
                     RPG.startMap(m, x, y);
                     return RPG.Scene.waitForFadeIn(0.2);
                 }.bind(this)

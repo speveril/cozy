@@ -9,28 +9,42 @@ window['RPG'] = RPG;
 
 module SimpleQuest {
     export var sfx:{ [name:string]: Egg.Sound } = {};
+    export var music:{ [name:string]: Egg.Music } = {};
 
     export function start() {
         Map.persistent['global'] = {};
 
-        sfx['hit'] = new Egg.Sound("./audio/sfx/hit.wav");
+        sfx['hit'] = new Egg.Sound("audio/sfx/hit.wav");
+        music['village'] = new Egg.Music({
+            tracks: ["audio/music/village.ogg"]
+        });
+        music['overworld'] = new Egg.Music({
+            tracks: ["audio/music/oworld.ogg"]
+        });
+        music['forest'] = new Egg.Music({
+            tracks: ["audio/music/forest.ogg"]
+        });
 
         RPG.loadSkip = ["./src_image"];
+
         RPG.start(function() {
-            RPG.player = new RPG.Entity({
-                sprite: "sprites/sersha.sprite",
-                speed: 64,
-                triggersEvents: true,
-                respectsObstructions: true
-            });
+            var promises = [];
+            _.each(sfx, function(s) { promises.push(s.loaded()); })
+            _.each(music, function(m) { promises.push(m.loaded()); })
+            console.log("promises", promises);
 
-            // RPG.startMap(new Map("map/town.tmx"), 10, 7);
-            RPG.startMap(new Map_Town(), 10, 7);
-            RPG.controls = RPG.ControlMode.Map;
-
-            var sfxLoaded = _.map(sfx, function(s) { return s.loaded(); });
-            Promise.all(sfxLoaded)
+            Promise.all(promises)
                 .then(function() {
+                    RPG.player = new RPG.Entity({
+                        sprite: "sprites/sersha.sprite",
+                        speed: 64,
+                        triggersEvents: true,
+                        respectsObstructions: true
+                    });
+
+                    music['village'].start();
+                    RPG.startMap(new Map_Town(), 10, 7);
+                    RPG.controls = RPG.ControlMode.Map;
                     Egg.unpause();
                 }.bind(this));
         });

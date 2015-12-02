@@ -6,9 +6,9 @@ module Egg {
 
         constructor(fileName:string) {
             this.loadedPromise = new Promise(function(resolve, reject) {
-                var contents:ArrayBuffer = Egg.File.readBinary(fileName);
+                var fileContents:ArrayBuffer = Egg.File.readBinary(fileName);
 
-                Audio.context.decodeAudioData(contents, function(decoded) {
+                Audio.context.decodeAudioData(fileContents, function(decoded) {
                     this.buffer = decoded;
                     resolve();
                 }.bind(this), function() {
@@ -30,14 +30,66 @@ module Egg {
         }
     }
 
+    export class Music {
+        loadedPromise:Promise<any>;
+        tracks:string[];
+        buffers:{[filename:string]: AudioBuffer};
+        source:AudioBufferSourceNode;
+
+        constructor(def:any) {
+            // TODO if def is a string load a file
+
+            this.tracks = def.tracks;
+            this.buffers = {};
+
+            this.loadedPromise = new Promise(function(resolve, reject) {
+                var trackResolve = _.after(def.tracks.length - 1, resolve);
+
+                _.each(def.tracks, function(fileName:string):void {
+                    var fileContents:ArrayBuffer = Egg.File.readBinary(fileName);
+
+                    Audio.context.decodeAudioData(fileContents, function(decoded) {
+                        this.buffers[fileName] = decoded;
+                        console.log("loaded " + fileName + ":", decoded);
+                        trackResolve();
+                    }.bind(this), function() {
+                        console.log("Couldn't load sound file '" + fileName + "' for song.");
+                        reject();
+                    }.bind(this));
+                }.bind(this));
+            }.bind(this));
+        }
+
+        loaded():Promise<any> {
+            return this.loadedPromise;
+        }
+
+        start():void {
+            if (Audio.currentMusic) {
+                Audio.currentMusic.stop();
+            }
+
+            Audio.currentMusic = this;
+            this.source = Audio.context.createBufferSource();
+            this.source.buffer = this.buffers[this.tracks[0]];
+            this.source.connect(Audio.context.destination);
+            this.source.loop = true;
+            this.source.start(0);
+        }
+
+        stop():void {
+            this.source.stop();
+            this.source.disconnect();
+        }
+    }
+
     export class Audio {
         static context:AudioContext;
+        static currentMusic:Music = null;
 
         static init():void {
-            console.log("Initializing Audio");
             this.context = new AudioContext();
-            console.log(this.context);
-            this.context.sampleRate = 44100;
+            this.context.sampleRate = 48000;
         }
     }
 }

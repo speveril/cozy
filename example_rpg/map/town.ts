@@ -2,6 +2,7 @@ module SimpleQuest {
     export class Map_Town extends SimpleQuest.Map {
         constructor() {
             super('map/town.tmx');
+            this.music = SimpleQuest.music['village'];
         }
 
         open() {
