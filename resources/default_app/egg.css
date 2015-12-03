@@ -17,7 +17,13 @@ canvas {
     left: 0;
 }
 
-div.overlay {
+plane {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+div.ui {
     position: absolute;
     top: 0;
     left: 0;

@@ -6,15 +6,16 @@ module Egg {
 
         constructor(fileName:string) {
             this.loadedPromise = new Promise(function(resolve, reject) {
-                var fileContents:ArrayBuffer = Egg.File.readBinary(fileName);
-
-                Audio.context.decodeAudioData(fileContents, function(decoded) {
-                    this.buffer = decoded;
-                    resolve();
-                }.bind(this), function() {
-                    console.log("Couldn't load sound file '" + fileName + "'.");
-                    reject();
-                }.bind(this));
+                Egg.File.readBinaryAsync(fileName)
+                    .then(function(fileContents:ArrayBuffer) {
+                        Audio.context.decodeAudioData(fileContents, function(decoded) {
+                            this.buffer = decoded;
+                            resolve();
+                        }.bind(this), function() {
+                            console.log("Couldn't load sound file '" + fileName + "'.");
+                            reject();
+                        }.bind(this));
+                    }.bind(this));
             }.bind(this));
         }
 
@@ -46,16 +47,17 @@ module Egg {
                 var trackResolve = _.after(def.tracks.length - 1, resolve);
 
                 _.each(def.tracks, function(fileName:string):void {
-                    var fileContents:ArrayBuffer = Egg.File.readBinary(fileName);
+                    Egg.File.readBinaryAsync(fileName)
+                        .then(function(fileContents:ArrayBuffer) {
+                            Audio.context.decodeAudioData(fileContents, function(decoded) {
+                                this.buffers[fileName] = decoded;
+                                trackResolve();
+                            }.bind(this), function() {
+                                console.log("Couldn't load sound file '" + fileName + "' for song.");
+                                reject();
+                            }.bind(this));
+                        }.bind(this));
 
-                    Audio.context.decodeAudioData(fileContents, function(decoded) {
-                        this.buffers[fileName] = decoded;
-                        console.log("loaded " + fileName + ":", decoded);
-                        trackResolve();
-                    }.bind(this), function() {
-                        console.log("Couldn't load sound file '" + fileName + "' for song.");
-                        reject();
-                    }.bind(this));
                 }.bind(this));
             }.bind(this));
         }

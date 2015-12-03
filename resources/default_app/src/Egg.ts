@@ -8,6 +8,7 @@
 /// <reference path="File.ts"/>
 /// <reference path="Layer.ts"/>
 /// <reference path="Map.ts"/>
+/// <reference path="Plane.ts"/>
 /// <reference path="Sprite.ts"/>
 /// <reference path="Texture.ts"/>
 
@@ -38,11 +39,10 @@ module Egg {
     export var config: Object;
     export var lastTime: number;
     export var textures: {}[];
-    export var layerStack: Array<Layer>;
-    export var layerContainer: PIXI.Container;
+    export var planes:Plane[];
 
     export var renderer:PIXI.WebGLRenderer;
-    export var overlay:HTMLElement;
+    export var overlay:Plane;
 
     export function setup(opts:any) {
         console.log("Creating Egg Object");
@@ -99,13 +99,26 @@ module Egg {
 
         // set up graphics
         PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
-        this.renderer = new PIXI.WebGLRenderer(this.config['width'], this.config['height']);
-        this.renderer.backgroundColor = 0x888888;
-        document.body.appendChild(this.renderer.view);
 
-        this.overlay = document.createElement("div");
-        this.overlay.className = "overlay";
-        document.body.appendChild(this.overlay);
+        planes = [];
+        var defaultPlane:Plane = new Plane({
+            className: 'default-plane',
+            renderable: true
+        });
+        this.planes.push(defaultPlane);
+
+        // this.renderer = new PIXI.WebGLRenderer(this.config['width'], this.config['height']);
+        // this.renderer.backgroundColor = 0x888888;
+        // document.body.appendChild(this.renderer.view);
+
+        this.overlay = new Plane({
+            className: 'overlay'
+        });
+        this.planes.push(this.overlay);
+
+        // this.overlay = document.createElement("div");
+        // this.overlay.className = "overlay";
+        // document.body.appendChild(this.overlay);
 
         // set up audio
         Egg.Audio.init();
@@ -137,23 +150,24 @@ module Egg {
 
         var dt = Date.now() - this.lastTime;
         this.lastTime += dt;
+        dt /= 1000;
 
         if (this.paused) { return; }
 
-        _.each(this.layerStack, function(layer) {
-            layer.update(dt / 1000);
+        _.each(this.planes, function(plane) {
+            plane.update(dt );
         }.bind(this));
 
         if (this.Game && this.Game.frame) {
-            this.Game.frame(dt / 1000);
+            this.Game.frame(dt);
         }
 
-        _.each(this.layerStack, function(layer) {
-            this.renderer.render(layerContainer);
+        _.each(this.planes, function(plane) {
+            plane.render();
         }.bind(this));
 
         if (this.Game && this.Game.postRender) {
-            this.Game.postRender(dt / 1000);
+            this.Game.postRender(dt);
         }
     }
 
@@ -203,15 +217,19 @@ module Egg {
             multX   = newSize[0] / this.config['width'],
             multY   = newSize[1] / this.config['height'],
             mult    = Math.floor(Math.min(multX, multY));
-        this.renderer.resolution = mult;
-        this.renderer.resize(this.config['width'], this.config['height']);
 
-        this.overlay.style.transform = "scale(" + mult + ")";
-        this.overlay.style.width = this.config['width'];
-        this.overlay.style.height = this.config['height'];
+        _.each(this.planes, function(plane) {
+            if (plane.renderer) {
+                plane.renderer.resolution = mult;
+                plane.renderer.resize(this.config['width'], this.config['height']);
+            }
+            plane.ui.style.transform = "scale(" + mult + ")";
+            plane.ui.style.width = this.config['width'];
+            plane.ui.style.height = this.config['height'];
+        }.bind(this));
 
+        // force everything to update properly
         document.body.style.margin = "" + (newSize[1] - mult * this.config['height']) / 2 + "px " + (newSize[0] - mult * this.config['width']) / 2 + "px";
-
         document.body.style.display = 'none';
         document.body.offsetHeight;
         document.body.style.display = '';
@@ -234,20 +252,22 @@ module Egg {
         return File.projectFile(fname);
     }
 
-    export function addLayer(index?:number) {
-        var lyr = new Layer();
-        if (index === undefined) {
-            layerStack.push(lyr);
-        } else {
-            layerStack.splice(index, 0, lyr);
-        }
-        layerContainer.addChild(lyr.innerContainer);
-        return lyr;
+    export function addLayer(index?:number):Layer {
+        return this.planes[0].addRenderLayer(index);
+        // var lyr = new Layer();
+        // if (index === undefined) {
+        //     layerStack.push(lyr);
+        // } else {
+        //     layerStack.splice(index, 0, lyr);
+        // }
+        // layerContainer.addChild(lyr.innerContainer);
+        // return lyr;
     }
 
     export function clearLayers() {
-        layerStack = [];
-        layerContainer.removeChildren();
+        this.planes[0].clear();
+        // layerStack = [];
+        // layerContainer.removeChildren();
     }
 
     export function button(name):Boolean {

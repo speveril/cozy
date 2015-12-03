@@ -1,5 +1,6 @@
-///<reference path="Map.ts"/>
 ///<reference path="Entity.ts"/>
+///<reference path="Map.ts"/>
+///<reference path="Menu.ts"/>
 ///<reference path="Scene.ts"/>
 ///<reference path="Textbox.ts"/>
 
@@ -101,6 +102,8 @@ module RPG {
             RPG.centerCameraOn(player.position);
         } else if (controls === ControlMode.Scene && Scene.currentScene) {
             Scene.update(dt);
+        } else if (controls === ControlMode.Menu && Menu.currentMenu) {
+            Menu.currentMenu.update(dt);
         }
     }
 

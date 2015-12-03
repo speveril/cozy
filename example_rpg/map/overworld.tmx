@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="16" tileheight="16" nextobjectid="28">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="16" tileheight="16" nextobjectid="29">
  <tileset firstgid="1" source="tileset.tsx"/>
  <layer name="background" width="20" height="15">
   <data encoding="csv">
@@ -58,7 +58,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,84,85,0,0,0,0,0
 </data>
  </layer>
- <objectgroup name="#spritelayer" visible="0">
+ <objectgroup name="#spritelayer">
   <object id="13" name="enter_town" type="event" x="224" y="208" width="16" height="16"/>
   <object id="14" name="enter_forest" type="event" x="208" y="112" width="16" height="16"/>
   <object id="15" name="enter_forest" type="event" x="256" y="96" width="16" height="16"/>
@@ -78,6 +78,7 @@
    <polyline points="16,16 0,16 0,-16 -32,-16 -32,-32 -48,-32 -48,-48 -80,-48 -64,-64 -64,-80 -48,-80 -32,-64 -32,-48 0,-48 0,-80 16,-80 16,-48 48,-48 48,-16 16,-16 16,16"/>
   </object>
   <object id="26" x="96" y="64" width="16" height="16"/>
+  <object id="28" name="examine_ship" type="trigger" x="288" y="176" width="16" height="16"/>
  </objectgroup>
  <layer name="foreground" width="20" height="15">
   <data encoding="csv">
