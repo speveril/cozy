@@ -14,24 +14,24 @@ Ultimately the development is driven by what I want out of the engine. I have a 
 
 ## Current technologies
 
-- PIXI.js: <http://www.pixijs.com/>
 - Electron: <https://github.com/atom/electron>
+- PIXI.js: <http://www.pixijs.com/>
 - Underscore: <http://underscorejs.org>
 - Typescript: <http://typescriptlang.org>
 
 
 ## Roadmap/TODOs
 
-- RPG-style "kit" (top-down movement system and obstructions, event zones, etc)
-- Event system (to allow multi-stage events spanning many frames)
-- Sound!
+- RPGkit
+- Reconcile File stuff
 
-Maybe/probably?
+Feature wish list (some day):
 
-- Side-scrolling platformer kit
+- PlatformerKit
 - Slim down Electron so the executable isn't so huge
 - Replace rendering engine with something SDL-based
 - Post-process filters, scaling filters (CRT emulation?)
+- More complex songs -- intros, loops, multiple tracks that you can control separately
 
 ## Things to consider/remember
 

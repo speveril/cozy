@@ -35,7 +35,7 @@ module RPG {
                 this.fadeLayer.style.height = "100%";
                 this.fadeLayer.style.opacity = '0';
             }
-            Egg.overlay.ui.appendChild(this.fadeLayer);
+            RPG.uiPlane.ui.appendChild(this.fadeLayer);
 
             this.promise = new Promise(function(resolve, reject) {
                 RPG.player.sprite.animation = "stand_" + RPG.player.dir;

@@ -12,9 +12,21 @@ module RPG {
     export var cameraHalf:PIXI.Point;
     export enum ControlMode { None, Scene, Menu, Map };
     export var controls:ControlMode;
+    export var renderPlane:Egg.Plane;
+    export var uiPlane:Egg.Plane;
 
     export function start(loaded:Function) {
         Egg.addStyleSheet("src/rpg/rpg.css");
+
+        RPG.renderPlane = Egg.addPlane({
+            className: 'render-plane',
+            renderable: true
+        });
+        RPG.uiPlane = Egg.addPlane({
+            className: 'overlay'
+        });
+
+        Menu.init();
 
         var textures = {};
         var fonts = [];
@@ -97,6 +109,13 @@ module RPG {
                         });
                     }
                 });
+            }
+
+            if (Egg.button('menu')) {
+                Egg.debounce('menu');
+                Menu.push(new Menu({
+                    html: "ui/main-menu.html"
+                }));
             }
 
             RPG.centerCameraOn(player.position);

@@ -9,6 +9,9 @@ module Egg {
         static stat(f:string) { return fs.statSync(f); }
         static extension(f):string { return path.extname(f); }
         static filename(f):string { return path.basename(f); }
+        static pathname(f):string { return path.dirname(f); }
+        static relative(from, to):string { return path.relative(from, to); }
+        static stripProtocol(f):string { return f.replace("/^.*?:[/\\]{2}/",""); }
 
         static readAsync(f:string):Promise<string> {
             return new Promise(function(resolve, reject) {
@@ -32,7 +35,6 @@ module Egg {
                 });
             });
         }
-
 
         static projectFile(f):string { return Egg.gameDir + "/" + f; }
     }

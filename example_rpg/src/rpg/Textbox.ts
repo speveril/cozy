@@ -15,7 +15,7 @@ module RPG {
             this.box.className = "textbox";
             this.box.innerHTML = text;
 
-            Egg.overlay.ui.appendChild(this.box);
+            RPG.uiPlane.ui.appendChild(this.box);
         }
 
         static hide() {

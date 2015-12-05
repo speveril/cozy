@@ -35,6 +35,7 @@ module Egg {
     export var game: string;
     export var Game: any;
     export var gameDir: string;
+    export var eggDir: string;
 
     export var config: Object;
     export var lastTime: number;
@@ -63,6 +64,8 @@ module Egg {
     }
 
     export function run() {
+        Egg.eggDir = path.join(process.cwd(), "resources", "default_app");
+        console.log("eggDir ->", Egg.eggDir);
         process.chdir(this.game);
         this.gameDir = process.cwd();
 
@@ -99,31 +102,10 @@ module Egg {
 
         // set up graphics
         PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
-
         planes = [];
-        var defaultPlane:Plane = new Plane({
-            className: 'default-plane',
-            renderable: true
-        });
-        this.planes.push(defaultPlane);
-
-        // this.renderer = new PIXI.WebGLRenderer(this.config['width'], this.config['height']);
-        // this.renderer.backgroundColor = 0x888888;
-        // document.body.appendChild(this.renderer.view);
-
-        this.overlay = new Plane({
-            className: 'overlay'
-        });
-        this.planes.push(this.overlay);
-
-        // this.overlay = document.createElement("div");
-        // this.overlay.className = "overlay";
-        // document.body.appendChild(this.overlay);
 
         // set up audio
         Egg.Audio.init();
-
-        this.onResize();
 
         var fonts = [];
         _.each(this.config['fonts'], function(path, name) {
@@ -138,6 +120,8 @@ module Egg {
                 // start the game
                 this.Game = include("/main.js");
                 this.Game.start();
+
+                this.onResize();
 
                 // set up animation loop
                 this.lastTime = Date.now();
@@ -169,6 +153,12 @@ module Egg {
         if (this.Game && this.Game.postRender) {
             this.Game.postRender(dt);
         }
+    }
+
+    export function addPlane(args:any):Plane {
+        var p = new Plane(args);
+        this.planes.push(p);
+        return p;
     }
 
     export function pause() {
