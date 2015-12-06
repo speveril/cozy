@@ -30,7 +30,7 @@ Feature wish list (some day):
 - PlatformerKit
 - Slim down Electron so the executable isn't so huge
 - Replace rendering engine with something SDL-based
-- Post-process filters, scaling filters (CRT emulation?)
+- Post-process filters, scaling filters (CRT emulation?) <http://chadaustin.me/2015/11/crts-pixels-and-video-games/>
 - More complex songs -- intros, loops, multiple tracks that you can control separately
 
 ## Things to consider/remember
