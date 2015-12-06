@@ -38,6 +38,7 @@ module RPG {
         container:HTMLElement;
         selectionIndex:number;
         selections:HTMLElement[];
+        cancelable:boolean = false;
 
         constructor(def) {
             this.container = document.createElement('div');

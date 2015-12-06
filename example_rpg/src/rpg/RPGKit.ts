@@ -125,7 +125,7 @@ module RPG {
         } else if (controls === ControlMode.Scene && Scene.currentScene) {
             Scene.update(dt);
         } else if (controls === ControlMode.Menu && Menu.currentMenu) {
-            if (Egg.button('menu') || Egg.button('cancel')) {
+            if (Menu.currentMenu.cancelable && (Egg.button('menu') || Egg.button('cancel'))) {
                 Egg.debounce('menu');
                 Egg.debounce('cancel');
                 Menu.pop();

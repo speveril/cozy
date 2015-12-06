@@ -31,6 +31,8 @@ module SimpleQuest {
     }
 
     export class Menu_Main extends RPG.Menu {
+        cancelable:boolean = true;
+        
         constructor() {
             super({ html: "ui/main-menu.html" });
             this.container.className = "menu main-menu";
