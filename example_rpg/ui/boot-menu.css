@@ -1,0 +1,12 @@
+.boot-menu {
+    width: 100%;
+    height: 100%;
+    background: url(boot-bg.png);
+}
+
+.boot-menu .selections {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+}

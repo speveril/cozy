@@ -1,36 +1,21 @@
-.selections {
+.main-menu {
+    background-color: rgba(0, 0, 0, 0.35);
+    background-image: url(menu-bg.png);
+}
+
+.main-menu .selections {
     position: absolute;
     top: 5px;
     right: 5px;
-    list-style: none;
 }
 
-.selections li {
-    position: relative;
-}
-
-.selections li.active {
-    color: goldenrod;
-}
-
-.selections li.active::before {
-    display: block;
-    content: "";
-    width: 16px;
-    height: 16px;
-    background: url(pointer.png) no-repeat;
-    position: absolute;
-    top: -2px;
-    left: -18px;
-}
-
-.party-view {
+.main-menu .party-view {
     position: absolute;
     top: 5px;
     left: 5px;
 }
 
-.party-view .member {
+.main-menu .party-view .member {
     display: inline-block;
     width: 70px;
     height: 70px;
@@ -38,7 +23,7 @@
     border: 1px solid white;
 }
 
-.party-view .member img {
+.main-menu .party-view .member img {
     position: absolute;
     top: 0;
     left: 0;
@@ -46,7 +31,7 @@
     height: 100%;
 }
 
-.party-view .member .name {
+.main-menu .party-view .member .name {
     position: absolute;
     bottom: 0;
     left: 0;

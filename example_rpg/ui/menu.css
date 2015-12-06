@@ -1,0 +1,23 @@
+.menu .selections {
+    list-style: none;
+}
+
+.menu .selections li {
+    position: relative;
+    color: #deeed6;
+}
+
+.menu .selections li.active {
+    color: #dad45e;
+}
+
+.menu .selections li.active::before {
+    display: block;
+    content: "";
+    width: 16px;
+    height: 16px;
+    background: url(pointer.png) no-repeat;
+    position: absolute;
+    top: -2px;
+    left: -18px;
+}

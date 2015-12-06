@@ -31,6 +31,8 @@ module SimpleQuest {
         RPG.mainMenuClass = Menu_Main;
         RPG.loadSkip = ["./src_image"];
 
+        Egg.addStyleSheet("ui/menu.css");
+
         RPG.start(function() {
             var promises = [];
             _.each(sfx, function(s) { promises.push(s.loaded()); })
@@ -39,19 +41,36 @@ module SimpleQuest {
 
             Promise.all(promises)
                 .then(function() {
-                    RPG.player = new RPG.Entity({
-                        sprite: "sprites/hero.sprite",
-                        speed: 64,
-                        triggersEvents: true,
-                        respectsObstructions: true
-                    });
-
-                    music['village'].start();
-                    RPG.startMap(new Map_Town(), 10, 7);
-                    RPG.controls = RPG.ControlMode.Map;
                     Egg.unpause();
+                    SimpleQuest.bootSequence();
                 }.bind(this));
         });
+    }
+
+    export function bootSequence() {
+        RPG.controls = RPG.ControlMode.Scene;
+        RPG.Menu.push(new Menu_Boot());
+        Egg.unpause();
+    }
+
+    export function newGame() {
+        console.log("New... game?");
+
+        Egg.pause();
+
+        //RPG.characters.push(new RPG.Character());
+
+        RPG.player = new RPG.Entity({
+            sprite: "sprites/hero.sprite",
+            speed: 64,
+            triggersEvents: true,
+            respectsObstructions: true
+        });
+
+        music['village'].start();
+        RPG.startMap(new Map_Town(), 10, 7);
+        RPG.controls = RPG.ControlMode.Map;
+        Egg.unpause();
     }
 
     export var frame = RPG.frame;

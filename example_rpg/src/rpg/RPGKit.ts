@@ -1,6 +1,8 @@
+///<reference path="Character.ts"/>
 ///<reference path="Entity.ts"/>
 ///<reference path="Map.ts"/>
 ///<reference path="Menu.ts"/>
+///<reference path="Party.ts"/>
 ///<reference path="Scene.ts"/>
 ///<reference path="Textbox.ts"/>
 
@@ -15,6 +17,7 @@ module RPG {
     export var renderPlane:Egg.Plane;
     export var uiPlane:Egg.Plane;
     export var mainMenuClass:any;
+    export var characters:Character[];
 
     export function start(loaded:Function) {
         Egg.addStyleSheet("src/rpg/rpg.css");
@@ -57,7 +60,9 @@ module RPG {
     }
 
     export function frame(dt) {
-        map.update(dt);
+        if (map) {
+            map.update(dt);
+        }
 
         if (controls === ControlMode.Map && map && player) {
             // handle movement

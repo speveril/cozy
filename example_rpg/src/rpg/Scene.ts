@@ -38,7 +38,9 @@ module RPG {
             RPG.uiPlane.ui.appendChild(this.fadeLayer);
 
             this.promise = new Promise(function(resolve, reject) {
-                RPG.player.sprite.animation = "stand_" + RPG.player.dir;
+                if (RPG.player) {
+                    RPG.player.sprite.animation = "stand_" + RPG.player.dir;
+                }
                 this.restoreControls = RPG.controls;
                 this.currentScene = this;
                 RPG.controls = RPG.ControlMode.Scene

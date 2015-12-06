@@ -75,10 +75,9 @@ module RPG {
             this.container.remove();
         }
         update(dt) {}
-        
+
         confirmSelection() {
             var currentMenuSelection = this.selections[this.selectionIndex].getAttribute('data-menu');
-            console.log("->", currentMenuSelection);
             if (this[currentMenuSelection]) {
                 this[currentMenuSelection]();
             }
