@@ -4,6 +4,17 @@
     background: url(boot-bg.png);
 }
 
+.boot-menu h1 {
+    font-family: PressStart;
+    font-size: 16pt;
+    text-shadow: 3px 3px 0px rgba(0, 0, 0, 1);
+    position: absolute;
+    top: 50px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+}
+
 .boot-menu .selections {
     position: absolute;
     bottom: 15px;
