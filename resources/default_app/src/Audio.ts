@@ -26,7 +26,7 @@ module Egg {
         play():void {
             this.source = Audio.context.createBufferSource();
             this.source.buffer = this.buffer;
-            this.source.connect(Audio.context.destination);
+            this.source.connect(Audio.sfxGain);
             this.source.start(0);
         }
     }
@@ -74,7 +74,7 @@ module Egg {
             Audio.currentMusic = this;
             this.source = Audio.context.createBufferSource();
             this.source.buffer = this.buffers[this.tracks[0]];
-            this.source.connect(Audio.context.destination);
+            this.source.connect(Audio.musicGain);
             this.source.loop = true;
             this.source.start(0);
         }
@@ -88,10 +88,22 @@ module Egg {
     export class Audio {
         static context:AudioContext;
         static currentMusic:Music = null;
+        static musicGain:GainNode;
+        static sfxGain:GainNode;
 
         static init():void {
             this.context = new AudioContext();
             this.context.sampleRate = 48000;
+
+            this.musicGain = this.context.createGain();
+            this.musicGain.connect(this.context.destination);
+
+            this.sfxGain = this.context.createGain();
+            this.sfxGain.connect(this.context.destination);
+
+            // MUTE STUFF FOR NOW
+            this.musicGain.gain.value = 0;
+            this.sfxGain.gain.value = 0;
         }
     }
 }
