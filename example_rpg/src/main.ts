@@ -54,8 +54,6 @@ module SimpleQuest {
     }
 
     export function newGame() {
-        console.log("New... game?");
-
         Egg.pause();
 
         //RPG.characters.push(new RPG.Character());
