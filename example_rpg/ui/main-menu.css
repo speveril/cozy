@@ -5,8 +5,23 @@
     list-style: none;
 }
 
+.selections li {
+    position: relative;
+}
+
 .selections li.active {
     color: goldenrod;
+}
+
+.selections li.active::before {
+    display: block;
+    content: "";
+    width: 16px;
+    height: 16px;
+    background: url(pointer.png) no-repeat;
+    position: absolute;
+    top: -2px;
+    left: -18px;
 }
 
 .party-view {

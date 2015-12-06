@@ -1,13 +1,9 @@
 module RPG {
     export class Menu {
-        static menuStack:Menu[];
+        static menuStack:Menu[] = [];
 
         static get currentMenu():Menu {
             return Menu.menuStack[Menu.menuStack.length - 1] || null;
-        }
-
-        static init():void {
-            this.menuStack = [];
         }
 
         static push(m:Menu):void {
@@ -78,18 +74,13 @@ module RPG {
         stop() {
             this.container.remove();
         }
-        update(dt) {
-            if (Egg.button('menu')) {
-                Egg.debounce('menu');
-                Menu.pop();
-            }
-            if (Egg.button('up')) {
-                Egg.debounce('up', 0.2);
-                this.moveSelection(-1);
-            }
-            if (Egg.button('down')) {
-                Egg.debounce('down', 0.2);
-                this.moveSelection(+1);
+        update(dt) {}
+        
+        confirmSelection() {
+            var currentMenuSelection = this.selections[this.selectionIndex].getAttribute('data-menu');
+            console.log("->", currentMenuSelection);
+            if (this[currentMenuSelection]) {
+                this[currentMenuSelection]();
             }
         }
 

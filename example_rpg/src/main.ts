@@ -1,6 +1,9 @@
 ///<reference path="../../resources/default_app/Egg.d.ts" />
 ///<reference path="rpg/RPGKit.ts"/>
+
 ///<reference path="Map.ts"/>
+///<reference path="Menus.ts"/>
+
 ///<reference path="../map/town.ts"/>
 ///<reference path="../map/forest.ts"/>
 ///<reference path="../map/overworld.ts"/>
@@ -25,6 +28,7 @@ module SimpleQuest {
             tracks: ["audio/music/forest.ogg"]
         });
 
+        RPG.mainMenuClass = Menu_Main;
         RPG.loadSkip = ["./src_image"];
 
         RPG.start(function() {

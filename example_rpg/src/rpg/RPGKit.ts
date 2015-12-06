@@ -14,6 +14,7 @@ module RPG {
     export var controls:ControlMode;
     export var renderPlane:Egg.Plane;
     export var uiPlane:Egg.Plane;
+    export var mainMenuClass:any;
 
     export function start(loaded:Function) {
         Egg.addStyleSheet("src/rpg/rpg.css");
@@ -25,8 +26,6 @@ module RPG {
         RPG.uiPlane = Egg.addPlane({
             className: 'overlay'
         });
-
-        Menu.init();
 
         var textures = {};
         var fonts = [];
@@ -111,17 +110,34 @@ module RPG {
                 });
             }
 
-            if (Egg.button('menu')) {
+            if (Egg.button('menu') && RPG.mainMenuClass) {
                 Egg.debounce('menu');
-                Menu.push(new Menu({
-                    html: "ui/main-menu.html"
-                }));
+                Egg.debounce('cancel');
+                Menu.push(new RPG.mainMenuClass());
             }
 
             RPG.centerCameraOn(player.position);
         } else if (controls === ControlMode.Scene && Scene.currentScene) {
             Scene.update(dt);
         } else if (controls === ControlMode.Menu && Menu.currentMenu) {
+            if (Egg.button('menu') || Egg.button('cancel')) {
+                Egg.debounce('menu');
+                Egg.debounce('cancel');
+                Menu.pop();
+            }
+            if (Egg.button('up')) {
+                Egg.debounce('up', 0.2);
+                Menu.currentMenu.moveSelection(-1);
+            }
+            if (Egg.button('down')) {
+                Egg.debounce('down', 0.2);
+                Menu.currentMenu.moveSelection(+1);
+            }
+            if (Egg.button('confirm')) {
+                Egg.debounce('confirm');
+                Menu.currentMenu.confirmSelection();
+            }
+
             Menu.currentMenu.update(dt);
         }
     }
