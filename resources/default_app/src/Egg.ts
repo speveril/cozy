@@ -29,6 +29,7 @@ module Egg {
     export var key: Object;
     var buttonMap: Object;
     var __button: { [name:string]:ButtonState };
+    var buttonTimeouts: { [name:string]:number };
     var paused: Boolean;
 
     // wtf, seriously
@@ -56,6 +57,7 @@ module Egg {
         this.key = {};
         this.__button = {};
         this.buttonMap = {};
+        this.buttonTimeouts = {};
         this.textures = {};
         this.paused = true;
 
@@ -193,6 +195,7 @@ module Egg {
         if (_.has(this.buttonMap, keyCode)) {
             _.each(this.buttonMap[keyCode], function(b) {
                 this.__button[b] = ButtonState.UP;
+                clearTimeout(this.buttonTimeouts[b]);
             }.bind(this));
         }
 
@@ -264,8 +267,13 @@ module Egg {
         return (this.__button[name] === ButtonState.DOWN);
     }
 
-    export function debounce(name) {
+    export function debounce(name, duration?:number) {
         this.__button[name] = ButtonState.IGNORED;
+        if (duration !== undefined) {
+            this.buttonTimeouts[name] = setTimeout(function() {
+                this.__button[name] = ButtonState.DOWN;
+            }.bind(this), duration * 1000);
+        }
     }
 
     export function loadTextures(assets, onComplete) {

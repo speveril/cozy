@@ -67,7 +67,7 @@ module SimpleQuest {
                 _.each(this.layers, function(lyr:RPG.MapLayer, i) {
                     var t = lyr.getTile(tx, ty);
                     if (t == 37) {
-                        lyr.setTile(tx, ty, t + 1);
+                        lyr.setTile(tx, ty, t + 3);
                     }
                     var tr = lyr.getTriggerByPoint((tx + 0.5) * this.tileSize.x, (ty + 0.5) * this.tileSize.y);
                     if (tr && tr.name === 'open_chest') {
