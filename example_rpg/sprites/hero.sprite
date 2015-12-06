@@ -1,0 +1,18 @@
+{
+    "texture": "sprites/hero.png",
+    "frameSize": { "x":16, "y":16 },
+    "hotspot": { "x":8, "y":8 },
+    "radius": 8,
+    "animations": {
+        "stand_u": { "loop": true, "frames": [[12,999]] },
+        "stand_r": { "loop": true, "frames": [[8,999]] },
+        "stand_d": { "loop": true, "frames": [[0,999]] },
+        "stand_l": { "loop": true, "frames": [[4,999]] },
+        "walk_u": { "loop": true, "frames": [[13,0.3], [14,0.3]] },
+        "walk_r": { "loop": true, "frames": [[9,0.3], [10,0.3]] },
+        "walk_d": { "loop": true, "frames": [[1,0.3], [2,0.3]] },
+        "walk_l": { "loop": true, "frames": [[5,0.3], [6,0.3]] }
+    },
+    "frameRate": 8,
+    "currentAnimation": "stand_d"
+}

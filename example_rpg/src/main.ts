@@ -36,7 +36,7 @@ module SimpleQuest {
             Promise.all(promises)
                 .then(function() {
                     RPG.player = new RPG.Entity({
-                        sprite: "sprites/sersha.sprite",
+                        sprite: "sprites/hero.sprite",
                         speed: 64,
                         triggersEvents: true,
                         respectsObstructions: true
