@@ -110,12 +110,13 @@ module Egg {
         Egg.Audio.init();
 
         var fonts = [];
+        var style = document.createElement('style');
         _.each(this.config['fonts'], function(path, name) {
-            var style = document.createElement('style');
-            style.innerText = "@font-face { font-family: " + name + "; src: url(../../example_rpg/" + path + ") }";
-            document.head.appendChild(style);
-            fonts.push(new FontFace(name, "url(../../example_rpg/" + path + ")").load());
+            var url = ("url(" + Egg.File.relative(Egg.eggDir, gameDir) + "/" + path + ")").replace(/\\/g, "/");
+            style.innerText += "@font-face { font-family: " + name + "; src: " + url + " }\n";
+            fonts.push(new FontFace(name, url).load());
         });
+        document.head.appendChild(style);
 
         Promise.all(fonts)
             .then(function() {

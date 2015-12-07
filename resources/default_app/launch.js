@@ -13,11 +13,11 @@ var actions = [ ];
 
 var optionMap = {
     '--build':     'build',
+    '--init':      'new',
     '--buildGame': 'buildGame',
     '--console':   'console',
     '--debug':     'debug',
-    '--init':      'new',
-    '-d':          'debug',
+    '-d':          'debug'
 };
 
 for (var i in argv) {
@@ -109,7 +109,6 @@ function makeNew() {
             fs.writeFileSync(gamePath + "/" + filename, contents);
         });
     }
-
 
     next();
 }
