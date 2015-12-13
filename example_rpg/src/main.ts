@@ -17,16 +17,14 @@ module SimpleQuest {
     export function start() {
         Map.persistent['global'] = {};
 
-        sfx['hit'] = new Egg.Sound("audio/sfx/hit.wav");
-        music['village'] = new Egg.Music({
-            tracks: ["audio/music/village.ogg"]
-        });
-        music['overworld'] = new Egg.Music({
-            tracks: ["audio/music/oworld.ogg"]
-        });
-        music['forest'] = new Egg.Music({
-            tracks: ["audio/music/forest.ogg"]
-        });
+        sfx = {
+            'hit': new Egg.Sound("audio/sfx/hit.wav")
+        };
+        music = {
+            'village':    new Egg.Music({ tracks: ["audio/music/village.ogg"] }),
+            'overworld':  new Egg.Music({ tracks: ["audio/music/oworld.ogg"] }),
+            'forest':     new Egg.Music({ tracks: ["audio/music/forest.ogg"] })
+        };
 
         RPG.mainMenuClass = Menu_Main;
         RPG.loadSkip = ["./src_image"];
