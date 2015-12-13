@@ -36,7 +36,11 @@ module Egg {
             });
         }
 
-        static projectFile(f):string { return Egg.gameDir + "/" + f; }
+        static projectFile(f):string { return path.join(Egg.gameDir, f); }
+        static urlPath(f):string {
+            var basePath = File.relative(Egg.eggDir, Egg.gameDir);
+            return path.join(basePath, f);
+        }
     }
 
     export class Directory {

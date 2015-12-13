@@ -66,8 +66,7 @@ module Egg {
     }
 
     export function run() {
-        Egg.eggDir = path.join(process.cwd(), "resources", "default_app");
-        console.log("eggDir ->", Egg.eggDir);
+        this.eggDir = path.join(process.cwd(), "egg", "resources", "default_app");
         process.chdir(this.game);
         this.gameDir = process.cwd();
 
@@ -112,7 +111,7 @@ module Egg {
         var fonts = [];
         var style = document.createElement('style');
         _.each(this.config['fonts'], function(path, name) {
-            var url = ("url(" + Egg.File.relative(Egg.eggDir, gameDir) + "/" + path + ")").replace(/\\/g, "/");
+            var url = ("url(" + Egg.File.urlPath(path) + ")").replace(/\\/g, "/");
             style.innerText += "@font-face { font-family: " + name + "; src: " + url + " }\n";
             fonts.push(new FontFace(name, url).load());
         });

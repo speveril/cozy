@@ -1,4 +1,4 @@
-///<reference path="../resources/default_app/Egg.d.ts" />
+///<reference path="../egg/resources/default_app/Egg.d.ts" />
 
 module $GAMEPATH$ {
     export function start() {

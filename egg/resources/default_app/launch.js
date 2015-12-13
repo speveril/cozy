@@ -1,9 +1,9 @@
 var app = require('app');
 var BrowserWindow = require('browser-window');
 var fs = require('fs');
+var path = require ('path');
 
-var execPath = process.execPath.replace(/(.*)(\\|\/).*$/, '$1$2');
-process.chdir(execPath);
+process.chdir(path.join(path.dirname(process.execPath), ".."));
 
 // process command line args
 var argv = process.argv.slice(1);
@@ -36,10 +36,10 @@ app.on('ready', setup);
 
 function setup() {
     if (options.build) {
-        actions.push(build.bind(null, __dirname + '/src'));
+        actions.push(build.bind(null, path.join("egg", "resources", "default_app", "src"), '../Egg.js'));
     }
     if (options.buildGame) {
-        actions.push(build.bind(null, gamePath));
+        actions.push(build.bind(null, gamePath, 'main.js'));
     }
 
     if (options.new) {
@@ -61,8 +61,8 @@ function next() {
     action();
 }
 
-function build(path) {
-    console.log("Building", path);
+function build(buildPath, outputFile) {
+    console.log("Building", buildPath, '->', path.join(buildPath, outputFile));
 
     // TODO copy all the stuff we need into a lib/ directory in the game
     //   - need to add the d.ts files for PIXI, node, etc
@@ -77,36 +77,36 @@ function build(path) {
     // });
 
     var child = require('child_process');
-    var tsc = child.fork(__dirname + '/lib/typescript/tsc', ['--project', path]);
+    var tsc = child.fork(__dirname + '/lib/typescript/tsc', ['--project', buildPath, '--out', path.join(buildPath, outputFile)]);
 
     // TODO add a new browserwindow that shows the results of the compile
 
     tsc.on('close', function(return_code) {
         if (!return_code) {
-            console.log("Build success.");
+            console.log(" - Build success.");
             next();
         } else {
-            console.log("Build failed.");
+            console.log(" - Build failed.");
             process.exit(1);
         }
     });
 }
 
 function makeNew() {
-    var templateDir = __dirname + "/game_template";
+    var templateDir =  path.join("egg", "resources", "default_app", "game_template");
 
     if (!fs.existsSync(gamePath)) {
         fs.mkdirSync(gamePath);
     }
 
-    if (fs.existsSync(gamePath + "/" + "config.json")) {
+    if (fs.existsSync(path.join(gamePath, "config.json"))) {
         throw new Error("Cannot initialize a game at " + gamePath + ", there's already one there!");
     } else {
         var filesToCopy = fs.readdirSync(templateDir);
         filesToCopy.forEach(function(filename) {
-            var contents = fs.readFileSync(templateDir + "/" + filename, { encoding: 'UTF-8' });
+            var contents = fs.readFileSync(path.join(templateDir, filename), { encoding: 'UTF-8' });
             contents = contents.replace(/\$GAMEPATH\$/g, gamePath);
-            fs.writeFileSync(gamePath + "/" + filename, contents);
+            fs.writeFileSync(path.join(gamePath, filename), contents);
         });
     }
 
@@ -115,10 +115,10 @@ function makeNew() {
 
 function play() {
     try {
-        params = JSON.parse(fs.readFileSync(gamePath + "/config.json"));
+        params = JSON.parse(fs.readFileSync(path.join(gamePath, "config.json")));
     } catch(e) {
         console.log("Couldn't load config.json in " + process.cwd());
-        window.close();
+        next();
     }
     params['width'] = params['width'] || 320;
     params['height'] = params['height'] || 240;

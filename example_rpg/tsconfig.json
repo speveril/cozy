@@ -1,7 +1,6 @@
 {
     "compilerOptions": {
         "removeComments": true,
-        "out": "example_rpg/main.js",
         "sourceMap": true,
         "target": "ES5"
     },
