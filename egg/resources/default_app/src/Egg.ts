@@ -108,16 +108,12 @@ module Egg {
         // set up audio
         Egg.Audio.init();
 
-        var fonts = [];
-        var style = document.createElement('style');
-        _.each(this.config['fonts'], function(path, name) {
-            var url = ("url(" + Egg.File.urlPath(path) + ")").replace(/\\/g, "/");
-            style.innerText += "@font-face { font-family: " + name + "; src: " + url + " }\n";
-            fonts.push(new FontFace(name, url).load());
+        var styles = [];
+        _.each(this.config['css'], function(path:string) {
+            Egg.addStyleSheet(path);
         });
-        document.head.appendChild(style);
 
-        Promise.all(fonts)
+        document['fonts'].ready
             .then(function() {
                 // start the game
                 this.Game = include("/main.js");
@@ -301,7 +297,7 @@ module Egg {
         var el = document.createElement('link');
         el.rel = "stylesheet";
         el.type = "text/css";
-        el.href = File.projectFile(path);
+        el.href = File.urlPath(path);
         document.head.appendChild(el);
     }
 }

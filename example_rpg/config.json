@@ -3,8 +3,8 @@
     "width": 320,
     "height": 240,
     "fullscreen": false,
-    "fonts": {
-        "PressStart": "font/prstartk.ttf",
-        "GreenScreen": "font/Greenscr.ttf"
-    }
+    "css": [
+        "font/fonts.css",
+        "ui/menu.css"
+    ]
 }

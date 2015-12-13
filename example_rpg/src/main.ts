@@ -31,8 +31,6 @@ module SimpleQuest {
         RPG.mainMenuClass = Menu_Main;
         RPG.loadSkip = ["./src_image"];
 
-        Egg.addStyleSheet("ui/menu.css");
-
         RPG.start(function() {
             var promises = [];
             _.each(sfx, function(s) { promises.push(s.loaded()); })
