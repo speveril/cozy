@@ -117,7 +117,7 @@ function play() {
     try {
         params = JSON.parse(fs.readFileSync(path.join(gamePath, "config.json")));
     } catch(e) {
-        console.log("Couldn't load config.json in " + process.cwd());
+        console.log("Couldn't load config.json in " + path.join(process.cwd(), gamePath) + ". " + e);
         next();
     }
     params['width'] = params['width'] || 320;
