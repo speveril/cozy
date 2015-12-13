@@ -8,13 +8,21 @@ module Egg {
             this.loadedPromise = new Promise(function(resolve, reject) {
                 Egg.File.readBinaryAsync(fileName)
                     .then(function(fileContents:ArrayBuffer) {
-                        Audio.context.decodeAudioData(fileContents, function(decoded) {
-                            this.buffer = decoded;
-                            resolve();
-                        }.bind(this), function() {
-                            console.log("Couldn't load sound file '" + fileName + "'.");
-                            reject();
-                        }.bind(this));
+                        var decode = function() {
+                            Audio.context.decodeAudioData(fileContents, function(decoded) {
+                                this.buffer = decoded;
+                                clearInterval(interval);
+                                resolve();
+                            }.bind(this), function() {
+                                console.log("Couldn't load sound file '" + fileName + "'.");
+                                clearInterval(interval);
+                                reject();
+                            }.bind(this));
+                        }.bind(this);
+                        var interval = setInterval(decode, 10000);
+                        decode();
+                    }.bind(this), function(error) {
+                        console.log("Failed to load '" + fileName + "'. " + error);
                     }.bind(this));
             }.bind(this));
         }
