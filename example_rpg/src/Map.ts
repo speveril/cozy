@@ -89,10 +89,9 @@ module SimpleQuest {
                 if (this.nextBattle < 0) {
                     var groupDef = threats[this.threatGroup];
                     var enemies = groupDef.enemies[Math.floor(Math.random() * groupDef.enemies.length)];
-
-                    console.log("FIGHT:", enemies);
-
                     this.nextBattle = this.tileSize.x * (groupDef['dist_min'] + Math.random() * groupDef['dist_max']);
+
+                    // RPG.Battle.start(groupDef);
                 }
 
                 this.lastPlayerPosition.x = RPG.player.position.x;

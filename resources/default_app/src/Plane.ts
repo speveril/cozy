@@ -12,8 +12,8 @@ module Egg {
 
             this.container.className = "plane " + args.className;
             if (args.renderable) {
-                this.renderer = new PIXI.WebGLRenderer(Egg.config['width'], Egg.config['height']);
-                this.renderer.backgroundColor = args.renderBackground === undefined ? 0x888888 : args.renderBackground;
+                this.renderer = new PIXI.WebGLRenderer(Egg.config['width'], Egg.config['height'], { transparent: true });
+                this.renderer.backgroundColor = args.renderBackground === undefined ? 'rgba(0, 0, 0, 0)' : args.renderBackground;
                 this.container.appendChild(this.renderer.view);
             }
             this.layers = [];
@@ -57,6 +57,10 @@ module Egg {
             if (this.renderer) {
                 this.container.appendChild(this.renderer.view);
             }
+        }
+
+        setBackground(color) {
+            this.renderer.backgroundColor = color;
         }
     }
 }

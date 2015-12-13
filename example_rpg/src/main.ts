@@ -65,8 +65,11 @@ module SimpleQuest {
             respectsObstructions: true
         });
 
-        music['village'].start();
-        RPG.startMap(new Map_Town(), 10, 7);
+        // music['village'].start();
+        // RPG.startMap(new Map_Town(), 10, 7);
+
+        music['forest'].start();
+        RPG.startMap(new Map_Forest(), 7, 43);
         RPG.controls = RPG.ControlMode.Map;
         Egg.unpause();
     }

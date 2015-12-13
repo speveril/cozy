@@ -233,10 +233,6 @@ module Egg {
         this.browserWindow.setTitle(title);
     }
 
-    export function setBackground(color) {
-        this.renderer.backgroundColor = color;
-    }
-
     export function quit() {
         this.browserWindow.close();
     }
@@ -246,6 +242,12 @@ module Egg {
         return File.projectFile(fname);
     }
 
+    // @DEPRECATE
+    export function setBackground(color) {
+        this.planes[0].renderer.backgroundColor = color;
+    }
+
+    // @DEPRECATE
     export function addLayer(index?:number):Layer {
         return this.planes[0].addRenderLayer(index);
         // var lyr = new Layer();
@@ -258,6 +260,7 @@ module Egg {
         // return lyr;
     }
 
+    // @DEPRECATE
     export function clearLayers() {
         this.planes[0].clear();
         // layerStack = [];

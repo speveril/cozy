@@ -1,3 +1,4 @@
+///<reference path="Battle.ts"/>
 ///<reference path="Character.ts"/>
 ///<reference path="Entity.ts"/>
 ///<reference path="Map.ts"/>
@@ -12,9 +13,10 @@ module RPG {
     export var UILayer:Egg.Layer;
     export var loadSkip:Array<string> = [];
     export var cameraHalf:PIXI.Point;
-    export enum ControlMode { None, Scene, Menu, Map };
+    export enum ControlMode { None, Scene, Menu, Map, Battle };
     export var controls:ControlMode;
     export var renderPlane:Egg.Plane;
+    export var battlePlane:Egg.Plane;
     export var uiPlane:Egg.Plane;
     export var mainMenuClass:any;
     export var characters:Character[];
@@ -26,6 +28,12 @@ module RPG {
             className: 'render-plane',
             renderable: true
         });
+
+        RPG.battlePlane = Egg.addPlane({
+            className: 'battle-plane',
+            renderable: true
+        })
+
         RPG.uiPlane = Egg.addPlane({
             className: 'overlay'
         });
@@ -144,6 +152,8 @@ module RPG {
             }
 
             Menu.currentMenu.update(dt);
+        } else if (controls === ControlMode.Battle && Battle.active) {
+            Battle.update(dt);
         }
     }
 
