@@ -124,12 +124,12 @@ function play() {
     params['height'] = params['height'] || 240;
 
     var window = new BrowserWindow({
-      width: params['width'],
-      height: params['height'],
-      title: params['title'] || 'Egg',
-      'auto-hide-menu-bar': true,
-      'use-content-size': true,
-      'fullscreen': params['fullscreen'] || false
+      'width':               params['width'],
+      'height':              params['height'],
+      'title':               params['title'] || 'Egg',
+      'fullscreen':          params['fullscreen'] || false
+      'auto-hide-menu-bar':  true,
+      'use-content-size':    true,
     });
     params.game = gamePath;
     if (options.debug) params.debug = true
