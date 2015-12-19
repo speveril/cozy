@@ -91,7 +91,7 @@ module SimpleQuest {
                     var enemies = groupDef.enemies[Math.floor(Math.random() * groupDef.enemies.length)];
                     this.nextBattle = this.tileSize.x * (groupDef['dist_min'] + Math.random() * groupDef['dist_max']);
 
-                    // RPG.Battle.start(groupDef);
+                    // RPG.Battle.start(enemies, {});
                 }
 
                 this.lastPlayerPosition.x = RPG.player.position.x;
@@ -122,21 +122,21 @@ module SimpleQuest {
         }
 
         set_threat(args) {
-            var group = args.event.properties['group'];
-            if (group === 'null') group = null;
-
-            if (this.threatGroup !== args.event.properties['group']) {
-                this.threatGroup = args.event.properties['group'];
-
-                if (this.threatGroup !== null) {
-                    var groupDef = threats[this.threatGroup];
-                    this.nextBattle = this.tileSize.x * (groupDef['dist_min'] + Math.random() * groupDef['dist_max']);
-                    this.lastPlayerPosition = new PIXI.Point(RPG.player.position.x, RPG.player.position.y);
-                } else {
-                    this.nextBattle = null;
-                    this.lastPlayerPosition = null;
-                }
-            }
+            // var group = args.event.properties['group'];
+            // if (group === 'null') group = null;
+            //
+            // if (this.threatGroup !== args.event.properties['group']) {
+            //     this.threatGroup = args.event.properties['group'];
+            //
+            //     if (this.threatGroup !== null) {
+            //         var groupDef = threats[this.threatGroup];
+            //         this.nextBattle = this.tileSize.x * (groupDef['dist_min'] + Math.random() * groupDef['dist_max']);
+            //         this.lastPlayerPosition = new PIXI.Point(RPG.player.position.x, RPG.player.position.y);
+            //     } else {
+            //         this.nextBattle = null;
+            //         this.lastPlayerPosition = null;
+            //     }
+            // }
         }
 
         open_door(args) {

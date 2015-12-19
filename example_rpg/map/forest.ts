@@ -95,6 +95,13 @@ module SimpleQuest {
             ]);
         }
 
+        skeleton_doorguard(args) {
+            RPG.Battle.start([
+
+            ], {
+            });
+        }
+
         examine_statue(args) {
             this.doScene([
                 "The statues seem ancient, but are in remarkably good repair.",
