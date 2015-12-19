@@ -96,9 +96,8 @@ module SimpleQuest {
         }
 
         skeleton_doorguard(args) {
-            RPG.Battle.start([
-
-            ], {
+            RPG.Battle.start({
+                enemy: "Skellington"
             });
         }
 

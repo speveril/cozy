@@ -18,7 +18,8 @@ module SimpleQuest {
         Map.persistent['global'] = {};
 
         sfx = {
-            'hit': new Egg.Sound("audio/sfx/hit.wav")
+            'hit': new Egg.Sound("audio/sfx/hit.wav"),
+            'menu_blip': new Egg.Sound("audio/sfx/menu_blip.wav"),
         };
         music = {
             'village':    new Egg.Music({ tracks: ["audio/music/village.ogg"] }),
@@ -28,6 +29,7 @@ module SimpleQuest {
 
         RPG.mainMenuClass = Menu_Main;
         RPG.loadSkip = ["./src_image"];
+        RPG.Menu.blip = sfx['menu_blip'];
 
         RPG.start(function() {
             var promises = [];

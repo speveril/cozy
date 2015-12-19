@@ -127,9 +127,9 @@ function play() {
       'width':               params['width'],
       'height':              params['height'],
       'title':               params['title'] || 'Egg',
-      'fullscreen':          params['fullscreen'] || false
+      'fullscreen':          params['fullscreen'] || false,
       'auto-hide-menu-bar':  true,
-      'use-content-size':    true,
+      'use-content-size':    true
     });
     params.game = gamePath;
     if (options.debug) params.debug = true

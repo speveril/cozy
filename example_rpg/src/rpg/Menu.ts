@@ -1,6 +1,8 @@
 module RPG {
     export class Menu {
         static menuStack:Menu[] = [];
+        static blip:Egg.Sound = null;
+        static choose:Egg.Sound = null;
 
         static get currentMenu():Menu {
             return Menu.menuStack[Menu.menuStack.length - 1] || null;

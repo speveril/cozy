@@ -110,8 +110,8 @@ module Egg {
             this.sfxGain.connect(this.context.destination);
 
             // MUTE STUFF FOR NOW
-            this.musicGain.gain.value = 0;
-            this.sfxGain.gain.value = 0;
+            // this.musicGain.gain.value = 0;
+            // this.sfxGain.gain.value = 0;
         }
     }
 }

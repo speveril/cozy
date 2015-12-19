@@ -5,15 +5,17 @@ module RPG {
         static savedControls:RPG.ControlMode;
 
         static start(args):Promise<any> {
+            if (!args.enemy) throw new Error("Battle.start() called with no 'enemy'");
+
             return new Promise(function(resolve, reject) {
                 this.resolve = resolve;
                 this.active = true;
 
-                console.log("START BATTLE");
+                console.log(">> Starting battle with " + args.enemy);
                 this.savedControls = RPG.controls;
                 RPG.controls = RPG.ControlMode.Battle;
 
-
+                
             }.bind(this));
         }
 

@@ -141,14 +141,23 @@ module RPG {
             if (Egg.button('up')) {
                 Egg.debounce('up', 0.2);
                 Menu.currentMenu.moveSelection(-1);
+                if (Menu.blip) {
+                    Menu.blip.play();
+                }
             }
             if (Egg.button('down')) {
                 Egg.debounce('down', 0.2);
                 Menu.currentMenu.moveSelection(+1);
+                if (Menu.blip) {
+                    Menu.blip.play();
+                }
             }
             if (Egg.button('confirm')) {
                 Egg.debounce('confirm');
                 Menu.currentMenu.confirmSelection();
+                if (Menu.choose) {
+                    Menu.choose.play();
+                }
             }
 
             Menu.currentMenu.update(dt);

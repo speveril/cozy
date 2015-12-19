@@ -3,28 +3,17 @@ module SimpleQuest {
         "forest_A": {
             "dist_min": 25,
             "dist_max": 100,
-            "enemies": [
-                ["Bunny", "Bunny", "Bunny Captain"],
-                ["Mosquito", "Mosquito"],
-                ["Bushling"]
-            ]
+            "enemies": [ "Bunny", "Mosquito", "Bushling" ]
         },
         "forest_B": {
             "dist_min": 20,
             "dist_max": 50,
-            "enemies": [
-                ["Ruiner"],
-                ["Haunt", "Haunt"],
-                ["Giant Rat", "Giant Rat", "Giant Rat"]
-            ]
+            "enemies": [ "Ruiner", "Haunt", "Giant Rat" ]
         },
         "forest_C": {
             "dist_min": 25,
             "dist_max": 85,
-            "enemies": [
-                ["Bushling", "Bushling", "Bushling"],
-                ["Bunny Captain", "Bunny Lord", "Bunny Captain"],
-                ["Forest Drake"]
+            "enemies": [ "Bushling", "Bunny Captain", "Forest Drake"
             ]
         }
     };
@@ -91,7 +80,7 @@ module SimpleQuest {
                     var enemies = groupDef.enemies[Math.floor(Math.random() * groupDef.enemies.length)];
                     this.nextBattle = this.tileSize.x * (groupDef['dist_min'] + Math.random() * groupDef['dist_max']);
 
-                    // RPG.Battle.start(enemies, {});
+                    // RPG.Battle.start({ enemy: enemies });
                 }
 
                 this.lastPlayerPosition.x = RPG.player.position.x;
