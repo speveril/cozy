@@ -2,7 +2,8 @@
     "compilerOptions": {
         "removeComments": true,
         "sourceMap": true,
-        "target": "ES5"
+        "target": "ES5",
+        "out": "../main.js"
     },
     "files": [
         "src/main.ts"
