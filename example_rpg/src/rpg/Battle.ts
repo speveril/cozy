@@ -36,7 +36,7 @@ var battleHTML = `
 
 var monsters = {
     skellington: {
-        name: "Skellington", hp: 5, maxhp: 5, attack: 3, defense: 2, critical: 1, evade: 1, image: 'ui/battle/monster_skellington.png'
+        name: "Skellington", hp: 5, maxhp: 5, attack: 3, defense: 2, critical: 1, evade: 1, image: 'ui/battle/monster_blueslime.png'
     }
 }
 
