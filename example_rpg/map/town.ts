@@ -33,8 +33,13 @@ module SimpleQuest {
 
         trigger_well(args) {
             this.doScene([
-                "\n<center>HP and MP restored!</center>",
-                "This means nothing to you."
+                function() {
+                    SimpleQuest.sfx['restore'].play();
+                    RPG.Party.each(function(ch:RPG.Character) {
+                        ch.hp = ch.maxhp;
+                    });
+                },
+                "\n<center>HP restored!</center>",
             ]);
         }
 

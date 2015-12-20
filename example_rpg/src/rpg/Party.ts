@@ -24,5 +24,11 @@ module RPG {
             var pm = new PartyMember(ch);
             this.members.push(pm);
         }
+
+        static each(f:(ch:Character)=>void) {
+            for (var i = 0; i < this.members.length; i++) {
+                f(this.members[i].character);
+            }
+        }
     }
 }

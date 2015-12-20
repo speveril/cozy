@@ -20,6 +20,7 @@ module SimpleQuest {
         sfx = {
             'hit': new Egg.Sound("audio/sfx/hit.wav"),
             'menu_blip': new Egg.Sound("audio/sfx/menu_blip.wav"),
+            'restore': new Egg.Sound("audio/sfx/healthrestore.wav")
         };
         music = {
             'village':    new Egg.Music({ tracks: ["audio/music/village.ogg"] }),
@@ -30,6 +31,11 @@ module SimpleQuest {
         RPG.mainMenuClass = Menu_Main;
         RPG.loadSkip = ["./src_image"];
         RPG.Menu.blip = sfx['menu_blip'];
+        RPG.Battle.setMonsters({
+            skellington: { name: "Skellington", maxhp: 5, attack: 6, defense: 2, critical: 3, evade: 0, image: 'ui/battle/monster_skellington.png' },
+            blueslime: { name: "Blue Slime", maxhp: 7, attack: 3, defense: 4, critical: 1, evade: 3, image: 'ui/battle/monster_blueslime.png' },
+            stabber: { name: "Stabber", maxhp: 10, attack: 3, defense: 3, critical: 10, evade: 10, image: 'ui/battle/monster_stabber.png' }
+        });
 
         RPG.start(function() {
             var promises = [];

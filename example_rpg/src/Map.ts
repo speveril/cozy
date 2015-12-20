@@ -3,18 +3,20 @@ module SimpleQuest {
         "forest_A": {
             "dist_min": 25,
             "dist_max": 100,
-            "enemies": [ "Bunny", "Mosquito", "Bushling" ]
+            "scene": "ui/battle/scene_test.png",
+            "enemies": [ "blueslime", "blueslime", "skellington" ]
         },
         "forest_B": {
             "dist_min": 20,
             "dist_max": 50,
-            "enemies": [ "Ruiner", "Haunt", "Giant Rat" ]
+            "scene": "ui/battle/scene_test.png",
+            "enemies": [ "skellington", "skellington", "stabber" ]
         },
         "forest_C": {
             "dist_min": 25,
             "dist_max": 85,
-            "enemies": [ "Bushling", "Bunny Captain", "Forest Drake"
-            ]
+            "scene": "ui/battle/scene_test.png",
+            "enemies": [ "stabber" ]
         }
     };
 
@@ -77,10 +79,10 @@ module SimpleQuest {
 
                 if (this.nextBattle < 0) {
                     var groupDef = threats[this.threatGroup];
-                    var enemies = groupDef.enemies[Math.floor(Math.random() * groupDef.enemies.length)];
+                    var enemy = groupDef.enemies[Math.floor(Math.random() * groupDef.enemies.length)];
                     this.nextBattle = this.tileSize.x * (groupDef['dist_min'] + Math.random() * groupDef['dist_max']);
 
-                    // RPG.Battle.start({ enemy: enemies });
+                    RPG.Battle.start({ enemy: enemy, scene: groupDef.scene });
                 }
 
                 this.lastPlayerPosition.x = RPG.player.position.x;
@@ -111,21 +113,21 @@ module SimpleQuest {
         }
 
         set_threat(args) {
-            // var group = args.event.properties['group'];
-            // if (group === 'null') group = null;
-            //
-            // if (this.threatGroup !== args.event.properties['group']) {
-            //     this.threatGroup = args.event.properties['group'];
-            //
-            //     if (this.threatGroup !== null) {
-            //         var groupDef = threats[this.threatGroup];
-            //         this.nextBattle = this.tileSize.x * (groupDef['dist_min'] + Math.random() * groupDef['dist_max']);
-            //         this.lastPlayerPosition = new PIXI.Point(RPG.player.position.x, RPG.player.position.y);
-            //     } else {
-            //         this.nextBattle = null;
-            //         this.lastPlayerPosition = null;
-            //     }
-            // }
+            var group = args.event.properties['group'];
+            if (group === 'null') group = null;
+
+            if (this.threatGroup !== args.event.properties['group']) {
+                this.threatGroup = args.event.properties['group'];
+
+                if (this.threatGroup !== null) {
+                    var groupDef = threats[this.threatGroup];
+                    this.nextBattle = this.tileSize.x * (groupDef['dist_min'] + Math.random() * groupDef['dist_max']);
+                    this.lastPlayerPosition = new PIXI.Point(RPG.player.position.x, RPG.player.position.y);
+                } else {
+                    this.nextBattle = null;
+                    this.lastPlayerPosition = null;
+                }
+            }
         }
 
         open_door(args) {

@@ -13,6 +13,9 @@ module RPG {
             _.each(args, function(v, k) {
                 this[k] = v;
             }.bind(this));
+            if (this.hp === undefined) {
+                this.hp = this.maxhp;
+            }
         }
     }
 }

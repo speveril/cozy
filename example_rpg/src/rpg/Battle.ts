@@ -34,22 +34,16 @@ var battleHTML = `
     </div>
 `;
 
-var monsters = {
-    skellington: {
-        name: "Skellington", hp: 5, maxhp: 5, attack: 3, defense: 2, critical: 1, evade: 1, image: 'ui/battle/monster_blueslime.png'
-    }
-}
-
 module RPG {
     export enum AttackResult { Miss, Weak, Normal, Critical  };
     export class Battle {
-
         static active:boolean = false;
         static resolve:()=>void;
         static savedControls:RPG.ControlMode;
         static enemy:Character;
         static player:Character;
         static battleText:string[];
+        static monsters:any;
         static monsterLayer:Egg.Layer;
         static monsterSprite:Egg.Sprite;
 
@@ -61,7 +55,7 @@ module RPG {
             if (!args.scene) throw new Error("Battle.start() called with no scene");
 
             this.player = Party.members[0].character;
-            this.enemy = new Character(monsters[args.enemy]);
+            this.enemy = new Character(this.monsters[args.enemy]);
 
             return new Promise(function(resolve, reject) {
                 this.resolve = resolve;
@@ -76,7 +70,7 @@ module RPG {
                     position: { x: 82, y: 15}
                 }));
                 this.monsterSprite = new Egg.Sprite({
-                    texture: monsters[args.enemy].image,
+                    texture: this.monsters[args.enemy].image,
                     position: { x: 82, y: 15}
                 });
                 this.monsterLayer.add(this.monsterSprite);
@@ -254,6 +248,10 @@ module RPG {
                 this.battleText.shift();
             }
             Textbox.setText(this.battleText.join("\n"));
+        }
+
+        static setMonsters(m:any) {
+            this.monsters = m;
         }
     }
 }

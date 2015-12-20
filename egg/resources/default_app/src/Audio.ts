@@ -99,6 +99,9 @@ module Egg {
         static musicGain:GainNode;
         static sfxGain:GainNode;
 
+        static musicVolume:number;
+        static sfxVolume:number;
+
         static init():void {
             this.context = new AudioContext();
             this.context.sampleRate = 48000;
@@ -109,9 +112,29 @@ module Egg {
             this.sfxGain = this.context.createGain();
             this.sfxGain.connect(this.context.destination);
 
-            // MUTE STUFF FOR NOW
+            this.musicVolume = 1;
+            this.sfxVolume = 1;
+            this.unmute();
+        }
+
+        static mute() {
             this.musicGain.gain.value = 0;
             this.sfxGain.gain.value = 0;
+        }
+
+        static unmute() {
+            this.musicGain.gain.value = this.musicVolume;
+            this.sfxGain.gain.value = this.sfxVolume;
+        }
+
+        static setSFXVolume(v:number) {
+            this.sfxVolume = v;
+            this.unmute();
+        }
+
+        static setMusicVolume(v:number) {
+            this.musicVolume = v;
+            this.unmute();
         }
     }
 }
