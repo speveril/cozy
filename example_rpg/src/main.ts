@@ -54,20 +54,23 @@ module SimpleQuest {
     export function newGame() {
         Egg.pause();
 
-        //RPG.characters.push(new RPG.Character());
-
-        RPG.player = new RPG.Entity({
+        RPG.characters.push(new RPG.Character({
+            name: "Hero",
             sprite: "sprites/hero.sprite",
-            speed: 64,
-            triggersEvents: true,
-            respectsObstructions: true
-        });
+            hp: 10, maxhp: 10,
+            attack: 4,
+            defense: 4,
+            critical: 2,
+            evade: 0
+        }));
+        RPG.Party.add(RPG.characters[0]);
+        RPG.player = RPG.Party.members[0].makeEntity();
 
         // music['village'].start();
         // RPG.startMap(new Map_Town(), 10, 7);
-
         music['forest'].start();
         RPG.startMap(new Map_Forest(), 7, 43);
+
         RPG.controls = RPG.ControlMode.Map;
         Egg.unpause();
     }

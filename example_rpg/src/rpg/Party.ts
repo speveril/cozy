@@ -1,4 +1,28 @@
 module RPG {
+    export class PartyMember {
+        character:Character;
+        entity:Entity;
+
+        constructor(ch) {
+            this.character = ch;
+            this.entity = null;
+        }
+
+        makeEntity() {
+            return new RPG.Entity({
+                sprite: this.character.sprite,
+                speed: 64,
+                triggersEvents: true,
+                respectsObstructions: true
+            });
+        }
+    }
+
     export class Party {
+        static members:PartyMember[] = [];
+        static add(ch:Character) {
+            var pm = new PartyMember(ch);
+            this.members.push(pm);
+        }
     }
 }

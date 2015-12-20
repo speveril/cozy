@@ -300,4 +300,10 @@ module Egg {
         el.href = File.urlPath(path);
         document.head.appendChild(el);
     }
+
+    export function wrap(n:number, range:number) {
+        while (n < 0) n += range;
+        n %= range;
+        return n;
+    }
 }

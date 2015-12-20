@@ -2,7 +2,7 @@
     margin: 0;
     padding: 0;
     -webkit-user-select: none;
-    image-rendering: inherit;
+    image-rendering: pixelated;
 }
 
 body {
@@ -17,10 +17,12 @@ canvas {
     left: 0;
 }
 
-plane {
+.plane {
     position: absolute;
     top: 0;
     left: 0;
+    width: 100%;
+    height: 100%;
 }
 
 div.ui {
@@ -28,5 +30,4 @@ div.ui {
     top: 0;
     left: 0;
     transform-origin: top left;
-    image-rendering: pixelated;
 }

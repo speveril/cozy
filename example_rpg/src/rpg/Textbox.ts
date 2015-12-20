@@ -10,12 +10,17 @@ module RPG {
                 this.hide();
             }
 
-            // TODO allow games to import style sheets?
             this.box = document.createElement('div');
             this.box.className = "textbox";
-            this.box.innerHTML = text;
+            this.setText(text);
 
             RPG.uiPlane.ui.appendChild(this.box);
+        }
+
+        static setText(text:string) {
+            if (this.box) {
+                this.box.innerHTML = text;
+            }
         }
 
         static hide() {

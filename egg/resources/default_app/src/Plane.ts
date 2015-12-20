@@ -24,6 +24,14 @@ module Egg {
             this.container.appendChild(this.ui);
         }
 
+        show() {
+            this.container.style.display = '';
+        }
+
+        hide() {
+            this.container.style.display = 'none';
+        }
+
         addRenderLayer(index?:number):Egg.Layer {
             var lyr = new Layer();
             if (index === undefined) {
@@ -52,15 +60,19 @@ module Egg {
             this.layerContainer.removeChildren();
 
             while(this.ui.lastChild) {
-                this.container.removeChild(this.container.lastChild);
-            }
-            if (this.renderer) {
-                this.container.appendChild(this.renderer.view);
+                this.ui.removeChild(this.ui.lastChild);
             }
         }
 
         setBackground(color) {
             this.renderer.backgroundColor = color;
+        }
+
+        addHTML(file) {
+            var container = document.createElement('div');
+            container.innerHTML = Egg.File.read(Egg.File.projectFile(file));
+            this.ui.appendChild(container);
+            return container;
         }
     }
 }

@@ -64,6 +64,12 @@ module RPG {
             }
         }
 
+        destroy() {
+            var index = this.layer.entities.indexOf(this);
+            this.layer.entities.splice(index, 1);
+            this.sprite.layer.remove(this.sprite);
+        }
+
         move(dx:number, dy:number):void {
             var i, ang = 0;
 

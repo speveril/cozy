@@ -23,6 +23,8 @@ Ultimately the development is driven by what I want out of the engine. I have a 
 ## Roadmap/TODOs
 
 - RPGkit
+  - Battle should actually use the Menu stuff rather than rolling its own
+  - Branching Scenes
 - Reconcile File stuff
 
 Feature wish list (some day):

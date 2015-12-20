@@ -97,8 +97,12 @@ module SimpleQuest {
 
         skeleton_doorguard(args) {
             RPG.Battle.start({
-                enemy: "Skellington"
-            });
+                enemy: "skellington",
+                scene: 'ui/battle/scene_test.png'
+            })
+            .then(function() {
+                args.target.destroy();
+            }.bind(this));
         }
 
         examine_statue(args) {

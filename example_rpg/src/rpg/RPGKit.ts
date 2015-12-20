@@ -8,18 +8,19 @@
 ///<reference path="Textbox.ts"/>
 
 module RPG {
+    export enum ControlMode { None, Scene, Menu, Map, Battle };
+    
     export var player:Entity;
     export var map:Map;
     export var UILayer:Egg.Layer;
     export var loadSkip:Array<string> = [];
     export var cameraHalf:PIXI.Point;
-    export enum ControlMode { None, Scene, Menu, Map, Battle };
     export var controls:ControlMode;
     export var renderPlane:Egg.Plane;
     export var battlePlane:Egg.Plane;
     export var uiPlane:Egg.Plane;
     export var mainMenuClass:any;
-    export var characters:Character[];
+    export var characters:Character[] = [];
 
     export function start(loaded:Function) {
         Egg.addStyleSheet("src/rpg/rpg.css");
@@ -32,7 +33,8 @@ module RPG {
         RPG.battlePlane = Egg.addPlane({
             className: 'battle-plane',
             renderable: true
-        })
+        });
+        RPG.battlePlane.hide();
 
         RPG.uiPlane = Egg.addPlane({
             className: 'overlay'

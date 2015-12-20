@@ -90,22 +90,14 @@ module RPG {
             if (this.selectionIndex !== undefined) {
                 this.selections[this.selectionIndex].className = '';
             }
-            this.selectionIndex = index;
-            this.fixSelectionIndex();
-
+            this.selectionIndex = Egg.wrap(index, this.selections.length);
             this.selections[this.selectionIndex].className = 'active';
         }
 
         moveSelection(delta:number) {
             this.selections[this.selectionIndex].className = '';
-            this.selectionIndex += delta;
-            this.fixSelectionIndex();
+            this.selectionIndex = Egg.wrap(this.selectionIndex + delta, this.selections.length);
             this.selections[this.selectionIndex].className = 'active';
-        }
-
-        private fixSelectionIndex() {
-            while (this.selectionIndex < 0) this.selectionIndex += this.selections.length;
-            this.selectionIndex %= this.selections.length;
         }
     }
 }
