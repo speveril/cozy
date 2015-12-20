@@ -13,6 +13,7 @@ module Egg {
         currentAnimation: {};
         animationScratch: {};
         frameRate: number;
+        currentQuake: {};
 
         /**
             constructor args: {
@@ -90,6 +91,18 @@ module Egg {
             }
         }
 
+        quake(t:number, range:any, decay?:any): void {
+            this.currentQuake = {
+                remaining: t,
+                range: range,
+                decay: decay,
+                offset: {
+                    x: Math.random() * 2 * (range.x) - range.x,
+                    y: Math.random() * 2 * (range.y) - range.y,
+                }
+            };
+        }
+
         update(dt):void {
             if (this.currentAnimation) {
                 var f = this.animationScratch['currentFrame'] || 0;
@@ -113,6 +126,23 @@ module Egg {
                     this.frame = this.currentAnimation['frames'][f][0];
                     this.animationScratch['currentFrame'] = f;
                 }
+            }
+
+            if (this.currentQuake) {
+                this.currentQuake['remaining'] -= dt;
+                if (this.currentQuake['remaining'] < 0) {
+                    this.currentQuake = null;
+                } else {
+                    if (this.currentQuake['decay']) {
+                        this.currentQuake['range'].x = Math.max(0, this.currentQuake['range'].x - this.currentQuake['decay'].x * dt);
+                        this.currentQuake['range'].y = Math.max(0, this.currentQuake['range'].y - this.currentQuake['decay'].y * dt);
+                    }
+                    this.currentQuake['offset'] = {
+                        x: Math.random() * 2 * (this.currentQuake['range'].x) - this.currentQuake['range'].x,
+                        y: Math.random() * 2 * (this.currentQuake['range'].y) - this.currentQuake['range'].y,
+                    }
+                }
+                this.positionInnerSprite();
             }
         }
 
@@ -153,6 +183,10 @@ module Egg {
         private positionInnerSprite():void {
             this.innerSprite.x = Math.floor(this.position.x - this.hotspot.x);
             this.innerSprite.y = Math.floor(this.position.y - this.hotspot.y);
+            if (this.currentQuake) {
+                this.innerSprite.x +=  Math.floor(this.currentQuake['offset'].x)
+                this.innerSprite.y +=  Math.floor(this.currentQuake['offset'].y)
+            }
         }
     }
 }

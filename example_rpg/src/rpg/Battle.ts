@@ -36,7 +36,7 @@ var battleHTML = `
 
 var monsters = {
     skellington: {
-        name: "Skellington", hp: 5, maxhp: 5, attack: 3, defense: 2, critical: 1, evade: 1
+        name: "Skellington", hp: 5, maxhp: 5, attack: 3, defense: 2, critical: 1, evade: 1, image: 'ui/battle/monster_skellington.png'
     }
 }
 
@@ -51,6 +51,7 @@ module RPG {
         static player:Character;
         static battleText:string[];
         static monsterLayer:Egg.Layer;
+        static monsterSprite:Egg.Sprite;
 
         static menuSelection:number;
         static menu = [ "Fight", "Item", "Flee" ];
@@ -74,6 +75,11 @@ module RPG {
                     texture: args.scene,
                     position: { x: 82, y: 15}
                 }));
+                this.monsterSprite = new Egg.Sprite({
+                    texture: monsters[args.enemy].image,
+                    position: { x: 82, y: 15}
+                });
+                this.monsterLayer.add(this.monsterSprite);
 
                 var ui = document.createElement('div');
                 ui.innerHTML = battleHTML;
@@ -149,6 +155,9 @@ module RPG {
                         }.bind(this))
                         .then(function() {
                             var result = this.resolveAttack(this.player, this.enemy);
+                            if (result !== AttackResult.Miss) {
+                                this.monsterSprite.quake(0.25, { x: 10, y: 3 }, { x: 40, y: 12 });
+                            }
                             return RPG.Scene.waitForTime(0.75);
                         }.bind(this))
                         .then(function() {
