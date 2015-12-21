@@ -243,7 +243,7 @@ module RPG {
                 this.text("Hit! " + defender.name + " takes " + damage + " damage.");
             } else {
                 result = AttackResult.Miss;
-                this.text(defender.name + " hit but didn't do any damage.");
+                this.text(attacker.name + " hit but didn't do any damage.");
             }
 
             defender.hp -= damage;
