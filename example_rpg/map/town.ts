@@ -86,7 +86,7 @@ module SimpleQuest {
 
         villager_bushes(args) {
             this.doScene([
-                "VILLAGER: Whoa there, lady. This here's private property.",
+                "VILLAGER: Whoa there! This here's private property.",
                 "VILLAGER: Go find your own dang bushes!"
             ])
         }

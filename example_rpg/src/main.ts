@@ -4,6 +4,8 @@
 ///<reference path="Map.ts"/>
 ///<reference path="Menus.ts"/>
 
+///<reference path="characters/Hero.ts"/>
+
 ///<reference path="../map/town.ts"/>
 ///<reference path="../map/forest.ts"/>
 ///<reference path="../map/overworld.ts"/>
@@ -60,16 +62,8 @@ module SimpleQuest {
     export function newGame() {
         Egg.pause();
 
-        RPG.characters.push(new RPG.Character({
-            name: "Hero",
-            sprite: "sprites/hero.sprite",
-            hp: 10, maxhp: 10,
-            attack: 4,
-            defense: 4,
-            critical: 2,
-            evade: 0
-        }));
-        RPG.Party.add(RPG.characters[0]);
+        RPG.characters['hero'] = new Characters.Hero();
+        RPG.Party.add(RPG.characters['hero']);
         RPG.player = RPG.Party.members[0].makeEntity();
 
         // music['village'].start();

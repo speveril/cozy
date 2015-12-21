@@ -9,7 +9,7 @@
 
 module RPG {
     export enum ControlMode { None, Scene, Menu, Map, Battle };
-    
+
     export var player:Entity;
     export var map:Map;
     export var UILayer:Egg.Layer;
@@ -20,7 +20,7 @@ module RPG {
     export var battlePlane:Egg.Plane;
     export var uiPlane:Egg.Plane;
     export var mainMenuClass:any;
-    export var characters:Character[] = [];
+    export var characters:{[key:string]:Character} = {};
 
     export function start(loaded:Function) {
         Egg.addStyleSheet("src/rpg/rpg.css");
