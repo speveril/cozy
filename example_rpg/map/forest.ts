@@ -40,14 +40,17 @@ module SimpleQuest {
             this.doScene([
                 function() {
                     this.layers[1].setTile(args.tx, args.ty, t + 1);
+                    sfx['chnk'].play();
                     return RPG.Scene.waitForTime(0.5);
                 }.bind(this),
                 function() {
                     this.layers[1].setTile(args.tx, args.ty, t + 2);
+                    sfx['chnk'].play();
                     return RPG.Scene.waitForTime(0.5);
                 }.bind(this),
                 function() {
                     var door = RPG.player.layer.getTriggersByName('locked_door')[0];
+                    sfx['thud'].play();
                     var tx = Math.floor(door.rect.x / this.tileSize.x);
                     var ty = Math.floor(door.rect.y / this.tileSize.y);
                     this.layers[1].setTile(tx, ty, this.layers[1].getTile(tx, ty) + 1);
@@ -76,6 +79,7 @@ module SimpleQuest {
                 "\n<center>Used Magical Plotkey!\n</center>",
                 function() {
                     this.layers[1].setTile(args.tx, args.ty, this.layers[1].getTile(args.tx, args.ty) + 1);
+                    sfx['thud'].play();
                     args.trigger.solid = false;
                 }.bind(this)
             ]);
@@ -90,6 +94,7 @@ module SimpleQuest {
                 "\n<center>Used Magical Plotkey #2!\n</center>",
                 function() {
                     this.layers[1].setTile(args.tx, args.ty, this.layers[1].getTile(args.tx, args.ty) + 1);
+                    sfx['thud'].play();
                     args.trigger.solid = false;
                 }.bind(this)
             ]);

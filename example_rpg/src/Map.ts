@@ -133,6 +133,7 @@ module SimpleQuest {
         open_door(args) {
             var t = this.layers[1].getTile(args.tx, args.ty);
             if (t == 5) {
+                SimpleQuest.sfx['thud'].play();
                 this.layers[1].setTile(args.tx, args.ty, 6);
             }
         }

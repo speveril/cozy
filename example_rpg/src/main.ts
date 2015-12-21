@@ -20,9 +20,11 @@ module SimpleQuest {
         Map.persistent['global'] = {};
 
         sfx = {
-            'hit': new Egg.Sound("audio/sfx/hit.wav"),
+            'hit': new Egg.Sound("audio/sfx/smash.wav"),
             'menu_blip': new Egg.Sound("audio/sfx/menu_blip.wav"),
-            'restore': new Egg.Sound("audio/sfx/healthrestore.wav")
+            'restore': new Egg.Sound("audio/sfx/healthrestore.wav"),
+            'thud': new Egg.Sound("audio/sfx/thud.wav"),
+            'chnk': new Egg.Sound("audio/sfx/chnk.wav")
         };
         music = {
             'village':    new Egg.Music({ tracks: ["audio/music/village.ogg"] }),
