@@ -20,6 +20,7 @@ module SimpleQuest {
         Map.persistent['global'] = {};
 
         sfx = {
+            'start': new Egg.Sound("audio/sfx/start.wav"),
             'hit': new Egg.Sound("audio/sfx/smash.wav"),
             'menu_blip': new Egg.Sound("audio/sfx/menu_blip.wav"),
             'restore': new Egg.Sound("audio/sfx/healthrestore.wav"),
@@ -36,9 +37,18 @@ module SimpleQuest {
         RPG.loadSkip = ["./src_image"];
         RPG.Menu.blip = sfx['menu_blip'];
         RPG.Battle.setMonsters({
-            skellington: { name: "Skellington", maxhp: 5, attack: 6, defense: 2, critical: 3, evade: 0, image: 'ui/battle/monster_skellington.png' },
-            blueslime: { name: "Blue Slime", maxhp: 7, attack: 3, defense: 4, critical: 1, evade: 3, image: 'ui/battle/monster_blueslime.png' },
-            stabber: { name: "Stabber", maxhp: 10, attack: 3, defense: 3, critical: 10, evade: 10, image: 'ui/battle/monster_stabber.png' }
+            skellington: { name: "Skellington", maxhp: 5, attack: 6, defense: 2, critical: 3, evade: 0, xp: 20,
+                image: 'ui/battle/monster_skellington.png',
+                treasure: function() { return { money:(3 + Math.random() * 4) | 0 }; }
+            },
+            blueslime: { name: "Blue Slime", maxhp: 7, attack: 3, defense: 4, critical: 1, evade: 3, xp: 15,
+                image: 'ui/battle/monster_blueslime.png',
+                treasure: function() { return { money:(1 + Math.random() * 3) | 0 }; }
+            },
+            stabber: { name: "Stabber", maxhp: 10, attack: 3, defense: 3, critical: 10, evade: 10, xp: 35,
+                image: 'ui/battle/monster_stabber.png',
+                treasure: function() { return { money:(5 + Math.random() * 5) | 0 }; }
+            }
         });
 
         RPG.start(function() {

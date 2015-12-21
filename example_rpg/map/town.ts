@@ -57,7 +57,7 @@ module SimpleQuest {
 
         villager_well(args) {
             this.doScene([
-                "VILLAGER: Fresh water is good for you!\nI'm so glad we have this well."
+                "VILLAGER: Fresh water is good for you! I'm so glad we have this well."
             ]);
         }
 

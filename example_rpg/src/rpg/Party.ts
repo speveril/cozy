@@ -20,6 +20,8 @@ module RPG {
 
     export class Party {
         static members:PartyMember[] = [];
+        static money:number = 0;
+
         static add(ch:Character) {
             var pm = new PartyMember(ch);
             this.members.push(pm);

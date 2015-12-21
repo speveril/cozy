@@ -21,6 +21,7 @@ module RPG {
     export var uiPlane:Egg.Plane;
     export var mainMenuClass:any;
     export var characters:{[key:string]:Character} = {};
+    export var moneyName:string = "G";
 
     export function start(loaded:Function) {
         Egg.addStyleSheet("src/rpg/rpg.css");

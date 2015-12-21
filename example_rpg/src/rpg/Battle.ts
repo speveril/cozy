@@ -130,6 +130,7 @@ module RPG {
                 }
             }
             if (Egg.button('confirm')) {
+                SimpleQuest.sfx['menu_blip'].play();
                 Egg.debounce('confirm');
                 this.do(this.menu[this.menuSelection]);
             }
@@ -150,6 +151,7 @@ module RPG {
                         .then(function() {
                             var result = this.resolveAttack(this.player, this.enemy);
                             if (result !== AttackResult.Miss) {
+                                SimpleQuest.sfx['hit'].play();
                                 this.monsterSprite.quake(0.25, { x: 10, y: 3 }, { x: 40, y: 12 });
                             }
                             return RPG.Scene.waitForTime(0.75);
@@ -165,7 +167,11 @@ module RPG {
                         }.bind(this))
                         .then(function() {
                             if (this.enemy.hp < 1) {
-                                // do nothing
+                                this.text("You gained " + this.enemy.xp + " XP!");
+                                this.text("You found " + this.enemy.treasure.money + " " + RPG.moneyName + "!");
+                                Party.each(function(ch:Character) { ch.xp += this.enemy.xp; }.bind(this));
+                                Party.money += this.enemy.treasure.money;
+                                return RPG.Scene.waitForButton('confirm');
                             } else {
                                 var result = this.resolveAttack(this.enemy, this.player);
                                 return RPG.Scene.waitForTime(0.75);
@@ -222,19 +228,22 @@ module RPG {
             var damage = attacker.attack;
             if (Math.random() * 100 < attacker.critical) {
                 damage = ((damage * (3 + Math.random() * 2)) / 4) | 0;
-                this.text("Critical hit! " + defender.name + " takes " + damage + " damage.");
                 result = AttackResult.Critical;
             } else {
                 damage -= (defender.defense / 2) | 0;
                 if (damage == 0) {
                     damage = ((Math.random() * attacker.attack) / 10) | 0;
-                    this.text("Weak hit! " + defender.name + " takes " + damage + " damage.");
                     result = AttackResult.Weak;
                 } else {
                     damage = ((damage * (3 + Math.random() * 2)) / 4) | 0;
-                    this.text("A hit! " + defender.name + " takes " + damage + " damage.");
                     result = AttackResult.Normal;
                 }
+            }
+            if (damage > 0) {
+                this.text("Hit! " + defender.name + " takes " + damage + " damage.");
+            } else {
+                result = AttackResult.Miss;
+                this.text(defender.name + " hit but didn't do any damage.");
             }
 
             defender.hp -= damage;
@@ -254,36 +263,4 @@ module RPG {
             this.monsters = m;
         }
     }
-}
-
-window['runTest'] = function() {
-    function attack(attacker, defender) {
-        if (Math.random() * 100 < defender.evade) {
-            console.log(defender.name + " evades the attack!");
-            return;
-        }
-
-        var damage = attacker.attack;
-        if (Math.random() * 100 < attacker.critical) {
-            damage = ((damage * (3 + Math.random() * 2)) / 4) | 0;
-            console.log("Critical hit! " + defender.name + " takes " + damage + " damage.");
-        } else {
-            damage -= (defender.defense / 2) | 0;
-            if (damage == 0) {
-                damage = ((Math.random() * attacker.attack) / 10) | 0;
-                console.log("Weak hit! " + defender.name + " takes " + damage + " damage.");
-            } else {
-                damage = ((damage * (3 + Math.random() * 2)) / 4) | 0;
-                console.log("A hit! " + defender.name + " takes " + damage + " damage.");
-            }
-        }
-
-        defender.hp -= damage;
-    }
-
-    var hero = { name: "Hero", hp: 100, attack: 5, defense: 5, critical: 0, evade: 0 };
-    var a = { name: "Monster A", hp: 50, attack: 10, defense: 3, critical: 2, evade: 5 };
-    var b = { name: "Monster B", hp: 50, attack: 6, defense: 10, critical: 12, evade: 0 };
-
-    debugger;
 }

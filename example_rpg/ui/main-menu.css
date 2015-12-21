@@ -1,13 +1,20 @@
 .main-menu {
     background-color: rgba(0, 0, 0, 0.35);
     background-image: url(menu-bg.png);
+    width: 100%;
+    height: 100%;
 }
 
-.main-menu .selections {
+.main-menu .right-column {
     position: absolute;
     top: 5px;
     right: 5px;
 }
+
+.main-menu .right-column > * {
+    margin-bottom: 1em;
+}
+
 
 .main-menu .party-view {
     position: absolute;
@@ -16,26 +23,30 @@
 }
 
 .main-menu .party-view .member {
-    display: inline-block;
-    width: 70px;
+    display: block;
+    position: relative;
+    width: 100%;
     height: 70px;
-    position: absolute;
-    border: 1px solid white;
+    padding-left: 80px;
+}
+
+.main-menu .party-view .member.template {
+    display: none;
 }
 
 .main-menu .party-view .member img {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 70px;
+    height: 70px;
 }
 
-.main-menu .party-view .member .name {
+.main-menu .party-view .member .overportrait {
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 100%;
+    width: 70px;
     text-align: center;
     background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
 }

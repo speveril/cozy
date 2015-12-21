@@ -1,16 +1,33 @@
 <link rel="stylesheet" type="text/css" href="main-menu.css">
 
-<ul class="selections">
-    <li data-menu="status">Status</li>
-    <li data-menu="items">Items</li>
-    <li data-menu="equip">Equip</li>
-    <li data-menu="save">Save</li>
-    <li data-menu="exit">Exit</li>
-</ul>
+<div class="right-column">
+    <ul class="selections">
+        <li data-menu="status">Status</li>
+        <li data-menu="items">Items</li>
+        <li data-menu="equip">Equip</li>
+        <li data-menu="save">Save</li>
+        <li data-menu="exit">Exit</li>
+    </ul>
+
+    <div class="overview">
+        <div><span class="money"></span></div>
+        SimpleQuest
+    </div>
+</div>
 
 <div class="party-view">
-    <div class="member">
-        <img src="portrait-hero.png">
-        <div class="name">Hero</div>
+    <div class="member template">
+        <img class="portrait">
+        <div class="overportrait">
+            <span class="name"></span><br><span class="title"></span> <span class="level"></span>
+        </div>
+        <div class="stats">
+            <div>HP <span class="hp"></span>/<span class="maxhp"></span></div>
+            <div>XP <span class="xp"></span></div>
+            <div>Attack: <span class="attack"></span></div>
+            <div>Defense: <span class="defense"></span></div>
+            <div>Critical: <span class="critical"></span>%</div>
+            <div>Evade: <span class="evade"></span>%</div>
+        </div>
     </div>
 </div>

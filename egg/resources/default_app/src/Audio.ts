@@ -19,7 +19,7 @@ module Egg {
                                 reject();
                             }.bind(this));
                         }.bind(this);
-                        var interval = setInterval(decode, 10000);
+                        var interval = setInterval(decode, 2500);
                         decode();
                     }.bind(this), function(error) {
                         console.log("Failed to load '" + fileName + "'. " + error);
