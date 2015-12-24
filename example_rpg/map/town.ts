@@ -67,7 +67,7 @@ module SimpleQuest {
                 this.sceneText("MAYOR JOAN", "Do you happen to have any experience in slaying dragons?"),
                 this.sceneText("MAYOR JOAN", "We've been having trouble with a dragon that lives up north on Mount Danger."),
                 this.sceneText("MAYOR JOAN", "You would do us a great service by defeating this dragon..."),
-                this.sceneText("MAYOR JOAN", "Your name would be remembered in song for at least a week or two!")
+                this.sceneText("MAYOR JOAN", "Your name would probably be remembered in song for... days! Probably!")
             ]);
         }
 
