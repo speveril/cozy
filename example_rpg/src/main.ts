@@ -60,7 +60,8 @@ module SimpleQuest {
             Promise.all(promises)
                 .then(function() {
                     Egg.unpause();
-                    SimpleQuest.bootSequence();
+                    // SimpleQuest.bootSequence();
+                    SimpleQuest.newGame();
                 }.bind(this));
         });
     }
@@ -78,10 +79,10 @@ module SimpleQuest {
         RPG.Party.add(RPG.characters['hero']);
         RPG.player = RPG.Party.members[0].makeEntity();
 
-        // music['village'].start();
-        // RPG.startMap(new Map_Town(), 10, 7);
-        music['forest'].start();
-        RPG.startMap(new Map_Forest(), 7, 43);
+        music['village'].start();
+        RPG.startMap(new Map_Town(), 10, 7);
+        // music['forest'].start();
+        // RPG.startMap(new Map_Forest(), 7, 43);
 
         RPG.controls = RPG.ControlMode.Map;
         Egg.unpause();

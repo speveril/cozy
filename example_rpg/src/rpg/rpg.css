@@ -16,7 +16,33 @@ body {
     background-image: url(../../ui/textbox.png);
     padding: 5px;
     white-space: pre-wrap;
+    overflow: hidden;
 }
+
+.inner-text {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    position: relative;
+    top: 0px;
+    overflow: hidden;
+    transition: top 0.2s;
+}
+
+.textstart {
+    display: inline;
+}
+
+.cursor {
+    display: inline;
+}
+.cursor .spacer::after {
+    display: inline;
+    content: "\000A\000A\000A\000A\000A\000A\000A\000A\000A\000A";
+}
+
 
 .menu {
     position: absolute;

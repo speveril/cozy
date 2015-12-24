@@ -45,29 +45,29 @@ module SimpleQuest {
 
         shopkeeper_left(args) {
             this.doScene([
-                "SHOPKEEP: Don't you just love shopping?!"
+                this.sceneText("Shopkeep", "Don't you just love shopping?!")
             ]);
         }
 
         shopkeeper_right(args) {
             this.doScene([
-                "SHOPKEEP: Buy somethin', will ya!"
+                this.sceneText("Shopkeep", "Buy somethin', will ya!")
             ]);
         }
 
         villager_well(args) {
             this.doScene([
-                "VILLAGER: Fresh water is good for you! I'm so glad we have this well."
+                this.sceneText("VILLAGER", "Fresh water is good for you! I'm so glad we have this well.")
             ]);
         }
 
         villager_mayor(args) {
             this.doScene([
-                "MAYOR JOAN: Welcome to Carp's Bend.",
-                "MAYOR JOAN: Do you happen to have any experience in slaying dragons?",
-                "MAYOR JOAN: We've been having trouble with a dragon that lives up north on Mount Danger.",
-                "MAYOR JOAN: You would do us a great service by defeating this dragon...",
-                "MAYOR JOAN: Your name would be remembered in song for at least a week or two!"
+                this.sceneText("MAYOR JOAN", "Welcome to Carp's Bend."),
+                this.sceneText("MAYOR JOAN", "Do you happen to have any experience in slaying dragons?"),
+                this.sceneText("MAYOR JOAN", "We've been having trouble with a dragon that lives up north on Mount Danger."),
+                this.sceneText("MAYOR JOAN", "You would do us a great service by defeating this dragon..."),
+                this.sceneText("MAYOR JOAN", "Your name would be remembered in song for at least a week or two!")
             ]);
         }
 

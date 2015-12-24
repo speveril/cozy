@@ -42,7 +42,6 @@ module RPG {
         static savedControls:RPG.ControlMode;
         static enemy:Character;
         static player:Character;
-        static battleText:string[];
         static monsters:any;
         static monsterLayer:Egg.Layer;
         static monsterSprite:Egg.Sprite;
@@ -87,9 +86,7 @@ module RPG {
                 }
 
                 this.menuSelection = 0;
-                RPG.Textbox.show("");
-                this.battleText = [];
-                this.text("Encountered " + this.enemy.name + "!");
+                RPG.Textbox.show("Encountered " + this.enemy.name + "!");
                 this.updateUI();
 
                 RPG.battlePlane.show();
@@ -252,11 +249,7 @@ module RPG {
         }
 
         static text(s:string) {
-            this.battleText.push(s);
-            while (this.battleText.length > 3) {
-                this.battleText.shift();
-            }
-            Textbox.setText(this.battleText.join("\n"));
+            Textbox.appendText("\n" + s);
         }
 
         static setMonsters(m:any) {

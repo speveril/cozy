@@ -90,6 +90,8 @@ module SimpleQuest {
             }
         }
 
+        private lastSpeaker:string = null;
+
         doScene(steps:Array<any>) {
             var s = RPG.Scene.start();
 
@@ -107,9 +109,22 @@ module SimpleQuest {
             }.bind(this));
 
             return s.then(function() {
+                this.lastSpeaker = null;
                 RPG.Textbox.hide();
                 RPG.Scene.finish();
             }.bind(this));
+        }
+
+        sceneText(speaker:string, text:string) {
+            return function() {
+                if (this.lastSpeaker && this.lastSpeaker === speaker) {
+                    RPG.Textbox.appendText("\n" + text);
+                } else {
+                    RPG.Textbox.show("<span class=\"speaker\">" + speaker + ":</span> " + text);
+                }
+                this.lastSpeaker = speaker;
+                return RPG.Scene.waitForButton("confirm");
+            }.bind(this);
         }
 
         set_threat(args) {

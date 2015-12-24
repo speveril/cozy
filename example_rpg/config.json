@@ -5,6 +5,7 @@
     "fullscreen": false,
     "css": [
         "font/fonts.css",
-        "ui/menu.css"
+        "ui/menu.css",
+        "ui/text.css"
     ]
 }
