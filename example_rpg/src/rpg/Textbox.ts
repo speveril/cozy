@@ -110,7 +110,7 @@ module RPG {
                     nextSibling.insertBefore(this.textCursor, nextSibling.firstChild);
                 }
 
-                this.cursorPosition.scrollIntoView(false);
+                // this.cursorPosition.scrollIntoView(false);
             }
         }
     }

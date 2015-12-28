@@ -1,5 +1,56 @@
 <link rel="stylesheet" type="text/css" href="main-menu.css">
 
+<div class="main-area">
+    <div class="view status">
+        <div class="member template">
+            <section class="layout-row">
+                <section class="portrait-container"><img class="portrait"></section>
+                <section class="layout-column">
+                    <section class="layout-row">
+                        <span data-field="name"></span>
+                        <div>LV <span data-field="level"></span></div>
+                        <span data-field="title"></span>
+                    </section>
+                    <section class="layout-row">
+                        <section class="layout-column">
+                            <section>HP</section>
+                            <section class="layout-row right-align"><span data-field="hp"></span>/<span data-field="maxhp"></span></section>
+                            <section>XP</section>
+                            <section class="right-align"><span data-field="xp"></span></section>
+                        </section>
+                        <section class="layout-column">
+                            <section class="layout-row">
+                                <div>ATK</div><div data-field="attack"></div>
+                            </section>
+                            <section class="layout-row">
+                                <div>DEF</div><div data-field="defense"></div>
+                            </section>
+                            <section class="layout-row">
+                                <div>CRT</div><div data-field="critical"></div>
+                            </section>
+                            <section class="layout-row">
+                                <div>EVD</div><div data-field="evade"></div>
+                            </section>
+                        </section>
+                    </section>
+                </section>
+            </section>
+        </div>
+    </div>
+
+    <div class="view items">
+        Items!
+    </div>
+
+    <div class="view equip">
+        Equip!
+    </div>
+
+    <div class="view save">
+        Save!
+    </div>
+</div>
+
 <div class="right-column">
     <ul class="selections">
         <li data-menu="status">Status</li>
@@ -10,24 +61,6 @@
     </ul>
 
     <div class="overview">
-        <div><span class="money"></span></div>
-        SimpleQuest
-    </div>
-</div>
-
-<div class="party-view">
-    <div class="member template">
-        <img class="portrait">
-        <div class="overportrait">
-            <span class="name"></span><br><span class="title"></span> <span class="level"></span>
-        </div>
-        <div class="stats">
-            <div>HP <span class="hp"></span>/<span class="maxhp"></span></div>
-            <div>XP <span class="xp"></span></div>
-            <div>Attack: <span class="attack"></span></div>
-            <div>Defense: <span class="defense"></span></div>
-            <div>Critical: <span class="critical"></span>%</div>
-            <div>Evade: <span class="evade"></span>%</div>
-        </div>
+        <div class="money-container"><span class="money"></span></div>
     </div>
 </div>

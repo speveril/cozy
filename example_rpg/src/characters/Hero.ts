@@ -14,7 +14,7 @@ module SimpleQuest {
                 });
 
                 this['portrait'] = "portrait-hero.png";
-                this['title'] = "Ftr";
+                this['title'] = "Fighter";
             }
 
             levelUp(level:number):void {

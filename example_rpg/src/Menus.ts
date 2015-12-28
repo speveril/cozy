@@ -44,8 +44,8 @@ module SimpleQuest {
             }
 
             var htmlPath:string = Egg.File.pathname(Egg.File.projectFile("ui/main-menu.html"));
-            var memberTemplate = this.container.querySelector('.main-menu .party-view .member.template');
-            var memberContainer = this.container.querySelector('.main-menu .party-view');
+            var memberTemplate = this.container.querySelector('.main-menu .view.status .member.template');
+            var memberContainer = this.container.querySelector('.main-menu .view.status');
             var fields = ['name','title','level','hp','maxhp','xp','attack','defense','critical','evade'];
 
             _.each(RPG.Party.members, function(member, i) {
@@ -55,8 +55,15 @@ module SimpleQuest {
 
                 for (var f in fields) {
                     var fieldName = fields[f];
-                    var field = <HTMLElement>(el.querySelector('span.' + fieldName));
-                    field.innerText = member.character[fieldName];
+                    var field = <HTMLElement>(el.querySelector('span[data-field=' + fieldName + ']'));
+                    if (!field) {
+                        console.log("Couldn't find a field span for " + fieldName + ".");
+                    } else {
+                        field.innerText = member.character[fieldName];
+                        if (fieldName === 'critical' || fieldName === 'evade') {
+                            field.innerText += "%";
+                        }
+                    }
                 }
 
                 var portraitField = <HTMLElement>(el.querySelector('img.portrait'));
@@ -66,6 +73,24 @@ module SimpleQuest {
                 memberContainer.appendChild(el);
             });
         }
+
+        update(dt) {
+            this.showView(this.selections[this.selectionIndex].getAttribute('data-menu'));
+        }
+
+        showView(key) {
+            var i;
+            var views = this.container.getElementsByClassName('view');
+            for (i = 0; i < views.length; i++) {
+                var view = <HTMLElement>(views[i]);
+                if (view.className == 'view ' + key) {
+                    view.style.display = '';
+                } else {
+                    view.style.display = 'none';
+                }
+            }
+        }
+
         exit() { quitGame(); }
     }
 }

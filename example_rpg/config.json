@@ -3,6 +3,10 @@
     "width": 320,
     "height": 240,
     "fullscreen": false,
+    "volume": {
+        "sfx": 75,
+        "music": 0
+    },
     "css": [
         "font/fonts.css",
         "ui/menu.css",

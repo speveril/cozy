@@ -107,6 +107,14 @@ module Egg {
 
         // set up audio
         Egg.Audio.init();
+        if (Egg.config['volume']) {
+            if (Egg.config['volume']['sfx'] !== undefined) {
+                Audio.setSFXVolume(Egg.config['volume']['sfx']);
+            }
+            if (Egg.config['volume']['music'] !== undefined) {
+                Audio.setMusicVolume(Egg.config['volume']['music']);
+            }
+        }
 
         var styles = [];
         _.each(this.config['css'], function(path:string) {
