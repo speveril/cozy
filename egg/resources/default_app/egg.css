@@ -3,6 +3,7 @@
     padding: 0;
     -webkit-user-select: none;
     image-rendering: pixelated;
+    box-sizing: border-box;
 }
 
 body {
