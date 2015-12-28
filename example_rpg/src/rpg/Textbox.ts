@@ -109,8 +109,8 @@ module RPG {
                 } else {
                     nextSibling.insertBefore(this.textCursor, nextSibling.firstChild);
                 }
-
-                // this.cursorPosition.scrollIntoView(false);
+                this.cursorPosition.scrollIntoView(false);
+                this.inner.scrollTop += 1;
             }
         }
     }

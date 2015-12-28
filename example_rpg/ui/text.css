@@ -1,3 +1,8 @@
+.textbox {
+    color: #deeed6;
+    text-shadow: 1px 1px 0px #442434;
+}
+
 .textbox .speaker {
     color: #DAD45E;
     text-transform: uppercase;

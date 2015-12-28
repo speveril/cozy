@@ -73,21 +73,21 @@ module SimpleQuest {
 
         villager_south_house(args) {
             this.doScene([
-                "VILLAGER: The dragon attacks have been getting worse lately.",
-                "VILLAGER: At least I have a house! Most people in this town just seem to sleep outside."
+                this.sceneText("VILLAGER","The dragon attacks have been getting worse lately."),
+                this.sceneText("VILLAGER","At least I have a house! Most people in this town just seem to sleep outside.")
             ]);
         }
 
         villager_fisher(args) {
             this.doScene([
-                "FISHERMAN: We like to fish, here in Carp's Bend."
+                this.sceneText("FISHERMAN","We like to fish, here in Carp's Bend.")
             ]);
         }
 
         villager_bushes(args) {
             this.doScene([
-                "VILLAGER: Whoa there! This here's private property.",
-                "VILLAGER: Go find your own dang bushes!"
+                this.sceneText("VILLAGER","Whoa there! This here's private property."),
+                this.sceneText("VILLAGER","Go find your own dang bushes!")
             ])
         }
     }

@@ -12,10 +12,10 @@ body {
     left: 0;
     margin: 2px;
     width: calc(100% - 4px);
-    height: 44px;
+    height: 3em;
     box-sizing: border-box;
     border-image: url(../../ui/box.png) 2 2 fill repeat;
-    padding: 0;
+    padding: 1px;
     white-space: pre-wrap;
     overflow: hidden;
 }
