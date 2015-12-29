@@ -2,6 +2,7 @@ var app = require('app');
 var BrowserWindow = require('browser-window');
 var fs = require('fs');
 var path = require ('path');
+var child = require('child_process');
 
 process.chdir(path.join(path.dirname(process.execPath), ".."));
 
@@ -12,12 +13,14 @@ var options = { debug: false }
 var actions = [ ];
 
 var optionMap = {
-    '--build':     'build',
-    '--init':      'new',
-    '--buildGame': 'buildGame',
-    '--console':   'console',
-    '--debug':     'debug',
-    '-d':          'debug'
+    '--buildcore':  'build',
+    '--init':       'new',
+    '--build':      'buildgame',
+    '--console':    'console',
+    '--debug':      'debug',
+    '--noplay':     'noplay',
+
+    '-d':           'debug'
 };
 
 for (var i in argv) {
@@ -37,14 +40,16 @@ app.on('ready', setup);
 function setup() {
     if (options.build) {
         actions.push(build.bind(null, path.join("egg", "resources", "default_app", "src"), '../Egg.js'));
+        actions.push(doc.bind(null, path.join("egg", "resources", "default_app", "src", "Egg.ts"), path.join("egg", "docs")));
     }
-    if (options.buildGame) {
+    if (options.buildgame) {
         actions.push(build.bind(null, gamePath, 'main.js'));
     }
 
     if (options.new) {
         actions.push(makeNew);
-    } else {
+    }
+    if (!options.noplay) {
         actions.push(play);
     }
 
@@ -76,17 +81,40 @@ function build(buildPath, outputFile) {
     //     fs.writeFileSync(gamePath + "/" + filename, contents);
     // });
 
-    var child = require('child_process');
-    var tsc = child.fork(__dirname + '/lib/typescript/tsc', ['--project', buildPath, '--out', path.join(buildPath, outputFile)]);
+    var tsc = child.fork(path.join(__dirname, 'lib', 'typescript', 'tsc'), [
+        '--project', buildPath,
+        '--out', path.join(buildPath, outputFile)
+    ]);
 
     // TODO add a new browserwindow that shows the results of the compile
 
-    tsc.on('close', function(return_code) {
+    tsc.on('exit', function(return_code) {
         if (!return_code) {
-            console.log(" - Build success.");
+            console.log(" - Success.");
             next();
         } else {
-            console.log(" - Build failed.");
+            console.log(" - Failure.");
+            process.exit(1);
+        }
+    });
+}
+
+function doc(srcPath, outputPath) {
+    console.log("Generating documentation for", srcPath, '->', outputPath);
+
+    var typedoc = child.fork(path.join(__dirname, "node_modules", "typedoc", "bin", "typedoc"), [
+        '--out', outputPath,
+        '--mode', 'file',
+        '--target', 'ES5',
+        srcPath
+    ]);
+
+    typedoc.on('exit', function(return_code) {
+        if (!return_code) {
+            console.log(" - Success.");
+            next();
+        } else {
+            console.log(" - Failure.");
             process.exit(1);
         }
     });

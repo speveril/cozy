@@ -12,6 +12,27 @@ Really though, the plan is to take my hacked together pile of crap and make smal
 Ultimately the development is driven by what I want out of the engine. I have a lot of games I want to make at some point. I'd like to build myself the tools I need to build those games. If you (the hypothetical reader) have a use-case that I'm not meeting, then maybe in the future it will come up. For the time being though, it's more than likely you'll have to address that yourself.
 
 
+## Command line parameters
+
+    egg/egg.exe <game>
+
+Egg expects a game directory (that is, a directory that contains a **config.json** and a **main.js**) as its primary parameter. If it is omitted, it will assume the current directory. It will (currently) fail to run if it can't find a game there.
+
+You can supply the following parameters as well:
+- **--buildcore**
+ * Build the Egg core and documentation. Only necessary if you're doing actual engine development.
+- **--init <dirname>**
+ * Initialize a new game in <dirname>. Fails if there's already a game there.
+- **--build**
+ * Compile the game, if it's written in Typescript. Only necessary if you're developing in TS; if you're using plain JS then you won't need a build step.
+- **--debug**
+ * Start the game in debug mode.
+- **--console**
+ * Start with the debug console open.
+- **--noplay**
+ * Don't actually run the game. Use in combination with --build, --buildcore, or --init.
+
+
 ## Current technologies
 
 - Electron: <https://github.com/atom/electron>
@@ -23,8 +44,8 @@ Ultimately the development is driven by what I want out of the engine. I have a 
 ## Roadmap/TODOs
 
 - RPGkit
-  - Battle should actually use the Menu stuff rather than rolling its own
-  - Branching Scenes
+  * Battle should actually use the Menu stuff rather than rolling its own
+  * Branching Scenes
 - Reconcile File stuff
 
 Feature wish list (some day):

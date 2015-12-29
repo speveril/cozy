@@ -20,9 +20,11 @@ function include(path) {
     return require(process.cwd() + "/" + path);
 }
 
+/**
+ * The core Egg module.
+ */
 module Egg {
     enum ButtonState { UP, DOWN, IGNORED };
-
     export var browserWindow: GitHubElectron.BrowserWindow;
 
     export var debug: boolean;
@@ -45,6 +47,7 @@ module Egg {
 
     export var renderer:PIXI.WebGLRenderer;
     export var overlay:Plane;
+
 
     export function setup(opts:any) {
         console.log("Creating Egg Object");
@@ -240,36 +243,6 @@ module Egg {
         this.browserWindow.close();
     }
 
-    // @DEPRECATE
-    export function projectFilePath(fname) {
-        return File.projectFile(fname);
-    }
-
-    // @DEPRECATE
-    export function setBackground(color) {
-        this.planes[0].renderer.backgroundColor = color;
-    }
-
-    // @DEPRECATE
-    export function addLayer(index?:number):Layer {
-        return this.planes[0].addRenderLayer(index);
-        // var lyr = new Layer();
-        // if (index === undefined) {
-        //     layerStack.push(lyr);
-        // } else {
-        //     layerStack.splice(index, 0, lyr);
-        // }
-        // layerContainer.addChild(lyr.innerContainer);
-        // return lyr;
-    }
-
-    // @DEPRECATE
-    export function clearLayers() {
-        this.planes[0].clear();
-        // layerStack = [];
-        // layerContainer.removeChildren();
-    }
-
     export function button(name):Boolean {
         return (this.__button[name] === ButtonState.DOWN);
     }
@@ -309,9 +282,53 @@ module Egg {
         document.head.appendChild(el);
     }
 
+    /**
+    Utility function to calculate a number that "wraps around" within a certain range.
+    For example, wrap(8, 10) will give you 8, while wrap(12, 10) will give you 2.
+    @param n        The number to wrap.
+    @param range    The range of the wrapping.
+    **/
     export function wrap(n:number, range:number) {
         while (n < 0) n += range;
         n %= range;
         return n;
+    }
+
+    /**
+    @DEPRECATED
+    */
+    export function projectFilePath(fname) {
+        return File.projectFile(fname);
+    }
+
+    /**
+    @DEPRECATED
+    */
+    export function setBackground(color) {
+        this.planes[0].renderer.backgroundColor = color;
+    }
+
+    /**
+    @DEPRECATED
+    */
+    export function addLayer(index?:number):Layer {
+        return this.planes[0].addRenderLayer(index);
+        // var lyr = new Layer();
+        // if (index === undefined) {
+        //     layerStack.push(lyr);
+        // } else {
+        //     layerStack.splice(index, 0, lyr);
+        // }
+        // layerContainer.addChild(lyr.innerContainer);
+        // return lyr;
+    }
+
+    /**
+    @DEPRECATED
+    */
+    export function clearLayers() {
+        this.planes[0].clear();
+        // layerStack = [];
+        // layerContainer.removeChildren();
     }
 }
