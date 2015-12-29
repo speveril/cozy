@@ -19,18 +19,13 @@ Ultimately the development is driven by what I want out of the engine. I have a 
 Egg expects a game directory (that is, a directory that contains a **config.json** and a **main.js**) as its primary parameter. If it is omitted, it will assume the current directory. It will (currently) fail to run if it can't find a game there.
 
 You can supply the following parameters as well:
-- **--buildcore**
- * Build the Egg core and documentation. Only necessary if you're doing actual engine development.
-- **--init <dirname>**
- * Initialize a new game in <dirname>. Fails if there's already a game there.
-- **--build**
- * Compile the game, if it's written in Typescript. Only necessary if you're developing in TS; if you're using plain JS then you won't need a build step.
-- **--debug**
- * Start the game in debug mode.
-- **--console**
- * Start with the debug console open.
-- **--noplay**
- * Don't actually run the game. Use in combination with --build, --buildcore, or --init.
+
+- **--init <dirname>**: Initialize a new game in <dirname>. Fails if there's already a game there.
+- **--build**: Compile the game, if it's written in Typescript. Only necessary if you're developing in TS; if you're using plain JS then you won't need a build step.
+- **--debug**: Start the game in debug mode.
+- **--console**: Start with the debug console open.
+- **--buildcore**: Build the Egg core and documentation. Only necessary if you're doing actual engine development.
+- **--noplay**: Don't actually run the game. Use in combination with --build, --buildcore, or --init.
 
 
 ## Current technologies
