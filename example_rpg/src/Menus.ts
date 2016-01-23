@@ -60,9 +60,6 @@ module SimpleQuest {
                         console.log("Couldn't find a field span for " + fieldName + ".");
                     } else {
                         field.innerText = member.character[fieldName];
-                        if (fieldName === 'critical' || fieldName === 'evade') {
-                            field.innerText += "%";
-                        }
                     }
                 }
 

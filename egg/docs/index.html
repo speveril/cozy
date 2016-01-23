@@ -71,6 +71,18 @@
 				<p>Do I look like someone who is planning things in advance?</p>
 				<p>Really though, the plan is to take my hacked together pile of crap and make small games with them (the example games) to figure out what I actually need in the engine and how I actually want things to look and to work. Over time I will update and replace pieces as necessary. If you&#39;ve somehow gotten access to this repository, hopefully I&#39;ve actually given it to you and you know what&#39;s up.</p>
 				<p>Ultimately the development is driven by what I want out of the engine. I have a lot of games I want to make at some point. I&#39;d like to build myself the tools I need to build those games. If you (the hypothetical reader) have a use-case that I&#39;m not meeting, then maybe in the future it will come up. For the time being though, it&#39;s more than likely you&#39;ll have to address that yourself.</p>
+				<h2 id="command-line-parameters">Command line parameters</h2>
+				<pre><code>egg/egg<span class="hljs-class">.exe</span> &lt;game&gt;
+</code></pre><p>Egg expects a game directory (that is, a directory that contains a <strong>config.json</strong> and a <strong>main.js</strong>) as its primary parameter. If it is omitted, it will assume the current directory. It will (currently) fail to run if it can&#39;t find a game there.</p>
+				<p>You can supply the following parameters as well:</p>
+				<ul>
+					<li><strong>--init <dirname></strong>: Initialize a new game in <dirname>. Fails if there&#39;s already a game there.</li>
+					<li><strong>--build</strong>: Compile the game, if it&#39;s written in Typescript. Only necessary if you&#39;re developing in TS; if you&#39;re using plain JS then you won&#39;t need a build step.</li>
+					<li><strong>--debug</strong>: Start the game in debug mode.</li>
+					<li><strong>--console</strong>: Start with the debug console open.</li>
+					<li><strong>--buildcore</strong>: Build the Egg core and documentation. Only necessary if you&#39;re doing actual engine development.</li>
+					<li><strong>--noplay</strong>: Don&#39;t actually run the game. Use in combination with --build, --buildcore, or --init.</li>
+				</ul>
 				<h2 id="current-technologies">Current technologies</h2>
 				<ul>
 					<li>Electron: <a href="https://github.com/atom/electron">https://github.com/atom/electron</a></li>
