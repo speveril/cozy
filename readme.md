@@ -67,7 +67,7 @@ Feature wish list (some day):
 
 - **example_pong**: A simple 2-player pong game
 - **example_invaders**: A partial Space Invaders clone
-- **example_rpg**: SimpleQuest, a small RPG
+- **simplequest**: SimpleQuest, a small RPG
     - Uses the Tiny16 tileset created by Lanea Zimmerman (http://opengameart.org/content/tiny-16-basic)
 
 To run the examples, drag the game directory you'd like to play onto the **egg.exe** shortcut in the root of the repository.
