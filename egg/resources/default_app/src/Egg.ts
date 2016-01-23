@@ -12,7 +12,7 @@
 /// <reference path="Sprite.ts"/>
 /// <reference path="Texture.ts"/>
 
-var fs = require('fs');
+var fs = rquire('fs');
 var remote = require('remote');
 declare var FontFace:any;
 

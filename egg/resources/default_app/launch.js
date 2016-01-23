@@ -1,8 +1,8 @@
-var app = require('app');
-var BrowserWindow = require('browser-window');
-var fs = require('fs');
-var path = require ('path');
-var child = require('child_process');
+const app = require('app');
+const BrowserWindow = require('browser-window');
+const fs = require('fs');
+const path = require ('path');
+const child = require('child_process');
 
 process.chdir(path.join(path.dirname(process.execPath), ".."));
 
@@ -38,12 +38,19 @@ for (var i in argv) {
 app.on('ready', setup);
 
 function setup() {
+    var needBuildWindow = false;
     if (options.build) {
         actions.push(build.bind(null, path.join("egg", "resources", "default_app", "src"), '../Egg.js'));
         actions.push(doc.bind(null, path.join("egg", "resources", "default_app", "src", "Egg.ts"), path.join("egg", "docs")));
+        needBuildWindow = true;
     }
     if (options.buildgame) {
         actions.push(build.bind(null, gamePath, 'main.js'));
+        needBuildWindow = true;
+    }
+
+    if (needBuildWindow) {
+        // ...
     }
 
     if (options.new) {
@@ -67,7 +74,7 @@ function next() {
 }
 
 function build(buildPath, outputFile) {
-    console.log("Building", buildPath, '->', path.join(buildPath, outputFile));
+    // console.log("Building", buildPath, '->', path.join(buildPath, outputFile));
 
     // TODO copy all the stuff we need into a lib/ directory in the game
     //   - need to add the d.ts files for PIXI, node, etc
@@ -81,22 +88,43 @@ function build(buildPath, outputFile) {
     //     fs.writeFileSync(gamePath + "/" + filename, contents);
     // });
 
-    var tsc = child.fork(path.join(__dirname, 'lib', 'typescript', 'tsc'), [
-        '--project', buildPath,
-        '--out', path.join(buildPath, outputFile)
-    ]);
-
-    // TODO add a new browserwindow that shows the results of the compile
-
-    tsc.on('exit', function(return_code) {
-        if (!return_code) {
-            console.log(" - Success.");
-            next();
-        } else {
-            console.log(" - Failure.");
-            process.exit(1);
-        }
+    var window = new BrowserWindow({
+        width: 640,
+        height: 480,
+        title: 'Egg Builder',
+        'auto-hide-menu-bar':  true,
     });
+    window.loadURL("file://" + __dirname + "/build.html");
+    window.toggleDevTools();
+    window.webContents.on('did-finish-load', function() {
+        var buildMessage = (msg) => {
+            window.webContents.send('build-message', msg);
+        }
+
+        buildMessage("Building " + buildPath + " -> " + path.join(buildPath, outputFile) + "\n");
+
+        var tsc = child.fork(path.join(__dirname, 'lib', 'typescript', 'tsc.js'), [
+            '--project', buildPath,
+            '--out', path.join(buildPath, outputFile)
+        ], { silent: true, env: {"ATOM_SHELL_INTERNAL_RUN_AS_NODE":"0"} });
+
+        tsc.stdout.on('data', buildMessage);
+        tsc.stderr.on('data', buildMessage);
+
+        tsc.on('exit', function(return_code) {
+            if (!return_code) {
+                buildMessage(" - Success.");
+                window.once('close', function() {
+                    next();
+                });
+            } else {
+                buildMessage(" - Failure.");
+                window.once('close', function() {
+                    process.exit(1);
+                });
+            }
+        });
+    })
 }
 
 function doc(srcPath, outputPath) {
@@ -167,5 +195,5 @@ function play() {
         next();
     });
 
-    window.loadURL("file://" + __dirname + "/index.html?" + JSON.stringify(params));
+    window.loadURL("file://" + __dirname + "/game.html?" + JSON.stringify(params));
 }

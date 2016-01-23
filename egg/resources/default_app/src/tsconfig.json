@@ -3,7 +3,8 @@
         "removeComments": true,
         "sourceMap": true,
         "declaration": true,
-        "target": "ES5"
+        "target": "ES5",
+        "out": "../Egg.js"
     },
     "files": [
         "Egg.ts"

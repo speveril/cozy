@@ -1,0 +1,39 @@
+<html>
+    <head>
+        <style>
+html {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #000;
+    color: #aaa;
+    font-family: "Consolas", "Courier New", monospace;
+    white-space: pre-wrap;
+    font-size: 9pt;
+}
+        </style>
+    </head>
+    <body>
+        <div id="output"></div>
+
+<script>
+
+const electron = require('electron');
+
+var outputContainer = document.getElementById('output');
+function output(html) {
+    outputContainer.innerHTML += html;
+}
+output("<strong>EGG BUILD SYSTEM</strong>\n");
+
+electron.ipcRenderer.on('build-message', function(event, arg) {
+    output(arg);
+});
+
+</script>
+    </body>
+</html>
