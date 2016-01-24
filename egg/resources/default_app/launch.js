@@ -37,6 +37,11 @@ for (var i in argv) {
 
 app.on('ready', setup);
 
+var buildWindow;
+var buildMessage = (msg) => {
+    buildWindow.webContents.send('build-message', msg);
+}
+
 function setup() {
     var needBuildWindow = false;
     if (options.build) {
@@ -49,18 +54,31 @@ function setup() {
         needBuildWindow = true;
     }
 
-    if (needBuildWindow) {
-        // ...
-    }
 
     if (options.new) {
         actions.push(makeNew);
+        needBuildWindow = true;
     }
+
     if (!options.noplay) {
         actions.push(play);
     }
 
-    next();
+    if (needBuildWindow) {
+        buildWindow = new BrowserWindow({
+            width: 640,
+            height: 480,
+            title: 'Egg Builder',
+            'auto-hide-menu-bar':  true,
+        });
+        buildWindow.loadURL("file://" + __dirname + "/build.html");
+        // buildWindow.toggleDevTools();
+        buildWindow.webContents.on('did-finish-load', () => {
+            next();
+        });
+    } else {
+        next();
+    }
 }
 
 function next() {
@@ -74,7 +92,7 @@ function next() {
 }
 
 function build(buildPath, outputFile) {
-    // console.log("Building", buildPath, '->', path.join(buildPath, outputFile));
+    buildMessage("Building " + buildPath + " -> " + path.join(buildPath, outputFile) + "\n");
 
     // TODO copy all the stuff we need into a lib/ directory in the game
     //   - need to add the d.ts files for PIXI, node, etc
@@ -88,62 +106,49 @@ function build(buildPath, outputFile) {
     //     fs.writeFileSync(gamePath + "/" + filename, contents);
     // });
 
-    var window = new BrowserWindow({
-        width: 640,
-        height: 480,
-        title: 'Egg Builder',
-        'auto-hide-menu-bar':  true,
-    });
-    window.loadURL("file://" + __dirname + "/build.html");
-    window.toggleDevTools();
-    window.webContents.on('did-finish-load', function() {
-        var buildMessage = (msg) => {
-            window.webContents.send('build-message', msg);
+    var tsc = child.fork(path.join(__dirname, 'lib', 'typescript', 'tsc.js'), [
+        '--project', buildPath,
+        // '--out', path.join(buildPath, outputFile)
+    ], { silent: true, env: {"ATOM_SHELL_INTERNAL_RUN_AS_NODE":"0"} });
+
+    tsc.stdout.on('data', buildMessage);
+    tsc.stderr.on('data', buildMessage);
+
+    tsc.on('exit', function(return_code) {
+        if (!return_code) {
+            buildMessage(" - Success.\n");
+            next();
+        } else {
+            buildMessage(" - Failure.\n");
+            buildWindow.once('close', function() {
+                process.exit(1);
+            });
         }
-
-        buildMessage("Building " + buildPath + " -> " + path.join(buildPath, outputFile) + "\n");
-
-        var tsc = child.fork(path.join(__dirname, 'lib', 'typescript', 'tsc.js'), [
-            '--project', buildPath,
-            '--out', path.join(buildPath, outputFile)
-        ], { silent: true, env: {"ATOM_SHELL_INTERNAL_RUN_AS_NODE":"0"} });
-
-        tsc.stdout.on('data', buildMessage);
-        tsc.stderr.on('data', buildMessage);
-
-        tsc.on('exit', function(return_code) {
-            if (!return_code) {
-                buildMessage(" - Success.");
-                window.once('close', function() {
-                    next();
-                });
-            } else {
-                buildMessage(" - Failure.");
-                window.once('close', function() {
-                    process.exit(1);
-                });
-            }
-        });
-    })
+    });
 }
 
 function doc(srcPath, outputPath) {
-    console.log("Generating documentation for", srcPath, '->', outputPath);
+    buildMessage("Generating documentation for " + srcPath + " -> " + outputPath + "\n");
 
     var typedoc = child.fork(path.join(__dirname, "node_modules", "typedoc", "bin", "typedoc"), [
         '--out', outputPath,
         '--mode', 'file',
         '--target', 'ES5',
         srcPath
-    ]);
+    ], { silent: true, env: {"ATOM_SHELL_INTERNAL_RUN_AS_NODE":"0"} });
+
+    typedoc.stdout.on('data', buildMessage);
+    typedoc.stderr.on('data', buildMessage);
 
     typedoc.on('exit', function(return_code) {
         if (!return_code) {
-            console.log(" - Success.");
+            buildMessage(" - Success.\n");
             next();
         } else {
-            console.log(" - Failure.");
-            process.exit(1);
+            buildMessage(" - Failure.\n");
+            buildWindow.once('close', function() {
+                process.exit(1);
+            });
         }
     });
 }
@@ -156,7 +161,7 @@ function makeNew() {
     }
 
     if (fs.existsSync(path.join(gamePath, "config.json"))) {
-        throw new Error("Cannot initialize a game at " + gamePath + ", there's already one there!");
+        buildMessage("Cannot initialize a game at " + gamePath + ", there's already one there!");
     } else {
         var filesToCopy = fs.readdirSync(templateDir);
         filesToCopy.forEach(function(filename) {
