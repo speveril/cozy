@@ -175,6 +175,8 @@ function makeNew() {
 }
 
 function play() {
+    buildWindow.close();
+
     try {
         params = JSON.parse(fs.readFileSync(path.join(gamePath, "config.json")));
     } catch(e) {

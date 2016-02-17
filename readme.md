@@ -61,6 +61,7 @@ Feature wish list (some day):
 - Should I treat other entities for purposes of collisions as circles?
 - Move the dist/closestpoint/etc functions in Entity into a general util somewhere
 - Can I just slurp in all of the map .ts files automatically instead of having to reference each one?
+- typedoc takes a long time to finish for some reason
 
 
 ## Examples
