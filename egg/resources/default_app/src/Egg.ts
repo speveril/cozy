@@ -263,7 +263,7 @@ module Egg {
 
         _.each(assets, function(path, name) {
             PIXI.loader.add(name, Egg.projectFilePath(path));
-        })
+        });
 
         PIXI.loader.load(function(loader, resources) {
             _.each(resources, function(resource) {
