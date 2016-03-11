@@ -35,13 +35,13 @@ You can supply the following parameters as well:
 - Underscore: <http://underscorejs.org>
 - Typescript: <http://typescriptlang.org>
 
-
 ## Roadmap/TODOs
 
 - RPGkit
   * Battle should actually use the Menu stuff rather than rolling its own
   * Branching Scenes
 - Reconcile File stuff
+- Make it work in a browser too
 
 Feature wish list (some day):
 
