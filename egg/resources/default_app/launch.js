@@ -39,7 +39,9 @@ app.on('ready', setup);
 
 var buildWindow;
 var buildMessage = (msg) => {
-    buildWindow.webContents.send('build-message', msg);
+    if (buildWindow) {
+        buildWindow.webContents.send('build-message', msg);
+    }
 }
 
 function setup() {
@@ -74,6 +76,7 @@ function setup() {
         buildWindow.loadURL("file://" + __dirname + "/build.html");
         // buildWindow.toggleDevTools();
         buildWindow.webContents.on('did-finish-load', () => {
+            console.log("Finished load");
             next();
         });
     } else {
@@ -108,7 +111,7 @@ function build(buildPath, outputFile) {
 
     var tsc = child.fork(path.join(__dirname, 'lib', 'typescript', 'tsc.js'), [
         '--project', buildPath,
-        // '--out', path.join(buildPath, outputFile)
+        '--out', path.join(buildPath, outputFile)
     ], { silent: true, env: {"ATOM_SHELL_INTERNAL_RUN_AS_NODE":"0"} });
 
     tsc.stdout.on('data', buildMessage);
@@ -134,6 +137,7 @@ function doc(srcPath, outputPath) {
         '--out', outputPath,
         '--mode', 'file',
         '--target', 'ES5',
+        '--name', 'Egg Engine',
         srcPath
     ], { silent: true, env: {"ATOM_SHELL_INTERNAL_RUN_AS_NODE":"0"} });
 
@@ -175,7 +179,9 @@ function makeNew() {
 }
 
 function play() {
-    buildWindow.close();
+    if (buildWindow) {
+        buildWindow.close();
+    }
 
     try {
         params = JSON.parse(fs.readFileSync(path.join(gamePath, "config.json")));
@@ -187,12 +193,12 @@ function play() {
     params['height'] = params['height'] || 240;
 
     var window = new BrowserWindow({
-      'width':               params['width'],
-      'height':              params['height'],
-      'title':               params['title'] || 'Egg',
-      'fullscreen':          params['fullscreen'] || false,
-      'auto-hide-menu-bar':  true,
-      'use-content-size':    true
+      'width':              params['width'],
+      'height':             params['height'],
+      'title':              params['title'] || 'Egg',
+      'fullscreen':         params['fullscreen'] || false,
+      'autoHideMenuBar':    true,
+      'useContentSize':     true
     });
     params.game = gamePath;
     if (options.debug) params.debug = true

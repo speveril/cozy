@@ -66,12 +66,13 @@ var Invaders;
     })(Egg.Sprite);
     Invaders.Barrier = Barrier;
 })(Invaders || (Invaders = {}));
-///<reference path="../resources/default_app/Egg.d.ts"/>
+///<reference path="../egg/resources/default_app/Egg.d.ts"/>
 ///<reference path="Player.ts"/>
 ///<reference path="Alien.ts"/>
 ///<reference path="Barrier.ts"/>
 var Invaders;
 (function (Invaders) {
+    var plane;
     var stage;
     var player;
     var playerShot = null;
@@ -89,8 +90,11 @@ var Invaders;
             _.each(Egg.textures, function (v, k) {
                 console.log(k, v);
             });
-            Egg.setBackground(0x303040);
-            stage = Egg.addLayer();
+            plane = Egg.addPlane({
+                renderable: true
+            });
+            stage = plane.addRenderLayer();
+            plane.setBackground(0x303040);
             resetGame();
             Egg.unpause();
         }
@@ -114,7 +118,7 @@ var Invaders;
         if (playerShot) {
             playerShot.adjustPosition(0, -300 * dt);
             if (playerShot.position.y < -20) {
-                stage.removeSprite(playerShot);
+                stage.remove(playerShot);
                 playerShot = null;
             }
         }
@@ -127,10 +131,10 @@ var Invaders;
             }
             alien.update(dt);
             if (playerShot && playerShot.overlaps(alien)) {
-                stage.removeSprite(alien);
+                stage.remove(alien);
                 alien.destroyed = true;
                 score += alien.value;
-                stage.removeSprite(playerShot);
+                stage.remove(playerShot);
                 playerShot = null;
                 speedup = Math.random() * 5;
                 ;
@@ -162,7 +166,7 @@ var Invaders;
         player = new Invaders.Player({
             position: { x: Egg.config['width'] / 2, y: Egg.config['height'] - 25 }
         });
-        stage.addSprite(player);
+        stage.add(player);
         var alienPattern = [
             'xxxxxxxx',
             'xxxxxxxx',
@@ -193,7 +197,7 @@ var Invaders;
             });
             y += 20;
         }.bind(this));
-        aliens.forEach(function (alien) { stage.addSprite(alien); });
+        aliens.forEach(function (alien) { stage.add(alien); });
         playerShot = null;
     }
     function playerShoot() {
@@ -203,7 +207,7 @@ var Invaders;
                 hotspot: { x: 2, y: 2 },
                 position: { x: player.position.x, y: player.position.y - 15 }
             });
-            stage.addSprite(playerShot);
+            stage.add(playerShot);
         }
     }
 })(Invaders || (Invaders = {}));

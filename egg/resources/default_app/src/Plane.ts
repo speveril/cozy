@@ -74,5 +74,16 @@ module Egg {
             this.ui.appendChild(container);
             return container;
         }
+
+        resize(mult) {
+            if (this.renderer) {
+                this.renderer.resolution = mult;
+                this.renderer.resize(Egg.config['width'], Egg.config['height']);
+            }
+            this.ui.style.transform = "scale(" + mult + ")";
+            this.ui.style.width = Egg.config['width'];
+            this.ui.style.height = Egg.config['height'];
+
+        }
     }
 }

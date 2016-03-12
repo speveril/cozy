@@ -20,18 +20,20 @@ function include(path) {
 }
 
 /**
- * The core Egg module.
+ * The main container for everything Egg.
  */
 module Egg {
     enum ButtonState { UP, DOWN, IGNORED };
-    export var browserWindow: GitHubElectron.BrowserWindow;
 
-    export var debug: boolean;
     export var key: Object;
+    export var debug: boolean;
+
+    var browserWindow: GitHubElectron.BrowserWindow;
     var buttonMap: Object;
     var __button: { [name:string]:ButtonState };
     var buttonTimeouts: { [name:string]:number };
     var paused: Boolean;
+    var sizeMultiplier: Number;
 
     // wtf, seriously
     export var game: string;
@@ -62,9 +64,6 @@ module Egg {
         this.buttonTimeouts = {};
         this.textures = {};
         this.paused = true;
-
-        this.layerStack = [];
-        this.layerContainer = new PIXI.Container();
     }
 
     export function run() {
@@ -166,6 +165,7 @@ module Egg {
     export function addPlane(args:any):Plane {
         var p = new Plane(args);
         this.planes.push(p);
+        p.resize(this.sizeMultiplier);
         return p;
     }
 
@@ -211,20 +211,17 @@ module Egg {
         }
     }
 
-    export function onResize(event?) {
+    export function onResize(event?:any) {
         var newSize = this.browserWindow.getContentSize(),
             multX   = newSize[0] / this.config['width'],
             multY   = newSize[1] / this.config['height'],
             mult    = Math.floor(Math.min(multX, multY));
+        console.log("onResize...", newSize, multX, multY, mult);
+
+        this.sizeMultiplier = mult;
 
         _.each(this.planes, function(plane) {
-            if (plane.renderer) {
-                plane.renderer.resolution = mult;
-                plane.renderer.resize(this.config['width'], this.config['height']);
-            }
-            plane.ui.style.transform = "scale(" + mult + ")";
-            plane.ui.style.width = this.config['width'];
-            plane.ui.style.height = this.config['height'];
+            plane.resize(this.sizeMultiplier);
         }.bind(this));
 
         // force everything to update properly
@@ -261,7 +258,7 @@ module Egg {
         }
 
         _.each(assets, function(path, name) {
-            PIXI.loader.add(name, Egg.projectFilePath(path));
+            PIXI.loader.add(name, File.projectFile(path));
         });
 
         PIXI.loader.load(function(loader, resources) {
@@ -293,41 +290,4 @@ module Egg {
         return n;
     }
 
-    /**
-    @DEPRECATED
-    */
-    export function projectFilePath(fname) {
-        return File.projectFile(fname);
-    }
-
-    /**
-    @DEPRECATED
-    */
-    export function setBackground(color) {
-        this.planes[0].renderer.backgroundColor = color;
-    }
-
-    /**
-    @DEPRECATED
-    */
-    export function addLayer(index?:number):Layer {
-        return this.planes[0].addRenderLayer(index);
-        // var lyr = new Layer();
-        // if (index === undefined) {
-        //     layerStack.push(lyr);
-        // } else {
-        //     layerStack.splice(index, 0, lyr);
-        // }
-        // layerContainer.addChild(lyr.innerContainer);
-        // return lyr;
-    }
-
-    /**
-    @DEPRECATED
-    */
-    export function clearLayers() {
-        this.planes[0].clear();
-        // layerStack = [];
-        // layerContainer.removeChildren();
-    }
 }

@@ -316,10 +316,10 @@ module RPG {
         }
 
         open():void {
-            Egg.clearLayers();
+            RPG.renderPlane.clear();
 
             _.each(this.layers, function(mapLayer) {
-                var layer = Egg.addLayer();
+                var layer = RPG.renderPlane.addRenderLayer();
                 mapLayer.displayLayer = layer;
                 var x = 0,
                     y = 0;

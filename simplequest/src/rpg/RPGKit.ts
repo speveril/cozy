@@ -201,7 +201,7 @@ module RPG {
             map = newMap;
         }
         map.open();
-        UILayer = Egg.addLayer();
+        UILayer = RPG.renderPlane.addRenderLayer();
 
         player.place((x + 0.5) * map.tileSize.x, (y + 0.5) * map.tileSize.y, map.getLayerByName(layerName || '#spritelayer'));
         RPG.centerCameraOn(player.position);

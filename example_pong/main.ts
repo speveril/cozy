@@ -1,4 +1,4 @@
-///<reference path="../resources/default_app/Egg.d.ts" />
+///<reference path="../egg/resources/default_app/Egg.d.ts" />
 
 class Ball extends Egg.Sprite {
     velocity: number;
@@ -95,6 +95,7 @@ var player2:Player;
 
 var ball;
 var stage;
+var plane;
 
 function start() {
     Egg.loadTextures({
@@ -104,15 +105,17 @@ function start() {
 }
 
 function beginGame() {
-    Egg.setBackground(0x223322);
-
-    stage = Egg.addLayer();
+    plane = Egg.addPlane({
+        renderable: true
+    });
+    plane.setBackground(0x223322);
+    stage = plane.addRenderLayer();
 
     ball = new Ball({
         texture: Egg.textures['ball'],
         hotspot: { x: 6, y: 6 }
     });
-    stage.addSprite(ball);
+    stage.add(ball);
 
     player1 = new Player({
         texture: Egg.textures['paddle'],
@@ -120,7 +123,7 @@ function beginGame() {
         position: { x: 6 * 3, y: Egg.config['height'] / 2 - 48 / 2 }
     });
 
-    stage.addSprite(player1);
+    stage.add(player1);
 
     player2 = new Player({
         texture: Egg.textures['paddle'],
@@ -128,7 +131,7 @@ function beginGame() {
         position: { x: Egg.config['width'] - 6 * 3 - 1, y: Egg.config['height'] / 2 - 48 / 2 }
     });
 
-    stage.addSprite(player2);
+    stage.add(player2);
 
     player1.scoreDisplay = window.document.createElement('div');
     player1.scoreDisplay.style.fontSize = '40px';
