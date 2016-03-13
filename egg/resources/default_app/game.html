@@ -7,9 +7,11 @@
     </head>
     <body>
         <script>
-var opts = JSON.parse(window.location.search.slice(1).replace(/\%(\d+)/g, function(_,x) { return String.fromCharCode(parseInt(x, 16)); }));
-Egg.setup(opts);
-Egg.run();
+const electron = require('electron');
+electron.ipcRenderer.on('start', function(event, arg) {
+    Egg.setup(arg);
+    Egg.run();
+});
         </script>
     </body>
 </html>

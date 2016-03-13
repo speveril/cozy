@@ -8,11 +8,12 @@ html {
 
 body {
     margin: 0;
-    padding: 0;
+    padding: 1em;
     background: #000;
     color: #aaa;
     font-family: "Consolas", "Courier New", monospace;
     font-size: 9pt;
+    border: 1px solid #aaa;
 }
 
 #output {
@@ -31,7 +32,6 @@ var outputContainer = document.getElementById('output');
 function output(html) {
     outputContainer.innerHTML += html;
 }
-output("<strong>EGG BUILD SYSTEM</strong>\n");
 
 electron.ipcRenderer.on('build-message', function(event, arg) {
     output(arg);

@@ -25,37 +25,28 @@ function include(path) {
 module Egg {
     enum ButtonState { UP, DOWN, IGNORED };
 
+    export var Game: any;
     export var key: Object;
     export var debug: boolean;
+    export var config: Object;
+    export var textures: {}[];
+    export var planes:Plane[];
 
+    var gameName: string;
     var browserWindow: GitHubElectron.BrowserWindow;
     var buttonMap: Object;
     var __button: { [name:string]:ButtonState };
     var buttonTimeouts: { [name:string]:number };
     var paused: Boolean;
     var sizeMultiplier: Number;
-
-    // wtf, seriously
-    export var game: string;
-    export var Game: any;
-    export var gameDir: string;
-    export var eggDir: string;
-
-    export var config: Object;
-    export var lastTime: number;
-    export var textures: {}[];
-    export var planes:Plane[];
-
-    export var renderer:PIXI.WebGLRenderer;
-    export var overlay:Plane;
-
+    var lastTime: number;
 
     export function setup(opts:any) {
         console.log("Creating Egg Object");
 
         this.config = opts;
         this.debug = !!opts.debug;
-        this.game = opts.game;
+        this.gameName = opts.game;
         this.browserWindow = remote.getCurrentWindow();
 
         this.key = {};
@@ -67,9 +58,11 @@ module Egg {
     }
 
     export function run() {
-        this.eggDir = path.join(process.cwd(), "egg", "resources", "default_app");
-        process.chdir(this.game);
-        this.gameDir = process.cwd();
+        var eggPath = path.join(process.cwd(), "egg", "resources", "default_app"); // TODO this isn't necessarily true
+        var gamePath = path.join(process.cwd(), this.gameName);
+
+        process.chdir(gamePath);
+        File.setPaths(eggPath, gamePath);
 
         this.config['buttons'] = this.config['buttons'] || {
             "left": [37],        // left arrow
@@ -180,7 +173,7 @@ module Egg {
     export function onKeyDown(event) {
         var keyCode = event.keyCode;
 
-        this.key[keyCode] = true;
+        Egg.key[keyCode] = true;
 
         if (_.has(this.buttonMap, keyCode)) {
             _.each(this.buttonMap[keyCode], function(b) {
@@ -196,7 +189,7 @@ module Egg {
 
         // console.log(keyCode);
 
-        this.key[keyCode] = false;
+        Egg.key[keyCode] = false;
 
         if (_.has(this.buttonMap, keyCode)) {
             _.each(this.buttonMap[keyCode], function(b) {
@@ -289,5 +282,4 @@ module Egg {
         n %= range;
         return n;
     }
-
 }

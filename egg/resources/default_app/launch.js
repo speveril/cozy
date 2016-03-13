@@ -23,74 +23,93 @@ var optionMap = {
     '-d':           'debug'
 };
 
-for (var i in argv) {
-    var option = argv[i];
-    if (optionMap[option]) {
-        options[optionMap[option]] = true;
-    } else if (option.indexOf('-') === 0) {
-        console.log("Bad command line param, " + option);
-        process.exit(1);
-    } else {
-        gamePath = argv[i];
-    }
-}
-
 app.on('ready', setup);
 
 var buildWindow;
+var buildWindowReady;
+var queuedBuildMessages = [];
+
 var buildMessage = (msg) => {
-    if (buildWindow) {
+    if (buildWindow && buildWindowReady) {
         buildWindow.webContents.send('build-message', msg);
+    } else {
+        queuedBuildMessages.push(msg);
+        if (!buildWindow) {
+            makeBuildWindow();
+        }
     }
 }
 
+function makeBuildWindow() {
+    buildWindow = new BrowserWindow({
+        width: 640,
+        height: 480,
+        title: 'Egg Builder',
+        'autoHideMenuBar':  true,
+    });
+    buildWindow.loadURL("file://" + __dirname + "/build.html");
+    buildWindow.webContents.on('did-finish-load', () => {
+        buildWindowReady = true;
+        queuedBuildMessages.forEach((m) => {
+            buildMessage(m);
+        });
+        queuedBuildMessages = [];
+    });
+}
+
 function setup() {
-    var needBuildWindow = false;
+    var badParam = false;
+
+    for (var i in argv) {
+        var option = argv[i];
+        if (optionMap[option]) {
+            options[optionMap[option]] = true;
+        } else if (option.indexOf('-') === 0) {
+            uncleanExit(3, "Bad command line param, " + option);
+            return;
+        } else {
+            gamePath = argv[i];
+        }
+    }
+
     if (options.build) {
         actions.push(build.bind(null, path.join("egg", "resources", "default_app", "src"), '../Egg.js'));
         actions.push(doc.bind(null, path.join("egg", "resources", "default_app", "src", "Egg.ts"), path.join("egg", "docs")));
-        needBuildWindow = true;
     }
     if (options.buildgame) {
         actions.push(build.bind(null, gamePath, 'main.js'));
-        needBuildWindow = true;
     }
-
 
     if (options.new) {
         actions.push(makeNew);
-        needBuildWindow = true;
     }
 
     if (!options.noplay) {
         actions.push(play);
     }
 
-    if (needBuildWindow) {
-        buildWindow = new BrowserWindow({
-            width: 640,
-            height: 480,
-            title: 'Egg Builder',
-            'auto-hide-menu-bar':  true,
-        });
-        buildWindow.loadURL("file://" + __dirname + "/build.html");
-        buildWindow.webContents.on('did-finish-load', () => {
-            next();
-        });
-        buildWindow.on('close', () => process.exit(2));
-    } else {
-        next();
-    }
+    next();
+}
+
+function uncleanExit(code, msg) {
+    makeBuildWindow();
+    buildMessage(msg);
+
+    buildWindow.once('close', function() {
+        process.exit(code);
+    });
 }
 
 function next() {
     if (actions.length === 0) {
-        console.log("Done!");
+        if (buildWindow) {
+            buildWindow.close();
+        }
         return process.exit(0);
+    } else {
+        var action = actions.shift();
+        action();
     }
-
-    var action = actions.shift();
-    action();
 }
 
 function build(buildPath, outputFile) {
@@ -121,16 +140,13 @@ function build(buildPath, outputFile) {
             buildMessage(" - Success.\n");
             next();
         } else {
-            buildMessage(" - Failure.\n");
-            buildWindow.once('close', function() {
-                process.exit(1);
-            });
+            uncleanExit(1, " - Failure.\n");
         }
     });
 }
 
 function doc(srcPath, outputPath) {
-    buildMessage("Generating documentation for " + srcPath + " -> " + outputPath + "\n");
+    buildMessage("Generating documentation:\n SRC: " + srcPath + "\n DST: " + outputPath + "\n");
 
     var typedoc = child.fork(path.join(__dirname, "builddoc"), [
         '--out', outputPath,
@@ -148,10 +164,7 @@ function doc(srcPath, outputPath) {
             buildMessage(" - Success.\n");
             next();
         } else {
-            buildMessage(" - Failure.\n");
-            buildWindow.once('close', function() {
-                process.exit(1);
-            });
+            uncleanExit(2, " - Failure.\n");
         }
     });
 }
@@ -178,14 +191,10 @@ function makeNew() {
 }
 
 function play() {
-    if (buildWindow) {
-        buildWindow.close();
-    }
-
     try {
         params = JSON.parse(fs.readFileSync(path.join(gamePath, "config.json")));
     } catch(e) {
-        console.log("Couldn't load config.json in " + path.join(process.cwd(), gamePath) + ". " + e);
+        buildMessage("Couldn't load config.json in " + path.join(process.cwd(), gamePath) + ". " + e);
         next();
     }
     params['width'] = params['width'] || 320;
@@ -199,13 +208,16 @@ function play() {
       'autoHideMenuBar':    true,
       'useContentSize':     true
     });
-    params.game = gamePath;
-    if (options.debug) params.debug = true
-    if (options.console) window.toggleDevTools();
-
     window.once('close', function() {
         next();
     });
 
-    window.loadURL("file://" + __dirname + "/game.html?" + JSON.stringify(params));
+    params.game = gamePath;
+    if (options.debug) params.debug = true
+    if (options.console) window.toggleDevTools();
+
+    window.loadURL("file://" + __dirname + "/game.html");
+    window.webContents.once('did-finish-load', () => {
+        window.webContents.send('start', params);
+    });
 }

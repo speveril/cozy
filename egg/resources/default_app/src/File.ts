@@ -3,6 +3,9 @@ var path = require('path');
 
 module Egg {
     export class File {
+        static eggPath:string;
+        static gamePath:string;
+
         static read(f:string):string { return fs.readFileSync(f, { encoding: 'UTF-8' }); }
         static readBinary(f:string):ArrayBuffer { return fs.readFileSync(f).buffer; }
         static write(f:string, contents:string):void { return fs.writeFileSync(f, contents); }
@@ -36,10 +39,21 @@ module Egg {
             });
         }
 
-        static projectFile(f):string { return path.join(Egg.gameDir, f); }
+        static projectFile(f):string { return path.join(File.gamePath, f); }
         static urlPath(f):string {
-            var basePath = File.relative(Egg.eggDir, Egg.gameDir);
+            var basePath = File.relative(File.eggPath, File.gamePath);
             return path.join(basePath, f);
+        }
+
+        /**
+        Set up the File handler's two necessary internal paths. Called as part of setup; there
+        shouldn't be any reason to call it again.
+        @param eggPath      Path containing the Egg executable.
+        @param gamePath     Path containing the game's config.json.
+        **/
+        static setPaths(eggPath, gamePath) {
+            File.eggPath = eggPath;
+            File.gamePath = gamePath;
         }
     }
 

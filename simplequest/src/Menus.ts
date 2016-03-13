@@ -5,8 +5,8 @@ module SimpleQuest {
                 return RPG.Scene.waitForFadeOut(1.0, "#000000");
             })
             .then(function() {
-                Egg.quit();
                 RPG.Scene.finish();
+                Egg.quit();
             });
     }
 
