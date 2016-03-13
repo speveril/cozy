@@ -40,7 +40,7 @@ module RPG {
 
             this.textPaused = false;
 
-            RPG.uiPlane.ui.appendChild(this.box);
+            RPG.uiPlane.container.appendChild(this.box);
             this.textSize = parseInt(window.getComputedStyle(this.inner).fontSize, 10);
             this.boxHeight = this.inner.clientHeight;
         }

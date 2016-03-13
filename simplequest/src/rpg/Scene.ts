@@ -35,7 +35,7 @@ module RPG {
                 this.fadeLayer.style.height = "100%";
                 this.fadeLayer.style.opacity = '0';
             }
-            RPG.uiPlane.ui.appendChild(this.fadeLayer);
+            RPG.uiPlane.container.appendChild(this.fadeLayer);
 
             this.promise = new Promise(function(resolve, reject) {
                 if (RPG.player) {

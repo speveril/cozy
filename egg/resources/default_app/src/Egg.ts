@@ -155,10 +155,23 @@ module Egg {
         }
     }
 
-    export function addPlane(args:any):Plane {
-        var p = new Plane(args);
+    export function addPlane(Type:any, args?:any):Plane {
+        // temporary hack to support old style of call...
+        if (args === undefined) {
+            args = Type;
+            Type = Plane;
+        }
+
+        if (!(Type === Plane || Type.prototype instanceof Plane)) {
+            throw new TypeError("Type passed to addPlane() must be a Plane type.");
+        }
+
+        var p = new Type(args);
         this.planes.push(p);
         p.resize(this.sizeMultiplier);
+
+        console.log("New plane ->", Type, args);
+
         return p;
     }
 

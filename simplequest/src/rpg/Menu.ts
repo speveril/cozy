@@ -65,7 +65,7 @@ module RPG {
         }
 
         start() {
-            RPG.uiPlane.ui.appendChild(this.container);
+            RPG.uiPlane.container.appendChild(this.container);
             this.setSelection(0);
         }
         pause() {

@@ -51,10 +51,10 @@ body {
     left: 0;
 }
 
-.battle-plane {
+.battle-render {
     background: rgba(0, 0, 0, 0.5);
 }
 
-.battle-plane .ui {
+.battle-ui {
     background-image: url(../../ui/battle/bg.png);
 }

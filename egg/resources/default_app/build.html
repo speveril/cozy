@@ -8,17 +8,21 @@ html {
 
 body {
     margin: 0;
-    padding: 1em;
+    padding: 0;
     background: #000;
     color: #aaa;
     font-family: "Consolas", "Courier New", monospace;
-    font-size: 9pt;
-    border: 1px solid #aaa;
 }
 
 #output {
+    padding: 1em;
     white-space: pre-line;
+    font-size: 9pt;
+    border: 1px solid #aaa;
+    overflow: auto;
+    height: calc(100% - 2em - 2px);
 }
+
         </style>
     </head>
     <body>

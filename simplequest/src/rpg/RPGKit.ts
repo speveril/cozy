@@ -16,9 +16,10 @@ module RPG {
     export var loadSkip:Array<string> = [];
     export var cameraHalf:PIXI.Point;
     export var controls:ControlMode;
-    export var renderPlane:Egg.Plane;
-    export var battlePlane:Egg.Plane;
-    export var uiPlane:Egg.Plane;
+    export var renderPlane:Egg.RenderPlane;
+    export var battleRenderPlane:Egg.RenderPlane;
+    export var battleUiPlane:Egg.UiPlane;
+    export var uiPlane:Egg.UiPlane;
     export var mainMenuClass:any;
     export var characters:{[key:string]:Character} = {};
     export var moneyName:string = "G";
@@ -26,20 +27,13 @@ module RPG {
     export function start(loaded:Function) {
         Egg.addStyleSheet("src/rpg/rpg.css");
 
-        RPG.renderPlane = Egg.addPlane({
-            className: 'render-plane',
-            renderable: true
-        });
+        RPG.renderPlane = <Egg.RenderPlane>Egg.addPlane(Egg.RenderPlane, { className: 'render-plane' });
+        RPG.battleRenderPlane = <Egg.RenderPlane>Egg.addPlane(Egg.RenderPlane, { className: 'battle-render' });
+        RPG.battleUiPlane = <Egg.UiPlane>Egg.addPlane(Egg.UiPlane, { className: 'battle-ui' });
+        RPG.uiPlane = <Egg.UiPlane>Egg.addPlane(Egg.UiPlane, { className: 'overlay' });
 
-        RPG.battlePlane = Egg.addPlane({
-            className: 'battle-plane',
-            renderable: true
-        });
-        RPG.battlePlane.hide();
-
-        RPG.uiPlane = Egg.addPlane({
-            className: 'overlay'
-        });
+        RPG.battleRenderPlane.hide();
+        RPG.battleUiPlane.hide();
 
         var textures = {};
         var fonts = [];

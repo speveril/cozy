@@ -63,7 +63,7 @@ module RPG {
                 this.savedControls = RPG.controls;
                 RPG.controls = RPG.ControlMode.Battle;
 
-                this.monsterLayer = RPG.battlePlane.addRenderLayer();
+                this.monsterLayer = RPG.battleRenderPlane.addRenderLayer();
                 this.monsterLayer.add(new Egg.Sprite({
                     texture: args.scene,
                     position: { x: 82, y: 15}
@@ -76,9 +76,9 @@ module RPG {
 
                 var ui = document.createElement('div');
                 ui.innerHTML = battleHTML;
-                RPG.battlePlane.ui.appendChild(ui);
+                RPG.battleUiPlane.container.appendChild(ui);
 
-                var actionsMenu = <HTMLElement>(document.querySelector('.battle-plane .right-sidebar .selections'));
+                var actionsMenu = <HTMLElement>(document.querySelector('.battle-ui .right-sidebar .selections'));
                 for (var i = 0; i < this.menu.length; i++) {
                     var el = document.createElement('li');
                     el.innerHTML = this.menu[i];
@@ -89,18 +89,19 @@ module RPG {
                 RPG.Textbox.show("Encountered " + this.enemy.name + "!");
                 this.updateUI();
 
-                RPG.battlePlane.show();
+                RPG.battleRenderPlane.show();
+                RPG.battleUiPlane.show();
             }.bind(this));
         }
 
         static updateUI():void {
             var fields = ['name', 'hp', 'maxhp'];
             for (var i = 0; i < fields.length; i++) {
-                var element = <HTMLElement>(document.querySelector('.battle-plane .left-sidebar .' + fields[i]))
+                var element = <HTMLElement>(document.querySelector('.battle-ui .left-sidebar .' + fields[i]))
                 element.innerHTML = this.player[fields[i]];
             }
 
-            var menuLIs = document.querySelectorAll('.battle-plane .right-sidebar li');
+            var menuLIs = document.querySelectorAll('.battle-ui .right-sidebar li');
             for (var i = 0; i < menuLIs.length; i++) {
                 var el = <HTMLElement>menuLIs[i];
                 if (i === this.menuSelection) {
@@ -206,9 +207,10 @@ module RPG {
         }
 
         static end():void {
-            RPG.battlePlane.hide();
-            RPG.battlePlane.clear();
-            RPG.battlePlane.ui.innerHTML = "";
+            RPG.battleRenderPlane.hide();
+            RPG.battleRenderPlane.clear();
+            RPG.battleUiPlane.hide();
+            RPG.battleUiPlane.clear();
             RPG.controls = this.savedControls;
             Textbox.hide();
             this.active = false;
