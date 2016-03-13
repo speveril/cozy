@@ -74,7 +74,6 @@ function setup() {
             'auto-hide-menu-bar':  true,
         });
         buildWindow.loadURL("file://" + __dirname + "/build.html");
-        buildWindow.toggleDevTools();
         buildWindow.webContents.on('did-finish-load', () => {
             next();
         });
