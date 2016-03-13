@@ -74,11 +74,11 @@ function setup() {
             'auto-hide-menu-bar':  true,
         });
         buildWindow.loadURL("file://" + __dirname + "/build.html");
-        // buildWindow.toggleDevTools();
+        buildWindow.toggleDevTools();
         buildWindow.webContents.on('did-finish-load', () => {
-            console.log("Finished load");
             next();
         });
+        buildWindow.on('close', () => process.exit(2));
     } else {
         next();
     }
@@ -117,8 +117,8 @@ function build(buildPath, outputFile) {
     tsc.stdout.on('data', buildMessage);
     tsc.stderr.on('data', buildMessage);
 
-    tsc.on('exit', function(return_code) {
-        if (!return_code) {
+    tsc.on('exit', function(returnCode) {
+        if (!returnCode) {
             buildMessage(" - Success.\n");
             next();
         } else {
@@ -133,7 +133,7 @@ function build(buildPath, outputFile) {
 function doc(srcPath, outputPath) {
     buildMessage("Generating documentation for " + srcPath + " -> " + outputPath + "\n");
 
-    var typedoc = child.fork(path.join(__dirname, "node_modules", "typedoc", "bin", "typedoc"), [
+    var typedoc = child.fork(path.join(__dirname, "builddoc"), [
         '--out', outputPath,
         '--mode', 'file',
         '--target', 'ES5',
@@ -144,8 +144,8 @@ function doc(srcPath, outputPath) {
     typedoc.stdout.on('data', buildMessage);
     typedoc.stderr.on('data', buildMessage);
 
-    typedoc.on('exit', function(return_code) {
-        if (!return_code) {
+    typedoc.on('exit', function(returnCode) {
+        if (!returnCode) {
             buildMessage(" - Success.\n");
             next();
         } else {

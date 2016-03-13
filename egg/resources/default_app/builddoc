@@ -1,0 +1,5 @@
+#!/usr/bin/env node
+
+var TypeDoc = require('./node_modules/typedoc/bin/typedoc.js');
+new TypeDoc.Application(true);
+process.exit(0);
