@@ -11,6 +11,7 @@
 /// <reference path="Plane.ts"/>
 /// <reference path="Sprite.ts"/>
 /// <reference path="Texture.ts"/>
+/// <reference path="UiComponent.ts"/>
 
 var remote = require('remote');
 declare var FontFace:any;
@@ -139,7 +140,7 @@ module Egg {
         if (this.paused) { return; }
 
         _.each(this.planes, function(plane) {
-            plane.update(dt );
+            plane.update(dt);
         }.bind(this));
 
         if (this.Game && this.Game.frame) {
@@ -156,23 +157,15 @@ module Egg {
     }
 
     export function addPlane(Type:any, args?:any):Plane {
-        // temporary hack to support old style of call...
-        if (args === undefined) {
-            args = Type;
-            Type = Plane;
+        if (!(Type.prototype instanceof Plane)) {
+            throw new TypeError("Type passed to addPlane() must inherit from Plane.");
         }
 
-        if (!(Type === Plane || Type.prototype instanceof Plane)) {
-            throw new TypeError("Type passed to addPlane() must be a Plane type.");
-        }
+        var plane = new Type(args || {});
+        this.planes.push(plane);
+        plane.resize(this.sizeMultiplier);
 
-        var p = new Type(args);
-        this.planes.push(p);
-        p.resize(this.sizeMultiplier);
-
-        console.log("New plane ->", Type, args);
-
-        return p;
+        return plane;
     }
 
     export function pause() {

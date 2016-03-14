@@ -52,12 +52,10 @@ class Ball extends Egg.Sprite {
 
         if (this.position.x < -this.radius) {
             player2.score++;
-            updateScores();
             resetBall();
         }
         if (this.position.x >= Egg.config['width'] + this.radius) {
             player1.score++;
-            updateScores();
             resetBall();
         }
 
@@ -90,12 +88,39 @@ class Player extends Egg.Sprite {
     }
 }
 
-var player1:Player;
-var player2:Player;
+class ScoreComponent extends Egg.UiComponent {
+    player: Player;
 
-var ball;
-var stage;
-var plane;
+    constructor(args) {
+        super(args);
+
+        this.element.style.fontSize = '40px';
+        this.element.style.fontFamily = 'Calibri, sans-serif';
+        this.element.style.color = 'white';
+        this.element.style.position = 'absolute';
+        this.element.style.top = '5px';
+        this.element.style[args.side] = '5px';
+
+        this.player = args.player;
+    }
+
+    update(dt) {
+        super.update(dt);
+        this.setScore(this.player.score);
+    }
+
+    setScore(score):void {
+        this.element.innerText = score;
+    }
+}
+
+var player1: Player;
+var player2: Player;
+
+var ball: Ball;
+var renderPlane: Egg.RenderPlane;
+var uiPlane: Egg.UiPlane;
+var stage: Egg.Layer;
 
 function start() {
     Egg.loadTextures({
@@ -105,11 +130,9 @@ function start() {
 }
 
 function beginGame() {
-    plane = Egg.addPlane({
-        renderable: true
-    });
-    plane.setBackground(0x223322);
-    stage = plane.addRenderLayer();
+    renderPlane = <Egg.RenderPlane>Egg.addPlane(Egg.RenderPlane);
+    renderPlane.setBackground(0x223322);
+    stage = renderPlane.addRenderLayer();
 
     ball = new Ball({
         texture: Egg.textures['ball'],
@@ -133,25 +156,13 @@ function beginGame() {
 
     stage.add(player2);
 
-    player1.scoreDisplay = window.document.createElement('div');
-    player1.scoreDisplay.style.fontSize = '40px';
-    player1.scoreDisplay.style.fontFamily = 'Calibri, sans-serif';
-    player1.scoreDisplay.style.color = 'white';
-    player1.scoreDisplay.style.position = 'absolute';
-    player1.scoreDisplay.style.left = '5px';
-    player1.scoreDisplay.style.top = '5px';
-    window.document.body.appendChild(player1.scoreDisplay);
+    uiPlane = <Egg.UiPlane>Egg.addPlane(Egg.UiPlane);
 
-    player2.scoreDisplay = window.document.createElement('div');
-    player2.scoreDisplay.style.fontSize = '40px';
-    player2.scoreDisplay.style.fontFamily = 'Calibri, sans-serif';
-    player2.scoreDisplay.style.color = 'white';
-    player2.scoreDisplay.style.position = 'absolute';
-    player2.scoreDisplay.style.right = '5px';
-    player2.scoreDisplay.style.top = '5px';
-    window.document.body.appendChild(player2.scoreDisplay);
+    player1.scoreDisplay = new ScoreComponent({ side: 'left', player: player1 });
+    uiPlane.addChild(player1.scoreDisplay);
 
-    updateScores();
+    player2.scoreDisplay = new ScoreComponent({ side: 'right', player: player2 });
+    uiPlane.addChild(player2.scoreDisplay);
 
     resetBall();
 
@@ -191,11 +202,6 @@ function resetBall() {
         ball.angle -= 3 * Math.PI / 4;
     }
     ball.normalizeAngle();
-}
-
-function updateScores() {
-    player1.scoreDisplay.innerText = player1.score;
-    player2.scoreDisplay.innerText = player2.score;
 }
 
 module.exports = {

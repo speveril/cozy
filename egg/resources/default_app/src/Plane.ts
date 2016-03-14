@@ -75,9 +75,18 @@ module Egg {
     }
 
     export class UiPlane extends Plane {
+        private root: UiComponent;
+
         constructor(args:any) {
             super(args);
             this.container.className += ' ui';
+
+            this.root = new UiComponent({});
+            this.container.appendChild(this.root.element);
+        }
+
+        update(dt):void {
+            this.root.update(dt);
         }
 
         addHTML(file) {
@@ -85,6 +94,10 @@ module Egg {
             container.innerHTML = Egg.File.read(Egg.File.projectFile(file));
             this.container.appendChild(container);
             return container;
+        }
+
+        addChild(child:UiComponent) {
+            this.root.addChild(child);
         }
 
         clear():void {
