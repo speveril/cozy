@@ -118,7 +118,7 @@ module SimpleQuest {
         sceneText(speaker:string, text:string) {
             return function() {
                 if (this.lastSpeaker && this.lastSpeaker === speaker) {
-                    RPG.Textbox.appendText("\n" + text);
+                    RPG.Textbox.box.appendText("\n" + text);
                 } else {
                     RPG.Textbox.show("<span class=\"speaker\">" + speaker + ":</span> " + text);
                 }

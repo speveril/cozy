@@ -1,66 +1,16 @@
 module RPG {
-    export class Textbox {
-        private static sprite:Egg.Sprite;
-        private static message:string;
-
-        private static box:HTMLElement;
-
-        private static inner;
-        private static textSpeed = 100;
-        private static textPos = 0;
-        private static textPaused = false;
-        private static textStart;
-        private static textCursor;
-        private static cursorPosition;
-        private static textSize;
-        private static boxHeight;
+    export class Textbox extends Egg.UiComponent {
+        public static box:Textbox;
 
         static show(text:string) {
             if (this.box) {
                 this.hide();
             }
 
-
-            this.box = document.createElement('div');
-            this.box.className = "textbox";
-            this.inner = document.createElement('div');
-            this.inner.className = "inner-text";
-            this.box.appendChild(this.inner);
-            this.textCursor = document.createElement('span');
-            this.textCursor.className = 'cursor';
-            this.cursorPosition = document.createElement('span');
-            this.cursorPosition.className = 'position';
-            this.cursorPosition.innerHTML = '&nbsp;';
-            this.textCursor.appendChild(this.cursorPosition);
-            var cursorSpacer = document.createElement('span');
-            cursorSpacer.className = 'spacer';
-            this.textCursor.appendChild(cursorSpacer);
-
-            this.setText(text);
-
-            this.textPaused = false;
-
-            RPG.uiPlane.container.appendChild(this.box);
-            this.textSize = parseInt(window.getComputedStyle(this.inner).fontSize, 10);
-            this.boxHeight = this.inner.clientHeight;
-        }
-
-        static setText(text:string) {
-            if (this.box && this.inner) {
-                this.inner.innerHTML = text;
-                this.inner.insertBefore(this.textCursor, this.inner.firstChild);
-            }
-        }
-
-        static appendText(text:string) {
-            if (this.box && this.inner) {
-                var newElement = <HTMLElement>(document.createElement('div'));
-                newElement.innerHTML = text;
-                while (newElement.firstChild) {
-                    this.inner.appendChild(newElement.firstChild);
-                }
-                this.textPaused = false;
-            }
+            this.box = new Textbox({
+                text: text
+            });
+            RPG.uiPlane.addChild(this.box);
         }
 
         static hide() {
@@ -69,9 +19,55 @@ module RPG {
             }
         }
 
-        static update(dt) {
-            if (!this.box) return;
-            if (this.textPaused) return;
+
+        private paused:Boolean = false;
+        private inner:HTMLElement;
+        private textCursor:HTMLElement;
+        private cursorPosition:HTMLElement;
+        private textSize:Number;
+        private boxHeight:Number;
+        private textSpeed = 100;
+        private textPos = 0;
+
+        constructor(args:any) {
+            super(args);
+            this.element.innerHTML = `
+                <div class="textbox">
+                    <div class="inner-text"></div>
+                </div>
+                <span class="cursor"><span class="position">&nbsp;</span><span class="spacer"></span></span>
+            `;
+
+            this.inner = this.find('.inner-text');
+            this.textCursor = this.find('.cursor');
+            this.cursorPosition = this.find('.cursor .position');
+
+            this.textCursor.remove();
+            this.setText(args.text);
+        }
+
+        setParent(parent:Egg.UiComponent, parentElement?:HTMLElement|string):void {
+            super.setParent(parent, parentElement);
+            this.textSize = parseInt(window.getComputedStyle(this.inner).fontSize, 10);
+            this.boxHeight = this.inner.clientHeight;
+        }
+
+        setText(text:string) {
+            this.inner.innerHTML = text;
+            this.inner.insertBefore(this.textCursor, this.inner.firstChild);
+        }
+
+        appendText(text:string) {
+            var newElement = <HTMLElement>(document.createElement('div'));
+            newElement.innerHTML = text;
+            while (newElement.firstChild) {
+                this.inner.appendChild(newElement.firstChild);
+            }
+            this.paused = false;
+        }
+
+        update(dt) {
+            if (this.paused) return;
 
             var currentPos = this.textPos;
             this.textPos += dt * this.textSpeed;
@@ -91,7 +87,7 @@ module RPG {
                     }
 
                     if (parent === this.inner.parentNode) {
-                        this.textPaused = true;
+                        this.paused = true;
                         break;
                     } else {
                         parent.insertBefore(this.textCursor, sibling);

@@ -92,7 +92,9 @@ function setup() {
 }
 
 function uncleanExit(code, msg) {
-    makeBuildWindow();
+    if (!buildWindow) {
+        makeBuildWindow();
+    }
     buildMessage(msg);
 
     buildWindow.once('close', function() {
@@ -138,10 +140,10 @@ function build(buildPath, outputFile) {
     tsc.on('exit', function(returnCode) {
         if (!returnCode) {
             buildMessage(" - Built in " + path.join(buildPath, outputFile) + "\n");
-            buildMessage("### Success ###\n\n");
+            buildMessage("<span style='color:green'>### Success ###</span>\n\n");
             next();
         } else {
-            uncleanExit(1, "### FAILURE ###\n");
+            uncleanExit(1, "<span style='color:red'>### FAILURE ###</span>\n");
         }
     });
 }
@@ -162,10 +164,10 @@ function doc(srcPath, outputPath) {
 
     typedoc.on('exit', function(returnCode) {
         if (!returnCode) {
-            buildMessage("### Success ###\n\n");
+            buildMessage("<span style='color:green'>### Success ###</span>\n\n");
             next();
         } else {
-            uncleanExit(1, "### FAILURE ###\n");
+            uncleanExit(1, "<span style='color:red'>### FAILURE ###</span>\n");
         }
     });
 }

@@ -17,10 +17,8 @@ module Egg {
         }
 
         setParent(parent:UiComponent, parentElement?:HTMLElement|string):void {
-            if (this.parent) {
-                var i = this.parent.children.indexOf(this);
-                this.parent.children.splice(i, 1);
-            }
+            this.remove();
+
             this.parent = parent;
             this.parent.children.push(this);
 
@@ -52,6 +50,14 @@ module Egg {
                 list.push(<HTMLElement>nodeList[i]);
             }
             return list;
+        }
+
+        remove():void {
+            if (this.parent) {
+                var i = this.parent.children.indexOf(this);
+                this.parent.children.splice(i, 1);
+            }            
+            this.element.remove();
         }
 
         /**

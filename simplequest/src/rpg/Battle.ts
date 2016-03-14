@@ -251,7 +251,7 @@ module RPG {
         }
 
         static text(s:string) {
-            Textbox.appendText("\n" + s);
+            Textbox.box.appendText("\n" + s);
         }
 
         static setMonsters(m:any) {

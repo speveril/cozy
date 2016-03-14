@@ -215,8 +215,6 @@ module Egg {
             multX   = newSize[0] / this.config['width'],
             multY   = newSize[1] / this.config['height'],
             mult    = Math.floor(Math.min(multX, multY));
-        console.log("onResize...", newSize, multX, multY, mult);
-
         this.sizeMultiplier = mult;
 
         _.each(this.planes, function(plane) {

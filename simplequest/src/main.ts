@@ -55,7 +55,6 @@ module SimpleQuest {
             var promises = [];
             _.each(sfx, function(s) { promises.push(s.loaded()); })
             _.each(music, function(m) { promises.push(m.loaded()); })
-            console.log("promises", promises);
 
             Promise.all(promises)
                 .then(function() {

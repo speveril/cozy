@@ -65,7 +65,6 @@ module RPG {
     }
 
     export function frame(dt) {
-        Textbox.update(dt);
         if (map) {
             map.update(dt);
         }
