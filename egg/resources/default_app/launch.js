@@ -147,7 +147,7 @@ function build(buildPath, outputFile) {
 }
 
 function doc(srcPath, outputPath) {
-    buildMessage("### Documentating ###\n - source:      " + srcPath + "\n - destination: " + outputPath + "\n");
+    buildMessage("### Documenting ###\n - source:      " + srcPath + "\n - destination: " + outputPath + "\n");
 
     var typedoc = child.fork(path.join(__dirname, "builddoc"), [
         '--out', outputPath,
