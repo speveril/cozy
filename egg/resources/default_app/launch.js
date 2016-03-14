@@ -113,7 +113,7 @@ function next() {
 }
 
 function build(buildPath, outputFile) {
-    buildMessage("Building " + buildPath + " -> " + path.join(buildPath, outputFile) + "\n");
+    buildMessage("### Building " + buildPath + " ###\n")
 
     // TODO copy all the stuff we need into a lib/ directory in the game
     //   - need to add the d.ts files for PIXI, node, etc
@@ -137,16 +137,17 @@ function build(buildPath, outputFile) {
 
     tsc.on('exit', function(returnCode) {
         if (!returnCode) {
-            buildMessage(" - Success.\n");
+            buildMessage(" - Built in " + path.join(buildPath, outputFile) + "\n");
+            buildMessage("### Success ###\n\n");
             next();
         } else {
-            uncleanExit(1, " - Failure.\n");
+            uncleanExit(1, "### FAILURE ###\n");
         }
     });
 }
 
 function doc(srcPath, outputPath) {
-    buildMessage("Generating documentation:\n SRC: " + srcPath + "\n DST: " + outputPath + "\n");
+    buildMessage("### Documentating ###\n - source:      " + srcPath + "\n - destination: " + outputPath + "\n");
 
     var typedoc = child.fork(path.join(__dirname, "builddoc"), [
         '--out', outputPath,
@@ -161,10 +162,10 @@ function doc(srcPath, outputPath) {
 
     typedoc.on('exit', function(returnCode) {
         if (!returnCode) {
-            buildMessage(" - Success.\n");
+            buildMessage("### Success ###\n\n");
             next();
         } else {
-            uncleanExit(2, " - Failure.\n");
+            uncleanExit(1, "### FAILURE ###\n");
         }
     });
 }
