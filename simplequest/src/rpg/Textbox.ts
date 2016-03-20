@@ -55,6 +55,7 @@ module RPG {
         setText(text:string) {
             this.inner.innerHTML = text;
             this.inner.insertBefore(this.textCursor, this.inner.firstChild);
+            this.inner.scrollTop = -2;
         }
 
         appendText(text:string) {
@@ -107,6 +108,7 @@ module RPG {
                 }
                 this.cursorPosition.scrollIntoView(false);
                 this.inner.scrollTop += 1;
+                if (this.inner.scrollTop === 1) this.inner.scrollTop = -2; // sigh.
             }
         }
     }
