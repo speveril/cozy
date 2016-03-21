@@ -56,7 +56,7 @@ Feature wish list (some day):
 - Make it easier to work with the HTML elements in the overlay.
 - Rename RenderPlane to SpritePlane?
 - Split config.json into necessary game setup vs. player configuration
-- Integrate SCSS?
+- Integrate SCSS? ReactJS?
 - Events should really only trigger on entering the tile, not every frame (I was thinking of including "zones" for continuous fire events)
 - It'd be nice if the persistent stuff in map was easier to use in general
 - Should I treat other entities for purposes of collisions as circles?
