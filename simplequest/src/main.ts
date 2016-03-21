@@ -22,10 +22,10 @@ module SimpleQuest {
         sfx = {
             'start': new Egg.Sound("audio/sfx/start.wav"),
             'hit': new Egg.Sound("audio/sfx/smash.wav"),
-            'menu_blip': new Egg.Sound("audio/sfx/menu_blip.wav"),
-            'restore': new Egg.Sound("audio/sfx/healthrestore.wav"),
+            'menu_blip': new Egg.Sound("audio/sfx/menu_blip.ogg"),
+            'restore': new Egg.Sound("audio/sfx/healthrestore.ogg"),
             'thud': new Egg.Sound("audio/sfx/thud.wav"),
-            'chnk': new Egg.Sound("audio/sfx/chnk.wav")
+            'chnk': new Egg.Sound("audio/sfx/chnk.ogg")
         };
         music = {
             'village':    new Egg.Music({ tracks: ["audio/music/village.ogg"] }),

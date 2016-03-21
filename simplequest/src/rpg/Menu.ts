@@ -1,5 +1,5 @@
 module RPG {
-    export class Menu {
+    export class Menu extends Egg.UiComponent {
         static menuStack:Menu[] = [];
         static blip:Egg.Sound = null;
         static choose:Egg.Sound = null;
@@ -31,7 +31,7 @@ module RPG {
 
         static replace(m:Menu):void {
             if (Menu.menuStack.length < 1) {
-                throw new Error("Tried to pop with nothing in the menu stack.");
+                throw new Error("Tried to replace with nothing in the menu stack.");
             }
             Menu.pop();
             Menu.push(m);
@@ -42,12 +42,13 @@ module RPG {
         selections:HTMLElement[];
         cancelable:boolean = false;
 
-        constructor(def) {
+        constructor(args) {
+            super(args);
             this.container = document.createElement('div');
 
             this.container.className = "menu";
 
-            var htmlFile:string = Egg.File.projectFile(def.html);
+            var htmlFile:string = Egg.File.projectFile(args.html);
             this.container.innerHTML = Egg.File.read(htmlFile);
             this.selections = [];
 

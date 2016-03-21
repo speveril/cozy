@@ -5,15 +5,15 @@ module Egg {
         protected parent:UiComponent;
         protected children:UiComponent[];
         protected tag:string = 'div';
-
-        private template:string;
+        protected html:string = '';
 
         constructor(args:any) {
             this.tag = args.tag || this.tag;
-            this.template = args.template;
-
             this.children = [];
             this.element = document.createElement(this.tag);
+            if (args.html || this.html) {
+                this.element.innerHTML = args.html || this.html;
+            }
         }
 
         setParent(parent:UiComponent, parentElement?:HTMLElement|string):void {
@@ -56,7 +56,7 @@ module Egg {
             if (this.parent) {
                 var i = this.parent.children.indexOf(this);
                 this.parent.children.splice(i, 1);
-            }            
+            }
             this.element.remove();
         }
 

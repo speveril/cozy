@@ -30,14 +30,14 @@ module RPG {
         private textPos = 0;
 
         constructor(args:any) {
-            super(args);
-            this.element.innerHTML = `
-                <div class="textbox">
-                    <div class="inner-text"></div>
-                </div>
-                <span class="cursor"><span class="position">&nbsp;</span><span class="spacer"></span></span>
-            `;
-
+            super(_.extend(args, {
+                html: `
+                    <div class="textbox">
+                        <div class="inner-text"></div>
+                    </div>
+                    <span class="cursor"><span class="position">&nbsp;</span><span class="spacer"></span></span>
+                `
+            }));
             this.inner = this.find('.inner-text');
             this.textCursor = this.find('.cursor');
             this.cursorPosition = this.find('.cursor .position');
