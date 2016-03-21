@@ -1,5 +1,5 @@
 module RPG {
-    export class Menu extends Egg.UiComponent {
+    export class Menu {
         static menuStack:Menu[] = [];
         static blip:Egg.Sound = null;
         static choose:Egg.Sound = null;
@@ -43,22 +43,14 @@ module RPG {
         cancelable:boolean = false;
 
         constructor(args) {
-            super(args);
             this.container = document.createElement('div');
 
             this.container.className = "menu";
+            this.container.innerHTML = Egg.File.readHTML(args.html);
 
-            var htmlFile:string = Egg.File.projectFile(args.html);
-            this.container.innerHTML = Egg.File.read(htmlFile);
             this.selections = [];
 
             _.each(this.container.getElementsByTagName('*'), function(element) {
-                if (element.getAttribute('src')) {
-                    element.src = Egg.File.pathname(htmlFile) + "/" + element.getAttribute('src');
-                }
-                if (element.getAttribute('href')) {
-                    element.href = Egg.File.pathname(htmlFile) + "/" + element.getAttribute('href');
-                }
                 if (element.getAttribute('data-menu')) {
                     this.selections.push(element);
                 }

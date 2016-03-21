@@ -16,6 +16,23 @@ module Egg {
         static relative(from, to):string { return path.relative(from, to); }
         static stripProtocol(f):string { return f.replace("/^.*?:[/\\]{2}/",""); }
 
+        static readHTML(f):string {
+            var htmlFile = Egg.File.projectFile(f);
+            var el = document.createElement('div');
+            el.innerHTML = Egg.File.read(htmlFile);
+
+            _.each(el.getElementsByTagName('*'), function(element) {
+                if (element.getAttribute('src')) {
+                    element.src = Egg.File.pathname(htmlFile) + "/" + element.getAttribute('src');
+                }
+                if (element.getAttribute('href')) {
+                    element.href = Egg.File.pathname(htmlFile) + "/" + element.getAttribute('href');
+                }
+            }.bind(this));
+
+            return el.innerHTML;
+        }
+
         static readAsync(f:string):Promise<string> {
             return new Promise(function(resolve, reject) {
                 fs.readFile(f, { encoding: 'UTF-8' }, function(err, data) {
