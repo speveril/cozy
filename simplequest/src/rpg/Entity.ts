@@ -71,8 +71,6 @@ module RPG {
         }
 
         move(dx:number, dy:number):void {
-            var i, ang = 0;
-
             if (dy !== 0 || dx !== 0) {
                 if (dx < 0 && dy === 0) this.sprite.animation = "walk_l";
                 if (dx > 0 && dy === 0) this.sprite.animation = "walk_r";
@@ -91,6 +89,7 @@ module RPG {
                 var d;
                 var obstructions = this.layer.obstructions;
                 var entities = this.layer.entities;
+                var i, e;
 
                 while (travelled < 0.999 && iter < 20) {
                     iter++;
@@ -111,11 +110,43 @@ module RPG {
                     }
                     for (i = 0; i < entities.length; i++) {
                         if (entities[i] === this) continue;
+
                         d = Math.sqrt(dist2(projectedPosition, entities[i].position));
-                        if (d < this.radius + entities[i].radius) {
-                            var ang = Math.atan2(projectedPosition.y - entities[i].sprite.position.y, projectedPosition.x - entities[i].sprite.position.x);
-                            projectedPosition.x += Math.cos(ang) * (this.radius + entities[i].radius - d);
-                            projectedPosition.y += Math.sin(ang) * (this.radius + entities[i].radius - d);
+
+                        var stationary = true;
+                        // TODO set stationary to false if the entity is moving
+
+                        // short circuit if we're at more than 1.5 x the radius of the entity
+                        //    theoretically this "should" be 1 if not stationary, and 1.414(etc.) if not, but this is
+                        //    good enough
+                        if (d > (entities[i].radius + this.radius) * 1.5) continue;
+
+                        // treat stationary entities as squares, and moving ones as circles
+                        if (stationary) {
+                            var entityX = entities[i].position.x;
+                            var entityY = entities[i].position.y;
+                            var entityR = entities[i].radius;
+                            var edges = [
+                                [ { x: entityX - entityR, y: entityY - entityR }, { x: entityX + entityR, y: entityY - entityR } ],
+                                [ { x: entityX + entityR, y: entityY - entityR }, { x: entityX + entityR, y: entityY + entityR } ],
+                                [ { x: entityX - entityR, y: entityY + entityR }, { x: entityX + entityR, y: entityY + entityR } ],
+                                [ { x: entityX - entityR, y: entityY - entityR }, { x: entityX - entityR, y: entityY + entityR } ]
+                            ];
+                            for (e = 0; e < edges.length; e++) {
+                                var closest = closestPointOnLine(projectedPosition, edges[e][0], edges[e][1]);
+                                d = Math.sqrt(dist2(projectedPosition, closest));
+                                if (d < this.radius) {
+                                    var ang = Math.atan2(projectedPosition.y - closest.y, projectedPosition.x - closest.x);
+                                    projectedPosition.x += Math.cos(ang) * (this.radius - d);
+                                    projectedPosition.y += Math.sin(ang) * (this.radius - d);
+                                }
+                            }
+                        } else {
+                            if (entities[i].radius) {
+                                var ang = Math.atan2(projectedPosition.y - entities[i].sprite.position.y, projectedPosition.x - entities[i].sprite.position.x);
+                                projectedPosition.x += Math.cos(ang) * (this.radius + entities[i].radius - d);
+                                projectedPosition.y += Math.sin(ang) * (this.radius + entities[i].radius - d);
+                            }
                         }
                     }
 

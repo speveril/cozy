@@ -112,8 +112,8 @@ module Egg {
             this.sfxGain = this.context.createGain();
             this.sfxGain.connect(this.context.destination);
 
-            this.musicVolume = 1;
-            this.sfxVolume = 1;
+            this.musicVolume = 0.5;
+            this.sfxVolume = 0.5;
             this.unmute();
         }
 
