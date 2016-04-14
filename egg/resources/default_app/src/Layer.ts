@@ -35,6 +35,11 @@ module Egg {
             this.innerContainer.removeChild(sp.innerSprite);
         }
 
+        sortSprites(f:(a:any, b:any) => number) {
+            this.innerContainer.children.sort(f);
+            // TODO keep this.sprites in sync with the innerContainer children
+        }
+
         clear() {
             this.sprites.forEach(function() {
                 this.innerContainer.removeChild(this.sprites[0].innerSprite);

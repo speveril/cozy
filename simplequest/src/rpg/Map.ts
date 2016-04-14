@@ -341,6 +341,15 @@ module RPG {
         }
 
         update(dt):void {
+            this.layers.forEach((layer) => {
+                layer.displayLayer.sortSprites((a, b) => {
+                    if (a.position.y === b.position.y) {
+                        return 0;
+                    } else {
+                        return a.position.y < b.position.y ? -1 : 1;
+                    }
+                });
+            });
         }
 
         setSize(x:number, y:number):void {

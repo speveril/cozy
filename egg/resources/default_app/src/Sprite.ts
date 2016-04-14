@@ -29,6 +29,7 @@ module Egg {
                 frameRate: <number>
             }
         **/
+        
         constructor(args) {
             if (typeof args === "string") {
                 args = JSON.parse(File.read(args));
