@@ -117,7 +117,7 @@ module RPG {
                         // TODO set stationary to false if the entity is moving
 
                         // short circuit if we're at more than 1.5 x the radius of the entity
-                        //    theoretically this "should" be 1 if not stationary, and 1.414(etc.) if not, but this is
+                        //    theoretically this "should" be 1 if stationary, and 1.414(etc.) if not, but this is
                         //    good enough
                         if (d > (entities[i].radius + this.radius) * 1.5) continue;
 
