@@ -20,6 +20,7 @@ var Browser = {
         this.gameList = $('#game-list ul')[0];
         this.outputContainer = $('#output')[0];
         this.engineStatus = $('#engine-status')[0];
+        this.recompileInterval = null;
 
         var dir = FS.readdirSync(".");
         dir.forEach((f) => {
@@ -33,26 +34,43 @@ var Browser = {
             }
         });
 
-        this.engineStatus.onclick = () => {
-            if (this.engineStatus.className === 'compiling') return;
+        this.setEngineStatus('ready');
 
-            this.setEngineStatus('compiling');
-
-            this.output("");
-            this.output("Building engine...");
-            this.build(Path.join("engine", "src"), Path.join('..', 'resources', 'default_app', 'Egg.js'))
-                .then(() => {
-                    return this.doc(Path.join("engine", "src", "Egg.ts"), Path.join("engine", "docs"))
-                }, () => {
-                    this.setEngineStatus('error');
-                })
-                .then(() => {
-                    this.setEngineStatus('ready');
-                }, () => {
-                    this.setEngineStatus('error');
+        var lastCompilation = 0;
+        var eggJS = Path.join("engine", "resources", "default_app", "Egg.js")
+        if (FS.existsSync(eggJS)) {
+            lastCompilation = FS.statSync(eggJS).mtime.getTime();
+        }
+        var srcFiles = [ Path.join("engine", "src") ];
+        var f, stat;
+        while(srcFiles.length > 0) {
+            f = srcFiles.shift();
+            stat = FS.statSync(f);
+            if (stat.isDirectory()) {
+                FS.readdirSync(f).forEach((ff) => {
+                    srcFiles.push(Path.join(f, ff));
                 });
-        };
+            } else {
+                if (stat.mtime.getTime() > lastCompilation) {
+                    this.recompileEngine();
+                    break;
+                }
+            }
+        }
 
+        var engineWatch = FS.watch(Path.join("engine", "src"), { persistent: true, recursive: true }, (e, filename) => {
+            if (this.engineStatus.className !== 'compiling') {
+                this.setEngineStatus('dirty');
+            }
+            
+            if (this.recompileInterval) {
+                clearInterval(this.recompileInterval);
+            }
+
+            this.recompileInterval = setInterval(() => this.recompileEngine(), 3000);
+        });
+
+        this.engineStatus.onclick = () => this.recompileEngine();
 
         this.gameList.onclick = (event) => {
             var target = event.target;
@@ -77,8 +95,6 @@ var Browser = {
                 });
         }
 
-        this.setEngineStatus('ready');
-
         this.output("READY.");
     },
 
@@ -95,7 +111,6 @@ var Browser = {
             '<div class="recompile" title="Game will be rebuilt when run"></div>';
 
         this.gameList.appendChild(li);
-
     },
 
     output: function(/* ... */) {
@@ -107,6 +122,42 @@ var Browser = {
         s = s.trim() + "\n";
         this.outputContainer.innerHTML = (this.outputContainer.innerHTML || "") + s;
         this.outputContainer.scrollTop = this.outputContainer.scrollHeight;
+    },
+
+    recompileEngine: function() {
+        if (this.engineStatus.className === 'compiling') return;
+        if (this.recompileInterval) {
+            clearTimeout(this.recompileInterval);
+            this.recompileInterval = null;
+        }
+
+        this.setEngineStatus('compiling');
+
+        this.output("");
+        this.output("Building engine...");
+        this.build(Path.join("engine", "src"), Path.join('..', 'resources', 'default_app', 'Egg.js'))
+            .then(() => {
+                return this.doc(Path.join("engine", "src", "Egg.ts"), Path.join("engine", "docs"))
+            }, () => {
+                if (this.recompileInterval) {
+                    this.setEngineStatus('dirty');
+                } else {
+                    this.setEngineStatus('error');
+                }
+            })
+            .then(() => {
+                if (this.recompileInterval !== null) {
+                    this.setEngineStatus('dirty');
+                } else {
+                    this.setEngineStatus('ready');
+                }
+            }, () => {
+                if (this.recompileInterval !== null) {
+                    this.setEngineStatus('dirty');
+                } else {
+                    this.setEngineStatus('error');
+                }
+            });
     },
 
     build: function(buildPath, outputFile) {
