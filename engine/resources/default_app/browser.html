@@ -1,0 +1,36 @@
+<html>
+
+<head>
+    <title>Egg Engine</title>
+    <link rel="stylesheet" type="text/css" href="browser.css">
+    <script src="browser.js"></script>
+    <script src="player.js"></script>
+</head>
+
+<body>
+
+    <section id="engine-status" class="ready">
+        <span class="icon"></span>
+        <span class="message"></span>
+    </section>
+
+    <section id="game-list">
+        <header>Available Games</header>
+        <ul></ul>
+    </section>
+
+    <section id="output"></section>
+
+</body>
+
+<script>
+    const electron = require('electron');
+    electron.ipcRenderer.on('start', (event) => {
+        Browser.start();
+    });
+    electron.ipcRenderer.on('output', (event, arg) => {
+        Browser.output(arg);
+    });
+</script>
+
+</html>
