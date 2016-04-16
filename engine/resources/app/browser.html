@@ -15,16 +15,28 @@
     </section>
 
     <section id="game-list">
-        <header>Available Games</header>
+        <header>Available Games <span class="force-refresh">&#128259;</header>
         <ul></ul>
+        <footer>+ Add a game</footer>
     </section>
 
     <section id="output"></section>
+
+    <section id="dialogs"></section>
 
 </body>
 
 <script>
     const electron = require('electron');
+    const Remote = require('remote');
+
+    document.onkeydown = (e) => {
+        var keyCode = e.which;
+        if (keyCode === 192 || keyCode === 122) { // ~ key or f11, opens console
+            Remote.getCurrentWindow().toggleDevTools();
+        }
+    };
+
     electron.ipcRenderer.on('start', (event) => {
         Browser.start();
     });

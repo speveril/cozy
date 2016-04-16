@@ -68,6 +68,16 @@ body {
     padding: 0.5em 0;
 }
 
+#game-list header .force-refresh {
+    font-weight: normal;
+    cursor: pointer;
+}
+
+#game-list footer {
+    padding: 0.5em 0;
+    cursor: pointer;
+}
+
 #game-list ul {
     overflow-y: auto;
     overflow-x: hidden;
@@ -138,4 +148,48 @@ body {
     flex-grow: 1;
     color: #bbb;
     background: #444;
+}
+
+#dialogs {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#dialogs:empty {
+    display: none;
+}
+
+#dialogs > form {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    padding: 1em 3em;
+    background: #fff;
+    box-shadow: 0px 3px 6px #000;
+}
+
+#dialogs > form:not(:last-child) {
+    display: none;
+}
+
+#dialogs > form div {
+    padding: 1em 0;
+}
+
+#dialogs > form .buttons {
+    display: flex;
+    flex-direction: row;
+    margin: -5px;
+}
+
+#dialogs > form .buttons button {
+    flex-grow: 1;
+    margin: 5px;
 }

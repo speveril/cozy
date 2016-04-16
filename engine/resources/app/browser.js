@@ -3,7 +3,6 @@ const FS = require('fs');
 const Child = require('child_process');
 const Path = require('path');
 const Process = require('process');
-const Remote = require('remote');
 
 const $ = (q) => {
     return document.querySelectorAll(q);
@@ -19,21 +18,13 @@ const statusText = {
 var Browser = {
     start: function() {
         this.gameList = $('#game-list ul')[0];
+        this.newGameFooter = $('#game-list footer')[0];
         this.outputContainer = $('#output')[0];
         this.engineStatus = $('#engine-status')[0];
+        this.dialogContainer = $('#dialogs')[0];
         this.recompileInterval = null;
 
-        var dir = FS.readdirSync(".");
-        dir.forEach((f) => {
-            if (f[0] === '.') return;
-
-            var config = Path.join(f, "config.json");
-
-            var stat = FS.statSync(f);
-            if (stat.isDirectory() && FS.existsSync(config)) {
-                this.addGame(f)
-            }
-        });
+        this.rebuildGameList();
 
         this.setEngineStatus('ready');
 
@@ -59,16 +50,17 @@ var Browser = {
             }
         }
 
-        var engineWatch = FS.watch(Path.join("engine", "src"), { persistent: true, recursive: true }, (e, filename) => {
+        FS.watch(Path.join("engine", "src"), { persistent: true, recursive: true }, (e, filename) => {
             if (this.engineStatus.className !== 'compiling') {
                 this.setEngineStatus('dirty');
             }
-
             if (this.recompileInterval) {
                 clearInterval(this.recompileInterval);
             }
-
             this.recompileInterval = setInterval(() => this.recompileEngine(), 3000);
+        });
+        FS.watch(".", { persistent: true, recursive: false }, (e, filename) => {
+            this.rebuildGameList();
         });
 
         this.engineStatus.onclick = () => this.recompileEngine();
@@ -93,17 +85,67 @@ var Browser = {
                         command: 'play',
                         path: path
                     });
+                }, () => {
+                    target.classList.remove('compiling');
                 });
         }
 
-        document.onkeydown = (e) => {
-            var keyCode = e.which;
-            if (keyCode === 192 || keyCode === 122) { // ~ key or f11, opens console
-                Remote.getCurrentWindow().toggleDevTools();
-            }
+        document.querySelector('#game-list header .force-refresh').onclick = (e) => this.rebuildGameList();
+
+        this.newGameFooter.onclick = (e) => {
+            this.prompt("Enter a name for the new project")
+                .then((path) => {
+                    this.makeNew(path);
+                }, (e) => { console.log(e); });
         };
 
         this.output("Egg project browser loaded.");
+    },
+
+    prompt: function(text) {
+        return new Promise((resolve, reject) => {
+            var dialog = document.createElement('form');
+            dialog.innerHTML =
+                '<div class="text">' + text + '</div>' +
+                '<input type="text">' +
+                '<div class="buttons">' +
+                    '<button class="confirm">OK</button>' +
+                    '<button class="cancel">Cancel</button>' +
+                '</div>';
+            dialog.onsubmit = (e) => {
+                e.preventDefault();
+            };
+            dialog.querySelector('button.confirm').onclick = () => {
+                resolve(dialog.querySelector('input').value);
+                this.dialogContainer.removeChild(dialog);
+            }
+            dialog.querySelector('button.cancel').onclick = () => {
+                reject();
+                this.dialogContainer.removeChild(dialog);
+            }
+
+            this.dialogContainer.appendChild(dialog);
+
+            dialog.querySelector('input').focus();
+        });
+    },
+
+    rebuildGameList: function() {
+        while (this.gameList.lastChild) {
+            this.gameList.removeChild(this.gameList.lastChild);
+        }
+
+        var dir = FS.readdirSync(".");
+        dir.forEach((f) => {
+            if (f[0] === '.') return;
+
+            var config = Path.join(f, "config.json");
+
+            var stat = FS.statSync(f);
+            if (stat.isDirectory() && FS.existsSync(config)) {
+                this.addGame(f)
+            }
+        });
     },
 
     addGame: function(path) {
@@ -180,8 +222,8 @@ var Browser = {
             //     'Egg.d.ts'
             // ];
             // filesToCopy.forEach(function(filename) {
-            //     var contents = fs.readFileSync(__dirname + "/" + filename, { encoding: 'UTF-8' });
-            //     fs.writeFileSync(gamePath + "/" + filename, contents);
+            //     var contents = FS.readFileSync(__dirname + "/" + filename, { encoding: 'UTF-8' });
+            //     FS.writeFileSync(gamePath + "/" + filename, contents);
             // });
 
             var tsc = Child.fork(Path.join('engine', 'src', 'typescript', 'tsc.js'), [
@@ -241,57 +283,30 @@ var Browser = {
         this.engineStatus.querySelector('.message').innerHTML = statusText[status];
     },
 
-    // play: function(path) {
-    //     return new Promise((resolve, reject) => {
-    //         this.output("<span style='color:white'>[ Launching " + path + " ]</span>");
-    //
-    //         var game = Child.fork(Path.join('engine', 'resources', 'app', 'launch.js'), [
-    //             path, '--debug'
-    //         ], { silent: true, env: {"ATOM_SHELL_INTERNAL_RUN_AS_NODE":"0"} });
-    //
-    //         game.stdout.on('data', this.output.bind(this));
-    //         game.stderr.on('data', this.output.bind(this));
-    //
-    //         game.on('exit', (returnCode) => {
-    //             if (!returnCode) {
-    //                 this.output("<span style='color:#0f0'>[ Finished successfully ]</span>");
-    //                 resolve();
-    //             } else {
-    //                 this.output("<span style='color:red'>[ Exited with error code: " + returnCode + " ]</span>");
-    //                 reject();
-    //             }
-    //         });
-    //     });
-    //
-    //
-    //     try {
-    //         params = JSON.parse(fs.readFileSync(path.join(gamePath, "config.json")));
-    //     } catch(e) {
-    //         buildMessage("Couldn't load config.json in " + path.join(process.cwd(), gamePath) + ". " + e);
-    //         next();
-    //     }
-    //     params['width'] = params['width'] || 320;
-    //     params['height'] = params['height'] || 240;
-    //
-    //     var window = new BrowserWindow({
-    //       'width':              params['width'],
-    //       'height':             params['height'],
-    //       'title':              params['title'] || 'Egg',
-    //       'fullscreen':         params['fullscreen'] || false,
-    //       'autoHideMenuBar':    true,
-    //       'useContentSize':     true
-    //     });
-    //     window.once('close', function() {
-    //         next();
-    //     });
-    //
-    //     params.game = gamePath;
-    //     if (options.debug) params.debug = true
-    //     if (options.console) window.toggleDevTools();
-    //
-    //     window.loadURL("file://" + __dirname + "/game.html");
-    //     window.webContents.once('did-finish-load', () => {
-    //         window.webContents.send('start', params);
-    //     });
-    // }
+    makeNew: function(path) {
+        return new Promise((resolve, reject) => {
+            this.output('');
+            this.output('<strong>[ Creating new game, ' + path + ']')
+            var templateDir = Path.join("engine", "resources", "app", "game_template");
+
+            if (!FS.existsSync(path)) {
+                this.output("Creating", Path.join(Process.cwd(), path));
+                FS.mkdirSync(path);
+            }
+
+            if (FS.existsSync(Path.join(path, "config.json"))) {
+                this.output("<span style='color:red'>Cannot initialize a game at " + Path.join(Process.cwd(), path) + ", there's already one there!</span>");
+                reject();
+            } else {
+                var filesToCopy = FS.readdirSync(templateDir);
+                filesToCopy.forEach((filename) => {
+                    var contents = FS.readFileSync(Path.join(templateDir, filename), { encoding: 'UTF-8' });
+                    contents = contents.replace(/\$GAMEPATH\$/g, path);
+                    FS.writeFileSync(Path.join(path, filename), contents);
+                    this.output("&nbsp; ->", Path.join(Process.cwd(), path, filename));
+                });
+                resolve();
+            }
+        });
+    }
 };

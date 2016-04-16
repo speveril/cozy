@@ -54,6 +54,7 @@ function setup() {
     });
 
     mainWindow.loadURL("file://" + __dirname + "/browser.html");
+    mainWindow.toggleDevTools();
 }
 
 function play(path, debug) {
@@ -168,8 +169,8 @@ function play(path, debug) {
 //     }
 //
 //     if (options.build) {
-//         actions.push(build.bind(null, path.join("egg", "resources", "default_app", "src"), '../Egg.js'));
-//         actions.push(doc.bind(null, path.join("egg", "resources", "default_app", "src", "Egg.ts"), path.join("egg", "docs")));
+//         actions.push(build.bind(null, path.join("egg", "resources", "app", "src"), '../Egg.js'));
+//         actions.push(doc.bind(null, path.join("egg", "resources", "app", "src", "Egg.ts"), path.join("egg", "docs")));
 //     }
 //     if (options.buildgame) {
 //         actions.push(build.bind(null, gamePath, 'main.js'));
@@ -268,7 +269,7 @@ function play(path, debug) {
 // }
 //
 // function makeNew() {
-//     var templateDir =  path.join("egg", "resources", "default_app", "game_template");
+//     var templateDir =  path.join("egg", "resources", "app", "game_template");
 //
 //     if (!fs.existsSync(gamePath)) {
 //         fs.mkdirSync(gamePath);
