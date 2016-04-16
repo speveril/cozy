@@ -95,7 +95,6 @@ var Browser = {
         li.onclick = () => {
             this.output("");
             this.output("Playing " + path + "...");
-            // Player.play(path);
             this.build(path, 'main.js')
                 .then(() => {
                     electron.ipcRenderer.send('control-message', {
