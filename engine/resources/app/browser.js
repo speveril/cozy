@@ -108,7 +108,11 @@ var Browser = {
             this.prompt("Enter a name for the new project")
                 .then((path) => {
                     this.makeNew(path);
-                }, (e) => { console.log(e); });
+                }, (e) => {
+                    if (e) {
+                        this.output('<span style="color:red">Error: ' + e.toString() + '</span>');
+                    }
+                });
         };
 
         this.output("Egg project browser loaded.");
@@ -170,20 +174,28 @@ var Browser = {
             config = {};
         }
 
-        var title = config.title || Path.basename(path);
-
         function scrub(text) {
             var scrubber = document.createElement('span');
             scrubber.innerText = text;
-            return scrubber.innerHTML;
+            var s = scrubber.innerHTML;
+            s = s.replace('"', '&quot;');
+            s = s.replace("'", '&apos;');
+            return s;
         }
 
         var li = document.createElement('li');
         li.setAttribute('data-path', path);
 
-        li.innerHTML = '<div class="title">' + scrub(title) + '</div>' +
-            '<div class="author">' + (scrub(config.author || 'no author')) + '</div>' +
-            '<div class="info">' + (config.width && config.height ? scrub(config.width) + ' x ' + scrub(config.height) : '') + '</div>' +
+        var icon = config.icon ? scrub(Path.join(Process.cwd(), path, config.icon)) : ''; // TODO default project icon
+        var title = config.title ? scrub(config.title) : Path.basename(path);
+        var author = config.author ? scrub(config.author) : 'no author';
+        var info = config.width && config.height ? scrub(config.width) + ' x ' + scrub(config.height) : '';
+
+        li.innerHTML =
+            '<div class="icon"><img src="' + icon + '"></div>' +
+            '<div class="title">' + title + '</div>' +
+            '<div class="author">' + author + '</div>' +
+            '<div class="info">' + info + '</div>' +
             '<div class="recompile" title="Game will be rebuilt when run"></div>';
 
         this.gameList.appendChild(li);

@@ -1,6 +1,8 @@
 {
     "title": "SimpleQuest",
     "author": "Shamus Peveril <http://shamuspeveril.com>",
+    "icon": "icon.png",
+
     "width": 320,
     "height": 240,
     "fullscreen": false,
