@@ -3,6 +3,7 @@ const FS = require('fs');
 const Child = require('child_process');
 const Path = require('path');
 const Process = require('process');
+const Remote = require('remote');
 
 const $ = (q) => {
     return document.querySelectorAll(q);
@@ -37,7 +38,7 @@ var Browser = {
         this.setEngineStatus('ready');
 
         var lastCompilation = 0;
-        var eggJS = Path.join("engine", "resources", "default_app", "Egg.js")
+        var eggJS = Path.join("engine", "resources", "app", "Egg.js")
         if (FS.existsSync(eggJS)) {
             lastCompilation = FS.statSync(eggJS).mtime.getTime();
         }
@@ -72,8 +73,8 @@ var Browser = {
 
         this.engineStatus.onclick = () => this.recompileEngine();
 
-        this.gameList.onclick = (event) => {
-            var target = event.target;
+        this.gameList.onclick = (e) => {
+            var target = e.target;
             while (target && target.tagName.toLowerCase() !== 'li') {
                 target = target.parentNode;
             }
@@ -94,6 +95,13 @@ var Browser = {
                     });
                 });
         }
+
+        document.onkeydown = (e) => {
+            var keyCode = e.which;
+            if (keyCode === 192 || keyCode === 122) { // ~ key or f11, opens console
+                Remote.getCurrentWindow().toggleDevTools();
+            }
+        };
 
         this.output("Egg project browser loaded.");
     },
@@ -135,7 +143,7 @@ var Browser = {
 
         this.output("");
         this.output("Building engine...");
-        this.build(Path.join("engine", "src"), Path.join('..', 'resources', 'default_app', 'Egg.js'))
+        this.build(Path.join("engine", "src"), Path.join('..', 'resources', 'app', 'Egg.js'))
             .then(() => {
                 return this.doc(Path.join("engine", "src", "Egg.ts"), Path.join("engine", "docs"))
             }, () => {
@@ -205,7 +213,7 @@ var Browser = {
                 " - destination: " + outputPath
             );
 
-            var typedoc = Child.fork(Path.join('engine', 'resources', 'default_app', 'builddoc'), [
+            var typedoc = Child.fork(Path.join('engine', 'resources', 'app', 'builddoc'), [
                 '--out', outputPath,
                 '--mode', 'file',
                 '--target', 'ES5',
@@ -237,7 +245,7 @@ var Browser = {
     //     return new Promise((resolve, reject) => {
     //         this.output("<span style='color:white'>[ Launching " + path + " ]</span>");
     //
-    //         var game = Child.fork(Path.join('engine', 'resources', 'default_app', 'launch.js'), [
+    //         var game = Child.fork(Path.join('engine', 'resources', 'app', 'launch.js'), [
     //             path, '--debug'
     //         ], { silent: true, env: {"ATOM_SHELL_INTERNAL_RUN_AS_NODE":"0"} });
     //
