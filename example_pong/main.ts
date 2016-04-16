@@ -1,5 +1,3 @@
-///<reference path="../egg/resources/default_app/Egg.d.ts" />
-
 class Ball extends Egg.Sprite {
     velocity: number;
     angle: number;
