@@ -54,7 +54,7 @@ function setup() {
     });
 
     mainWindow.loadURL("file://" + __dirname + "/browser.html");
-    mainWindow.toggleDevTools();
+    // mainWindow.toggleDevTools();
 }
 
 function play(path, debug) {
