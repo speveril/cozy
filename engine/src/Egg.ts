@@ -1,8 +1,8 @@
-/// <reference path="../lib/typescript/github-electron.d.ts"/>
-/// <reference path="../lib/typescript/node.d.ts"/>
-/// <reference path="../lib/typescript/pixi.js.d.ts"/>
-/// <reference path="../lib/typescript/underscore.d.ts"/>
-/// <reference path="../lib/typescript/es6-promise.d.ts"/>
+/// <reference path="typescript/github-electron.d.ts"/>
+/// <reference path="typescript/node.d.ts"/>
+/// <reference path="typescript/pixi.js.d.ts"/>
+/// <reference path="typescript/underscore.d.ts"/>
+/// <reference path="typescript/es6-promise.d.ts"/>
 
 /// <reference path="Audio.ts"/>
 /// <reference path="File.ts"/>

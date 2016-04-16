@@ -40,9 +40,9 @@ var Browser = {
 
             this.output("");
             this.output("Building engine...");
-            this.build(Path.join("engine", "resources", "default_app", "src"), '../Egg.js')
+            this.build(Path.join("engine", "src"), Path.join('..', 'resources', 'default_app', 'Egg.js'))
                 .then(() => {
-                    return this.doc(Path.join("engine", "resources", "default_app", "src", "Egg.ts"), Path.join("engine", "docs"))
+                    return this.doc(Path.join("engine", "src", "Egg.ts"), Path.join("engine", "docs"))
                 }, () => {
                     this.setEngineStatus('error');
                 })
@@ -93,11 +93,16 @@ var Browser = {
         this.gameList.appendChild(li);
 
         li.onclick = () => {
+            this.output("");
+            this.output("Playing " + path + "...");
             // Player.play(path);
-            electron.ipcRenderer.send('control-message', {
-                command: 'play',
-                path: path
-            });
+            this.build(path, 'main.js')
+                .then(() => {
+                    electron.ipcRenderer.send('control-message', {
+                        command: 'play',
+                        path: path
+                    });
+                });
         }
     },
 
@@ -128,7 +133,7 @@ var Browser = {
             //     fs.writeFileSync(gamePath + "/" + filename, contents);
             // });
 
-            var tsc = Child.fork(Path.join('engine', 'resources', 'default_app', 'lib', 'typescript', 'tsc.js'), [
+            var tsc = Child.fork(Path.join('engine', 'src', 'typescript', 'tsc.js'), [
                 '--project', buildPath,
                 '--out', Path.join(buildPath, outputFile)
             ], { silent: true, env: {"ATOM_SHELL_INTERNAL_RUN_AS_NODE":"0"} });
@@ -151,9 +156,13 @@ var Browser = {
 
     doc: function(srcPath, outputPath) {
         return new Promise((resolve, reject) => {
-            this.output("<span style='color:white'>[ Generating documentation ]</span>\n - source:      " + srcPath + "\n - destination: " + outputPath);
+            this.output(
+                "<span style='color:white'>[ Generating documentation ]</span>\n" +
+                " - source:      " + srcPath + "\n" +
+                " - destination: " + outputPath
+            );
 
-            var typedoc = Child.fork(Path.join('engine', 'resources', 'default_app', "builddoc"), [
+            var typedoc = Child.fork(Path.join('engine', 'resources', 'default_app', 'builddoc'), [
                 '--out', outputPath,
                 '--mode', 'file',
                 '--target', 'ES5',

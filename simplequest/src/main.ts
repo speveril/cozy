@@ -1,4 +1,4 @@
-///<reference path="../../egg/resources/default_app/Egg.d.ts" />
+///<reference path="../../engine/resources/default_app/Egg.d.ts" />
 ///<reference path="rpg/RPGKit.ts"/>
 
 ///<reference path="Map.ts"/>
