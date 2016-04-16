@@ -1,5 +1,3 @@
-///<reference path="../egg/resources/default_app/Egg.d.ts" />
-
 module $GAMEPATH$ {
     export function start() {
         // this will run once at start up
