@@ -62,7 +62,7 @@ var Browser = {
             if (this.engineStatus.className !== 'compiling') {
                 this.setEngineStatus('dirty');
             }
-            
+
             if (this.recompileInterval) {
                 clearInterval(this.recompileInterval);
             }
@@ -95,7 +95,7 @@ var Browser = {
                 });
         }
 
-        this.output("READY.");
+        this.output("Egg project browser loaded.");
     },
 
     addGame: function(path) {
@@ -186,7 +186,7 @@ var Browser = {
 
             tsc.on('exit', (returnCode) => {
                 if (!returnCode) {
-                    this.output(" - Built in " + Path.join(buildPath, outputFile));
+                    this.output(" - Built " + Path.join(buildPath, outputFile));
                     this.output("<span style='color:#0f0'>[ Success ]</span>");
                     resolve();
                 } else {
