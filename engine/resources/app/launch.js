@@ -11,7 +11,7 @@ process.chdir(Path.join(Path.dirname(process.execPath), ".."));
 
 App.on('ready', setup);
 
-var mainWindow;
+var mainWindow, docWindow;
 
 function output(text) {
     if (mainWindow) {
@@ -42,10 +42,13 @@ function setup() {
             case 'play':
                 play(arg.path)
                     .then(() => {
-                        output("<span style='color:#0f0'>Game finished successfully.</span>");
+                        output("<span style='color:#0f0'>[ " + arg.path + " done ]</span>");
                     }, (e) => {
-                        output("<span style='color:red'>Playing game failed. " + e.toString() + "</span>");
+                        output("<span style='color:red'>[ " + arg.path + " closed with an error: " + e.toString() + " ]</span>");
                     })
+                break;
+            case 'view-docs':
+                viewDocs();
                 break;
             default:
                 output("<span style='color:red'>Got unrecognized control command: " + command + "</span>");
@@ -62,6 +65,8 @@ function play(path, debug) {
 
     return new Promise((resolve, reject) => {
         var params;
+
+        output("<span style='color:white'>[ Launching " + path + " ]</span>")
 
         try {
             params = JSON.parse(FS.readFileSync(Path.join(path, "config.json")));
@@ -80,7 +85,7 @@ function play(path, debug) {
             'useContentSize':     true
         });
 
-        window.once('close', function() {
+        window.once('close', () => {
             resolve();
         });
 
@@ -94,6 +99,10 @@ function play(path, debug) {
             window.webContents.send('start', params);
         });
     });
+}
+
+function viewDocs() {
+    require('shell').openExternal("file://" + Process.cwd() + "/engine/docs/index.html");
 }
 
 // const fs = require('fs');
