@@ -6,6 +6,7 @@
         "target": "ES5"
     },
     "files": [
+        "../engine/resources/app/Egg.d.ts",
         "main.ts"
     ]
 }

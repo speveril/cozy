@@ -1,10 +1,9 @@
-///<reference path="../egg/resources/default_app/Egg.d.ts"/>
 ///<reference path="Player.ts"/>
 ///<reference path="Alien.ts"/>
 ///<reference path="Barrier.ts"/>
 
 module Invaders {
-    var plane:Egg.Plane;
+    var plane:Egg.RenderPlane;
     var stage:Egg.Layer;
 
     var player:Player;
@@ -27,7 +26,7 @@ module Invaders {
                 console.log(k,v);
             });
 
-            plane = Egg.addPlane({
+            plane = <Egg.RenderPlane>Egg.addPlane(Egg.RenderPlane, {
                 renderable: true
             });
 

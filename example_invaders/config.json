@@ -1,4 +1,7 @@
 {
     "width": 300,
-    "height": 400
+    "height": 400,
+
+    "title": "EggInvaders",
+    "author": "Example Game"
 }

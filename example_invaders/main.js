@@ -66,7 +66,6 @@ var Invaders;
     })(Egg.Sprite);
     Invaders.Barrier = Barrier;
 })(Invaders || (Invaders = {}));
-///<reference path="../egg/resources/default_app/Egg.d.ts"/>
 ///<reference path="Player.ts"/>
 ///<reference path="Alien.ts"/>
 ///<reference path="Barrier.ts"/>
@@ -90,7 +89,7 @@ var Invaders;
             _.each(Egg.textures, function (v, k) {
                 console.log(k, v);
             });
-            plane = Egg.addPlane({
+            plane = Egg.addPlane(Egg.RenderPlane, {
                 renderable: true
             });
             stage = plane.addRenderLayer();
