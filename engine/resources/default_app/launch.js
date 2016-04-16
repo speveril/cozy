@@ -36,7 +36,7 @@ function setup() {
 
     Electron.ipcMain.on('control-message', (event, arg) => {
         var command = arg.command;
-        output("-> " + JSON.stringify(arg));
+        // output("-> " + JSON.stringify(arg));
 
         switch(command) {
             case 'play':

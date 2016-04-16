@@ -53,6 +53,30 @@ var Browser = {
                 });
         };
 
+
+        this.gameList.onclick = (event) => {
+            var target = event.target;
+            while (target && target.tagName.toLowerCase() !== 'li') {
+                target = target.parentNode;
+            }
+            if (!target) return;
+
+            var path = target.getAttribute('data-path');
+
+            target.classList.add('compiling');
+
+            this.output("");
+            this.output("Playing " + path + "...");
+            this.build(path, 'main.js')
+                .then(() => {
+                    target.classList.remove('compiling');
+                    electron.ipcRenderer.send('control-message', {
+                        command: 'play',
+                        path: path
+                    });
+                });
+        }
+
         this.setEngineStatus('ready');
 
         this.output("READY.");
@@ -64,45 +88,14 @@ var Browser = {
         var title = config.title || Path.basename(path);
 
         var li = document.createElement('li');
-        var el;
-
-        el = document.createElement('div');
-        el.className = 'title';
-        el.innerText = title;
-        li.appendChild(el);
-
-        el = document.createElement('div');
-        el.className = 'author';
-        el.innerText = config.author || '';
-        li.appendChild(el);
-
-        el = document.createElement('div');
-        el.className = 'info';
-        var s = "";
-        if (config.width && config.height) {
-            s += config.width + ' x ' + config.height;
-        }
-        el.innerText = s;
-        li.appendChild(el);
-
-        el = document.createElement('div');
-        el.innerText = 'R';
-        el.title = "Game needs to be rebuilt"
-        li.appendChild(el);
+        li.setAttribute('data-path', path);
+        li.innerHTML = '<div class="title">' + title + '</div>' +
+            '<div class="author">' + (config.author || '') + '</div>' +
+            '<div class="info">' + (config.width && config.height ? config.width + ' x ' + config.height : '') + '</div>' +
+            '<div class="recompile" title="Game will be rebuilt when run"></div>';
 
         this.gameList.appendChild(li);
 
-        li.onclick = () => {
-            this.output("");
-            this.output("Playing " + path + "...");
-            this.build(path, 'main.js')
-                .then(() => {
-                    electron.ipcRenderer.send('control-message', {
-                        command: 'play',
-                        path: path
-                    });
-                });
-        }
     },
 
     output: function(/* ... */) {

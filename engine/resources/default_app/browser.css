@@ -41,16 +41,16 @@ body {
 #engine-status.ready { color: #afa; }
 #engine-status.ready .icon::after { content: '\2713'; }
 
-#engine-status.dirty { color: #ff9; }
+#engine-status.dirty { color: #cc5; }
 #engine-status.dirty .icon::after { content: '\1F503'; }
 
 #engine-status.compiling { color: #ddd; }
 #engine-status.compiling .icon::after {
     content: '\1F503';
     animation-name: spin;
-   animation-duration: 1000ms;
-   animation-iteration-count: infinite;
-   animation-timing-function: linear;
+    animation-duration: 1000ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
 }
 
 #engine-status.error { color: #f33; }
@@ -82,6 +82,10 @@ body {
     background: #eee
 }
 
+#game-list li.compiling {
+    background: #cc5 !important;
+}
+
 #game-list li:nth-child(2n) {
     background: #ddd;
 }
@@ -102,6 +106,21 @@ body {
 
 #game-list li .recompile {
     visibility: hidden;
+}
+
+#game-list li.dirty .recompile, #game-list li.compiling .recompile {
+    visibility: inherit;
+}
+
+#game-list li .recompile:after {
+    content: '\1F503';
+}
+
+#game-list li.compiling .recompile::after {
+    animation-name: spin;
+    animation-duration: 1000ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
 }
 
 #output {
