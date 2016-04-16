@@ -2,6 +2,8 @@
 
 A generic game engine. For now this is pretty hacked together. Things might get better in the future!
 
+Currently this is only set up to work on Windows. It should be fairly straightforward to get it working on other platforms, but I don't have ready access to them.
+
 
 ## Plans
 
@@ -14,7 +16,7 @@ Ultimately the development is driven by what I want out of the engine. I have a 
 
 ## Usage
 
-Just run the egg.exe shortcut. This will open the launcher/project manager.
+Just run the Egg shortcut (or engine/egg.exe). This will open the launcher/project manager.
 
 
 ## Current technologies

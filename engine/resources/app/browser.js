@@ -73,6 +73,9 @@ var Browser = {
                 case 'docs':
                     electron.ipcRenderer.send('control-message', { command: 'view-docs' });
                     break;
+                case 'newgame':
+                    this.newGame();
+                    break;
                 default:
                     this.output("Unknown control action", action);
             }
@@ -104,16 +107,7 @@ var Browser = {
 
         document.querySelector('#game-list header .force-refresh').onclick = (e) => this.rebuildGameList();
 
-        this.newGameFooter.onclick = (e) => {
-            this.prompt("Enter a name for the new project")
-                .then((path) => {
-                    this.makeNew(path);
-                }, (e) => {
-                    if (e) {
-                        this.output('<span style="color:red">Error: ' + e.toString() + '</span>');
-                    }
-                });
-        };
+        this.newGameFooter.onclick = () => this.newGame();
 
         this.output("Egg project browser loaded.");
     },
@@ -321,7 +315,18 @@ var Browser = {
         this.engineStatus.querySelector('.message').innerHTML = statusText[status];
     },
 
-    makeNew: function(path) {
+    newGame: function() {
+        this.prompt("Enter a name for the new project")
+            .then((path) => {
+                this.copyTemplate(path);
+            }, (e) => {
+                if (e) {
+                    this.output('<span style="color:red">Error: ' + e.toString() + '</span>');
+                }
+            });
+    },
+
+    copyTemplate: function(path) {
         return new Promise((resolve, reject) => {
             this.output('');
             this.output('<strong>[ Creating new game, ' + path + ']')
