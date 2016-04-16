@@ -81,6 +81,7 @@ function play(path, debug) {
             'height':             params['height'],
             'title':              params['title'] || 'Egg',
             'fullscreen':         params['fullscreen'] || false,
+            'icon':               params['icon'] ? Path.join(process.cwd(), path, params['icon']) : undefined,
             'autoHideMenuBar':    true,
             'useContentSize':     true
         });
