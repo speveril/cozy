@@ -12,20 +12,9 @@ Really though, the plan is to take my hacked together pile of crap and make smal
 Ultimately the development is driven by what I want out of the engine. I have a lot of games I want to make at some point. I'd like to build myself the tools I need to build those games. If you (the hypothetical reader) have a use-case that I'm not meeting, then maybe in the future it will come up. For the time being though, it's more than likely you'll have to address that yourself.
 
 
-## Command line parameters
+## Usage
 
-    egg/egg.exe <game>
-
-Egg expects a game directory (that is, a directory that contains a **config.json** and a **main.js**) as its primary parameter. If it is omitted, it will assume the current directory. It will (currently) fail to run if it can't find a game there.
-
-You can supply the following parameters as well:
-
-- **--init <dirname>**: Initialize a new game in <dirname>. Fails if there's already a game there.
-- **--build**: Compile the game, if it's written in Typescript. Only necessary if you're developing in TS; if you're using plain JS then you won't need a build step.
-- **--debug**: Start the game in debug mode.
-- **--console**: Start with the debug console open.
-- **--buildcore**: Build the Egg core and documentation. Only necessary if you're doing actual engine development.
-- **--noplay**: Don't actually run the game. Use in combination with --build, --buildcore, or --init.
+Just run the egg.exe shortcut. This will open the launcher/project manager.
 
 
 ## Current technologies
@@ -71,7 +60,7 @@ Feature wish list (some day):
 - **simplequest**: SimpleQuest, a small RPG
     - Uses the Tiny16 tileset created by Lanea Zimmerman (http://opengameart.org/content/tiny-16-basic)
 
-To run the examples, drag the game directory you'd like to play onto the **egg.exe** shortcut in the root of the repository.
+To run the examples, simply click them in the game list in the launcher.
 
 
 
