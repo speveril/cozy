@@ -29,15 +29,15 @@ Just run the Egg shortcut (or engine/egg.exe). This will open the launcher/proje
 ## Roadmap/TODOs
 
 - RPGkit
-  * Battle should actually use the Menu stuff rather than rolling its own
-  * Branching Scenes
+  - Battle should actually use the Menu stuff rather than rolling its own
+  - Branching Scenes
 - Reconcile File stuff
 - Make it work in a browser too
 - config.json should be able to define an expected version, Egg should be smart enough to do the right thing
 - Make an export
-  * Pick a directory somewhere on the drive
-  * Copy over ONLY the stuff needed to run one game
-  * Use a stripped down version of the launcher; no debug, no compilation, no browser, etc
+  - Pick a directory somewhere on the drive
+  - Copy over ONLY the stuff needed to run one game
+  - Use a stripped down version of the launcher; no debug, no compilation, no browser, etc
 
 Feature wish list (some day):
 
@@ -50,7 +50,6 @@ Feature wish list (some day):
 ## Things to consider/remember
 
 - Make it easier to work with the HTML elements in the overlay.
-- Rename RenderPlane to SpritePlane?
 - Split config.json into necessary game setup vs. player configuration
 - Integrate SCSS? ReactJS?
 - Events should really only trigger on entering the tile, not every frame (I was thinking of including "zones" for continuous fire events)
