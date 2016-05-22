@@ -19,9 +19,7 @@ module Invaders {
             alien_1:  "gfx/alien01.png",
             alien_2:  "gfx/alien02.png",
             alien_3:  "gfx/alien03.png"
-        }, complete);
-
-        function complete() {
+        }).then(() => {
             _.each(Egg.textures, function(v,k) {
                 console.log(k,v);
             });
@@ -35,7 +33,7 @@ module Invaders {
 
             resetGame();
             Egg.unpause();
-        }
+        });
     }
 
     export function frame(dt:number) {

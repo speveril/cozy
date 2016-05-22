@@ -10,7 +10,7 @@ module CubemapTest {
     export function start() {
         Egg.loadTextures({
             cube_1: 'assets/cube1.png'
-        }, () => setup());
+        }).then(setup);
     }
 
     export function frame(dt) {

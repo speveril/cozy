@@ -249,22 +249,24 @@ module Egg {
         }
     }
 
-    export function loadTextures(assets, onComplete) {
-        if (assets.length < 1) {
-            setTimeout(onComplete, 0);
-        }
+    export function loadTextures(assets) {
+        return new Promise((resolve, reject) => {
+            if (assets.length < 1) {
+                resolve();
+            }
 
-        _.each(assets, function(path, name) {
-            PIXI.loader.add(name, File.projectFile(path));
+            _.each(assets, function(path, name) {
+                PIXI.loader.add(name, File.projectFile(path));
+            });
+
+            PIXI.loader.load((loader, resources) => {
+                _.each(resources, (resource) => {
+                    this.textures[resource['name']] = new Texture(resource['texture']);
+                });
+                this.textures = _.extend(this.textures, textures);
+                resolve();
+            });
         });
-
-        PIXI.loader.load(function(loader, resources) {
-            _.each(resources, function(resource) {
-                this.textures[resource['name']] = new Texture(resource['texture']);
-            }.bind(this));
-            this.textures = _.extend(this.textures, textures);
-            onComplete();
-        }.bind(this));
     }
 
     export function addStyleSheet(path:string):void {

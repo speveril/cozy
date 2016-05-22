@@ -24,7 +24,7 @@ module RPG {
     export var characters:{[key:string]:Character} = {};
     export var moneyName:string = "G";
 
-    export function start(loaded:Function) {
+    export function start():Promise<any> {
         Egg.addStyleSheet("src/rpg/rpg.css");
 
         RPG.renderPlane = <Egg.RenderPlane>Egg.addPlane(Egg.RenderPlane, { className: 'render-plane' });
@@ -61,7 +61,7 @@ module RPG {
             }.bind(this));
         }
 
-        Egg.loadTextures(textures, loaded);
+        return Egg.loadTextures(textures);
     }
 
     export function frame(dt) {

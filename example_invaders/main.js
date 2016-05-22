@@ -84,8 +84,7 @@ var Invaders;
             alien_1: "gfx/alien01.png",
             alien_2: "gfx/alien02.png",
             alien_3: "gfx/alien03.png"
-        }, complete);
-        function complete() {
+        }).then(function () {
             _.each(Egg.textures, function (v, k) {
                 console.log(k, v);
             });
@@ -96,7 +95,7 @@ var Invaders;
             plane.setBackground(0x303040);
             resetGame();
             Egg.unpause();
-        }
+        });
     }
     Invaders.start = start;
     function frame(dt) {

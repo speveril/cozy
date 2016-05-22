@@ -28,12 +28,12 @@ Just run the Egg shortcut (or engine/egg.exe). This will open the launcher/proje
 
 ## Roadmap/TODOs
 
-- Make Egg.loadTextures() return a promise, not use a callback
 - RPGkit
   * Battle should actually use the Menu stuff rather than rolling its own
   * Branching Scenes
 - Reconcile File stuff
 - Make it work in a browser too
+- config.json should be able to define an expected version, Egg should be smart enough to do the right thing
 
 Feature wish list (some day):
 

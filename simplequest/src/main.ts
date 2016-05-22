@@ -50,7 +50,7 @@ module SimpleQuest {
             }
         });
 
-        RPG.start(function() {
+        RPG.start().then(() => {
             var promises = [];
             _.each(sfx, function(s) { promises.push(s.loaded()); })
             _.each(music, function(m) { promises.push(m.loaded()); })

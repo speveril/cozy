@@ -9,7 +9,7 @@ var CubemapTest;
     function start() {
         Egg.loadTextures({
             cube_1: 'assets/cube1.png'
-        }, function () { return setup(); });
+        }).then(setup);
     }
     CubemapTest.start = start;
     function frame(dt) {

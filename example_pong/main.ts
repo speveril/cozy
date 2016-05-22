@@ -124,7 +124,7 @@ function start() {
     Egg.loadTextures({
         "ball": "ball.png",
         "paddle": "paddle.png"
-    }, beginGame);
+    }).then(beginGame);
 }
 
 function beginGame() {
