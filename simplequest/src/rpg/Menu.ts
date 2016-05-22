@@ -1,5 +1,5 @@
 module RPG {
-    export class Menu {
+    export class Menu extends Egg.UiComponent {
         static menuStack:Menu[] = [];
         static blip:Egg.Sound = null;
         static choose:Egg.Sound = null;
@@ -14,7 +14,8 @@ module RPG {
             }
             RPG.controls = RPG.ControlMode.Menu;
             Menu.menuStack.push(m);
-            m.start();
+
+            RPG.uiPlane.addChild(m);
         }
 
         static pop():void {
@@ -43,14 +44,15 @@ module RPG {
         cancelable:boolean = false;
 
         constructor(args) {
-            this.container = document.createElement('div');
+            super(_.extend({
+                html: Egg.File.readHTML(args.html)
+            }, args));
 
-            this.container.className = "menu";
-            this.container.innerHTML = Egg.File.readHTML(args.html);
+            this.element.classList.add("rpg-menu");
 
             this.selections = [];
 
-            _.each(this.container.getElementsByTagName('*'), function(element) {
+            _.each(this.element.getElementsByTagName('*'), function(element) {
                 if (element.getAttribute('data-menu')) {
                     this.selections.push(element);
                 }
@@ -58,18 +60,21 @@ module RPG {
         }
 
         start() {
-            RPG.uiPlane.container.appendChild(this.container);
             this.setSelection(0);
         }
+
         pause() {
-            this.container.style.display = "none";
+            this.element.style.display = "none";
         }
+
         unpause() {
-            this.container.style.display = "";
+            this.element.style.display = "";
         }
+
         stop() {
-            this.container.remove();
+            this.remove();
         }
+
         update(dt) {}
 
         confirmSelection() {
