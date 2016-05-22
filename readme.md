@@ -29,15 +29,15 @@ Just run the Egg shortcut (or engine/egg.exe). This will open the launcher/proje
 ## Roadmap/TODOs
 
 - RPGkit
-  - Battle should actually use the Menu stuff rather than rolling its own
-  - Branching Scenes
+    - Battle should actually use the Menu stuff rather than rolling its own
+    - Branching Scenes
 - Reconcile File stuff
 - Make it work in a browser too
 - config.json should be able to define an expected version, Egg should be smart enough to do the right thing
 - Make an export
-  - Pick a directory somewhere on the drive
-  - Copy over ONLY the stuff needed to run one game
-  - Use a stripped down version of the launcher; no debug, no compilation, no browser, etc
+    - Pick a directory somewhere on the drive
+    - Copy over ONLY the stuff needed to run one game
+    - Use a stripped down version of the launcher; no debug, no compilation, no browser, etc
 
 Feature wish list (some day):
 
