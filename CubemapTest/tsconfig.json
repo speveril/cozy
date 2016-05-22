@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "removeComments": true,
+        "out": "main.js",
+        "sourceMap": true,
+        "target": "ES5"
+    },
+    "files": [
+        "../engine/resources/app/Egg.d.ts",
+        "main.ts"
+    ]
+}
