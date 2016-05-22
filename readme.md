@@ -28,6 +28,7 @@ Just run the Egg shortcut (or engine/egg.exe). This will open the launcher/proje
 
 ## Roadmap/TODOs
 
+- Make Egg.loadTextures() return a promise, not use a callback
 - RPGkit
   * Battle should actually use the Menu stuff rather than rolling its own
   * Branching Scenes
