@@ -40,7 +40,7 @@ function setup() {
 
         switch(command) {
             case 'play':
-                play(arg.path)
+                play(arg.path, arg.debug || false)
                     .then(() => {
                         output("<span style='color:#0f0'>[ " + arg.path + " done ]</span>");
                     }, (e) => {

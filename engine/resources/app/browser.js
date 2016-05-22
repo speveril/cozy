@@ -98,7 +98,8 @@ var Browser = {
                     target.classList.remove('compiling');
                     electron.ipcRenderer.send('control-message', {
                         command: 'play',
-                        path: path
+                        path: path,
+                        debug: true
                     });
                 }, () => {
                     target.classList.remove('compiling');
@@ -317,8 +318,8 @@ var Browser = {
 
     newGame: function() {
         this.prompt("Enter a name for the new project")
-            .then((path) => {
-                this.copyTemplate(path);
+            .then((name) => {
+                this.copyTemplate(name);
             }, (e) => {
                 if (e) {
                     this.output('<span style="color:red">Error: ' + e.toString() + '</span>');
@@ -326,10 +327,11 @@ var Browser = {
             });
     },
 
-    copyTemplate: function(path) {
+    copyTemplate: function(name) {
+        var path = name.replace(/\W+/g, '');
         return new Promise((resolve, reject) => {
             this.output('');
-            this.output('<strong>[ Creating new game, ' + path + ']')
+            this.output('<strong>[ Creating new game, ' + name + ']')
             var templateDir = Path.join("engine", "resources", "app", "game_template");
 
             if (!FS.existsSync(path)) {
@@ -344,6 +346,7 @@ var Browser = {
                 var filesToCopy = FS.readdirSync(templateDir);
                 filesToCopy.forEach((filename) => {
                     var contents = FS.readFileSync(Path.join(templateDir, filename), { encoding: 'UTF-8' });
+                    contents = contents.replace(/\$GAMENAME\$/g, name);
                     contents = contents.replace(/\$GAMEPATH\$/g, path);
                     FS.writeFileSync(Path.join(path, filename), contents);
                     this.output("&nbsp; ->", Path.join(Process.cwd(), path, filename));
