@@ -50,18 +50,17 @@ module SimpleQuest {
             }
         });
 
-        RPG.start().then(() => {
-            var promises = [];
-            _.each(sfx, function(s) { promises.push(s.loaded()); })
-            _.each(music, function(m) { promises.push(m.loaded()); })
+        var promises = [];
+        promises.push(RPG.start());
+        _.each(sfx, function(s) { promises.push(s.loaded()); })
+        _.each(music, function(m) { promises.push(m.loaded()); })
 
-            Promise.all(promises)
-                .then(function() {
-                    Egg.unpause();
-                    // SimpleQuest.bootSequence();
-                    SimpleQuest.newGame();
-                }.bind(this));
-        });
+        Promise.all(promises)
+            .then(function() {
+                Egg.unpause();
+                // SimpleQuest.bootSequence();
+                SimpleQuest.newGame();
+            }.bind(this));
     }
 
     export function bootSequence() {
