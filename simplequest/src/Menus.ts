@@ -13,7 +13,7 @@ module SimpleQuest {
     export class Menu_Boot extends RPG.Menu {
         constructor() {
             super({ html: "ui/boot-menu.html" });
-            this.container.className = "menu boot-menu";
+            this.element.className = "menu boot-menu";
         }
         newGame() {
             RPG.Scene.start()
@@ -35,17 +35,17 @@ module SimpleQuest {
         cancelable:boolean = true;
 
         constructor() {
-            super({ html: "ui/main-menu.html" });
-            this.container.className = "menu main-menu";
+            super({ html: Egg.File.pathname(Egg.File.projectFile("ui/main-menu.html")) });
+            this.element.className = "menu main-menu";
 
-            var moneyField = <HTMLElement>(this.container.querySelector('span.money'));
+            var moneyField = <HTMLElement>(this.element.querySelector('span.money'));
             if (moneyField) {
                 moneyField.innerHTML = RPG.Party.money.toString() + RPG.moneyName;
             }
 
             var htmlPath:string = Egg.File.pathname(Egg.File.projectFile("ui/main-menu.html"));
-            var memberTemplate = this.container.querySelector('.main-menu .view.status .member.template');
-            var memberContainer = this.container.querySelector('.main-menu .view.status');
+            var memberTemplate = this.find('.main-menu .view.status .member.template');
+            var memberContainer = this.find('.main-menu .view.status');
             var fields = ['name','title','level','hp','maxhp','xp','attack','defense','critical','evade'];
 
             _.each(RPG.Party.members, function(member, i) {
@@ -77,7 +77,7 @@ module SimpleQuest {
 
         showView(key) {
             var i;
-            var views = this.container.getElementsByClassName('view');
+            var views = this.element.getElementsByClassName('view');
             for (i = 0; i < views.length; i++) {
                 var view = <HTMLElement>(views[i]);
                 if (view.className == 'view ' + key) {

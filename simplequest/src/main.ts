@@ -58,7 +58,7 @@ module SimpleQuest {
         Promise.all(promises)
             .then(function() {
                 Egg.unpause();
-                // SimpleQuest.bootSequence();
+                SimpleQuest.bootSequence();
                 SimpleQuest.newGame();
             }.bind(this));
     }
