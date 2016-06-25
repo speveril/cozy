@@ -1,6 +1,6 @@
-engine/resources/app/Egg.js
-engine/resources/app/Egg.js.map
-engine/resources/app/Egg.d.ts
+.engine/resources/app/Egg.js
+.engine/resources/app/Egg.js.map
+.engine/resources/app/Egg.d.ts
 example_pong/*.js
 example_pong/*.js.map
 simplequest/**/*.js
