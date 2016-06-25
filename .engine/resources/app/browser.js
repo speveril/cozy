@@ -4,7 +4,8 @@ const Child = require('child_process');
 const Path = require('path');
 const Process = require('process');
 
-const GAMELIBDIRS = ["."];
+const GAMELIBDIRS = ['.'];
+const ENGINEDIR = '.engine'
 
 const $ = (q) => {
     return document.querySelectorAll(q);
@@ -32,11 +33,11 @@ var Browser = {
         this.setEngineStatus('ready');
 
         var lastCompilation = 0;
-        var eggJS = Path.join("engine", "resources", "app", "Egg.js")
+        var eggJS = Path.join(ENGINEDIR, "resources", "app", "Egg.js")
         if (FS.existsSync(eggJS)) {
             lastCompilation = FS.statSync(eggJS).mtime.getTime();
         }
-        var srcFiles = [ Path.join("engine", "src") ];
+        var srcFiles = [ Path.join(ENGINEDIR, "src") ];
         var f, stat;
         while(srcFiles.length > 0) {
             f = srcFiles.shift();
@@ -53,7 +54,7 @@ var Browser = {
             }
         }
 
-        FS.watch(Path.join("engine", "src"), { persistent: true, recursive: true }, (e, filename) => {
+        FS.watch(Path.join(ENGINEDIR, "src"), { persistent: true, recursive: true }, (e, filename) => {
             if (this.engineStatus.className !== 'compiling') {
                 this.setEngineStatus('dirty');
             }
@@ -155,7 +156,7 @@ var Browser = {
         while (f = files.shift()) {
             this.output("->", f);
             if (f[0] === '.' && f !== '.') continue;
-            if (f === 'engine') continue;
+            if (f === ENGINEDIR) continue;
 
             var config = Path.join(f, "config.json");
 
@@ -236,9 +237,9 @@ var Browser = {
 
         this.output("");
         this.output("Building engine...");
-        this.build(Path.join("engine", "src"), Path.join('..', 'resources', 'app', 'Egg.js'))
+        this.build(Path.join(ENGINEDIR, "src"), Path.join('..', 'resources', 'app', 'Egg.js'))
             .then(() => {
-                return this.doc(Path.join("engine", "src", "Egg.ts"), Path.join("engine", "docs"))
+                return this.doc(Path.join(ENGINEDIR, "src", "Egg.ts"), Path.join(ENGINEDIR, "docs"))
             }, () => {
                 if (this.recompileInterval) {
                     this.setEngineStatus('dirty');
@@ -277,7 +278,7 @@ var Browser = {
             //     FS.writeFileSync(gamePath + "/" + filename, contents);
             // });
 
-            var tsc = Child.fork(Path.join('engine', 'src', 'typescript', 'tsc.js'), [
+            var tsc = Child.fork(Path.join(ENGINEDIR, 'src', 'typescript', 'tsc.js'), [
                 '--project', buildPath,
                 '--out', Path.join(buildPath, outputFile)
             ], { silent: true, env: {"ATOM_SHELL_INTERNAL_RUN_AS_NODE":"0"} });
@@ -306,7 +307,7 @@ var Browser = {
                 " - destination: " + outputPath
             );
 
-            var typedoc = Child.fork(Path.join('engine', 'resources', 'app', 'builddoc'), [
+            var typedoc = Child.fork(Path.join(ENGINEDIR, 'resources', 'app', 'builddoc'), [
                 '--out', outputPath,
                 '--mode', 'file',
                 '--target', 'ES5',
@@ -350,7 +351,7 @@ var Browser = {
         return new Promise((resolve, reject) => {
             this.output('');
             this.output('<strong>[ Creating new game, ' + name + ']')
-            var templateDir = Path.join("engine", "resources", "app", "game_template");
+            var templateDir = Path.join(ENGINEDIR, "resources", "app", "game_template");
 
             if (!FS.existsSync(path)) {
                 this.output("Creating", Path.join(Process.cwd(), path));
