@@ -4,6 +4,8 @@ const Child = require('child_process');
 const Path = require('path');
 const Process = require('process');
 
+const GAMELIBDIRS = ["."];
+
 const $ = (q) => {
     return document.querySelectorAll(q);
 }
@@ -146,17 +148,33 @@ var Browser = {
             this.gameList.removeChild(this.gameList.lastChild);
         }
 
-        var dir = FS.readdirSync(".");
-        dir.sort();
-        dir.forEach((f) => {
-            if (f[0] === '.') return;
+        var games = [];
+        var files = GAMELIBDIRS;
+        var f;
+
+        while (f = files.shift()) {
+            this.output("->", f);
+            if (f[0] === '.' && f !== '.') continue;
+            if (f === 'engine') continue;
 
             var config = Path.join(f, "config.json");
 
             var stat = FS.statSync(f);
-            if (stat.isDirectory() && FS.existsSync(config)) {
-                this.addGame(f)
+            if (stat.isDirectory()) {
+                this.output(" (dir)");
+                if (FS.existsSync(config)) {
+                    // this.addGame(f)
+                    games.push(f);
+                } else {
+                    FS.readdirSync(f).sort().forEach((sub) => {
+                        files.push(Path.join(f, sub));
+                    });
+                }
             }
+        }
+
+        games.sort().forEach((g) => {
+            this.addGame(g);
         });
     },
 
