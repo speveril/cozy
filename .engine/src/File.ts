@@ -22,9 +22,9 @@ module Egg {
             el.innerHTML = Egg.File.read(htmlFile);
 
             var fixElements = [].concat(
-                el.getElementsByTagName('link'),
-                el.getElementsByTagName('img'),
-                el.getElementsByTagName('a')
+                Array.prototype.slice.call(el.getElementsByTagName('link')),
+                Array.prototype.slice.call(el.getElementsByTagName('img')),
+                Array.prototype.slice.call(el.getElementsByTagName('a'))
             );
 
             _.each(fixElements, function(element) {

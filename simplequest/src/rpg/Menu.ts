@@ -44,9 +44,9 @@ module RPG {
         cancelable:boolean = false;
 
         constructor(args) {
-            super(_.extend({
+            super(_.extend(args, {
                 html: Egg.File.readHTML(args.html)
-            }, args));
+            }));
 
             this.element.classList.add("rpg-menu");
 

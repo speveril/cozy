@@ -59,7 +59,7 @@ module SimpleQuest {
             .then(function() {
                 Egg.unpause();
                 SimpleQuest.bootSequence();
-                SimpleQuest.newGame();
+                // SimpleQuest.newGame();
             }.bind(this));
     }
 
