@@ -70,8 +70,8 @@ module RPG {
                         }
                         break;
                     case WaitType.Button:
-                        if (Egg.button(wait.args.which)) {
-                            Egg.debounce(wait.args.which);
+                        if (Egg.Input.pressed(wait.args.which)) {
+                            Egg.Input.debounce(wait.args.which);
                             wait.resolve();
                             remove.push(index);
                         }

@@ -6,6 +6,7 @@
 
 /// <reference path="Audio.ts"/>
 /// <reference path="File.ts"/>
+/// <reference path="Input.ts"/>
 /// <reference path="Layer.ts"/>
 /// <reference path="Map.ts"/>
 /// <reference path="Plane.ts"/>
@@ -24,20 +25,14 @@ function include(path) {
  * The main container for everything Egg.
  */
 module Egg {
-    enum ButtonState { UP, DOWN, IGNORED };
-
     export var Game: any;
-    export var key: Object;
     export var debug: boolean;
     export var config: Object;
     export var textures: {}[];
     export var planes:Plane[];
+    export var browserWindow: GitHubElectron.BrowserWindow;
 
     var gameName: string;
-    var browserWindow: GitHubElectron.BrowserWindow;
-    var buttonMap: Object;
-    var __button: { [name:string]:ButtonState };
-    var buttonTimeouts: { [name:string]:number };
     var paused: Boolean;
     var sizeMultiplier: Number;
     var lastTime: number;
@@ -49,11 +44,8 @@ module Egg {
         this.debug = !!opts.debug;
         this.gameName = opts.game;
         this.browserWindow = remote.getCurrentWindow();
+        this.browserWindow.toggleDevTools();
 
-        this.key = {};
-        this.__button = {};
-        this.buttonMap = {};
-        this.buttonTimeouts = {};
         this.textures = {};
         this.paused = true;
     }
@@ -64,25 +56,7 @@ module Egg {
 
         process.chdir(gamePath);
         File.setPaths(eggPath, gamePath);
-
-        this.config['buttons'] = this.config['buttons'] || {
-            "left": [37],        // left arrow
-            "up": [38],          // up arrow
-            "right": [39],       // right arrow
-            "down": [40],        // down arrow
-
-            "confirm": [32,88],  // space, x
-            "cancel": [18,90],   // alt, z
-            "menu": [27]         // esc
-        };
-
-        _.each(this.config['buttons'], function(keys, button) {
-            if (typeof keys === 'number') keys = [keys];
-            _.each(keys, function(key) {
-                if (!_.has(this.buttonMap, key)) this.buttonMap[key] = [];
-                this.buttonMap[key].push(button);
-            }.bind(this))
-        }.bind(this));
+        Egg.Input.init(this.config['buttons']);
 
         // set up window
         var multX = screen.availWidth / this.config['width'],
@@ -92,9 +66,9 @@ module Egg {
         this.browserWindow.setContentSize(this.config['width'] * mult, this.config['height'] * mult);
         this.browserWindow.center();
 
-        window.addEventListener('keydown', this.onKeyDown.bind(this));
-        window.addEventListener('keyup', this.onKeyUp.bind(this));
-        window.addEventListener('resize', this.onResize.bind(this));
+        window.addEventListener('keydown', (e) => Input.onKeyDown(e));
+        window.addEventListener('keyup', (e) => Input.onKeyUp(e));
+        window.addEventListener('resize', (e) => this.onResize(e));
 
         // set up graphics
         PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
@@ -176,40 +150,6 @@ module Egg {
         this.paused = false;
     }
 
-    export function onKeyDown(event) {
-        var keyCode = event.keyCode;
-
-        Egg.key[keyCode] = true;
-
-        if (_.has(this.buttonMap, keyCode)) {
-            _.each(this.buttonMap[keyCode], function(b) {
-                if (this.__button[b] !== ButtonState.IGNORED) {
-                    this.__button[b] = ButtonState.DOWN;
-                }
-            }.bind(this));
-        }
-    }
-
-    export function onKeyUp(event) {
-        var keyCode = event.keyCode;
-
-        // console.log(keyCode);
-
-        Egg.key[keyCode] = false;
-
-        if (_.has(this.buttonMap, keyCode)) {
-            _.each(this.buttonMap[keyCode], function(b) {
-                this.__button[b] = ButtonState.UP;
-                clearTimeout(this.buttonTimeouts[b]);
-            }.bind(this));
-        }
-
-        // DEBUGGING KEYS
-        if (this.debug && keyCode === 192) { // ~ key, opens console
-            this.browserWindow.toggleDevTools();
-        }
-    }
-
     export function onResize(event?:any) {
         var newSize = this.browserWindow.getContentSize(),
             multX   = newSize[0] / this.config['width'],
@@ -234,19 +174,6 @@ module Egg {
 
     export function quit() {
         this.browserWindow.close();
-    }
-
-    export function button(name):Boolean {
-        return (this.__button[name] === ButtonState.DOWN);
-    }
-
-    export function debounce(name, duration?:number) {
-        this.__button[name] = ButtonState.IGNORED;
-        if (duration !== undefined) {
-            this.buttonTimeouts[name] = setTimeout(function() {
-                this.__button[name] = ButtonState.DOWN;
-            }.bind(this), duration * 1000);
-        }
     }
 
     export function loadTextures(assets) {

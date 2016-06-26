@@ -371,8 +371,10 @@ var Browser = {
             .then(() => {
                 this.output(" - Built engine");
                 this.output("<span style='color:#0f0'>[ Success ]</span>\n");
+                return Promise.resolve();
             }, (code) => {
                 this.output("<span style='color:red'>[ FAILURE (code: " + code + ") ]</span>\n");
+                return Promise.reject();
             });
     },
 

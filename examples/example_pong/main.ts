@@ -168,24 +168,24 @@ function beginGame() {
 }
 
 function frame(dt) {
-    if (Egg.button('exit')) {
+    if (Egg.Input.pressed('exit')) {
         Egg.quit();
     }
 
     ball.step(dt);
     ball.bounce();
 
-    if (Egg.button('p1_up')) {
+    if (Egg.Input.pressed('p1_up')) {
         player1.innerSprite.position.y -= player1.speed * dt;
     }
-    if (Egg.button('p1_down')) {
+    if (Egg.Input.pressed('p1_down')) {
         player1.innerSprite.position.y += player1.speed * dt;
     }
 
-    if (Egg.button('p2_up')) {
+    if (Egg.Input.pressed('p2_up')) {
         player2.innerSprite.position.y -= player2.speed * dt;
     }
-    if (Egg.button('p2_down')) {
+    if (Egg.Input.pressed('p2_down')) {
         player2.innerSprite.position.y += player2.speed * dt;
     }
 }

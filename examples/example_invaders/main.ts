@@ -42,18 +42,18 @@ module Invaders {
 
         // -- process input --
 
-        if (Egg.button('menu')) {
+        if (Egg.Input.pressed('menu')) {
             Egg.quit();
         }
 
-        if (Egg.button('left')) {
+        if (Egg.Input.pressed('left')) {
             player.setPosition(Math.max(7, player.position.x - 200 * dt), player.position.y);
         }
-        if (Egg.button('right')) {
+        if (Egg.Input.pressed('right')) {
             player.setPosition(Math.min(Egg.config['width'] - 8, player.position.x + 200 * dt), player.position.y);
         }
 
-        if (Egg.button('confirm') || Egg.button('cancel')) {
+        if (Egg.Input.pressed('confirm') || Egg.Input.pressed('cancel')) {
             playerShoot();
         }
 

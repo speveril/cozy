@@ -113,23 +113,23 @@ module RPG {
         }
 
         static update(dt:number):void {
-            if (Egg.button('up')) {
-                Egg.debounce('up', 0.2);
+            if (Egg.Input.pressed('up')) {
+                Egg.Input.debounce('up', 0.2);
                 this.menuSelection = Egg.wrap(this.menuSelection - 1, 3);
                 if (Menu.blip) {
                     Menu.blip.play();
                 }
             }
-            if (Egg.button('down')) {
-                Egg.debounce('down', 0.2);
+            if (Egg.Input.pressed('down')) {
+                Egg.Input.debounce('down', 0.2);
                 this.menuSelection = Egg.wrap(this.menuSelection + 1, 3);
                 if (Menu.blip) {
                     Menu.blip.play();
                 }
             }
-            if (Egg.button('confirm')) {
+            if (Egg.Input.pressed('confirm')) {
                 SimpleQuest.sfx['menu_blip'].play();
-                Egg.debounce('confirm');
+                Egg.Input.debounce('confirm');
                 this.do(this.menu[this.menuSelection]);
             }
 
