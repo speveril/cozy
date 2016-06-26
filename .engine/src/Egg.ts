@@ -59,7 +59,7 @@ module Egg {
     }
 
     export function run() {
-        var eggPath = path.join(process.cwd(), "engine", "resources", "runner"); // TODO this isn't necessarily true
+        var eggPath = path.join(process.cwd(), ".engine", "resources", "runner"); // TODO this isn't necessarily true
         var gamePath = path.join(process.cwd(), this.gameName);
 
         process.chdir(gamePath);

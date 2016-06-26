@@ -5,7 +5,7 @@
         "sourceMap": true
     },
     "files": [
-        "../engine/resources/app/Egg.d.ts",
+        "../.engine/resources/app/Egg.d.ts",
         "main.ts"
     ]
 }

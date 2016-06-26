@@ -103,7 +103,7 @@ function play(path, debug) {
 }
 
 function viewDocs() {
-    require('shell').openExternal("file://" + Process.cwd() + "/engine/docs/index.html");
+    require('shell').openExternal("file://" + Process.cwd() + "/.engine/docs/index.html");
 }
 
 // const fs = require('fs');

@@ -6,7 +6,7 @@
         "out": "../main.js"
     },
     "files": [
-        "../engine/resources/app/Egg.d.ts",
+        "../.engine/resources/app/Egg.d.ts",
         "src/main.ts"
     ]
 }
