@@ -35,7 +35,7 @@ module SimpleQuest {
         cancelable:boolean = true;
 
         constructor() {
-            super({ html: Egg.File.pathname(Egg.File.projectFile("ui/main-menu.html")) });
+            super({ html: "ui/main-menu.html" });
             this.element.className = "menu main-menu";
 
             var moneyField = <HTMLElement>(this.element.querySelector('span.money'));

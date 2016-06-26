@@ -75,33 +75,6 @@ module RPG {
         } else if (controls === ControlMode.Scene && Scene.currentScene) {
             Scene.update(dt);
         } else if (controls === ControlMode.Menu && Menu.currentMenu) {
-            if (Menu.currentMenu.cancelable && (Egg.Input.pressed('menu') || Egg.Input.pressed('cancel'))) {
-                Egg.Input.debounce('menu');
-                Egg.Input.debounce('cancel');
-                Menu.pop();
-            }
-            if (Egg.Input.pressed('up')) {
-                Egg.Input.debounce('up', 0.2);
-                Menu.currentMenu.moveSelection(-1);
-                if (Menu.blip) {
-                    Menu.blip.play();
-                }
-            }
-            if (Egg.Input.pressed('down')) {
-                Egg.Input.debounce('down', 0.2);
-                Menu.currentMenu.moveSelection(+1);
-                if (Menu.blip) {
-                    Menu.blip.play();
-                }
-            }
-            if (Egg.Input.pressed('confirm')) {
-                Egg.Input.debounce('confirm');
-                Menu.currentMenu.confirmSelection();
-                if (Menu.choose) {
-                    Menu.choose.play();
-                }
-            }
-
             Menu.currentMenu.update(dt);
         } else if (controls === ControlMode.Battle && Battle.active) {
             Battle.update(dt);

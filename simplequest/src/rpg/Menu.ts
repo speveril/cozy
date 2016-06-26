@@ -51,12 +51,55 @@ module RPG {
             this.element.classList.add("rpg-menu");
 
             this.selections = [];
-
             _.each(this.element.getElementsByTagName('*'), function(element) {
                 if (element.getAttribute('data-menu')) {
                     this.selections.push(element);
                 }
             }.bind(this));
+            this.setSelection(0);
+
+            // TODO have a UiComponent activation system to handle this "if Menu.currentMenu !== this" stuff
+
+            if (this.cancelable) {
+                let cb = () => {
+                    if (Menu.currentMenu !== this) return;
+
+                    Egg.Input.debounce('menu');
+                    Egg.Input.debounce('cancel');
+                    Menu.pop();
+                };
+                Egg.Input.on('menu.down', cb);
+                Egg.Input.on('cancel.down', cb);
+            }
+
+
+            Egg.Input.on('up.down', () => {
+                if (Menu.currentMenu !== this) return;
+
+                Egg.Input.debounce('up', 0.2);
+                this.moveSelection(-1);
+                if (Menu.blip) {
+                    Menu.blip.play();
+                }
+            });
+            Egg.Input.on('down.down', () => {
+                if (Menu.currentMenu !== this) return;
+
+                Egg.Input.debounce('down', 0.2);
+                this.moveSelection(+1);
+                if (Menu.blip) {
+                    Menu.blip.play();
+                }
+            });
+            Egg.Input.on('confirm.down', () => {
+                if (Menu.currentMenu !== this) return;
+
+                Egg.Input.debounce('confirm');
+                this.confirmSelection();
+                if (Menu.choose) {
+                    Menu.choose.play();
+                }
+            });
         }
 
         start() {
