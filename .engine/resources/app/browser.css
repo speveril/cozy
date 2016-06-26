@@ -146,8 +146,20 @@ body > section {
     border-bottom: none;
 }
 
+#game-list li.folder .folder-header .icon:before {
+    content: '\1f4c2';
+}
+
+#game-list li.folder.closed .folder-header .icon:before {
+    content: '\1f4c1';
+}
+
 #game-list li.folder ul li:not(:first-child) {
     margin-left: 2.5em;
+}
+
+#game-list li.folder.closed ul li:not(:first-child) {
+    display: none;
 }
 
 #game-list li div:not(:last-child) {
@@ -158,6 +170,7 @@ body > section {
 #game-list li .icon img {
     width: 16px;
     height: 16px;
+    line-height: 16px;
 }
 
 #game-list li .author {
@@ -168,6 +181,7 @@ body > section {
 
 #game-list li .recompile {
     visibility: hidden;
+    margin-right: 1em;
 }
 
 #game-list li.dirty .recompile, #game-list li.compiling .recompile {
@@ -180,7 +194,7 @@ body > section {
 
 #game-list li.compiling .recompile::after {
     animation-name: spin;
-    animation-duration: 1000ms;
+    animation-duration: 800ms;
     animation-iteration-count: infinite;
     animation-timing-function: linear;
 }

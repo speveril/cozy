@@ -100,25 +100,25 @@ var Browser = {
             }
             if (!target) return;
 
-            if (target.classList.contains('folder')) {
-                // nothing yet
+            if (target.parentNode.parentNode.classList.contains('folder') && target.previousSibling === null) {
+                target.parentNode.parentNode.classList.toggle('closed');
             } else {
                 var path = target.getAttribute('data-path');
 
                 target.classList.add('compiling');
 
                 this.output("");
-                this.build(path, 'main.js')
-                .then(() => {
-                    target.classList.remove('compiling');
-                    electron.ipcRenderer.send('control-message', {
-                        command: 'play',
-                        path: path,
-                        debug: true
+                this.buildGame(path)
+                    .then(() => {
+                        target.classList.remove('compiling');
+                        electron.ipcRenderer.send('control-message', {
+                            command: 'play',
+                            path: path,
+                            debug: true
+                        });
+                    }, () => {
+                        target.classList.remove('compiling');
                     });
-                }, () => {
-                    target.classList.remove('compiling');
-                });
             }
         }
 
@@ -127,6 +127,39 @@ var Browser = {
         this.newGameFooter.onclick = () => this.newGame();
 
         this.output("Egg project browser loaded.");
+    },
+
+    newGameDialog: function() {
+        return new Promise((resolve, reject) => {
+            var dialog = document.createElement('form');
+            dialog.innerHTML =
+                '<div class="text">New Game</div>' +
+                'Folder: <input type="text" name="path">' +
+                'Name: <input type="text" name="name">' +
+                '<div class="buttons">' +
+                    '<button class="confirm">OK</button>' +
+                    '<button class="cancel">Cancel</button>' +
+                '</div>';
+            dialog.onsubmit = (e) => {
+                e.preventDefault();
+            };
+            dialog.querySelector('button.confirm').onclick = () => {
+                var values = Array.prototype.reduce.call(dialog.querySelectorAll('input'), (accum, input) => {
+                    accum[input.getAttribute('name')] = input.value;
+                    return accum;
+                }, {});
+                resolve(values);
+                this.dialogContainer.removeChild(dialog);
+            }
+            dialog.querySelector('button.cancel').onclick = () => {
+                reject();
+                this.dialogContainer.removeChild(dialog);
+            }
+
+            this.dialogContainer.appendChild(dialog);
+
+            dialog.querySelector('input[name=path]').focus();
+        });
     },
 
     prompt: function(text) {
@@ -163,11 +196,10 @@ var Browser = {
         }
 
         var games = {};
-        var files = GAMELIBDIRS;
         var f;
 
         var proc = (root, list) => {
-            var files = {};
+            var games = [];
             FS.readdirSync(root).sort().forEach((f) => {
                 var fullpath = Path.join(root, f);
 
@@ -178,14 +210,15 @@ var Browser = {
                 var stat = FS.statSync(fullpath);
                 if (stat.isDirectory()) {
                     if (FS.existsSync(config)) {
-                        // files[f] = config;
-                        this.addGame(fullpath, list)
+                        games.push(fullpath);
                     } else {
-                        files[f] = proc(Path.join(root, f), this.addGameFolder(f, list));
+                        proc(Path.join(root, f), this.addGameFolder(f, list));
                     }
                 }
             });
-            return files;
+            games.forEach((path) => {
+                this.addGame(path, list);
+            });
         };
 
         GAMELIBDIRS.forEach((f) => {
@@ -222,16 +255,17 @@ var Browser = {
 
     addGameFolder: function(path, parent) {
         var container = document.createElement('li');
-        container.classList.add('folder');
+        container.classList.add('folder', 'closed');
         container.setAttribute('data-path', path);
 
         var ul = document.createElement('ul');
         container.appendChild(ul);
 
         var li = document.createElement('li');
+        li.classList.add('folder-header');
         li.setAttribute('data-path', path);
         li.innerHTML =
-            '<div class="icon">\uD83D\uDCC2</div>' +
+            '<div class="icon"></div>' +
             '<div class="title">' + scrub(path) + '/</div>';
         ul.appendChild(li);
 
@@ -260,8 +294,7 @@ var Browser = {
         this.setEngineStatus('compiling');
 
         this.output("");
-        this.output("Building engine...");
-        this.build(Path.join(ENGINEDIR, "src"), Path.join('..', 'resources', 'app', 'Egg.js'))
+        this.buildEngine()
             .then(() => {
                 return this.doc(Path.join(ENGINEDIR, "src", "Egg.ts"), Path.join(ENGINEDIR, "docs"))
             }, () => {
@@ -286,38 +319,76 @@ var Browser = {
             });
     },
 
-    build: function(buildPath, outputFile) {
+    buildGame: function(buildPath) {
+        // TODO ?? copy all the stuff we need into a lib/ directory in the game
+        //   - need to add the d.ts files for PIXI, node, etc
+        // var filesToCopy = [
+        //     'Egg.js',
+        //     'Egg.js.map',
+        //     'Egg.d.ts'
+        // ];
+        // filesToCopy.forEach(function(filename) {
+        //     var contents = FS.readFileSync(__dirname + "/" + filename, { encoding: 'UTF-8' });
+        //     FS.writeFileSync(gamePath + "/" + filename, contents);
+        // });
+
+        var config;
+        try {
+            config = JSON.parse(FS.readFileSync(Path.join(buildPath, "config.json")));
+        } catch(e) {
+            this.output("<span style='color:red'>[ ERROR (" + e.toString() + ") ]</span>\n");
+            return Promise.reject();
+        }
+
+        var srcRoot = Path.join(buildPath, config.main || 'main.ts');
+        var displayName = scrub(config.title ? config.title + " (" + buildPath + ")" : buildPath);
+
+        var params = [
+            '.engine/resources/app/Egg.d.ts', srcRoot,
+            '--out', Path.join(buildPath, 'main.js')
+        ];
+
+        this.output("<span style='color:white'>[ Building " + displayName + " ]</span>")
+        return this.build(params)
+            .then(() => {
+                this.output(" - Built " + Path.join(buildPath, 'main.js'));
+                this.output("<span style='color:#0f0'>[ Success ]</span>\n");
+            }, (code) => {
+                this.output("<span style='color:red'>[ FAILURE (code: " + code + ") ]</span>\n");
+            });
+    },
+
+    buildEngine: function() {
+        this.output("<span style='color:white'>[ Building core engine ]</span>")
+
+        var params = [
+            '--project', Path.join(ENGINEDIR, "src"),
+            '--out', Path.join('..', 'resources', 'app', 'Egg.js')
+        ];
+
+        return this.build(params)
+            .then(() => {
+                this.output(" - Built engine");
+                this.output("<span style='color:#0f0'>[ Success ]</span>\n");
+            }, (code) => {
+                this.output("<span style='color:red'>[ FAILURE (code: " + code + ") ]</span>\n");
+            });
+    },
+
+    build: function(buildParams) { //buildPath, outputFile) {
+        buildParams.push('--target', 'ES5');
+
         return new Promise((resolve, reject) => {
-            this.output("<span style='color:white'>[ Building " + buildPath + " ]</span>")
-
-            // TODO copy all the stuff we need into a lib/ directory in the game
-            //   - need to add the d.ts files for PIXI, node, etc
-            // var filesToCopy = [
-            //     'Egg.js',
-            //     'Egg.js.map',
-            //     'Egg.d.ts'
-            // ];
-            // filesToCopy.forEach(function(filename) {
-            //     var contents = FS.readFileSync(__dirname + "/" + filename, { encoding: 'UTF-8' });
-            //     FS.writeFileSync(gamePath + "/" + filename, contents);
-            // });
-
-            var tsc = Child.fork(Path.join(ENGINEDIR, 'src', 'typescript', 'tsc.js'), [
-                '--project', buildPath,
-                '--out', Path.join(buildPath, outputFile)
-            ], { silent: true, env: {"ATOM_SHELL_INTERNAL_RUN_AS_NODE":"0"} });
+            var tsc = Child.fork(Path.join(ENGINEDIR, 'src', 'typescript', 'tsc.js'), buildParams, { silent: true, env: {"ATOM_SHELL_INTERNAL_RUN_AS_NODE":"0"} });
 
             tsc.stdout.on('data', this.output.bind(this));
             tsc.stderr.on('data', this.output.bind(this));
 
             tsc.on('exit', (returnCode) => {
                 if (!returnCode) {
-                    this.output(" - Built " + Path.join(buildPath, outputFile));
-                    this.output("<span style='color:#0f0'>[ Success ]</span>");
                     resolve();
                 } else {
-                    this.output("<span style='color:red'>[ FAILURE (code: " + returnCode + ") ]</span>");
-                    reject();
+                    reject(returnCode);
                 }
             });
         });
@@ -344,10 +415,10 @@ var Browser = {
 
             typedoc.on('exit', (returnCode) => {
                 if (!returnCode) {
-                    this.output("<span style='color:#0f0'>[ Success ]</span>");
+                    this.output("<span style='color:#0f0'>[ Success ]</span>\n");
                     resolve();
                 } else {
-                    this.output("<span style='color:red'>[ FAILURE (code: " + returnCode + ") ]</span>");
+                    this.output("<span style='color:red'>[ FAILURE (code: " + returnCode + ") ]</span>\n");
                     reject();
                 }
             });
@@ -360,18 +431,20 @@ var Browser = {
     },
 
     newGame: function() {
-        this.prompt("Enter a name for the new project")
-            .then((name) => {
-                this.copyTemplate(name);
+        this.newGameDialog()
+            .then((values) => {
+                this.copyTemplate(values);
             }, (e) => {
                 if (e) {
-                    this.output('<span style="color:red">Error: ' + e.toString() + '</span>');
+                    this.output('<span style="color:red">Error: ' + e.toString() + '</span>\n');
                 }
             });
     },
 
-    copyTemplate: function(name) {
-        var path = name.replace(/\W+/g, '');
+    copyTemplate: function(args) {
+        var name = args.name;
+        var path = args.path;
+
         return new Promise((resolve, reject) => {
             this.output('');
             this.output('<strong>[ Creating new game, ' + name + ']')

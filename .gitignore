@@ -1,7 +1,9 @@
 .engine/resources/app/Egg.js
 .engine/resources/app/Egg.js.map
 .engine/resources/app/Egg.d.ts
-examples/example_pong/*.js
-examples/example_pong/*.js.map
+examples/**/*.js
+examples/**/*.js.map
+toys/**/*.js
+toys/**/*.js.map
 simplequest/**/*.js
 simplequest/**/*.js.map
