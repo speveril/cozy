@@ -7,12 +7,14 @@ module Egg {
         static buttonMap: { [key:number]:string[] };
         static button: { [name:string]:Egg.ButtonState };
         static buttonTimeouts: { [name:string]:number };
+        static callbacks: { [name:string]:any[] };
 
         static init(buttons?:{ [name:string]: any }) {
             this.key = {};
             this.button = {};
             this.buttonMap = {};
             this.buttonTimeouts = {};
+            this.callbacks = {};
 
             var b:{[name:string]: number[]};
 
@@ -45,6 +47,20 @@ module Egg {
             });
         }
 
+        static on(eventName, cb) {
+            if (!this.callbacks[eventName]) {
+                this.callbacks[eventName] = [];
+            }
+            this.callbacks[eventName].push(cb);
+        }
+
+        private static triggerCallbacks(eventName, eventInfo) {
+            if (!this.callbacks[eventName]) return;
+            _.each(this.callbacks[eventName], (cb) => {
+                cb(eventInfo);
+            });
+        }
+
         static onKeyDown(event) {
             var keyCode = event.keyCode;
 
@@ -54,6 +70,10 @@ module Egg {
                 _.each(this.buttonMap[keyCode], (b) => {
                     if (this.button[b] !== Egg.ButtonState.IGNORED) {
                         this.button[b] = Egg.ButtonState.DOWN;
+
+                        var eventInfo = { button: b, pressed: true };
+                        this.triggerCallbacks(b, eventInfo);
+                        this.triggerCallbacks(b + ".down", eventInfo);
                     }
                 });
             }
@@ -70,6 +90,10 @@ module Egg {
                 _.each(this.buttonMap[keyCode], function(b) {
                     this.button[b] = Egg.ButtonState.UP;
                     clearTimeout(this.buttonTimeouts[b]);
+
+                    var eventInfo = { button: b, pressed: false };
+                    this.triggerCallbacks(b, eventInfo);
+                    this.triggerCallbacks(b + ".up", eventInfo);
                 }.bind(this));
             }
 
@@ -88,6 +112,10 @@ module Egg {
             if (duration !== undefined) {
                 this.buttonTimeouts[name] = setTimeout(function() {
                     this.button[name] = Egg.ButtonState.DOWN;
+
+                    var eventInfo = { button: name, pressed: true };
+                    this.triggerCallbacks(name, eventInfo);
+                    this.triggerCallbacks(name + ".down", eventInfo);
                 }.bind(this), duration * 1000);
             }
         }
