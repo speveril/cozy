@@ -21,7 +21,13 @@ module Egg {
             var el = document.createElement('div');
             el.innerHTML = Egg.File.read(htmlFile);
 
-            _.each(el.getElementsByTagName('*'), function(element) {
+            var fixElements = [].concat(
+                el.getElementsByTagName('link'),
+                el.getElementsByTagName('img'),
+                el.getElementsByTagName('a')
+            );
+
+            _.each(fixElements, function(element) {
                 if (element.getAttribute('src')) {
                     element.src = Egg.File.pathname(htmlFile) + "/" + element.getAttribute('src');
                 }

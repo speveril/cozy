@@ -4,7 +4,7 @@
         "sourceMap": true,
         "declaration": true,
         "target": "ES5",
-        "out": "../Egg.js"
+        "out": "../resources/app/Egg.js"
     },
     "files": [
         "Egg.ts"

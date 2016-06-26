@@ -42,9 +42,9 @@ function setup() {
             case 'play':
                 play(arg.path, arg.debug || false)
                     .then(() => {
-                        output("<span style='color:#0f0'>[ Done ]</span>");
+                        output("<span style='color:#0f0'>[ Done ]</span>\n");
                     }, (e) => {
-                        output("<span style='color:red'>[ Error: " + e.toString() + " ]</span>");
+                        output("<span style='color:red'>[ Error: " + e.toString() + " ]</span>\n");
                     })
                 break;
             case 'view-docs':

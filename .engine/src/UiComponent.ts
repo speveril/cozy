@@ -4,15 +4,17 @@ module Egg {
 
         protected parent:UiComponent;
         protected children:UiComponent[];
-        protected tag:string = 'div';
-        protected html:string = '';
+        protected tag:string;
+        protected html:string;
 
         constructor(args:any) {
-            this.tag = args.tag || this.tag;
+            console.log("UiComponent ->", args);
+
+            this.tag = args.tag || this.tag || 'div';
             this.children = [];
             this.element = document.createElement(this.tag);
             if (args.html || this.html) {
-                this.element.innerHTML = args.html || this.html;
+                this.element.innerHTML = args.html || this.html || '';
             }
         }
 

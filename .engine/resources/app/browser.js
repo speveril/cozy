@@ -15,7 +15,7 @@ const statusText = {
     'ready': "Engine is ready",
     'dirty': "Engine needs to be recompiled.",
     'compiling': "Engine is compiling...",
-    'error': "Engine compilation failed. See output window below for details."
+    'error': "Engine compilation failed. See output above for details."
 }
 
 function scrub(text) {
@@ -126,7 +126,7 @@ var Browser = {
 
         this.newGameFooter.onclick = () => this.newGame();
 
-        this.output("Egg project browser loaded.");
+        this.output("Egg project browser loaded.\n");
     },
 
     newGameDialog: function() {
@@ -279,7 +279,7 @@ var Browser = {
             if (i > 0) s += " ";
             s += arguments[i].toString();
         }
-        s = s.trim() + "\n";
+        s = s + "\n";
         this.outputContainer.innerHTML = (this.outputContainer.innerHTML || "") + s;
         this.outputContainer.scrollTop = this.outputContainer.scrollHeight;
     },
@@ -348,24 +348,25 @@ var Browser = {
             '--out', Path.join(buildPath, 'main.js')
         ];
 
-        this.output("<span style='color:white'>[ Building " + displayName + " ]</span>")
+        this.output("<hr>\n<span style='color:white'>[ Building " + displayName + " ]</span>")
         return this.build(params)
             .then(() => {
                 this.output(" - Built " + Path.join(buildPath, 'main.js'));
                 this.output("<span style='color:#0f0'>[ Success ]</span>\n");
+                return Promise.resolve();
             }, (code) => {
                 this.output("<span style='color:red'>[ FAILURE (code: " + code + ") ]</span>\n");
+                return Promise.reject();
             });
     },
 
     buildEngine: function() {
-        this.output("<span style='color:white'>[ Building core engine ]</span>")
-
         var params = [
             '--project', Path.join(ENGINEDIR, "src"),
-            '--out', Path.join('..', 'resources', 'app', 'Egg.js')
+            '--out', Path.join(ENGINEDIR, 'resources', 'app', 'Egg.js')
         ];
 
+        this.output("<hr>\n<span style='color:white'>[ Building core engine ]</span>")
         return this.build(params)
             .then(() => {
                 this.output(" - Built engine");
@@ -410,8 +411,9 @@ var Browser = {
                 srcPath
             ], { silent: true, env: {"ATOM_SHELL_INTERNAL_RUN_AS_NODE":"0"} });
 
-            typedoc.stdout.on('data', this.output.bind(this));
-            typedoc.stderr.on('data', this.output.bind(this));
+            // do some trimming because typedoc likes its newlines
+            typedoc.stdout.on('data', (s) => this.output(s.toString().trim()));
+            typedoc.stderr.on('data', (s) => this.output(s.toString().trim()));
 
             typedoc.on('exit', (returnCode) => {
                 if (!returnCode) {
