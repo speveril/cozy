@@ -112,6 +112,8 @@ body > section {
 }
 
 #game-list ul {
+    width: 100%;
+    padding-left: none;
     overflow-y: auto;
     overflow-x: hidden;
 }
@@ -119,28 +121,40 @@ body > section {
 #game-list li {
     display: flex;
     flex-direction: row;
-    padding: 0.5em 1em;
+    padding: 0.5em 0 0.5em 1em;
     cursor: pointer;
     list-style: none;
-    background: #eee
+    background: #eee;
+    border-bottom: 1px solid #ddd;
+}
+
+#game-list > ul > li:first-child {
+    border-top: 1px solid #ddd;
 }
 
 #game-list li.compiling {
     background: #cc5 !important;
 }
 
-#game-list li:nth-child(2n) {
-    background: #ddd;
+#game-list li:not:hover {
+    background: #bcf;
 }
 
-#game-list li:hover {
-    background: #bcf;
+#game-list li.folder {
+    padding: 0;
+    background: #ddd;
+    border-bottom: none;
+}
+
+#game-list li.folder ul li:not(:first-child) {
+    margin-left: 2.5em;
 }
 
 #game-list li div:not(:last-child) {
     margin-right: 1em;
 }
 
+#game-list li .icon,
 #game-list li .icon img {
     width: 16px;
     height: 16px;

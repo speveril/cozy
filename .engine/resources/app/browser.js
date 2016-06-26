@@ -18,6 +18,15 @@ const statusText = {
     'error': "Engine compilation failed. See output window below for details."
 }
 
+function scrub(text) {
+    var scrubber = document.createElement('span');
+    scrubber.innerText = text;
+    var s = scrubber.innerHTML;
+    s = s.replace('"', '&quot;');
+    s = s.replace("'", '&apos;');
+    return s;
+}
+
 var Browser = {
     start: function() {
         this.controls = $('#controls')[0];
@@ -91,12 +100,15 @@ var Browser = {
             }
             if (!target) return;
 
-            var path = target.getAttribute('data-path');
+            if (target.classList.contains('folder')) {
+                // nothing yet
+            } else {
+                var path = target.getAttribute('data-path');
 
-            target.classList.add('compiling');
+                target.classList.add('compiling');
 
-            this.output("");
-            this.build(path, 'main.js')
+                this.output("");
+                this.build(path, 'main.js')
                 .then(() => {
                     target.classList.remove('compiling');
                     electron.ipcRenderer.send('control-message', {
@@ -107,6 +119,7 @@ var Browser = {
                 }, () => {
                     target.classList.remove('compiling');
                 });
+            }
         }
 
         document.querySelector('#game-list header .force-refresh').onclick = (e) => this.rebuildGameList();
@@ -149,52 +162,44 @@ var Browser = {
             this.gameList.removeChild(this.gameList.lastChild);
         }
 
-        var games = [];
+        var games = {};
         var files = GAMELIBDIRS;
         var f;
 
-        while (f = files.shift()) {
-            this.output("->", f);
-            if (f[0] === '.' && f !== '.') continue;
-            if (f === ENGINEDIR) continue;
+        var proc = (root, list) => {
+            var files = {};
+            FS.readdirSync(root).sort().forEach((f) => {
+                var fullpath = Path.join(root, f);
 
-            var config = Path.join(f, "config.json");
+                if (f[0] === '.' && f !== '.') return;
+                if (f === ENGINEDIR) return;
 
-            var stat = FS.statSync(f);
-            if (stat.isDirectory()) {
-                this.output(" (dir)");
-                if (FS.existsSync(config)) {
-                    // this.addGame(f)
-                    games.push(f);
-                } else {
-                    FS.readdirSync(f).sort().forEach((sub) => {
-                        files.push(Path.join(f, sub));
-                    });
+                var config = Path.join(fullpath, "config.json");
+                var stat = FS.statSync(fullpath);
+                if (stat.isDirectory()) {
+                    if (FS.existsSync(config)) {
+                        // files[f] = config;
+                        this.addGame(fullpath, list)
+                    } else {
+                        files[f] = proc(Path.join(root, f), this.addGameFolder(f, list));
+                    }
                 }
-            }
-        }
+            });
+            return files;
+        };
 
-        games.sort().forEach((g) => {
-            this.addGame(g);
+        GAMELIBDIRS.forEach((f) => {
+            proc(f, this.gameList);
         });
     },
 
-    addGame: function(path) {
+    addGame: function(path, parent) {
         var config;
         try {
             config = JSON.parse(FS.readFileSync(Path.join(path, "config.json")));
         } catch (e) {
             this.output("<span style='color:red'>Found, but failed to parse " + Path.join(path, "config.json") + ":", e, "</span>");
             config = {};
-        }
-
-        function scrub(text) {
-            var scrubber = document.createElement('span');
-            scrubber.innerText = text;
-            var s = scrubber.innerHTML;
-            s = s.replace('"', '&quot;');
-            s = s.replace("'", '&apos;');
-            return s;
         }
 
         var li = document.createElement('li');
@@ -212,7 +217,26 @@ var Browser = {
             '<div class="info">' + info + '</div>' +
             '<div class="recompile" title="Game will be rebuilt when run"></div>';
 
-        this.gameList.appendChild(li);
+        parent.appendChild(li);
+    },
+
+    addGameFolder: function(path, parent) {
+        var container = document.createElement('li');
+        container.classList.add('folder');
+        container.setAttribute('data-path', path);
+
+        var ul = document.createElement('ul');
+        container.appendChild(ul);
+
+        var li = document.createElement('li');
+        li.setAttribute('data-path', path);
+        li.innerHTML =
+            '<div class="icon">\uD83D\uDCC2</div>' +
+            '<div class="title">' + scrub(path) + '/</div>';
+        ul.appendChild(li);
+
+        parent.appendChild(container);
+        return ul;
     },
 
     output: function(/* ... */) {
