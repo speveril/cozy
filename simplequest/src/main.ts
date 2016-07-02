@@ -1,7 +1,7 @@
 ///<reference path="rpg/RPGKit.ts"/>
 
 ///<reference path="Map.ts"/>
-///<reference path="Menus.ts"/>
+///<reference path="menus/all.ts"/>
 
 ///<reference path="characters/Hero.ts"/>
 
@@ -32,7 +32,7 @@ module SimpleQuest {
             'forest':     new Egg.Music({ tracks: ["audio/music/forest.ogg"] })
         };
 
-        RPG.mainMenuClass = Menu_Main;
+        RPG.mainMenuClass = Menu.Main;
         RPG.loadSkip = ["./src_image"];
         RPG.Menu.blip = sfx['menu_blip'];
         RPG.Battle.setMonsters({
@@ -65,7 +65,7 @@ module SimpleQuest {
 
     export function bootSequence() {
         RPG.controls = RPG.ControlMode.Scene;
-        RPG.Menu.push(new Menu_Boot());
+        RPG.Menu.push(new Menu.Boot());
         Egg.unpause();
     }
 
