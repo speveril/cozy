@@ -6,20 +6,23 @@ module Egg {
         static eggPath:string;
         static gamePath:string;
 
-        static read(f:string):string { return fs.readFileSync(f, { encoding: 'UTF-8' }); }
-        static readBinary(f:string):ArrayBuffer { return fs.readFileSync(f).buffer; }
-        static write(f:string, contents:string):void { return fs.writeFileSync(f, contents); }
-        static stat(f:string) { return fs.statSync(f); }
-        static extension(f):string { return path.extname(f); }
-        static filename(f):string { return path.basename(f); }
-        static pathname(f):string { return path.dirname(f); }
+        static read(f:string):string { return fs.readFileSync(this.projectFile(f), { encoding: 'UTF-8' }); }
+        static readBinary(f:string):ArrayBuffer { return fs.readFileSync(this.projectFile(f)).buffer; }
+        static write(f:string, contents:string):void { return fs.writeFileSync(this.projectFile(f), contents); }
+        static stat(f:string) { return fs.statSync(this.projectFile(f)); }
+        static extension(f):string { return path.extname(this.projectFile(f)); }
+        static filename(f):string { return path.basename(this.projectFile(f)); }
+        static pathname(f):string { return path.dirname(this.projectFile(f)); }
         static relative(from, to):string { return path.relative(from, to); }
         static stripProtocol(f):string { return f.replace("/^.*?:[/\\]{2}/",""); }
 
         static readHTML(f):string {
-            var htmlFile = Egg.File.projectFile(f);
+            return Egg.File.fixHTML(Egg.File.read(Egg.File.projectFile(f)), Egg.File.pathname(f));
+        }
+
+        static fixHTML(html, path = Egg.File.gamePath):string {
             var el = document.createElement('div');
-            el.innerHTML = Egg.File.read(htmlFile);
+            el.innerHTML = html;
 
             var fixElements = [].concat(
                 Array.prototype.slice.call(el.getElementsByTagName('link')),
@@ -29,10 +32,10 @@ module Egg {
 
             _.each(fixElements, function(element) {
                 if (element.getAttribute('src')) {
-                    element.src = Egg.File.pathname(htmlFile) + "/" + element.getAttribute('src');
+                    element.src = path + "/" + element.getAttribute('src');
                 }
                 if (element.getAttribute('href')) {
-                    element.href = Egg.File.pathname(htmlFile) + "/" + element.getAttribute('href');
+                    element.href = path + "/" + element.getAttribute('href');
                 }
             }.bind(this));
 
@@ -41,7 +44,7 @@ module Egg {
 
         static readAsync(f:string):Promise<string> {
             return new Promise(function(resolve, reject) {
-                fs.readFile(f, { encoding: 'UTF-8' }, function(err, data) {
+                fs.readFile(this.projectFile(f), { encoding: 'UTF-8' }, function(err, data) {
                     if (err) {
                         reject(err);
                     } else {

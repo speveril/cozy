@@ -8,14 +8,12 @@ module Egg {
         protected html:string;
 
         constructor(args:any) {
-            console.log("UiComponent ->", args);
-
             this.tag = args.tag || this.tag || 'div';
             this.children = [];
             this.element = document.createElement(this.tag);
-            if (args.html || this.html) {
-                this.element.innerHTML = args.html || this.html || '';
-            }
+
+            var html = args.html || this.html || '';            
+            this.element.innerHTML = Egg.File.fixHTML(html);
         }
 
         setParent(parent:UiComponent, parentElement?:HTMLElement|string):void {
