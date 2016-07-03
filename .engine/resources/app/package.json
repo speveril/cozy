@@ -4,6 +4,8 @@
   "version": "0.0.1",
   "main": "launch.js",
   "dependencies": {
-    "electron-window-state": "^2.0.0"
+    "electron-window-state": "^3.0.3",
+    "typedoc": "^0.4.4",
+    "typescript": "^1.8.10"
   }
 }

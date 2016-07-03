@@ -1,6 +1,4 @@
 'use strict';
-const App = require('app');
-const BrowserWindow = require('browser-window');
 const Electron = require('electron');
 const FS = require('fs');
 const Path = require('path');
@@ -9,7 +7,7 @@ const WindowStateKeeper = require('electron-window-state');
 
 process.chdir(Path.join(Path.dirname(process.execPath), ".."));
 
-App.on('ready', setup);
+Electron.app.on('ready', setup);
 
 var mainWindow, docWindow;
 
@@ -21,9 +19,7 @@ function output(text) {
 
 function setup() {
     var windowState = WindowStateKeeper({});
-
-    mainWindow = new BrowserWindow(windowState);
-
+    mainWindow = new Electron.BrowserWindow(windowState);
     windowState.manage(mainWindow);
 
     mainWindow.once('close', () => {
@@ -76,7 +72,7 @@ function play(path, debug) {
 
         output("<span style='color:white'>[ Launching " + (params.title || path) + " ]</span>");
 
-        var window = new BrowserWindow({
+        var window = new Electron.BrowserWindow({
             'width':              params['width'],
             'height':             params['height'],
             'title':              params['title'] || 'Egg',
@@ -85,6 +81,7 @@ function play(path, debug) {
             'autoHideMenuBar':    true,
             'useContentSize':     true
         });
+        window.toggleDevTools();
 
         window.once('close', () => {
             resolve();

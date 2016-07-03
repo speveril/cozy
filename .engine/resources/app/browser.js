@@ -83,7 +83,7 @@ var Browser = {
             var action = target.getAttribute('data-action');
             switch (action) {
                 case 'docs':
-                    electron.ipcRenderer.send('control-message', { command: 'view-docs' });
+                    Electron.ipcRenderer.send('control-message', { command: 'view-docs' });
                     break;
                 case 'newgame':
                     this.newGame();
@@ -111,7 +111,7 @@ var Browser = {
                 this.buildGame(path)
                     .then(() => {
                         target.classList.remove('compiling');
-                        electron.ipcRenderer.send('control-message', {
+                        Electron.ipcRenderer.send('control-message', {
                             command: 'play',
                             path: path,
                             debug: true
@@ -379,10 +379,10 @@ var Browser = {
     },
 
     build: function(buildParams) { //buildPath, outputFile) {
-        buildParams.push('--target', 'ES5');
+        buildParams.push('--target', 'ES6');
 
         return new Promise((resolve, reject) => {
-            var tsc = Child.fork(Path.join(ENGINEDIR, 'src', 'typescript', 'tsc.js'), buildParams, { silent: true, env: {"ATOM_SHELL_INTERNAL_RUN_AS_NODE":"0"} });
+            var tsc = Child.fork(Path.join(ENGINEDIR, 'resources', 'app', 'node_modules', 'typescript', 'bin', 'tsc'), buildParams, { silent: true, env: {"ATOM_SHELL_INTERNAL_RUN_AS_NODE":"0"} });
 
             tsc.stdout.on('data', this.output.bind(this));
             tsc.stderr.on('data', this.output.bind(this));
@@ -408,7 +408,7 @@ var Browser = {
             var typedoc = Child.fork(Path.join(ENGINEDIR, 'resources', 'app', 'builddoc'), [
                 '--out', outputPath,
                 '--mode', 'file',
-                '--target', 'ES5',
+                '--target', 'ES6',
                 '--name', 'Egg Engine',
                 srcPath
             ], { silent: true, env: {"ATOM_SHELL_INTERNAL_RUN_AS_NODE":"0"} });

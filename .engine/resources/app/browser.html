@@ -33,20 +33,19 @@
 </body>
 
 <script>
-    const electron = require('electron');
-    const Remote = require('remote');
+    const Electron = require('electron');
 
     document.onkeydown = (e) => {
         var keyCode = e.which;
         if (keyCode === 192 || keyCode === 122) { // ~ key or f11, opens console
-            Remote.getCurrentWindow().toggleDevTools();
+            Electron.remote.getCurrentWindow().toggleDevTools();
         }
     };
 
-    electron.ipcRenderer.on('start', (event) => {
+    Electron.ipcRenderer.on('start', (event) => {
         Browser.start();
     });
-    electron.ipcRenderer.on('output', (event, arg) => {
+    Electron.ipcRenderer.on('output', (event, arg) => {
         Browser.output(arg);
     });
 </script>

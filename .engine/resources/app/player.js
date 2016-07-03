@@ -25,6 +25,7 @@ Player = {
           'autoHideMenuBar':    true,
           'useContentSize':     true
         });
+        window.toggleDevTools();
 
         window.once('close', function() {
             Process.exit(0);

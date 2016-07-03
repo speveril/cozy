@@ -2,7 +2,6 @@
 /// <reference path="typescript/node.d.ts"/>
 /// <reference path="typescript/pixi.js.d.ts"/>
 /// <reference path="typescript/underscore.d.ts"/>
-/// <reference path="typescript/es6-promise.d.ts"/>
 
 /// <reference path="Audio.ts"/>
 /// <reference path="File.ts"/>
