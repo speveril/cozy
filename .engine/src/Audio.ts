@@ -104,7 +104,6 @@ module Egg {
 
         static init():void {
             this.context = new AudioContext();
-            this.context.sampleRate = 48000;
 
             this.musicGain = this.context.createGain();
             this.musicGain.connect(this.context.destination);

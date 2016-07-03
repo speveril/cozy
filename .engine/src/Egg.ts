@@ -13,7 +13,7 @@
 /// <reference path="Texture.ts"/>
 /// <reference path="UiComponent.ts"/>
 
-var remote = require('remote');
+var Electron = require('electron');
 declare var FontFace:any;
 
 function include(path) {
@@ -42,7 +42,7 @@ module Egg {
         this.config = opts;
         this.debug = !!opts.debug;
         this.gameName = opts.game;
-        this.browserWindow = remote.getCurrentWindow();
+        this.browserWindow = Electron.remote.getCurrentWindow();
         this.browserWindow.toggleDevTools();
 
         this.textures = {};
