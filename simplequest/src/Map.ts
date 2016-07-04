@@ -60,10 +60,6 @@ module SimpleQuest {
                     if (t == 37) {
                         lyr.setTile(tx, ty, t + 3);
                     }
-                    var tr = lyr.getTriggerByPoint((tx + 0.5) * this.tileSize.x, (ty + 0.5) * this.tileSize.y);
-                    if (tr && tr.name === 'open_chest') {
-                        tr.active = false;
-                    }
                 }.bind(this));
             }.bind(this));
 
@@ -225,7 +221,6 @@ module SimpleQuest {
                 }.bind(this));
 
                 opened.push([args.tx, args.ty]);
-                args.trigger.active = false;
 
                 if (args.trigger.properties.contents) {
                     RPG.Scene.do(function*() {
@@ -258,6 +253,7 @@ module SimpleQuest {
                     }.bind(this));
                 }
             } else {
+                console.log("opened chest?");
                 RPG.Scene.do(function*() {
                     yield* this.waitTextbox(null, ["\n<center>The chest is empty.</center>"]);
                 }.bind(this));
