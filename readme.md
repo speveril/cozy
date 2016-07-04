@@ -16,7 +16,7 @@ Ultimately the development is driven by what I want out of the engine. I have a 
 
 ## Usage
 
-Just run the Egg shortcut (or engine/egg.exe). This will open the launcher/project manager.
+Just run the Egg shortcut (or .engine/egg.exe). This will open the launcher/project manager.
 
 
 ## Current technologies
