@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="16" tileheight="16" nextobjectid="60">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="16" tileheight="16" nextobjectid="61">
  <tileset firstgid="1" source="tileset.tsx"/>
  <layer name="Tile Layer 1" width="20" height="15">
   <data encoding="csv">
@@ -29,7 +29,7 @@
 0,93,92,0,0,5,90,0,0,0,0,0,108,0,108,0,108,0,127,127,
 41,93,0,37,0,172,0,0,0,0,0,0,53,0,0,0,53,0,127,127,
 138,93,37,0,0,0,0,0,0,0,0,0,0,5,90,5,0,0,127,127,
-0,93,0,0,0,0,0,63,0,64,0,0,0,172,0,172,0,63,0,127,
+0,93,37,0,0,0,0,63,0,64,0,0,0,172,0,172,0,63,0,127,
 127,127,0,0,0,79,0,0,139,0,0,0,0,0,0,0,0,0,127,127,
 127,127,0,0,0,0,53,79,0,80,0,0,173,0,0,0,0,79,0,127,
 127,127,0,0,0,0,0,0,0,0,0,0,5,0,52,0,0,0,127,127,
@@ -135,6 +135,12 @@
   <object id="59" name="open_chest" type="trigger" x="272" y="32" width="16" height="16">
    <properties>
     <property name="contents" value="amulet"/>
+   </properties>
+  </object>
+  <object id="60" name="open_chest" type="trigger" x="32" y="112" width="16" height="16">
+   <properties>
+    <property name="contents" value="#money"/>
+    <property name="count" value="150"/>
    </properties>
   </object>
  </objectgroup>
