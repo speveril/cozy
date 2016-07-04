@@ -4,14 +4,10 @@
 module SimpleQuest {
     export module Menu {
         export function quitGame() {
-            RPG.Scene.start()
-                .then(function() {
-                    return RPG.Scene.waitForFadeOut(1.0, "#000000");
-                })
-                .then(function() {
-                    RPG.Scene.finish();
-                    Egg.quit();
-                });
+            RPG.Scene.do(function*() {
+                yield* RPG.Scene.waitFadeTo("black", 1.0);
+                Egg.quit();
+            }.bind(this));
         }
     }
 }
