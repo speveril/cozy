@@ -99,6 +99,12 @@ module SimpleQuest {
                     "Whoa there! This here's private property.",
                     "Go find your own dang bushes!"
                 ]);
+                if (RPG.Party.hasItem('tonic')) {
+                    yield* this.waitTextbox("VILLAGER", ["Know what? I'mma steal a tonic from you!"]);
+                    RPG.Party.removeItem('tonic');
+                    yield* this.waitTextbox(null, ["<center>You lost a tonic!</center>"]);
+                    yield* this.waitTextbox("HERO", ["..."]);
+                }
             }.bind(this));
         }
     }

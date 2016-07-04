@@ -229,7 +229,17 @@ module SimpleQuest {
 
                 if (args.trigger.properties.contents) {
                     RPG.Scene.do(function*() {
-                        yield* this.waitTextbox(null, ["\n<center>Found " + args.trigger.properties.contents + "!</center>"]);
+                        var itemkey = args.trigger.properties.contents;
+                        var count = args.trigger.properties.count || 1;
+                        var item = RPG.Item.lookup(itemkey)
+
+                        RPG.Party.addItem(itemkey, count)
+
+                        if (count > 1) {
+                            yield* this.waitTextbox(null, ["\n<center>Found " + item.name + " x" + count + "!</center>"]);
+                        } else {
+                            yield* this.waitTextbox(null, ["\n<center>Found " + item.name + "!</center>"]);
+                        }
                     }.bind(this));
                 } else {
                     RPG.Scene.do(function*() {

@@ -53,6 +53,10 @@
     flex-grow: 1;
 }
 
+.main-menu .main-area .layout-flow {
+    flex-wrap: wrap;
+}
+
 .main-menu .main-area .right-align {
     text-align: right;
 }

@@ -9,7 +9,7 @@ soundcloud.com/virix
     - MENU A_Select.wav
     - MENU B_Select.wav
     - MENU_Pick.wav
-    
+
 - http://opengameart.org/content/magic-sfx-sample
     - Healing Full.wav
 
@@ -23,3 +23,7 @@ Some music from the RMN Music Pack
 - Subaru - Resonant Hopes Ignited Wills
 - 800 M.P.H. - Mellow Darkness
 - Subaru - Victory Theme
+
+Item graphics by Jerom, recolored by PriorBlue
+
+- http://opengameart.org/content/recolor-all-the-items
