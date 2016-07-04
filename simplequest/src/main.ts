@@ -59,10 +59,16 @@ module SimpleQuest {
         });
 
         // TODO should be able to load icons as frames in an atlas
-        console.log("item load?");
         RPG.Item.load({
             tonic:          { name: "Tonic", icon: "ui/item-sword.png" },
+            potion:         { name: "Potion", icon: "ui/item-sword.png" },
+            elixir:         { name: "Elixir", icon: "ui/item-sword.png" },
+
+            training_sword: { name: "Training Sword", icon: "ui/item-sword.png" },
             arming_sword:   { name: "Arming Sword", icon: "ui/item-sword.png" },
+
+            quilted_armor:  { name: "Quilted Armor", icon: "ui/item-sword.png" },
+
             amulet:         { name: "Amulet", icon: "ui/item-sword.png" },
         });
 
@@ -93,6 +99,8 @@ module SimpleQuest {
         RPG.characters['hero'] = new Characters.Hero();
         RPG.Party.add(RPG.characters['hero']);
         RPG.Party.addItem('tonic', 2);
+        RPG.Party.addItem('training_sword');
+        RPG.Party.addItem('quilted_armor');
 
         RPG.player = RPG.Party.members[0].makeEntity();
 

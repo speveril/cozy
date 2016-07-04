@@ -68,7 +68,7 @@ module Egg {
         static projectFile(f):string { return path.join(File.gamePath, f); }
         static urlPath(f):string {
             var basePath = File.relative(File.eggPath, File.gamePath);
-            return path.join(basePath, f);
+            return path.join(basePath, f).replace(/\\/g, "/");
         }
 
         /**

@@ -13,8 +13,8 @@ module SimpleQuest {
                 var item = entry.item;
                 this.element.setAttribute('data-menu', item.key)
                 this.find('.name').innerText = item.name;
+                this.find('.icon').style.backgroundImage = "url(" + item.icon + ")";
                 this.find('.count').innerText = entry.count.toString();
-                // TODO icon
             }
         }
     }

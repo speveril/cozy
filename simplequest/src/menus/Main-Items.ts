@@ -5,7 +5,7 @@ module SimpleQuest {
         var html:string = `
             <section>Inventory</section>
             <section class="layout-row layout-flow">
-                <ul class="items">
+                <ul class="items selections">
                 </ul>
             </section>
         `;
@@ -14,7 +14,7 @@ module SimpleQuest {
 
             constructor() {
                 super({ html: html, cancelable: true });
-                this.element.classList.add('items-submenu');
+                this.element.classList.add('panel','items-submenu');
 
                 this.listContainer = this.find('ul.items');
 

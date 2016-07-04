@@ -139,6 +139,7 @@ module RPG {
         }
 
         setSelection(index:number) {
+            console.log("setSelection", this.selections, index);
             if (this.selections.length < 1) return;
             if (this.selectionIndex !== undefined) {
                 this.selections[this.selectionIndex].classList.remove('active');
