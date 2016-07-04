@@ -45,6 +45,12 @@ body {
     content: "\000A\000A\000A\000A\000A\000A\000A\000A\000A\000A";
 }
 
+.item-icon {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin: -1px 1px -3px 1px;
+}
 
 .rpg-menu {
     position: absolute;

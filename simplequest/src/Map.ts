@@ -239,10 +239,16 @@ module SimpleQuest {
                             var item = RPG.Item.lookup(itemkey);
                             RPG.Party.addItem(itemkey, count);
 
+                            var container = document.createElement('div');
+                            var icon = document.createElement('span');
+                            icon.classList.add('item-icon');
+                            item.makeIcon(icon);
+                            container.appendChild(icon);
+
                             if (count > 1) {
-                                yield* this.waitTextbox(null, ["\n<center>Found " + item.name + " x" + count + "!</center>"]);
+                                yield* this.waitTextbox(null, ["\n<center>Found " + container.innerHTML + item.name + " x" + count + "!</center>"]);
                             } else {
-                                yield* this.waitTextbox(null, ["\n<center>Found " + item.name + "!</center>"]);
+                                yield* this.waitTextbox(null, ["\n<center>Found " + container.innerHTML + item.name + "!</center>"]);
                             }
                         }
                     }.bind(this));
@@ -251,6 +257,10 @@ module SimpleQuest {
                         yield* this.waitTextbox(null, ["\n<center>The chest was empty!\n<span style=\"font-size:60%\">How disappointing.</font></center>"]);
                     }.bind(this));
                 }
+            } else {
+                RPG.Scene.do(function*() {
+                    yield* this.waitTextbox(null, ["\n<center>The chest is empty.</center>"]);
+                }.bind(this));
             }
         }
 

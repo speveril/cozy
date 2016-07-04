@@ -1,6 +1,7 @@
 
 ##Credits
 Tiny16 tileset created by Lanea Zimmerman (http://opengameart.org/content/tiny-16-basic)
+- Some modifications/additions by Shamus Peveril
 
 Some of the sounds in this project were created by David McKee (ViRiX)
 soundcloud.com/virix
@@ -27,3 +28,4 @@ Some music from the RMN Music Pack
 Item graphics by Jerom, recolored by PriorBlue
 
 - http://opengameart.org/content/recolor-all-the-items
+- Some modifications/additions by Shamus Peveril

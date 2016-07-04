@@ -60,16 +60,16 @@ module SimpleQuest {
 
         // TODO should be able to load icons as frames in an atlas
         RPG.Item.load({
-            tonic:          { name: "Tonic", icon: "ui/item-sword.png" },
-            potion:         { name: "Potion", icon: "ui/item-sword.png" },
-            elixir:         { name: "Elixir", icon: "ui/item-sword.png" },
+            tonic:          { name: "Tonic", icon: "ui/item_icons.png", icon_frame: { x:0, y:14 } },
+            potion:         { name: "Potion", icon: "ui/item_icons.png", icon_frame: { x:14, y:14 } },
+            elixir:         { name: "Elixir", icon: "ui/item_icons.png", icon_frame: { x:28, y:14 } },
 
-            training_sword: { name: "Training Sword", icon: "ui/item-sword.png" },
-            arming_sword:   { name: "Arming Sword", icon: "ui/item-sword.png" },
+            training_sword: { name: "Training Sword", icon: "ui/item_icons.png", icon_frame: { x:0, y:0 } },
+            arming_sword:   { name: "Arming Sword", icon: "ui/item_icons.png", icon_frame: { x:14, y:0 } },
 
-            quilted_armor:  { name: "Quilted Armor", icon: "ui/item-sword.png" },
+            quilted_armor:  { name: "Quilted Armor", icon: "ui/item_icons.png", icon_frame: { x:0, y:28 } },
 
-            amulet:         { name: "Amulet", icon: "ui/item-sword.png" },
+            amulet:         { name: "Amulet", icon: "ui/item_icons.png", icon_frame: { x:0, y:42 } },
         });
 
         var promises = [];

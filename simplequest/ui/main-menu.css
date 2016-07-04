@@ -109,13 +109,6 @@
     flex-grow: 1;
 }
 
-.main-menu .main-area .panel.items-submenu .items .item .icon {
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    margin-top: -2px;
-}
-
 .main-menu .main-area .panel.items-submenu .items .item .count {
     display: inline-block;
 }
