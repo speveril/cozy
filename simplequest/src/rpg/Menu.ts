@@ -102,9 +102,11 @@ module RPG {
         }
 
         setupSelections(parent) {
+            console.log("setupSelections on", this, " -> ", parent);
             this.selections = [];
             _.each(parent.getElementsByTagName('*'), (element:HTMLElement) => {
                 if (element.getAttribute('data-menu')) {
+                    console.log("  -", element);
                     this.selections.push(element);
                 }
             });
@@ -115,8 +117,12 @@ module RPG {
             this.setSelection(0);
         }
 
-        pause() {}
-        unpause() {}
+        pause() {
+            this.find('li.active').classList.remove('active');
+        }
+        unpause() {
+            this.setSelection(this.selectionIndex);
+        }
 
         stop() {
             this.remove();

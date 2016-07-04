@@ -129,6 +129,7 @@
   <object id="58" name="open_chest" type="trigger" x="32" y="96" width="16" height="16">
    <properties>
     <property name="contents" value="tonic"/>
+    <property name="count" value="3"/>
    </properties>
   </object>
   <object id="59" name="open_chest" type="trigger" x="272" y="32" width="16" height="16">

@@ -187,7 +187,7 @@
   <object id="31" name="open_chest" type="trigger" x="336" y="64" width="16" height="16"/>
   <object id="33" name="open_chest" type="trigger" x="128" y="96" width="16" height="16">
    <properties>
-    <property name="contents" value="herbs"/>
+    <property name="contents" value="tonic"/>
    </properties>
   </object>
   <object id="34" name="open_chest" type="trigger" x="368" y="112" width="16" height="16"/>

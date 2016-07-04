@@ -46,10 +46,12 @@ module SimpleQuest {
             }
 
             pause() {
+                super.pause();
                 this.statusPanel.remove();
             }
 
             unpause() {
+                super.unpause();
                 this.addChild(this.statusPanel, '.main-area');
             }
 

@@ -230,7 +230,7 @@ module SimpleQuest {
                 if (args.trigger.properties.contents) {
                     RPG.Scene.do(function*() {
                         var itemkey = args.trigger.properties.contents;
-                        var count = args.trigger.properties.count || 1;
+                        var count = parseInt(args.trigger.properties.count, 10) || 1;
                         var item = RPG.Item.lookup(itemkey)
 
                         RPG.Party.addItem(itemkey, count)
