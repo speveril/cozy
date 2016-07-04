@@ -37,67 +37,61 @@ module SimpleQuest {
 
             Map.persistent['global'][switchName] = true;
             var t = this.layers[1].getTile(args.tx, args.ty);
-            this.doScene([
-                function() {
-                    this.layers[1].setTile(args.tx, args.ty, t + 1);
-                    sfx['chnk'].play();
-                    return RPG.Scene.waitForTime(0.5);
-                }.bind(this),
-                function() {
-                    this.layers[1].setTile(args.tx, args.ty, t + 2);
-                    sfx['chnk'].play();
-                    return RPG.Scene.waitForTime(0.5);
-                }.bind(this),
-                function() {
-                    var door = RPG.player.layer.getTriggersByName('locked_door')[0];
-                    sfx['thud'].play();
-                    var tx = Math.floor(door.rect.x / this.tileSize.x);
-                    var ty = Math.floor(door.rect.y / this.tileSize.y);
-                    this.layers[1].setTile(tx, ty, this.layers[1].getTile(tx, ty) + 1);
-                    door.solid = false;
-                    return RPG.Scene.waitForTime(0);
-                }.bind(this),
-                "Something opened in the distance."
-            ]);
+            RPG.Scene.do(function*() {
+                this.layers[1].setTile(args.tx, args.ty, t + 1);
+                sfx['chnk'].play();
+                yield* RPG.Scene.waitTime(0.5);
+
+                this.layers[1].setTile(args.tx, args.ty, t + 1);
+                sfx['chnk'].play();
+                yield* RPG.Scene.waitTime(0.5);
+
+                var door = RPG.player.layer.getTriggersByName('locked_door')[0];
+                sfx['thud'].play();
+                var tx = Math.floor(door.rect.x / this.tileSize.x);
+                var ty = Math.floor(door.rect.y / this.tileSize.y);
+                this.layers[1].setTile(tx, ty, this.layers[1].getTile(tx, ty) + 1);
+                door.solid = false;
+
+                yield* this.waitTextbox(null, ["Something opened in the distance."]);
+            }.bind(this))
         }
 
         locked_door(args) {
             var switchName = 'trigger_forest_door_switch';
             if (Map.persistent['global'][switchName]) return;
 
-            this.doScene([
-                "This door is locked. It must be opened somewhere else."
-            ]);
+            RPG.Scene.do(function*() {
+                yield* this.waitTextbox(null, ["This door is locked. It must be opened somewhere else."]);
+            }.bind(this));
         }
 
         key_door_A(args) {
             var switchName = 'key_forest_door_A';
             if (Map.persistent['global'][switchName]) return;
 
-            this.doScene([
-                "This door is locked.",
-                "\n<center>Used Magical Plotkey!\n</center>",
-                function() {
-                    this.layers[1].setTile(args.tx, args.ty, this.layers[1].getTile(args.tx, args.ty) + 1);
-                    sfx['thud'].play();
-                    args.trigger.solid = false;
-                }.bind(this)
-            ]);
+            RPG.Scene.do(function*() {
+                yield* this.waitTextbox(null, ["This door is locked."]);
+                yield* this.waitTextbox(null, ["\n<center>Used Magical Plotkey!\n</center>"]);
+
+                this.layers[1].setTile(args.tx, args.ty, this.layers[1].getTile(args.tx, args.ty) + 1);
+                sfx['thud'].play();
+                args.trigger.solid = false;
+            }.bind(this));
         }
 
         key_door_B(args) {
             var switchName = 'key_forest_door_B';
             if (Map.persistent['global'][switchName]) return;
 
-            this.doScene([
-                "This door is locked.",
-                "\n<center>Used Magical Plotkey #2!\n</center>",
-                function() {
-                    this.layers[1].setTile(args.tx, args.ty, this.layers[1].getTile(args.tx, args.ty) + 1);
-                    sfx['thud'].play();
-                    args.trigger.solid = false;
-                }.bind(this)
-            ]);
+            RPG.Scene.do(function*() {
+                yield* this.waitTextbox(null, ["This door is locked."]);
+                yield* this.waitTextbox(null, ["\n<center>Used Magical Plotkey #2!\n</center>"]);
+
+                this.layers[1].setTile(args.tx, args.ty, this.layers[1].getTile(args.tx, args.ty) + 1);
+                sfx['thud'].play();
+                args.trigger.solid = false;
+            }.bind(this));
         }
 
         skeleton_doorguard(args) {
@@ -111,10 +105,12 @@ module SimpleQuest {
         }
 
         examine_statue(args) {
-            this.doScene([
-                "The statues seem ancient, but are in remarkably good repair.",
-                "It is not clear what they are supposed to represent, though."
-            ])
+            RPG.Scene.do(function*() {
+                yield* this.waitTextbox(null, [
+                    "The statues seem ancient, but are in remarkably good repair.",
+                    "It is not clear what they are supposed to represent, though."
+                ]);
+            }.bind(this));
         }
     }
 }

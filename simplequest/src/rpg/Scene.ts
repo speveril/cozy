@@ -92,6 +92,13 @@ module RPG {
             }
         }
 
+        static *waitTime(duration:number) {
+            var elapsed = 0;
+            while (elapsed < duration) {
+                elapsed += yield;
+            }
+        }
+
         static start() {
             if (!this.fadeLayer) {
                 this.fadeLayer = document.createElement('div');

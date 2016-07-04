@@ -18,9 +18,9 @@ module SimpleQuest {
         }
 
         examine_ship(args) {
-            this.doScene([
-                "You can't leave this place until you've found what you're looking for."
-            ]);
+            RPG.Scene.do(function*() {
+                yield* this.waitTextbox(null, ["You can't leave this place until you've found what you're looking for."]);
+            }.bind(this));
         }
     }
 }
