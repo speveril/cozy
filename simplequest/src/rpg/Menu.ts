@@ -8,14 +8,18 @@ module RPG {
             return Menu.menuStack[Menu.menuStack.length - 1] || null;
         }
 
-        static push(m:Menu):void {
+        static push(m:Menu, parentComponent?:Egg.UiComponent, parentElement?:HTMLElement|string):void {
             if (Menu.menuStack.length > 0) {
                 Menu.currentMenu.pause();
             }
             RPG.controls = RPG.ControlMode.Menu;
             Menu.menuStack.push(m);
 
-            RPG.uiPlane.addChild(m);
+            if (parentComponent) {
+                parentComponent.addChild(m, parentElement);
+            } else {
+                RPG.uiPlane.addChild(m);
+            }
         }
 
         static pop():void {
@@ -38,28 +42,26 @@ module RPG {
             Menu.push(m);
         }
 
-        container:HTMLElement;
+        static update(dt:number):void {
+            Menu.currentMenu.update(dt);
+        }
+
         selectionIndex:number;
+        selectionContainer:HTMLElement;
         selections:HTMLElement[];
-        cancelable:boolean = false;
 
         constructor(args) {
             super(args);
 
             this.element.classList.add("rpg-menu");
 
-            this.selections = [];
-            _.each(this.element.getElementsByTagName('*'), function(element) {
-                if (element.getAttribute('data-menu')) {
-                    this.selections.push(element);
-                }
-            }.bind(this));
-            this.setSelection(0);
+            this.setupSelections(args.selectionContainer || this.element);
 
             // TODO have a UiComponent activation system to handle this "if Menu.currentMenu !== this" stuff
 
-            if (this.cancelable) {
+            if (args.cancelable) {
                 let cb = () => {
+                    console.log("!cancel!", Menu.currentMenu, this);
                     if (Menu.currentMenu !== this) return;
 
                     Egg.Input.debounce('menu');
@@ -69,7 +71,6 @@ module RPG {
                 Egg.Input.on('menu.down', cb);
                 Egg.Input.on('cancel.down', cb);
             }
-
 
             Egg.Input.on('up.down', () => {
                 if (Menu.currentMenu !== this) return;
@@ -100,17 +101,22 @@ module RPG {
             });
         }
 
+        setupSelections(parent) {
+            this.selections = [];
+            _.each(parent.getElementsByTagName('*'), (element:HTMLElement) => {
+                if (element.getAttribute('data-menu')) {
+                    this.selections.push(element);
+                }
+            });
+            this.setSelection(0);
+        }
+
         start() {
             this.setSelection(0);
         }
 
-        pause() {
-            this.element.style.display = "none";
-        }
-
-        unpause() {
-            this.element.style.display = "";
-        }
+        pause() {}
+        unpause() {}
 
         stop() {
             this.remove();
@@ -119,6 +125,7 @@ module RPG {
         update(dt) {}
 
         confirmSelection() {
+            if (this.selections.length < 1) return;
             var currentMenuSelection = this.selections[this.selectionIndex].getAttribute('data-menu');
             if (this[currentMenuSelection]) {
                 this[currentMenuSelection]();
@@ -126,17 +133,19 @@ module RPG {
         }
 
         setSelection(index:number) {
+            if (this.selections.length < 1) return;
             if (this.selectionIndex !== undefined) {
-                this.selections[this.selectionIndex].className = '';
+                this.selections[this.selectionIndex].classList.remove('active');
             }
             this.selectionIndex = Egg.wrap(index, this.selections.length);
-            this.selections[this.selectionIndex].className = 'active';
+            this.selections[this.selectionIndex].classList.add('active');
         }
 
         moveSelection(delta:number) {
-            this.selections[this.selectionIndex].className = '';
+            if (this.selections.length < 1) return;
+            this.selections[this.selectionIndex].classList.remove('active');
             this.selectionIndex = Egg.wrap(this.selectionIndex + delta, this.selections.length);
-            this.selections[this.selectionIndex].className = 'active';
+            this.selections[this.selectionIndex].classList.add('active');
         }
     }
 }

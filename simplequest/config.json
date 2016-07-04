@@ -9,7 +9,8 @@
     "fullscreen": false,
     "volume": {
         "sfx": 0.3,
-        "music": 0.6
+        "music": 0,
+        "//default_music": 0.6
     },
     "css": [
         "font/fonts.css",

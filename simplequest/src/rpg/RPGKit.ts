@@ -75,7 +75,7 @@ module RPG {
         } else if (controls === ControlMode.Scene && Scene.currentScene) {
             Scene.update(dt);
         } else if (controls === ControlMode.Menu && Menu.currentMenu) {
-            Menu.currentMenu.update(dt);
+            Menu.update(dt);
         } else if (controls === ControlMode.Battle && Battle.active) {
             Battle.update(dt);
         }

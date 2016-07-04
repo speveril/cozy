@@ -6,7 +6,7 @@
 
 .main-menu .right-column {
     position: absolute;
-    width: 55px;
+    width: 65px;
     top: 2px;
     right: 2px;
 }
@@ -14,6 +14,7 @@
 .main-menu .right-column > * {
     margin-bottom: 1px;
     padding: 3px;
+    border-style: solid;
     border-image: url(box.png) 2 2 fill repeat;
 }
 .main-menu .overview {
@@ -23,9 +24,10 @@
 
 .main-menu .main-area {
     box-sizing: border-box;
-    width: calc(100% - 60px);
+    width: calc(100% - 70px);
     height: calc(100% - 4px);
     overflow: hidden;
+    border-style: solid;
     border-image: url(box.png) 2 2 fill repeat;
     margin: 2px;
     padding: 0;
@@ -55,11 +57,11 @@
     text-align: right;
 }
 
-.main-menu .main-area .view div {
+.main-menu .main-area .panel div {
     flex-grow: 1;
 }
 
-.main-menu .main-area .view.status .member {
+.main-menu .main-area .panel.status .member {
     flex-direction: row;
     display: block;
     position: relative;
@@ -68,16 +70,16 @@
     padding: 5px;
 }
 
-.main-menu .main-area .view.status .member.template {
+.main-menu .main-area .panel.status .member.template {
     display: none;
 }
 
-.main-menu .main-area .view.status .member .portrait-container {
+.main-menu .main-area .panel.status .member .portrait-container {
     flex-basis: 70px;
     flex-grow: 0;
 }
 
-.main-menu .main-area .view.status .member .portrait {
+.main-menu .main-area .panel.status .member .portrait {
     width: 70px;
     height: 70px;
 }
