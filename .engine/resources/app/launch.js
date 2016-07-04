@@ -81,7 +81,7 @@ function play(path, debug) {
             'autoHideMenuBar':    true,
             'useContentSize':     true
         });
-        window.toggleDevTools();
+        // window.toggleDevTools();
 
         window.once('close', () => {
             resolve();

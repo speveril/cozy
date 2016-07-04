@@ -8,7 +8,7 @@
     "height": 240,
     "fullscreen": false,
     "volume": {
-        "sfx": 0.4,
+        "sfx": 0.3,
         "music": 0.6
     },
     "css": [

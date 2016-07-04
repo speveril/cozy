@@ -19,9 +19,7 @@ module SimpleQuest {
         Map.persistent['global'] = {};
 
         sfx = {
-            // 'start': new Egg.Sound("audio/sfx/start.wav"),
             'hit': new Egg.Sound("audio/sfx/smash.wav"),
-            // 'menu_blip': new Egg.Sound("audio/sfx/menu_blip.ogg"),
             'restore': new Egg.Sound("audio/sfx/Healing Full.wav"),
             'thud': new Egg.Sound("audio/sfx/thud.wav"),
             'chnk': new Egg.Sound("audio/sfx/chnk.ogg"),
@@ -41,6 +39,10 @@ module SimpleQuest {
         RPG.mainMenuClass = Menu.Main;
         RPG.loadSkip = ["./src_image"];
         RPG.Menu.blip = sfx['menu_move'];
+        RPG.Menu.choose = sfx['menu_choose'];
+
+        RPG.Battle.setFightMusic(music['battle']);
+        RPG.Battle.setVictoryMusic(music['victory']);
         RPG.Battle.setMonsters({
             skellington: { name: "Skellington", maxhp: 5, attack: 6, defense: 2, critical: 3, evade: 0, xp: 20,
                 image: 'ui/battle/monster_skellington.png',

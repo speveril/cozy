@@ -46,6 +46,10 @@ module RPG {
         static monsterLayer:Egg.Layer;
         static monsterSprite:Egg.Sprite;
 
+        static defaultFightMusic:Egg.Music;
+        static defaultVictoryMusic:Egg.Music;
+        static savedMusic:Egg.Music;
+
         static menuSelection:number;
         static menu = [ "Fight", "Item", "Flee" ];
 
@@ -55,6 +59,9 @@ module RPG {
 
             this.player = Party.members[0].character;
             this.enemy = new Character(this.monsters[args.enemy]);
+
+            this.savedMusic = Egg.Audio.currentMusic;
+            this.defaultFightMusic.start();
 
             return new Promise(function(resolve, reject) {
                 this.resolve = resolve;
@@ -128,7 +135,7 @@ module RPG {
                 }
             }
             if (Egg.Input.pressed('confirm')) {
-                SimpleQuest.sfx['menu_choose'].play();
+                RPG.Menu.choose.play();
                 Egg.Input.debounce('confirm');
                 this.do(this.menu[this.menuSelection]);
             }
@@ -141,57 +148,52 @@ module RPG {
                 case 'Fight':
                     var menuSave = this.menuSelection;
                     this.menuSelection = -1;
-                    RPG.Scene.start()
-                        .then(function() {
-                            this.text("You attack the " + this.enemy.name + "!");
-                            return RPG.Scene.waitForTime(0.75);
-                        }.bind(this))
-                        .then(function() {
-                            var result = this.resolveAttack(this.player, this.enemy);
-                            if (result !== AttackResult.Miss) {
-                                SimpleQuest.sfx['hit'].play();
-                                this.monsterSprite.quake(0.25, { x: 10, y: 3 }, { x: 40, y: 12 });
-                            }
-                            return RPG.Scene.waitForTime(0.75);
-                        }.bind(this))
-                        .then(function() {
-                            if (this.enemy.hp < 1) {
-                                this.text("The " + this.enemy.name + " is destroyed!");
-                                return RPG.Scene.waitForTime(0.75);
-                            } else {
-                                this.text("The " + this.enemy.name + " attacks you!");
-                                return RPG.Scene.waitForTime(0.75);
-                            }
-                        }.bind(this))
-                        .then(function() {
-                            if (this.enemy.hp < 1) {
-                                this.text("You gained " + this.enemy.xp + " XP!");
-                                this.text("You found " + this.enemy.treasure.money + " " + RPG.moneyName + "!");
-                                Party.each(function(ch:Character) { ch.xp += this.enemy.xp; }.bind(this));
-                                Party.money += this.enemy.treasure.money;
-                                return RPG.Scene.waitForButton('confirm');
-                            } else {
-                                var result = this.resolveAttack(this.enemy, this.player);
-                                return RPG.Scene.waitForTime(0.75);
-                            }
-                        }.bind(this))
-                        .then(function() {
-                            if (this.player.hp < 1) {
-                                this.text("You have died!");
-                                return RPG.Scene.waitForFadeOut(2.0, "#000");
-                            } else if (this.enemy.hp < 1) {
-                                RPG.Scene.finish();
-                                Battle.end();
-                            } else {
-                                this.menuSelection = menuSave;
-                                RPG.Scene.finish();
-                            }
-                        }.bind(this))
-                        .then(function() {
-                            if (this.player.hp === 0) {
-                                Egg.quit();
-                            }
-                        }.bind(this));
+
+                    RPG.Scene.do(function*() {
+                        var result;
+
+                        this.text("You attack the " + this.enemy.name + "!");
+                        yield* RPG.Scene.waitTime(0.75);
+
+                        result = this.resolveAttack(this.player, this.enemy);
+                        if (result !== AttackResult.Miss) {
+                            SimpleQuest.sfx['hit'].play(); // TODO don't use SimpleQuest, get this somewhere
+                            this.monsterSprite.quake(0.25, { x: 10, y: 3 }, { x: 40, y: 12 });
+                        }
+                        yield* RPG.Scene.waitTime(0.75);
+
+                        if (this.enemy.hp < 1) {
+                            this.defaultVictoryMusic.start();
+
+                            this.text("The " + this.enemy.name + " is destroyed!");
+                            yield* RPG.Scene.waitTime(0.75);
+
+                            this.text("You gained " + this.enemy.xp + " XP!");
+                            this.text("You found " + this.enemy.treasure.money + " " + RPG.moneyName + "!");
+                            Party.each(function(ch:Character) { ch.xp += this.enemy.xp; }.bind(this));
+                            Party.money += this.enemy.treasure.money;
+                            yield* RPG.Scene.waitButton('confirm');
+
+                            Battle.end();
+                            return;
+                        }
+
+                        this.text("The " + this.enemy.name + " attacks you!");
+                        yield* RPG.Scene.waitTime(0.75);
+
+                        result = this.resolveAttack(this.enemy, this.player);
+                        yield* RPG.Scene.waitTime(0.75);
+
+                        if (this.player.hp < 1) {
+                            this.text("You have died!");
+                            yield* RPG.Scene.waitFadeTo("black", 2.0);
+
+                            Egg.quit(); // TODO this should actually be a gameover handler
+                            return
+                        } else {
+                            this.menuSelection = menuSave;
+                        }
+                    }.bind(this));
                     break;
                 case 'Item':
                     this.text("You don't have any items!");
@@ -214,6 +216,13 @@ module RPG {
             RPG.controls = this.savedControls;
             Textbox.hide();
             this.active = false;
+
+            if (this.savedMusic) {
+                this.savedMusic.start();
+            } else {
+                Egg.Audio.currentMusic.stop();
+            }
+
             this.resolve();
         }
 
@@ -256,6 +265,14 @@ module RPG {
 
         static setMonsters(m:any) {
             this.monsters = m;
+        }
+
+        static setFightMusic(m:Egg.Music) {
+            this.defaultFightMusic = m;
+        }
+
+        static setVictoryMusic(m:Egg.Music) {
+            this.defaultVictoryMusic = m;
         }
     }
 }

@@ -43,7 +43,7 @@ module Egg {
         this.debug = !!opts.debug;
         this.gameName = opts.game;
         this.browserWindow = Electron.remote.getCurrentWindow();
-        this.browserWindow.toggleDevTools();
+        // this.browserWindow.toggleDevTools();
 
         this.textures = {};
         this.paused = true;

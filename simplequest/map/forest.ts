@@ -42,7 +42,7 @@ module SimpleQuest {
                 sfx['chnk'].play();
                 yield* RPG.Scene.waitTime(0.5);
 
-                this.layers[1].setTile(args.tx, args.ty, t + 1);
+                this.layers[1].setTile(args.tx, args.ty, t + 2);
                 sfx['chnk'].play();
                 yield* RPG.Scene.waitTime(0.5);
 

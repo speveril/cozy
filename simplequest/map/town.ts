@@ -45,6 +45,7 @@ module SimpleQuest {
             RPG.Scene.do(function*() {
                 yield* this.waitTextbox("SHOPKEEP", ["Don't you just love shopping?!"]);
                 yield* this.waitTextbox("HERO", ["..."]);
+                yield* this.waitTextbox("SHOPKEEP", ["Me too!"]);
             }.bind(this));
         }
 
