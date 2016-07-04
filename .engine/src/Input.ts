@@ -5,7 +5,7 @@ module Egg {
         public static key: Object;
 
         static buttonMap: { [key:number]:string[] };
-        static button: { [name:string]:Egg.ButtonState };
+        public static button: { [name:string]:Egg.ButtonState };
         static buttonTimeouts: { [name:string]:number };
         static callbacks: { [name:string]:any[] };
 

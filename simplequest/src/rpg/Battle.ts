@@ -128,7 +128,7 @@ module RPG {
                 }
             }
             if (Egg.Input.pressed('confirm')) {
-                SimpleQuest.sfx['menu_blip'].play();
+                SimpleQuest.sfx['menu_choose'].play();
                 Egg.Input.debounce('confirm');
                 this.do(this.menu[this.menuSelection]);
             }

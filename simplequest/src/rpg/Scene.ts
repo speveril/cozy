@@ -17,12 +17,80 @@ module RPG {
     }
 
     export class Scene {
-        static currentScene:Scene;
+        static currentScene:any;
 
         private static promise:Promise<any> = null;
         private static restoreControls:RPG.ControlMode;
         private static waits:Wait[] = [];
         private static fadeLayer:HTMLElement;
+
+        static do(sceneFunc) {
+            function* wrapper() {
+                if (!this.fadeLayer) {
+                    this.fadeLayer = document.createElement('div');
+                    this.fadeLayer.style.height = "100%";
+                    this.fadeLayer.style.position = "absolute"
+                    this.fadeLayer.style.top = "0px";
+                    this.fadeLayer.style.left = "0px";
+                    this.fadeLayer.style.width = "100%";
+                    this.fadeLayer.style.height = "100%";
+                    this.fadeLayer.style.opacity = '0';
+                }
+                RPG.uiPlane.container.appendChild(this.fadeLayer);
+
+                if (RPG.player) {
+                    RPG.player.sprite.animation = "stand_" + RPG.player.dir;
+                }
+
+                var restoreControls = RPG.controls;
+
+                RPG.controls = RPG.ControlMode.Scene
+                yield* sceneFunc();
+
+                // only restore controls if something in the scene didn't change them
+                if (RPG.controls === RPG.ControlMode.Scene) {
+                    RPG.controls = restoreControls;
+                }
+
+                this.fadeLayer.style.opacity = '0';
+                this.fadeLayer.remove();
+            }
+
+            this.currentScene = wrapper.call(this);
+            this.currentScene.next(0);
+        }
+
+        static *waitButton(b:string) {
+            while (true) {
+                if (Egg.Input.pressed(b)) {
+                    return;
+                }
+                yield;
+            }
+        }
+
+        static *waitFadeTo(color:string, duration:number) {
+            this.fadeLayer.style.opacity = '0';
+            this.fadeLayer.style.backgroundColor = color;
+
+            var len = duration;
+            var elapsed = 0;
+            while(elapsed < duration) {
+                elapsed += yield;
+                this.fadeLayer.style.opacity = Math.min(1, elapsed / duration).toString();
+            }
+        }
+
+        static *waitFadeFrom(color:string, duration:number) {
+            this.fadeLayer.style.opacity = '1';
+            this.fadeLayer.style.backgroundColor = color;
+
+            var elapsed = 0;
+            while(elapsed < duration) {
+                elapsed += yield;
+                this.fadeLayer.style.opacity = Math.max(0, 1 - (elapsed / duration)).toString();
+            }
+        }
 
         static start() {
             if (!this.fadeLayer) {
@@ -42,7 +110,6 @@ module RPG {
                     RPG.player.sprite.animation = "stand_" + RPG.player.dir;
                 }
                 this.restoreControls = RPG.controls;
-                this.currentScene = this;
                 RPG.controls = RPG.ControlMode.Scene
                 resolve();
             }.bind(this));
@@ -51,7 +118,6 @@ module RPG {
 
         static finish() {
             RPG.controls = this.restoreControls;
-            this.currentScene = null;
             this.waits = [];
 
             this.fadeLayer.style.opacity = '0';
@@ -59,6 +125,12 @@ module RPG {
         }
 
         static update(dt:number) {
+            if (this.currentScene) {
+                if (this.currentScene.next(dt).done) {
+                    this.currentScene = null;
+                }
+            }
+
             var remove:number[] = [];
             _.each(this.waits, function(wait:Wait, index:number):void {
                 switch(wait.type) {

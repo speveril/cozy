@@ -93,6 +93,7 @@ module SimpleQuest {
         private lastSpeaker:string = null;
 
         doScene(steps:Array<any>) {
+            console.trace("doScene");
             var s = RPG.Scene.start();
 
             _.each(steps, function(step) {
@@ -125,6 +126,25 @@ module SimpleQuest {
                 this.lastSpeaker = speaker;
                 return RPG.Scene.waitForButton("confirm");
             }.bind(this);
+        }
+
+        *waitTextbox(speaker, lines:string[]) {
+            for(var i = 0; i < lines.length; i++) {
+                if (i === 0) {
+                    if (speaker) {
+                        RPG.Textbox.show("<span class=\"speaker\">" + speaker + ":</span> " + lines[i]);
+                    } else {
+                        RPG.Textbox.show(lines[i]);
+                    }
+                } else {
+                    RPG.Textbox.box.appendText("\n" + lines[i]);
+                }
+
+                yield* RPG.Scene.waitButton("confirm");
+                Egg.Input.debounce("confirm");
+            }
+
+            RPG.Textbox.hide();
         }
 
         set_threat(args) {
@@ -182,10 +202,10 @@ module SimpleQuest {
                 sfx['hit'].play();
 
                 if (smashed.length === Map.persistent[this.filename].potCount) {
-                    this.doScene([
-                        "You've broken all the pots.",
-                        "Are you proud of yourself now?"
-                    ]);
+                    RPG.Scene.do(function*() {
+                        yield* this.waitTextbox(null, ["You've broken all the pots."]);
+                        yield* this.waitTextbox(null, ["Are you proud of yourself now?"]);
+                    }.bind(this));
                 }
             }
         }
@@ -208,31 +228,29 @@ module SimpleQuest {
                 args.trigger.active = false;
 
                 if (args.trigger.properties.contents) {
-                    this.doScene([
-                        "\n<center>Found " + args.trigger.properties.contents + "!</center>",
-                    ]);
+                    RPG.Scene.do(function*() {
+                        yield* this.waitTextbox(null, ["\n<center>Found " + args.trigger.properties.contents + "!</center>"]);
+                    }.bind(this));
                 } else {
-                    this.doScene([
-                        "\n<center>The chest was empty!\n<span style=\"font-size:60%\">How disappointing.</font></center>",
-                    ]);
+                    RPG.Scene.do(function*() {
+                        yield* this.waitTextbox(null, ["\n<center>The chest was empty!\n<span style=\"font-size:60%\">How disappointing.</font></center>"]);
+                    }.bind(this));
                 }
             }
         }
 
         map_switch(m, x, y) {
-            this.doScene([
-                function() {
-                    return RPG.Scene.waitForFadeOut(0.2);
-                }.bind(this),
-                function() {
-                    if (m.music && m.music !== Egg.Audio.currentMusic) {
-                        Egg.Audio.currentMusic.stop();
-                        m.music.start();
-                    }
-                    RPG.startMap(m, x, y);
-                    return RPG.Scene.waitForFadeIn(0.2);
-                }.bind(this)
-            ]);
+            RPG.Scene.do(function*() {
+                yield* RPG.Scene.waitFadeTo("black", 0.2);
+
+                if (m.music && m.music !== Egg.Audio.currentMusic) {
+                    Egg.Audio.currentMusic.stop();
+                    m.music.start();
+                }
+                RPG.startMap(m, x, y);
+
+                yield* RPG.Scene.waitFadeFrom("black", 0.2);
+            }.bind(this));
         }
 
         switch_layers(args) {

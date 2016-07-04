@@ -19,16 +19,22 @@ module SimpleQuest {
             }
 
             newGame() {
-                RPG.Scene.start()
-                    .then(function() {
-                        sfx['start'].play();
-                        return RPG.Scene.waitForFadeOut(1.0, "#000000");
-                    })
-                    .then(function() {
-                        RPG.Scene.finish();
-                        SimpleQuest.newGame();
-                        RPG.Menu.pop();
-                    });
+                RPG.Scene.do(function*() {
+                    sfx['menu_newgame'].play();
+                    yield* RPG.Scene.waitFadeTo("black", 1.0);
+                    RPG.Menu.pop();
+                    SimpleQuest.newGame();
+                }.bind(this))
+                // RPG.Scene.start()
+                //     .then(function() {
+                //         sfx['start'].play();
+                //         return RPG.Scene.waitForFadeOut(1.0, "#000000");
+                //     })
+                //     .then(function() {
+                //         RPG.Scene.finish();
+                //         SimpleQuest.newGame();
+                //         RPG.Menu.pop();
+                //     });
             }
 
             loadGame() { console.log("not yet"); }

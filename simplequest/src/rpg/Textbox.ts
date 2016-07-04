@@ -19,7 +19,6 @@ module RPG {
             }
         }
 
-
         private paused:Boolean = false;
         private inner:HTMLElement;
         private textCursor:HTMLElement;

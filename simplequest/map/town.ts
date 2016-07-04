@@ -14,81 +14,91 @@ module SimpleQuest {
         }
 
         sign_house(args) {
-            this.doScene([
-                "<center>Mayor's Office\n\nThe mayor is: IN</center>"
-            ]);
+            RPG.Scene.do(function*() {
+                yield* this.waitTextbox(null, ["<center>Mayor's Office\n\nThe mayor is: IN</center>"]);
+            }.bind(this));
         }
 
         sign_shops(args) {
-            this.doScene([
-                "<center>Carp's Bend\nShopping Centre</center>"
-            ]);
+            RPG.Scene.do(function*() {
+                yield* this.waitTextbox(null, ["<center>Carp's Bend\nShopping Centre</center>"]);
+            }.bind(this));
         }
 
         trigger_rocks(args) {
-            this.doScene([
-                "<center>\nFound some... rocks.</center>",
-            ]);
+            RPG.Scene.do(function*() {
+                yield* this.waitTextbox(null, ["\n<center>Found some... rocks</center>"]);
+            }.bind(this));
         }
 
         trigger_well(args) {
-            this.doScene([
-                function() {
-                    SimpleQuest.sfx['restore'].play();
-                    RPG.Party.each(function(ch:RPG.Character) {
-                        ch.hp = ch.maxhp;
-                    });
-                },
-                "\n<center>HP restored!</center>",
-            ]);
+            RPG.Scene.do(function*() {
+                SimpleQuest.sfx['restore'].play();
+                RPG.Party.each(function(ch:RPG.Character) {
+                    ch.hp = ch.maxhp;
+                });
+                yield* this.waitTextbox(null, ["\n<center>HP restored!</center>"]);
+            }.bind(this));
         }
 
         shopkeeper_left(args) {
-            this.doScene([
-                this.sceneText("Shopkeep", "Don't you just love shopping?!")
-            ]);
+            RPG.Scene.do(function*() {
+                yield* this.waitTextbox("SHOPKEEP", ["Don't you just love shopping?!"]);
+                yield* this.waitTextbox("HERO", ["..."]);
+            }.bind(this));
         }
 
         shopkeeper_right(args) {
-            this.doScene([
-                this.sceneText("Shopkeep", "Buy somethin', will ya!")
-            ]);
+            RPG.Scene.do(function*() {
+                yield* this.waitTextbox("SHOPKEEP", ["Buy somethin', will ya!"]);
+            }.bind(this));
         }
 
         villager_well(args) {
-            this.doScene([
-                this.sceneText("VILLAGER", "Fresh water is good for you! I'm so glad we have this well.")
-            ]);
+            RPG.Scene.do(function*() {
+                yield* this.waitTextbox("VILLAGER", [
+                    "Fresh water is good for you! I'm so glad we have this well."
+                ]);
+            }.bind(this));
         }
 
         villager_mayor(args) {
-            this.doScene([
-                this.sceneText("MAYOR JOAN", "Welcome to Carp's Bend."),
-                this.sceneText("MAYOR JOAN", "Do you happen to have any experience in slaying dragons?"),
-                this.sceneText("MAYOR JOAN", "We've been having trouble with a dragon that lives up north on Mount Danger."),
-                this.sceneText("MAYOR JOAN", "You would do us a great service by defeating this dragon..."),
-                this.sceneText("MAYOR JOAN", "Your name would probably be remembered in song for... days! Probably!")
-            ]);
+            RPG.Scene.do(function*() {
+                yield* this.waitTextbox("MAYOR JOAN", [
+                    "Welcome to Carp's Bend.",
+                    "Do you happen to have any experience in slaying dragons?",
+                    "We've been having trouble with a dragon that lives up north on Mount Danger."
+                ]);
+                yield* this.waitTextbox("HERO", ["..."]);
+                yield* this.waitTextbox("MAYOR JOAN", [
+                    "You would do us a great service by defeating this dragon...",
+                    "Your name would probably be remembered in song for... days! Probably!"
+                ]);
+            }.bind(this));
         }
 
         villager_south_house(args) {
-            this.doScene([
-                this.sceneText("VILLAGER","The dragon attacks have been getting worse lately."),
-                this.sceneText("VILLAGER","At least I have a house! Most people in this town just seem to sleep outside.")
-            ]);
+            RPG.Scene.do(function*() {
+                yield* this.waitTextbox("VILLAGER", [
+                    "The dragon attacks have been getting worse lately.",
+                    "At least I have a house! Most people in this town just seem to sleep outside."
+                ]);
+            }.bind(this));
         }
 
         villager_fisher(args) {
-            this.doScene([
-                this.sceneText("FISHERMAN","We like to fish, here in Carp's Bend.")
-            ]);
+            RPG.Scene.do(function*() {
+                yield* this.waitTextbox("FISHERMAN", ["We like to fish, here in Carp's Bend."]);
+            }.bind(this));
         }
 
         villager_bushes(args) {
-            this.doScene([
-                this.sceneText("VILLAGER","Whoa there! This here's private property."),
-                this.sceneText("VILLAGER","Go find your own dang bushes!")
-            ])
+            RPG.Scene.do(function*() {
+                yield* this.waitTextbox("VILLAGER", [
+                    "Whoa there! This here's private property.",
+                    "Go find your own dang bushes!"
+                ]);
+            }.bind(this));
         }
     }
 }

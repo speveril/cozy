@@ -8,8 +8,8 @@
     "height": 240,
     "fullscreen": false,
     "volume": {
-        "sfx": 75,
-        "music": 0
+        "sfx": 0.4,
+        "music": 0.6
     },
     "css": [
         "font/fonts.css",

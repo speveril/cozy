@@ -19,22 +19,28 @@ module SimpleQuest {
         Map.persistent['global'] = {};
 
         sfx = {
-            'start': new Egg.Sound("audio/sfx/start.wav"),
+            // 'start': new Egg.Sound("audio/sfx/start.wav"),
             'hit': new Egg.Sound("audio/sfx/smash.wav"),
-            'menu_blip': new Egg.Sound("audio/sfx/menu_blip.ogg"),
-            'restore': new Egg.Sound("audio/sfx/healthrestore.ogg"),
+            // 'menu_blip': new Egg.Sound("audio/sfx/menu_blip.ogg"),
+            'restore': new Egg.Sound("audio/sfx/Healing Full.wav"),
             'thud': new Egg.Sound("audio/sfx/thud.wav"),
-            'chnk': new Egg.Sound("audio/sfx/chnk.ogg")
+            'chnk': new Egg.Sound("audio/sfx/chnk.ogg"),
+
+            'menu_move': new Egg.Sound('audio/sfx/MENU_Pick.wav'),
+            'menu_choose': new Egg.Sound('audio/sfx/MENU B_Select.wav'),
+            'menu_newgame': new Egg.Sound('audio/sfx/MENU A_Select.wav')
         };
         music = {
-            'village':    new Egg.Music({ tracks: ["audio/music/village.ogg"] }),
-            'overworld':  new Egg.Music({ tracks: ["audio/music/oworld.ogg"] }),
-            'forest':     new Egg.Music({ tracks: ["audio/music/forest.ogg"] })
+            'village':    new Egg.Music({ tracks: ["audio/music/1-01 Town of Wishes.ogg"] }),
+            'overworld':  new Egg.Music({ tracks: ["audio/music/Death Is Just Another Path.ogg"] }),
+            'forest':     new Egg.Music({ tracks: ["audio/music/2-05 Mellow Darkness.ogg"] }),
+            'battle':     new Egg.Music({ tracks: ["audio/music/1-02 Resonant Hopes Ignited Wills.ogg"] }),
+            'victory':    new Egg.Music({ tracks: ["audio/music/2-12 Victory Theme.ogg"] })
         };
 
         RPG.mainMenuClass = Menu.Main;
         RPG.loadSkip = ["./src_image"];
-        RPG.Menu.blip = sfx['menu_blip'];
+        RPG.Menu.blip = sfx['menu_move'];
         RPG.Battle.setMonsters({
             skellington: { name: "Skellington", maxhp: 5, attack: 6, defense: 2, critical: 3, evade: 0, xp: 20,
                 image: 'ui/battle/monster_skellington.png',
@@ -64,12 +70,14 @@ module SimpleQuest {
     }
 
     export function bootSequence() {
+        music['overworld'].start();
         RPG.controls = RPG.ControlMode.Scene;
         RPG.Menu.push(new Menu.Boot());
         Egg.unpause();
     }
 
     export function newGame() {
+        console.log("newGame");
         Egg.pause();
 
         RPG.characters['hero'] = new Characters.Hero();
@@ -81,6 +89,7 @@ module SimpleQuest {
         // music['forest'].start();
         // RPG.startMap(new Map_Forest(), 7, 43);
 
+        console.log("setting controls");
         RPG.controls = RPG.ControlMode.Map;
         Egg.unpause();
     }
