@@ -61,7 +61,6 @@ module RPG {
 
             if (args.cancelable) {
                 let cb = () => {
-                    console.log("!cancel!", Menu.currentMenu, this);
                     if (Menu.currentMenu !== this) return;
 
                     Egg.Input.debounce('menu');
@@ -102,11 +101,9 @@ module RPG {
         }
 
         setupSelections(parent) {
-            console.log("setupSelections on", this, " -> ", parent);
             this.selections = [];
             _.each(parent.getElementsByTagName('*'), (element:HTMLElement) => {
                 if (element.getAttribute('data-menu')) {
-                    console.log("  -", element);
                     this.selections.push(element);
                 }
             });
@@ -139,7 +136,6 @@ module RPG {
         }
 
         setSelection(index:number) {
-            console.log("setSelection", this.selections, index);
             if (this.selections.length < 1) return;
             if (this.selectionIndex !== undefined) {
                 this.selections[this.selectionIndex].classList.remove('active');

@@ -3,18 +3,19 @@
 module SimpleQuest {
     export module Menu {
         var html:string = `
-            <section>Inventory</section>
-            <section class="layout-row layout-flow">
+            <section class="layout-row title-row">Items</section>
+            <section class="layout-row items-row">
                 <ul class="items selections">
                 </ul>
             </section>
+            <section class="layout-row description-row"></section>
         `;
         export class Main_ItemsSubmenu extends RPG.Menu {
             listContainer:HTMLElement;
 
             constructor() {
                 super({ html: html, cancelable: true });
-                this.element.classList.add('panel','items-submenu');
+                this.element.classList.add('panel','items-submenu','layout-column');
 
                 this.listContainer = this.find('ul.items');
 
@@ -27,6 +28,12 @@ module SimpleQuest {
                 });
 
                 this.setupSelections(this.listContainer);
+            }
+
+            update() {
+                if (this.selections.length < 1) return;
+                var entry = RPG.Party.inventory[this.selectionIndex];
+                this.find('.description-row').innerHTML = entry.item.description;
             }
         }
     }

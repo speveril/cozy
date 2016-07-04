@@ -60,16 +60,16 @@ module SimpleQuest {
 
         // TODO should be able to load icons as frames in an atlas
         RPG.Item.load({
-            tonic:          { name: "Tonic", icon: "ui/item_icons.png", icon_frame: { x:0, y:14 } },
-            potion:         { name: "Potion", icon: "ui/item_icons.png", icon_frame: { x:14, y:14 } },
-            elixir:         { name: "Elixir", icon: "ui/item_icons.png", icon_frame: { x:28, y:14 } },
+            tonic:          { name: "Tonic", icon: "ui/item_icons.png", icon_frame: { x:0, y:14 }, description: "A light healing potion. Restores 2d4 HP.", sort: 0.01 },
+            potion:         { name: "Potion", icon: "ui/item_icons.png", icon_frame: { x:14, y:14 }, description: "A healing potion. Restores 6d4 HP.", sort: 0.02 },
+            elixir:         { name: "Elixir", icon: "ui/item_icons.png", icon_frame: { x:28, y:14 }, description: "A powerful healing potion. Restores 10d4 HP.", sort: 0.03 },
 
-            training_sword: { name: "Training Sword", icon: "ui/item_icons.png", icon_frame: { x:0, y:0 } },
-            arming_sword:   { name: "Arming Sword", icon: "ui/item_icons.png", icon_frame: { x:14, y:0 } },
+            training_sword: { name: "Training Sword", icon: "ui/item_icons.png", icon_frame: { x:0, y:0 }, description: "Made of wood. Could still hurt.", sort: 10.0 },
+            arming_sword:   { name: "Arming Sword", icon: "ui/item_icons.png", icon_frame: { x:14, y:0 }, description: "A steel sword. Popular with garrisons and militias the world over.", sort: 10.1 },
 
-            quilted_armor:  { name: "Quilted Armor", icon: "ui/item_icons.png", icon_frame: { x:0, y:28 } },
+            quilted_armor:  { name: "Quilted Armor", icon: "ui/item_icons.png", icon_frame: { x:0, y:28 }, description: "A thick shirt. Better than nothing.", sort: 15.0 },
 
-            amulet:         { name: "Amulet", icon: "ui/item_icons.png", icon_frame: { x:0, y:42 } },
+            amulet:         { name: "Amulet", icon: "ui/item_icons.png", icon_frame: { x:0, y:42 }, description: "This pendant may or may not have any defensive properties.", sort: 20.0 },
         });
 
         var promises = [];

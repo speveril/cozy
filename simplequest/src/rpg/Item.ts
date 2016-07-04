@@ -18,15 +18,20 @@ namespace RPG {
         }
 
         key:string;
+        sort:number;
         name:string;
         icon:string;
         iconFrame:any;
+        description:string;
 
         constructor(key:string, def:any) {
             this.key = key;
+            this.sort = def.sort;
+            
             this.icon = Egg.File.urlPath(def.icon);
             this.iconFrame = def.icon_frame;
             this.name = def.name;
+            this.description = def.description;
         }
 
         makeIcon(element:HTMLElement) {

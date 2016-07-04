@@ -57,6 +57,12 @@ module RPG {
             } else {
                 Party.inventory.push(new InventoryEntry(Item.lookup(itemKey), count));
             }
+            Party.inventory.sort((a,b) => {
+                if (a.item.sort === b.item.sort) {
+                    return a.item.name < b.item.name ? -1 : 1;
+                }
+                return a.item.sort - b.item.sort;
+            });
         }
 
         static hasItem(itemKey:string) {

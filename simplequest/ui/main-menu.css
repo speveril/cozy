@@ -93,8 +93,24 @@
     height: 70px;
 }
 
+.main-menu .main-area .panel.items-submenu .title-row {
+    flex-grow: 0;
+    flex-basis: 20px;
+}
+
+.main-menu .main-area .panel.items-submenu .items-row {
+    flex-grow: 1;
+    overflow: auto;
+}
+
+.main-menu .main-area .panel.items-submenu .description-row {
+    flex-grow: 0;
+    flex-basis: 40px;
+}
+
+
 .main-menu .main-area .panel.items-submenu .items {
-    padding: 8px 16px;
+    padding: 0 16px;
     display: flex;
     flex-flow: column nowrap;
     width: 100%;
