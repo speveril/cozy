@@ -10,6 +10,7 @@ soundcloud.com/virix
     - MENU A_Select.wav
     - MENU B_Select.wav
     - MENU_Pick.wav
+    - MENU B_Back.wav
 
 - http://opengameart.org/content/magic-sfx-sample
     - Healing Full.wav

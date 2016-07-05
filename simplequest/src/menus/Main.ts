@@ -13,8 +13,8 @@ module SimpleQuest {
                 <ul class="selections">
                     <li data-menu="resume">Resume</li>
                     <li data-menu="items">Items</li>
-                    <li data-menu="equip">Equip</li>
-                    <li data-menu="save">Save</li>
+                    <li data-menu="@disabled">Equip</li>
+                    <li data-menu="@disabled">Save</li>
                     <li data-menu="exit">Exit</li>
                 </ul>
 
@@ -59,19 +59,8 @@ module SimpleQuest {
                 if (this.submenus[key]) {
                     RPG.Menu.push(new this.submenus[key](), this, '.main-area');
                 } else {
-                    console.log("!!! Tried to show bad submenu", key);
+                    console.warn("! Tried to show bad submenu", key);
                 }
-
-                // var i;
-                // var views = this.element.getElementsByClassName('view');
-                // for (i = 0; i < views.length; i++) {
-                //     var view = <HTMLElement>(views[i]);
-                //     if (view.className == 'view ' + key) {
-                //         view.style.display = '';
-                //     } else {
-                //         view.style.display = 'none';
-                //     }
-                // }
             }
 
             resume() { RPG.Menu.pop(); }

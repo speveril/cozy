@@ -24,6 +24,7 @@ module RPG {
     export var uiPlane:Egg.UiPlane;
     export var mainMenuClass:any;
     export var characters:{[key:string]:Character} = {};
+    export var items:{[key:string]:Item} = {};
     export var moneyName:string = "G";
 
     export function start():Promise<any> {

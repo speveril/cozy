@@ -1,20 +1,16 @@
 namespace RPG {
     export class Item {
-        static items:any = {};
-
         static load(items:any) {
             _.each(items, (def:any, key:string) => {
-                console.log(" item ->", key, def);
-                Item.items[key] = new Item(key, def);
+                RPG.items[key] = new Item(key, def);
             });
-            console.log(Item.items);
         }
 
         static lookup(key:string) {
-            if (Item.items[key]) {
-                return Item.items[key];
+            if (RPG.items[key]) {
+                return RPG.items[key];
             }
-            throw new Error("Tried to look up bad item '" + key + "'");
+            console.warn("! Tried to look up bad item '" + key + "'");
         }
 
         key:string;
@@ -23,15 +19,18 @@ namespace RPG {
         icon:string;
         iconFrame:any;
         description:string;
+        useEffect:any;
 
         constructor(key:string, def:any) {
             this.key = key;
             this.sort = def.sort;
-            
+
             this.icon = Egg.File.urlPath(def.icon);
             this.iconFrame = def.icon_frame;
             this.name = def.name;
             this.description = def.description;
+
+            this.useEffect = def.use;
         }
 
         makeIcon(element:HTMLElement) {

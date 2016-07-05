@@ -10,6 +10,11 @@
     position: relative;
 }
 
+.menu .selections li[data-menu="@disabled"],
+.menu .selections li.active[data-menu="@disabled"] {
+    color: #8595a1;
+}
+
 .menu .selections li.active {
     color: #dad45e;
 }

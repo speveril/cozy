@@ -3,6 +3,7 @@ module RPG {
         static menuStack:Menu[] = [];
         static blip:Egg.Sound = null;
         static choose:Egg.Sound = null;
+        static sfxBad:Egg.Sound = null;
 
         static get currentMenu():Menu {
             return Menu.menuStack[Menu.menuStack.length - 1] || null;
@@ -101,6 +102,7 @@ module RPG {
         }
 
         setupSelections(parent) {
+            this.selectionContainer = parent;
             this.selections = [];
             _.each(parent.getElementsByTagName('*'), (element:HTMLElement) => {
                 if (element.getAttribute('data-menu')) {
@@ -130,7 +132,9 @@ module RPG {
         confirmSelection() {
             if (this.selections.length < 1) return;
             var currentMenuSelection = this.selections[this.selectionIndex].getAttribute('data-menu');
-            if (this[currentMenuSelection]) {
+            if (currentMenuSelection === '@disabled') {
+                RPG.Menu.sfxBad.play();
+            } else if (this[currentMenuSelection]) {
                 this[currentMenuSelection]();
             }
         }
@@ -142,6 +146,7 @@ module RPG {
             }
             this.selectionIndex = Egg.wrap(index, this.selections.length);
             this.selections[this.selectionIndex].classList.add('active');
+            this.fixScroll();
         }
 
         moveSelection(delta:number) {
@@ -149,6 +154,27 @@ module RPG {
             this.selections[this.selectionIndex].classList.remove('active');
             this.selectionIndex = Egg.wrap(this.selectionIndex + delta, this.selections.length);
             this.selections[this.selectionIndex].classList.add('active');
+            this.fixScroll();
+        }
+
+        fixScroll() {
+            var selected = this.selections[this.selectionIndex];
+            var selectedRects = selected.getClientRects();
+            var containerRects = this.selectionContainer.getClientRects();
+
+            if (selectedRects.length === 0 || containerRects.length === 0) return;
+
+            var adjustedHeight = selectedRects[0].height / Egg.getCurrentZoom();
+            var threshold = selectedRects[0].height * 3;
+            var dtop = ((selectedRects[0].top - containerRects[0].top - threshold) / Egg.getCurrentZoom());
+            var dbot = ((containerRects[0].bottom - threshold - selectedRects[0].bottom) / Egg.getCurrentZoom());
+
+            if (dtop < 0) {
+                this.selectionContainer.scrollTop += Math.ceil(dtop / adjustedHeight) * adjustedHeight;
+            }
+            if (dbot < 0) {
+                this.selectionContainer.scrollTop -=  Math.ceil(dbot / adjustedHeight) * adjustedHeight;
+            }
         }
     }
 }

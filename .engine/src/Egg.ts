@@ -167,6 +167,10 @@ module Egg {
         document.body.style.display = '';
     }
 
+    export function getCurrentZoom() {
+        return this.sizeMultiplier;
+    }
+
     export function setTitle(title) {
         this.browserWindow.setTitle(title);
     }

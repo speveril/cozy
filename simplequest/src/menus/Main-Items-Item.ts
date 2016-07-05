@@ -11,7 +11,11 @@ module SimpleQuest {
                 this.element.classList.add('item');
 
                 var item = entry.item;
-                this.element.setAttribute('data-menu', item.key)
+                if (item.useEffect) {
+                    this.element.setAttribute('data-menu', item.key)
+                } else {
+                    this.element.setAttribute('data-menu', '@disabled')
+                }
                 this.find('.name').innerText = item.name;
                 item.makeIcon(this.find('.item-icon'));
                 this.find('.count').innerText = entry.count.toString();

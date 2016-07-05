@@ -26,7 +26,8 @@ module SimpleQuest {
 
             'menu_move': new Egg.Sound('audio/sfx/MENU_Pick.wav'),
             'menu_choose': new Egg.Sound('audio/sfx/MENU B_Select.wav'),
-            'menu_newgame': new Egg.Sound('audio/sfx/MENU A_Select.wav')
+            'menu_bad': new Egg.Sound('audio/sfx/MENU B_Back.wav'),
+            'menu_newgame': new Egg.Sound('audio/sfx/MENU A_Select.wav'),
         };
         music = {
             'village':    new Egg.Music({ tracks: ["audio/music/1-01 Town of Wishes.ogg"] }),
@@ -40,6 +41,7 @@ module SimpleQuest {
         RPG.loadSkip = ["./src_image"];
         RPG.Menu.blip = sfx['menu_move'];
         RPG.Menu.choose = sfx['menu_choose'];
+        RPG.Menu.sfxBad = sfx['menu_bad'];
 
         RPG.Battle.setFightMusic(music['battle']);
         RPG.Battle.setVictoryMusic(music['victory']);
@@ -60,16 +62,37 @@ module SimpleQuest {
 
         // TODO should be able to load icons as frames in an atlas
         RPG.Item.load({
-            tonic:          { name: "Tonic", icon: "ui/item_icons.png", icon_frame: { x:0, y:14 }, description: "A light healing potion. Restores 2d4 HP.", sort: 0.01 },
-            potion:         { name: "Potion", icon: "ui/item_icons.png", icon_frame: { x:14, y:14 }, description: "A healing potion. Restores 6d4 HP.", sort: 0.02 },
-            elixir:         { name: "Elixir", icon: "ui/item_icons.png", icon_frame: { x:28, y:14 }, description: "A powerful healing potion. Restores 10d4 HP.", sort: 0.03 },
+            tonic: {
+                name: "Tonic", icon: "ui/item_icons.png", icon_frame: { x:0, y:14 }, description: "A light healing potion. Restores 5 HP.", sort: 0.01,
+                use: { target: 'self', effect: 'heal', effect_params: [ 5 ] }
+            },
+            potion: {
+                name: "Potion", icon: "ui/item_icons.png", icon_frame: { x:14, y:14 }, description: "A healing potion. Restores 15 HP.", sort: 0.02,
+                use: { target: 'self', effect: 'heal', effect_params: [ 15 ] }
+            },
+            elixir: {
+                name: "Elixir", icon: "ui/item_icons.png", icon_frame: { x:28, y:14 }, description: "A powerful healing potion. Restores 50 HP.", sort: 0.03,
+                use: { target: 'self', effect: 'heal', effect_params: [ 50 ] }
+            },
 
-            training_sword: { name: "Training Sword", icon: "ui/item_icons.png", icon_frame: { x:0, y:0 }, description: "Made of wood. Could still hurt.", sort: 10.0 },
-            arming_sword:   { name: "Arming Sword", icon: "ui/item_icons.png", icon_frame: { x:14, y:0 }, description: "A steel sword. Popular with garrisons and militias the world over.", sort: 10.1 },
+            training_sword: { name: "Training Sword", icon: "ui/item_icons.png", icon_frame: { x:0, y:0 }, description: "Made of wood. Might still hurt.", sort: 10.00 },
+            arming_sword:   { name: "Arming Sword", icon: "ui/item_icons.png", icon_frame: { x:14, y:0 }, description: "A steel sword. Popular in fights the world over.", sort: 10.01 },
 
-            quilted_armor:  { name: "Quilted Armor", icon: "ui/item_icons.png", icon_frame: { x:0, y:28 }, description: "A thick shirt. Better than nothing.", sort: 15.0 },
+            quilted_armor:  { name: "Quilted Armor", icon: "ui/item_icons.png", icon_frame: { x:0, y:28 }, description: "A thick shirt. Better than nothing.", sort: 15.00 },
 
-            amulet:         { name: "Amulet", icon: "ui/item_icons.png", icon_frame: { x:0, y:42 }, description: "This pendant may or may not have any defensive properties.", sort: 20.0 },
+            amulet:         { name: "Amulet", icon: "ui/item_icons.png", icon_frame: { x:0, y:42 }, description: "This pendant may or may not have any defensive properties.", sort: 20.00 },
+            amulet1:         { name: "Amulet 1", icon: "ui/item_icons.png", icon_frame: { x:0, y:42 }, description: "This pendant may or may not have any defensive properties.", sort: 20.00 },
+            amulet2:         { name: "Amulet 2", icon: "ui/item_icons.png", icon_frame: { x:0, y:42 }, description: "This pendant may or may not have any defensive properties.", sort: 20.00 },
+            amulet3:         { name: "Amulet 3", icon: "ui/item_icons.png", icon_frame: { x:0, y:42 }, description: "This pendant may or may not have any defensive properties.", sort: 20.00 },
+            amulet4:         { name: "Amulet 4", icon: "ui/item_icons.png", icon_frame: { x:0, y:42 }, description: "This pendant may or may not have any defensive properties.", sort: 20.00 },
+            amulet5:         { name: "Amulet 5", icon: "ui/item_icons.png", icon_frame: { x:0, y:42 }, description: "This pendant may or may not have any defensive properties.", sort: 20.00 },
+            amulet6:         { name: "Amulet 6", icon: "ui/item_icons.png", icon_frame: { x:0, y:42 }, description: "This pendant may or may not have any defensive properties.", sort: 20.00 },
+            amulet7:         { name: "Amulet 7", icon: "ui/item_icons.png", icon_frame: { x:0, y:42 }, description: "This pendant may or may not have any defensive properties.", sort: 20.00 },
+            amulet8:         { name: "Amulet 8", icon: "ui/item_icons.png", icon_frame: { x:0, y:42 }, description: "This pendant may or may not have any defensive properties.", sort: 20.00 },
+            amulet9:         { name: "Amulet 9", icon: "ui/item_icons.png", icon_frame: { x:0, y:42 }, description: "This pendant may or may not have any defensive properties.", sort: 20.00 },
+            amulet10:         { name: "Amulet 10", icon: "ui/item_icons.png", icon_frame: { x:0, y:42 }, description: "This pendant may or may not have any defensive properties.", sort: 20.00 },
+            amulet11:         { name: "Amulet 11", icon: "ui/item_icons.png", icon_frame: { x:0, y:42 }, description: "This pendant may or may not have any defensive properties.", sort: 20.00 },
+            amulet12:         { name: "Amulet 12", icon: "ui/item_icons.png", icon_frame: { x:0, y:42 }, description: "This pendant may or may not have any defensive properties.", sort: 20.00 },
         });
 
         var promises = [];
@@ -96,11 +119,15 @@ module SimpleQuest {
         console.log("newGame");
         Egg.pause();
 
-        RPG.characters['hero'] = new Characters.Hero();
-        RPG.Party.add(RPG.characters['hero']);
         RPG.Party.addItem('tonic', 2);
         RPG.Party.addItem('training_sword');
         RPG.Party.addItem('quilted_armor');
+        _.times(12, (i) => {
+            RPG.Party.addItem('amulet' + (i + 1));
+        });
+
+        RPG.characters['hero'] = new Characters.Hero();
+        RPG.Party.add(RPG.characters['hero']);
 
         RPG.player = RPG.Party.members[0].makeEntity();
 
