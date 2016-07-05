@@ -95,9 +95,6 @@ module RPG {
 
                 Egg.Input.debounce('confirm');
                 this.confirmSelection();
-                if (Menu.choose) {
-                    Menu.choose.play();
-                }
             });
         }
 
@@ -133,9 +130,14 @@ module RPG {
             if (this.selections.length < 1) return;
             var currentMenuSelection = this.selections[this.selectionIndex].getAttribute('data-menu');
             if (currentMenuSelection === '@disabled') {
-                RPG.Menu.sfxBad.play();
+                if (Menu.sfxBad) {
+                    Menu.sfxBad.play();
+                }
             } else if (this[currentMenuSelection]) {
-                this[currentMenuSelection]();
+                if (Menu.choose) {
+                    Menu.choose.play();
+                }
+                this[currentMenuSelection](this.selections[this.selectionIndex]);
             }
         }
 

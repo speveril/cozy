@@ -1,5 +1,6 @@
 ///<reference path="Battle.ts"/>
 ///<reference path="Character.ts"/>
+///<reference path="Effect.ts"/>
 ///<reference path="Entity.ts"/>
 ///<reference path="Item.ts"/>
 ///<reference path="Map.ts"/>

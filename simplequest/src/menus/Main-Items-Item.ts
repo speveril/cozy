@@ -12,7 +12,8 @@ module SimpleQuest {
 
                 var item = entry.item;
                 if (item.useEffect) {
-                    this.element.setAttribute('data-menu', item.key)
+                    this.element.setAttribute('data-menu', 'activate')
+                    this.element.setAttribute('data-item', item.key)
                 } else {
                     this.element.setAttribute('data-menu', '@disabled')
                 }

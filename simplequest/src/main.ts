@@ -81,18 +81,6 @@ module SimpleQuest {
             quilted_armor:  { name: "Quilted Armor", icon: "ui/item_icons.png", icon_frame: { x:0, y:28 }, description: "A thick shirt. Better than nothing.", sort: 15.00 },
 
             amulet:         { name: "Amulet", icon: "ui/item_icons.png", icon_frame: { x:0, y:42 }, description: "This pendant may or may not have any defensive properties.", sort: 20.00 },
-            amulet1:         { name: "Amulet 1", icon: "ui/item_icons.png", icon_frame: { x:0, y:42 }, description: "This pendant may or may not have any defensive properties.", sort: 20.00 },
-            amulet2:         { name: "Amulet 2", icon: "ui/item_icons.png", icon_frame: { x:0, y:42 }, description: "This pendant may or may not have any defensive properties.", sort: 20.00 },
-            amulet3:         { name: "Amulet 3", icon: "ui/item_icons.png", icon_frame: { x:0, y:42 }, description: "This pendant may or may not have any defensive properties.", sort: 20.00 },
-            amulet4:         { name: "Amulet 4", icon: "ui/item_icons.png", icon_frame: { x:0, y:42 }, description: "This pendant may or may not have any defensive properties.", sort: 20.00 },
-            amulet5:         { name: "Amulet 5", icon: "ui/item_icons.png", icon_frame: { x:0, y:42 }, description: "This pendant may or may not have any defensive properties.", sort: 20.00 },
-            amulet6:         { name: "Amulet 6", icon: "ui/item_icons.png", icon_frame: { x:0, y:42 }, description: "This pendant may or may not have any defensive properties.", sort: 20.00 },
-            amulet7:         { name: "Amulet 7", icon: "ui/item_icons.png", icon_frame: { x:0, y:42 }, description: "This pendant may or may not have any defensive properties.", sort: 20.00 },
-            amulet8:         { name: "Amulet 8", icon: "ui/item_icons.png", icon_frame: { x:0, y:42 }, description: "This pendant may or may not have any defensive properties.", sort: 20.00 },
-            amulet9:         { name: "Amulet 9", icon: "ui/item_icons.png", icon_frame: { x:0, y:42 }, description: "This pendant may or may not have any defensive properties.", sort: 20.00 },
-            amulet10:         { name: "Amulet 10", icon: "ui/item_icons.png", icon_frame: { x:0, y:42 }, description: "This pendant may or may not have any defensive properties.", sort: 20.00 },
-            amulet11:         { name: "Amulet 11", icon: "ui/item_icons.png", icon_frame: { x:0, y:42 }, description: "This pendant may or may not have any defensive properties.", sort: 20.00 },
-            amulet12:         { name: "Amulet 12", icon: "ui/item_icons.png", icon_frame: { x:0, y:42 }, description: "This pendant may or may not have any defensive properties.", sort: 20.00 },
         });
 
         var promises = [];
@@ -122,9 +110,6 @@ module SimpleQuest {
         RPG.Party.addItem('tonic', 2);
         RPG.Party.addItem('training_sword');
         RPG.Party.addItem('quilted_armor');
-        _.times(12, (i) => {
-            RPG.Party.addItem('amulet' + (i + 1));
-        });
 
         RPG.characters['hero'] = new Characters.Hero();
         RPG.Party.add(RPG.characters['hero']);

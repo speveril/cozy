@@ -39,5 +39,18 @@ namespace RPG {
                 element.style.backgroundPosition = "-" + this.iconFrame.x + "px -" + this.iconFrame.y + "px";
             }
         }
+
+        activate(character:RPG.Character) {
+            if (RPG.Effect[this.useEffect.effect]) {
+                var args = this.useEffect.effect_params.slice(0);
+                args.unshift(character);
+                args.unshift(this);
+                if (RPG.Effect[this.useEffect.effect].apply(undefined, args)) {
+                    Party.removeItem(this.key, 1);
+                }
+            } else {
+                console.warn("! Bad effect", this.useEffect.effect, "triggered from", this.key);
+            }
+        }
     }
 }

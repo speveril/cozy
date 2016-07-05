@@ -20,12 +20,17 @@ module SimpleQuest {
 
             rerenderItemList() {
                 var listContainer = this.find('ul.items');
+                while(listContainer.firstChild) { listContainer.removeChild(listContainer.lastChild); }
+
+                var resetSelection = this.selectionIndex || 0;
 
                 RPG.Party.getInventory().forEach((it:RPG.InventoryEntry) => {
                     this.addChild(new Main_ItemListElement(it), listContainer);
                 });
 
+                this.selections = [];
                 this.setupSelections(listContainer);
+                this.selectionIndex = Math.min(this.selections.length, resetSelection);
             }
 
             update() {
@@ -51,6 +56,15 @@ module SimpleQuest {
                         st < sh - ch ? itemsRow.classList.add('can-scroll-down') : itemsRow.classList.remove('can-scroll-down');
                     }
                 }
+            }
+
+            activate(element:HTMLElement) {
+                var itemKey = element.getAttribute('data-item');
+                var item = RPG.Item.lookup(itemKey);
+
+                // TODO target selection
+                item.activate(RPG.Party.members[0].character);
+                this.rerenderItemList();
             }
         }
     }

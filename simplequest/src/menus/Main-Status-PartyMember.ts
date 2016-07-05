@@ -60,6 +60,9 @@ module SimpleQuest {
                     portraitField.setAttribute('src', Egg.File.projectFile("ui/" + member.character['portrait']));
                 }
             }
+
+            rerender() {
+            }
         }
     }
 }
