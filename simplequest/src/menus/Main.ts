@@ -25,7 +25,7 @@ module SimpleQuest {
         `;
 
         export class Main extends RPG.Menu {
-            statusPanel:Egg.UiComponent = null;
+            statusPanel:Main_StatusPanel = null;
             submenus:{ [key:string]:any };
 
             constructor() {
@@ -53,6 +53,7 @@ module SimpleQuest {
             unpause() {
                 super.unpause();
                 this.addChild(this.statusPanel, '.main-area');
+                this.statusPanel.updateFields();
             }
 
             showSubmenu(key) {

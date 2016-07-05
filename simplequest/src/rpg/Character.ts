@@ -48,6 +48,5 @@ module RPG {
                 this.levelUp(this.level + 1);
             }
         }
-
     }
 }

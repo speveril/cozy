@@ -10,6 +10,13 @@ module SimpleQuest {
                     this.addChild(new Main_PartyMember({ index: i, member: member }));
                 });
             }
+
+            updateFields() {
+                this.children.forEach((ch) => {
+                    var ch_ = <Main_PartyMember>ch;
+                    ch_.render();
+                });
+            }
         }
     }
 }

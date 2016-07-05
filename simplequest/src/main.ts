@@ -113,6 +113,7 @@ module SimpleQuest {
 
         RPG.characters['hero'] = new Characters.Hero();
         RPG.Party.add(RPG.characters['hero']);
+        RPG.characters['hero'].hp -= 3;
 
         RPG.player = RPG.Party.members[0].makeEntity();
 

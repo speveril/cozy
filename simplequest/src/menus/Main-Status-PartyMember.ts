@@ -36,14 +36,22 @@ module SimpleQuest {
         `
 
         export class Main_PartyMember extends Egg.UiComponent {
+            index:number;
+            member:RPG.PartyMember;
+
             constructor(args) {
                 super({ html: html });
                 this.element.classList.add("member");
+                this.index = args.index;
+                this.member = args.member;
 
-                var member = args.member;
+                this.render();
+            }
+
+            render() {
                 var fields = ['name','title','level','hp','maxhp','xp','attack','defense','critical','evade'];
 
-                this.element.setAttribute('data-member', args.index.toString());
+                this.element.setAttribute('data-member', this.index.toString());
 
                 for (var f in fields) {
                     var fieldName = fields[f];
@@ -51,17 +59,14 @@ module SimpleQuest {
                     if (!field) {
                         console.log("Couldn't find a field span for " + fieldName + ".");
                     } else {
-                        field.innerText = member.character[fieldName];
+                        field.innerText = this.member.character[fieldName];
                     }
                 }
 
                 var portraitField = this.find('img.portrait');
-                if (member.character['portrait']) {
-                    portraitField.setAttribute('src', Egg.File.projectFile("ui/" + member.character['portrait']));
+                if (this.member.character['portrait']) {
+                    portraitField.setAttribute('src', Egg.File.projectFile("ui/" + this.member.character['portrait']));
                 }
-            }
-
-            rerender() {
             }
         }
     }
