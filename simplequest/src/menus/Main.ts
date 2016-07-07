@@ -1,5 +1,6 @@
 ///<reference path="Main-Status.ts"/>
 ///<reference path="Main-Items.ts"/>
+///<reference path="Main-Equip.ts"/>
 
 module SimpleQuest {
     export module Menu {
@@ -13,7 +14,7 @@ module SimpleQuest {
                 <ul class="selections">
                     <li data-menu="resume">Resume</li>
                     <li data-menu="items">Items</li>
-                    <li data-menu="@disabled">Equip</li>
+                    <li data-menu="equip">Equip</li>
                     <li data-menu="@disabled">Save</li>
                     <li data-menu="exit">Exit</li>
                 </ul>
@@ -38,7 +39,8 @@ module SimpleQuest {
                 }
 
                 this.submenus = {
-                    items: Main_ItemsSubmenu
+                    items: Main_ItemsSubmenu,
+                    equip: Main_EquipSubmenu
                 };
 
                 this.statusPanel = new Main_StatusPanel();

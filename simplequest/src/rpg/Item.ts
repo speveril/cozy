@@ -20,6 +20,8 @@ namespace RPG {
         iconFrame:any;
         description:string;
         useEffect:any;
+        canStack:boolean;
+        equipSlot:string;
 
         constructor(key:string, def:any) {
             this.key = key;
@@ -29,7 +31,9 @@ namespace RPG {
             this.iconFrame = def.icon_frame;
             this.name = def.name;
             this.description = def.description;
+            this.canStack = !!def.canStack;
 
+            this.equipSlot = def.slot;
             this.useEffect = def.use;
         }
 

@@ -51,12 +51,19 @@ module RPG {
         static addItem(itemKey:string, count?:number) {
             if (count === undefined) count = 1;
 
-            var existingEntry = Party.hasItem(itemKey);
-            if (existingEntry) {
-                existingEntry.count += count;
+            var item = Item.lookup(itemKey);
+
+            if (item.canStack) {
+                var existingEntry = Party.hasItem(itemKey);
+                if (existingEntry) {
+                    existingEntry.count += count;
+                } else {
+                    Party.inventory.push(new InventoryEntry(item, count));
+                }
             } else {
-                Party.inventory.push(new InventoryEntry(Item.lookup(itemKey), count));
+                _.times(count, () => Party.inventory.push(new InventoryEntry(item, 1)));
             }
+
             Party.inventory.sort((a,b) => {
                 if (a.item.sort === b.item.sort) {
                     return a.item.name < b.item.name ? -1 : 1;

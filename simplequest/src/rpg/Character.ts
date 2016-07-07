@@ -13,6 +13,7 @@ module RPG {
         treasure:any = {};
 
         levels:number[] = [];
+        equipped:{ [key:string]: Item } = {};
 
         constructor(args:any) {
             _.each(args, function(v, k) {
@@ -38,6 +39,16 @@ module RPG {
             this._level = level;
         }
 
+        equipItem(itemKey:string, slot:string) {
+            var invEntry = Party.hasItem(itemKey);
+            if (!invEntry) return false;
+
+            var item = invEntry.item;
+            if (item.equipSlot !== slot) return false;
+
+            this.equipped[slot] = item;
+            return true;
+        }
 
         get xp():number { return this._xp; }
         get level():number { return this._level; }

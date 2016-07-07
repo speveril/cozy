@@ -64,23 +64,35 @@ module SimpleQuest {
         RPG.Item.load({
             tonic: {
                 name: "Tonic", icon: "ui/item_icons.png", icon_frame: { x:0, y:14 }, description: "A light healing potion. Restores 5 HP.", sort: 0.01,
-                use: { target: 'self', effect: 'heal', effect_params: [ 5 ] }
+                canStack: true, use: { target: 'self', effect: 'heal', effect_params: [ 5 ] }
             },
             potion: {
                 name: "Potion", icon: "ui/item_icons.png", icon_frame: { x:14, y:14 }, description: "A healing potion. Restores 15 HP.", sort: 0.02,
-                use: { target: 'self', effect: 'heal', effect_params: [ 15 ] }
+                canStack: true, use: { target: 'self', effect: 'heal', effect_params: [ 15 ] }
             },
             elixir: {
                 name: "Elixir", icon: "ui/item_icons.png", icon_frame: { x:28, y:14 }, description: "A powerful healing potion. Restores 50 HP.", sort: 0.03,
-                use: { target: 'self', effect: 'heal', effect_params: [ 50 ] }
+                canStack: true, use: { target: 'self', effect: 'heal', effect_params: [ 50 ] }
             },
 
-            training_sword: { name: "Training Sword", icon: "ui/item_icons.png", icon_frame: { x:0, y:0 }, description: "Made of wood. Might still hurt.", sort: 10.00 },
-            arming_sword:   { name: "Arming Sword", icon: "ui/item_icons.png", icon_frame: { x:14, y:0 }, description: "A steel sword. Popular in fights the world over.", sort: 10.01 },
+            training_sword: {
+                name: "Training Sword", icon: "ui/item_icons.png", icon_frame: { x:0, y:0 }, description: "Made of wood. Might still hurt.", sort: 10.00,
+                slot: 'weapon'
+            },
+            arming_sword: {
+                name: "Arming Sword", icon: "ui/item_icons.png", icon_frame: { x:14, y:0 }, description: "A steel sword. Popular in fights the world over.", sort: 10.01,
+                slot: 'weapon'
+            },
 
-            quilted_armor:  { name: "Quilted Armor", icon: "ui/item_icons.png", icon_frame: { x:0, y:28 }, description: "A thick shirt. Better than nothing.", sort: 15.00 },
+            quilted_armor: {
+                name: "Quilted Armor", icon: "ui/item_icons.png", icon_frame: { x:0, y:28 }, description: "A thick shirt. Better than nothing.", sort: 15.00,
+                slot: 'armor'
+            },
 
-            amulet:         { name: "Amulet", icon: "ui/item_icons.png", icon_frame: { x:0, y:42 }, description: "This pendant may or may not have any defensive properties.", sort: 20.00 },
+            amulet: {
+                name: "Amulet", icon: "ui/item_icons.png", icon_frame: { x:0, y:42 }, description: "This pendant may or may not have any defensive properties.", sort: 20.00,
+                slot: 'accessory'
+            },
         });
 
         var promises = [];
@@ -108,13 +120,14 @@ module SimpleQuest {
         Egg.pause();
 
         RPG.Party.addItem('tonic', 2);
-        RPG.Party.addItem('training_sword');
+        RPG.Party.addItem('training_sword', 2);
         RPG.Party.addItem('quilted_armor');
 
         RPG.characters['hero'] = new Characters.Hero();
-        RPG.Party.add(RPG.characters['hero']);
-        RPG.characters['hero'].hp -= 3;
+        RPG.characters['hero'].equipItem('training_sword', "weapon");
+        RPG.characters['hero'].equipItem('quilted_armor', "armor");
 
+        RPG.Party.add(RPG.characters['hero']);
         RPG.player = RPG.Party.members[0].makeEntity();
 
         music['village'].start();
