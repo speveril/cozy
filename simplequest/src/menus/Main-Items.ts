@@ -33,9 +33,10 @@ module SimpleQuest {
                 this.selectionIndex = Math.min(this.selections.length, resetSelection);
             }
 
-            update() {
-                if (this.selections.length < 1) return;
+            setSelection(index:number) {
+                super.setSelection(index);
 
+                if (this.selections.length < 1) return;
                 if (!this.firstFixScroll) this.fixScroll();
                 var entry = RPG.Party.inventory[this.selectionIndex];
                 this.find('.description-row').innerHTML = entry.item.description;

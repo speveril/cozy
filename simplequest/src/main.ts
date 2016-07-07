@@ -76,7 +76,7 @@ module SimpleQuest {
             },
 
             training_sword: {
-                name: "Training Sword", icon: "ui/item_icons.png", icon_frame: { x:0, y:0 }, description: "Made of wood. Might still hurt.", sort: 10.00,
+                name: "Oak Sword", icon: "ui/item_icons.png", icon_frame: { x:0, y:0 }, description: "Made of wood. Might still hurt.", sort: 10.00,
                 slot: 'weapon'
             },
             arming_sword: {
@@ -85,7 +85,7 @@ module SimpleQuest {
             },
 
             quilted_armor: {
-                name: "Quilted Armor", icon: "ui/item_icons.png", icon_frame: { x:0, y:28 }, description: "A thick shirt. Better than nothing.", sort: 15.00,
+                name: "Quilt Armor", icon: "ui/item_icons.png", icon_frame: { x:0, y:28 }, description: "A very thick shirt. Better than nothing.", sort: 15.00,
                 slot: 'armor'
             },
 

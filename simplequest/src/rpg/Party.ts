@@ -44,8 +44,12 @@ module RPG {
             }
         }
 
-        static getInventory() {
-            return Party.inventory;
+        static getInventory(filterFunc?) {
+            if (filterFunc) {
+                return _.filter(Party.inventory, (entry) => filterFunc(entry.item));
+            } else {
+                return Party.inventory.slice(0);
+            }
         }
 
         static addItem(itemKey:string, count?:number) {

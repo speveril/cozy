@@ -8,7 +8,10 @@ module SimpleQuest {
                 <ul class="slots selections">
                 </ul>
             </section>
-            <section class="layout-row items-row"></section>
+            <section class="layout-row items-row">
+                <ul class="items">
+                </ul>
+            </section>
             <section class="layout-row description-row"></section>
         `;
         export class Main_EquipSubmenu extends RPG.Menu {
@@ -21,10 +24,6 @@ module SimpleQuest {
                 // TODO character select
                 this.character = RPG.characters['hero'];
 
-                this.switchToEquipList();
-            }
-
-            switchToEquipList() {
                 var listContainer = this.find('.slots');
                 _.each(RPG.equipSlots, (slot:string) => {
                     this.addChild(new Main_EquipSlot(this.character, slot), listContainer);
@@ -32,22 +31,24 @@ module SimpleQuest {
                 this.setupSelections(this.find('.slots'));
             }
 
-            // rerenderItemList() {
-            //     var listContainer = this.find('ul.items');
-            //     while(listContainer.firstChild) { listContainer.removeChild(listContainer.lastChild); }
-            //
-            //     var resetSelection = this.selectionIndex || 0;
-            //
-            //     RPG.Party.getInventory().forEach((it:RPG.InventoryEntry) => {
-            //         this.addChild(new Main_ItemListElement(it), listContainer);
-            //     });
-            //
-            //     this.selections = [];
-            //     this.setupSelections(listContainer);
-            //     this.selectionIndex = Math.min(this.selections.length, resetSelection);
-            // }
+            rerenderItemList() {
+                if (this.selections.length < 1) return;
 
-            update() {
+                var listItem = this.selections[this.selectionIndex];
+                var selectedSlot = listItem.getAttribute('data-value');
+                console.log(this.selectionIndex, listItem, selectedSlot);
+
+                var listContainer = this.find('ul.items');
+                while(listContainer.firstChild) { listContainer.removeChild(listContainer.lastChild); }
+                RPG.Party.getInventory((item) => { return item.equipSlot === selectedSlot }).forEach((it:RPG.InventoryEntry) => {
+                    this.addChild(new Main_ItemListElement(it), listContainer);
+                });
+            }
+
+            setSelection(index:number) {
+                super.setSelection(index);
+
+                if (this.selections.length < 1) return;
                 var listItem = this.selections[this.selectionIndex];
                 var selectedSlot = listItem.getAttribute('data-value');
                 if (this.character.equipped[selectedSlot]) {
@@ -55,6 +56,7 @@ module SimpleQuest {
                 } else {
                     this.find('.description-row').innerHTML = '';
                 }
+                this.rerenderItemList();
             }
 
             // fixScroll() {

@@ -152,11 +152,7 @@ module RPG {
         }
 
         moveSelection(delta:number) {
-            if (this.selections.length < 1) return;
-            this.selections[this.selectionIndex].classList.remove('active');
-            this.selectionIndex = Egg.wrap(this.selectionIndex + delta, this.selections.length);
-            this.selections[this.selectionIndex].classList.add('active');
-            this.fixScroll();
+            this.setSelection(this.selectionIndex + delta);
         }
 
         fixScroll() {
