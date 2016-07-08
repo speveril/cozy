@@ -68,8 +68,8 @@ module RPG {
                     Egg.Input.debounce('cancel');
                     Menu.pop();
                 };
-                Egg.Input.on('menu.down', cb);
-                Egg.Input.on('cancel.down', cb);
+                Egg.Input.on('menu.down', cb, this);
+                Egg.Input.on('cancel.down', cb, this);
             }
 
             Egg.Input.on('up.down', () => {
@@ -80,7 +80,7 @@ module RPG {
                 if (Menu.blip) {
                     Menu.blip.play();
                 }
-            });
+            }, this);
             Egg.Input.on('down.down', () => {
                 if (Menu.currentMenu !== this) return;
 
@@ -89,13 +89,13 @@ module RPG {
                 if (Menu.blip) {
                     Menu.blip.play();
                 }
-            });
+            }, this);
             Egg.Input.on('confirm.down', () => {
                 if (Menu.currentMenu !== this) return;
 
                 Egg.Input.debounce('confirm');
                 this.confirmSelection();
-            });
+            }, this);
         }
 
         setupSelections(parent) {
@@ -122,6 +122,7 @@ module RPG {
 
         stop() {
             this.remove();
+            Egg.Input.off(undefined, undefined, this)
         }
 
         update(dt) {}
@@ -134,10 +135,10 @@ module RPG {
                     Menu.sfxBad.play();
                 }
             } else if (this[currentMenuSelection]) {
-                if (Menu.choose) {
+                var playSound = this[currentMenuSelection](this.selections[this.selectionIndex]);
+                if (playSound !== false && Menu.choose) {
                     Menu.choose.play();
                 }
-                this[currentMenuSelection](this.selections[this.selectionIndex]);
             }
         }
 

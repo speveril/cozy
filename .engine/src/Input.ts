@@ -47,17 +47,34 @@ module Egg {
             });
         }
 
-        static on(eventName, cb) {
+        static on(eventName, cb, ctx) {
             if (!this.callbacks[eventName]) {
                 this.callbacks[eventName] = [];
             }
-            this.callbacks[eventName].push(cb);
+            return this.callbacks[eventName].push({ callback: cb, context: ctx }) - 1;
+        }
+
+        static off(eventName, cb, ctx) {
+            var clearEvent = (name) => {
+                this.callbacks[name] = _.filter(this.callbacks[name], (ev) => {
+                    if (ev.context === ctx && (cb === undefined || ev.callback === cb)) {
+                        return false;
+                    }
+                    return true;
+                });
+            }
+
+            if (eventName === undefined) {
+                _.each(_.keys(this.callbacks), (n) => clearEvent(n));
+            } else {
+                clearEvent(eventName);
+            }
         }
 
         private static triggerCallbacks(eventName, eventInfo) {
             if (!this.callbacks[eventName]) return;
-            _.each(this.callbacks[eventName], (cb) => {
-                cb(eventInfo);
+            _.each(this.callbacks[eventName], (ev) => {
+                ev.callback(eventInfo);
             });
         }
 

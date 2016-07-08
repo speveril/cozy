@@ -9,7 +9,7 @@ module SimpleQuest {
                 </ul>
             </section>
             <section class="layout-row items-row">
-                <ul class="items">
+                <ul class="items selections">
                 </ul>
             </section>
             <section class="layout-row description-row"></section>
@@ -36,12 +36,11 @@ module SimpleQuest {
 
                 var listItem = this.selections[this.selectionIndex];
                 var selectedSlot = listItem.getAttribute('data-value');
-                console.log(this.selectionIndex, listItem, selectedSlot);
 
                 var listContainer = this.find('ul.items');
                 while(listContainer.firstChild) { listContainer.removeChild(listContainer.lastChild); }
                 RPG.Party.getInventory((item) => { return item.equipSlot === selectedSlot }).forEach((it:RPG.InventoryEntry) => {
-                    this.addChild(new Main_ItemListElement(it), listContainer);
+                    this.addChild(new Main_ItemListElement(it, true), listContainer);
                 });
             }
 
@@ -57,6 +56,16 @@ module SimpleQuest {
                     this.find('.description-row').innerHTML = '';
                 }
                 this.rerenderItemList();
+            }
+
+            slot(which:any) {
+                var slot = which.getAttribute('data-value');
+                if (this.find('ul.items').children.length > 0) {
+                    this.setupSelections(this.find('ul.items'));
+                } else {
+                    SimpleQuest.sfx['menu_bad'].play();
+                    return false;
+                }
             }
 
             // fixScroll() {

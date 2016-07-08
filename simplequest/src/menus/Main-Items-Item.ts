@@ -6,12 +6,12 @@ module SimpleQuest {
             <span class="count"></span>
         `;
         export class Main_ItemListElement extends Egg.UiComponent {
-            constructor(entry:RPG.InventoryEntry) {
+            constructor(entry:RPG.InventoryEntry, enabled:boolean) {
                 super({ html: html, tag: 'li' });
                 this.element.classList.add('item');
 
                 var item = entry.item;
-                if (item.useEffect) {
+                if (enabled) {
                     this.element.setAttribute('data-menu', 'activate')
                     this.element.setAttribute('data-item', item.key)
                 } else {

@@ -25,7 +25,7 @@ module SimpleQuest {
                 var resetSelection = this.selectionIndex || 0;
 
                 RPG.Party.getInventory().forEach((it:RPG.InventoryEntry) => {
-                    this.addChild(new Main_ItemListElement(it), listContainer);
+                    this.addChild(new Main_ItemListElement(it, !!it.item.useEffect), listContainer);
                 });
 
                 this.selections = [];

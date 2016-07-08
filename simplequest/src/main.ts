@@ -76,7 +76,7 @@ module SimpleQuest {
             },
 
             oak_sword: {
-                name: "Oak Sword", icon: "ui/item_icons.png", icon_frame: { x:0, y:0 }, description: "Made of wood. Might still hurt.", sort: 10.00,
+                name: "WWWWWWWWWWWW", icon: "ui/item_icons.png", icon_frame: { x:0, y:0 }, description: "Made of wood. Might still hurt.", sort: 10.00,
                 slot: 'weapon'
             },
             arming_sword: {
