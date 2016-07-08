@@ -109,6 +109,14 @@
     width: 100%;
 }
 
+.main-menu .main-area .panel .slots li {
+    display: flex;
+}
+
+.main-menu .main-area .panel .slots .slot .slot-name {
+    flex-basis: 30px;
+}
+
 .main-menu .main-area .panel .slots .slot .item-name {
     flex-grow: 1;
 }
@@ -171,7 +179,3 @@
 .main-menu .main-area .panel .items .item .name {
     flex-grow: 1;
 }
-
-/*.main-menu .main-area .panel .items .item .count {
-    display: inline-block;
-}*/

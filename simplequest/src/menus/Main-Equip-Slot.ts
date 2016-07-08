@@ -38,7 +38,7 @@ module SimpleQuest {
                 } else {
                     this.find('.item-icon').style.backgroundImage = '';
                     this.find('.item-icon').style.backgroundPosition = '';
-                    this.find('.item-name').innerText = '-';
+                    this.find('.item-name').innerText = '';
                 }
             }
         }

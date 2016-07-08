@@ -75,7 +75,7 @@ module SimpleQuest {
                 canStack: true, use: { target: 'self', effect: 'heal', effect_params: [ 50 ] }
             },
 
-            training_sword: {
+            oak_sword: {
                 name: "Oak Sword", icon: "ui/item_icons.png", icon_frame: { x:0, y:0 }, description: "Made of wood. Might still hurt.", sort: 10.00,
                 slot: 'weapon'
             },
@@ -84,7 +84,7 @@ module SimpleQuest {
                 slot: 'weapon'
             },
 
-            quilted_armor: {
+            quilt_armor: {
                 name: "Quilt Armor", icon: "ui/item_icons.png", icon_frame: { x:0, y:28 }, description: "A very thick shirt. Better than nothing.", sort: 15.00,
                 slot: 'armor'
             },
@@ -120,12 +120,12 @@ module SimpleQuest {
         Egg.pause();
 
         RPG.Party.addItem('tonic', 2);
-        RPG.Party.addItem('training_sword', 2);
-        RPG.Party.addItem('quilted_armor');
+        RPG.Party.addItem('oak_sword');
+        RPG.Party.addItem('quilt_armor');
 
         RPG.characters['hero'] = new Characters.Hero();
-        RPG.characters['hero'].equipItem('training_sword', "weapon");
-        RPG.characters['hero'].equipItem('quilted_armor', "armor");
+        RPG.characters['hero'].equipItem('oak_sword', "weapon");
+        RPG.characters['hero'].equipItem('quilt_armor', "armor");
 
         RPG.Party.add(RPG.characters['hero']);
         RPG.player = RPG.Party.members[0].makeEntity();
