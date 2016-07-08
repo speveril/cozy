@@ -17,3 +17,8 @@
     font-family: EggYolk;
     src: url(EggYolk.ttf);
 }
+
+@font-face {
+    font-family: Egglet;
+    src: url(Egglet.ttf);
+}
