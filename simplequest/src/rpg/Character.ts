@@ -59,6 +59,17 @@ module RPG {
             Character.attributes.forEach((attribute) => {
                 this.effectiveAttribute[attribute] = this.baseAttribute[attribute];
             });
+            _.each(this.equipped, (item:Item, slot:string) => {
+                if (item && item.equipEffect && item.equipEffect.attributes) {
+                    _.each(item.equipEffect.attributes, (v:number, k:string) => {
+                        if (Character.attributes.indexOf(k) !== -1) {
+                            this.effectiveAttribute[k] += v;
+                        } else {
+                            throw new Error("Tried to adjust bad attribute '" + k + "'");
+                        }
+                    });
+                }
+            })
         }
 
         levelUp(level:number):void {
