@@ -5,11 +5,13 @@ module SimpleQuest {
                 super({
                     name: "Hero",
                     sprite: "sprites/hero.sprite",
-                    maxhp: 10,
-                    attack: 4,
-                    defense: 4,
-                    critical: 2,
-                    evade: 0,
+                    attributes: {
+                        attack: 4,
+                        defense: 4,
+                        critical: 1,
+                        evade: 1,
+                    },
+                    hp: 10,
                     levels: [ 0, 100, 200, 500, 1000, 2000, 5000, 10000 ]
                 });
 

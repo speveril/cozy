@@ -22,6 +22,7 @@ namespace RPG {
         useEffect:any;
         canStack:boolean;
         equipSlot:string;
+        equipEffect:any;
 
         constructor(key:string, def:any) {
             this.key = key;
@@ -34,6 +35,7 @@ namespace RPG {
             this.canStack = !!def.canStack;
 
             this.equipSlot = def.slot;
+            this.equipEffect = def.equip;
             this.useEffect = def.use;
         }
 

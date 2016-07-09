@@ -1,38 +1,64 @@
 module RPG {
     export class Character {
+        static attributes:string[] = ["attack","defense","critical","evade"];
+
         name:string = '';
+
         private _xp:number = 0;
         private _level:number = 1;
-        hp:number = 1;
-        maxhp:number = 1;
-        attack:number = 1;
-        defense:number = 1;
-        critical:number = 0;
-        evade:number = 0;
-        sprite:string = null;
-        treasure:any = {};
+        hp:number;
+        maxhp:number;
+        sprite:string;
+        treasure:any;
+
+        private baseAttribute:{ [key:string]:number } = {};
+        private effectiveAttribute:{ [key:string]:number } = {};
 
         levels:number[] = [];
         equipped:{ [key:string]: Item } = {};
 
         constructor(args:any) {
-            _.each(args, function(v, k) {
-                if (typeof v === 'function') {
-                    this[k] = v();
-                } else {
-                    this[k] = v;
-                }
-            }.bind(this));
+            this.name     = args.name;
+            this.sprite   = args.sprite;
+            this.maxhp    = args.hp;
+            this.treasure = args.treasure;
+            this.levels   = args.levels;
 
-            if (args.hp === undefined) {
-                this.hp = this.maxhp;
-            }
+            Character.attributes.forEach((attribute) => this.baseAttribute[attribute] = 0);
+            this.adjust(args.attributes);
+
+            this.hp = this.maxhp;
         }
 
-        adjust(stats:any):void {
-            _.each(stats, function(v, k) {
-                this[k] += v;
-            }.bind(this));
+        adjust(stats:{ [attribute:string]:number }):void {
+            _.each(stats, (v:number, k:string) => {
+                if (Character.attributes.indexOf(k) !== -1) {
+                    this.baseAttribute[k] += v;
+                } else {
+                    throw new Error("Tried to adjust bad attribute '" + k + "'");
+                }
+            });
+            this.recalcAttributes();
+        }
+
+        get(attribute:string):any {
+            if (Character.attributes.indexOf(attribute) !== -1) {
+                return this.effectiveAttribute[attribute];
+            }
+            throw new Error("Tried to get bad attribute '" + attribute + "'");
+        }
+
+        getBase(attribute:string):any {
+            if (Character.attributes.indexOf(attribute) !== -1) {
+                return this.baseAttribute[attribute];
+            }
+            throw new Error("Tried to get bad base attribute '" + attribute + "'");
+        }
+
+        private recalcAttributes():void {
+            Character.attributes.forEach((attribute) => {
+                this.effectiveAttribute[attribute] = this.baseAttribute[attribute];
+            });
         }
 
         levelUp(level:number):void {
@@ -40,13 +66,20 @@ module RPG {
         }
 
         equipItem(itemKey:string, slot:string) {
-            var invEntry = Party.hasItem(itemKey);
-            if (!invEntry) return false;
+            if (itemKey === null) {
+                this.equipped[slot] = null;
+            } else {
+                var invEntry = Party.hasItem(itemKey);
+                if (!invEntry) return false;
 
-            var item = invEntry.item;
-            if (item.equipSlot !== slot) return false;
+                var item = invEntry.item;
+                if (item.equipSlot !== slot) return false;
 
-            this.equipped[slot] = item;
+                this.equipped[slot] = item;
+            }
+
+            this.recalcAttributes();
+
             return true;
         }
 

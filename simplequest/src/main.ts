@@ -46,15 +46,15 @@ module SimpleQuest {
         RPG.Battle.setFightMusic(music['battle']);
         RPG.Battle.setVictoryMusic(music['victory']);
         RPG.Battle.setMonsters({
-            skellington: { name: "Skellington", maxhp: 5, attack: 6, defense: 2, critical: 3, evade: 0, xp: 20,
+            skellington: { name: "Skellington", xp: 20, hp: 5, attributes: { attack: 6, defense: 2, critical: 3, evade: 0 },
                 image: 'ui/battle/monster_skellington.png',
                 treasure: function() { return { money:(3 + Math.random() * 4) | 0 }; }
             },
-            blueslime: { name: "Blue Slime", maxhp: 7, attack: 3, defense: 4, critical: 1, evade: 3, xp: 15,
+            blueslime: { name: "Blue Slime", xp: 15, hp: 7, attributes: { attack: 3, defense: 4, critical: 1, evade: 3 },
                 image: 'ui/battle/monster_blueslime.png',
                 treasure: function() { return { money:(1 + Math.random() * 3) | 0 }; }
             },
-            stabber: { name: "Stabber", maxhp: 10, attack: 3, defense: 3, critical: 10, evade: 10, xp: 35,
+            stabber: { name: "Stabber", xp: 35, hp: 10, attributes: { attack: 3, defense: 3, critical: 10, evade: 10 },
                 image: 'ui/battle/monster_stabber.png',
                 treasure: function() { return { money:(5 + Math.random() * 5) | 0 }; }
             }
@@ -77,21 +77,21 @@ module SimpleQuest {
 
             oak_sword: {
                 name: "WWWWWWWWWWWW", icon: "ui/item_icons.png", icon_frame: { x:0, y:0 }, description: "Made of wood. Might still hurt.", sort: 10.00,
-                slot: 'weapon'
+                slot: 'weapon', equip: { basedamage: '1d6' }
             },
             arming_sword: {
                 name: "Arming Sword", icon: "ui/item_icons.png", icon_frame: { x:14, y:0 }, description: "A steel sword. Popular in fights the world over.", sort: 10.01,
-                slot: 'weapon'
+                slot: 'weapon', equip: { basedamage: '1d8' }
             },
 
             quilt_armor: {
                 name: "Quilt Armor", icon: "ui/item_icons.png", icon_frame: { x:0, y:28 }, description: "A very thick shirt. Better than nothing.", sort: 15.00,
-                slot: 'armor'
+                slot: 'armor', equip: { basedefense: '13' }
             },
 
             amulet: {
                 name: "Amulet", icon: "ui/item_icons.png", icon_frame: { x:0, y:42 }, description: "This pendant may or may not have any defensive properties.", sort: 20.00,
-                slot: 'accessory'
+                slot: 'accessory', equip: { status: ['lucky'] }
             },
         });
 

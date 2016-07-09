@@ -48,20 +48,20 @@ module SimpleQuest {
                 this.render();
             }
 
-            render() {
-                var fields = ['name','title','level','hp','maxhp','xp','attack','defense','critical','evade'];
+            setField(fieldName:string, value:string) {
+                var field = this.find('span[data-field=' + fieldName + ']');
+                if (field) {
+                    field.innerText = value;
+                } else {
+                    console.warn("Couldn't find a field span for " + fieldName + ".");
+                }
+            }
 
+            render() {
                 this.element.setAttribute('data-member', this.index.toString());
 
-                for (var f in fields) {
-                    var fieldName = fields[f];
-                    var field = this.find('span[data-field=' + fieldName + ']');
-                    if (!field) {
-                        console.log("Couldn't find a field span for " + fieldName + ".");
-                    } else {
-                        field.innerText = this.member.character[fieldName];
-                    }
-                }
+                ['name','title','level','hp','maxhp','xp'].forEach((f) => this.setField(f, this.member.character[f]));
+                ['attack','defense','critical','evade'].forEach((f) => this.setField(f, this.member.character.get(f)));
 
                 var portraitField = this.find('img.portrait');
                 if (this.member.character['portrait']) {

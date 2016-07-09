@@ -227,20 +227,20 @@ module RPG {
         }
 
         static resolveAttack(attacker:Character, defender:Character):AttackResult {
-            if (Math.random() * 100 < defender.evade) {
+            if (Math.random() * 100 < defender.get('evade')) {
                 this.text(defender.name + " evades the attack!");
                 return AttackResult.Miss;
             }
 
             var result:AttackResult;
-            var damage = attacker.attack;
-            if (Math.random() * 100 < attacker.critical) {
+            var damage = attacker.get('attack');
+            if (Math.random() * 100 < attacker.get('critical')) {
                 damage = ((damage * (3 + Math.random() * 2)) / 4) | 0;
                 result = AttackResult.Critical;
             } else {
-                damage -= (defender.defense / 2) | 0;
+                damage -= (defender.get('defense') / 2) | 0;
                 if (damage == 0) {
-                    damage = ((Math.random() * attacker.attack) / 10) | 0;
+                    damage = ((Math.random() * attacker.get('attack')) / 10) | 0;
                     result = AttackResult.Weak;
                 } else {
                     damage = ((damage * (3 + Math.random() * 2)) / 4) | 0;
