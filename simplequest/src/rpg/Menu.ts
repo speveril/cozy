@@ -5,8 +5,49 @@ module RPG {
         static choose:Egg.Sound = null;
         static sfxBad:Egg.Sound = null;
 
+
         static get currentMenu():Menu {
             return Menu.menuStack[Menu.menuStack.length - 1] || null;
+        }
+
+        static init() {
+            var cb;
+
+            cb = () => {
+                if (!Menu.currentMenu || !Menu.currentMenu.cancelable) return;
+
+                Egg.Input.debounce('menu');
+                Egg.Input.debounce('cancel');
+                Menu.pop();
+            };
+            Egg.Input.on('menu.down', cb, this);
+            Egg.Input.on('cancel.down', cb, this);
+
+            Egg.Input.on('up.down', () => {
+                if (!Menu.currentMenu) return;
+
+                Egg.Input.debounce('up', 0.2);
+                Menu.currentMenu.moveSelection(-1);
+                if (Menu.blip) {
+                    Menu.blip.play();
+                }
+            }, this);
+
+            Egg.Input.on('down.down', () => {
+                if (!Menu.currentMenu) return;
+
+                Egg.Input.debounce('down', 0.2);
+                Menu.currentMenu.moveSelection(+1);
+                if (Menu.blip) {
+                    Menu.blip.play();
+                }
+            }, this);
+            Egg.Input.on('confirm.down', () => {
+                if (!Menu.currentMenu) return;
+
+                Egg.Input.debounce('confirm');
+                Menu.currentMenu.confirmSelection();
+            }, this);
         }
 
         static push(m:Menu, parentComponent?:Egg.UiComponent, parentElement?:HTMLElement|string):void {
@@ -21,6 +62,8 @@ module RPG {
             } else {
                 RPG.uiPlane.addChild(m);
             }
+
+            m.start();
         }
 
         static pop():void {
@@ -50,52 +93,14 @@ module RPG {
         selectionIndex:number;
         selectionContainer:HTMLElement;
         selections:HTMLElement[];
+        cancelable:boolean;
 
         constructor(args) {
             super(args);
 
+            this.cancelable = !!args.cancelable;
             this.element.classList.add("rpg-menu");
-
             this.setupSelections(args.selectionContainer || this.element);
-
-            // TODO have a UiComponent activation system to handle this "if Menu.currentMenu !== this" stuff
-
-            if (args.cancelable) {
-                let cb = () => {
-                    if (Menu.currentMenu !== this) return;
-
-                    Egg.Input.debounce('menu');
-                    Egg.Input.debounce('cancel');
-                    Menu.pop();
-                };
-                Egg.Input.on('menu.down', cb, this);
-                Egg.Input.on('cancel.down', cb, this);
-            }
-
-            Egg.Input.on('up.down', () => {
-                if (Menu.currentMenu !== this) return;
-
-                Egg.Input.debounce('up', 0.2);
-                this.moveSelection(-1);
-                if (Menu.blip) {
-                    Menu.blip.play();
-                }
-            }, this);
-            Egg.Input.on('down.down', () => {
-                if (Menu.currentMenu !== this) return;
-
-                Egg.Input.debounce('down', 0.2);
-                this.moveSelection(+1);
-                if (Menu.blip) {
-                    Menu.blip.play();
-                }
-            }, this);
-            Egg.Input.on('confirm.down', () => {
-                if (Menu.currentMenu !== this) return;
-
-                Egg.Input.debounce('confirm');
-                this.confirmSelection();
-            }, this);
         }
 
         setupSelections(parent) {
@@ -106,23 +111,25 @@ module RPG {
                     this.selections.push(element);
                 }
             });
-            this.setSelection(0);
+            if (this.selectionIndex >= this.selections.length) {
+                this.setSelection(this.selections.length - 1);
+            }
         }
 
         start() {
+            console.log("setting selection")
             this.setSelection(0);
-        }
-
-        pause() {
-            this.find('li.active').classList.remove('active');
         }
         unpause() {
             this.setSelection(this.selectionIndex);
         }
 
+        pause() {
+            this.find('li.active').classList.remove('active');
+        }
         stop() {
+            this.find('li.active').classList.remove('active');
             this.remove();
-            Egg.Input.off(undefined, undefined, this)
         }
 
         update(dt) {}

@@ -67,6 +67,8 @@ module RPG {
             }.bind(this));
         }
 
+        RPG.Menu.init();
+
         return Egg.loadTextures(textures);
     }
 

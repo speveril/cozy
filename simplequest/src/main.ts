@@ -76,7 +76,7 @@ module SimpleQuest {
             },
 
             oak_sword: {
-                name: "WWWWWWWWWWWW", icon: "ui/item_icons.png", icon_frame: { x:0, y:0 }, description: "Made of wood. Might still hurt.", sort: 10.00,
+                name: "Oak Sword", icon: "ui/item_icons.png", icon_frame: { x:0, y:0 }, description: "Made of wood. Might still hurt.", sort: 10.00,
                 slot: 'weapon', equip: { attributes: { attack: 1 } }
             },
             arming_sword: {
@@ -90,7 +90,7 @@ module SimpleQuest {
             },
 
             amulet: {
-                name: "Amulet", icon: "ui/item_icons.png", icon_frame: { x:0, y:42 }, description: "This pendant may or may not have any defensive properties.", sort: 20.00,
+                name: "Amulet", icon: "ui/item_icons.png", icon_frame: { x:0, y:42 }, description: "This pendant may or may not have any useful properties.", sort: 20.00,
                 slot: 'accessory', equip: { status: ['lucky'] }
             },
         });

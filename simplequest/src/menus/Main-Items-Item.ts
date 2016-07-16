@@ -12,7 +12,7 @@ module SimpleQuest {
 
                 var item = entry.item;
                 if (enabled) {
-                    this.element.setAttribute('data-menu', 'activate')
+                    this.element.setAttribute('data-menu', 'choose')
                     this.element.setAttribute('data-item', item.key)
                 } else {
                     this.element.setAttribute('data-menu', '@disabled')

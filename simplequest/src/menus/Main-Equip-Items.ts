@@ -3,20 +3,29 @@
 module SimpleQuest {
     export module Menu {
         var html:string = `
-            <section class="layout-row title-row">Items</section>
-            <section class="layout-row items-row">
-                <ul class="items selections">
-                </ul>
-            </section>
-            <section class="layout-row description-row"></section>
+            <ul class="items selections"></ul>
         `;
-        export class Main_ItemsSubmenu extends RPG.Menu {
+        export class Main_EquipItemsSubmenu extends RPG.Menu {
             firstFixScroll:boolean = false;
+            chooseCB:any;
+            filterCB:any;
 
             constructor() {
                 super({ html: html, cancelable: true });
                 this.element.classList.add('panel','items-submenu','layout-column');
+            }
+
+            setChooseCallback(chooseCB:any) {
+                this.chooseCB = chooseCB;
+            }
+
+            setFilter(filterCB:any) {
+                this.filterCB = filterCB;
                 this.rerenderItemList();
+            }
+
+            stop() {
+                // do nothing
             }
 
             rerenderItemList() {
@@ -25,8 +34,8 @@ module SimpleQuest {
 
                 var resetSelection = this.selectionIndex || 0;
 
-                RPG.Party.getInventory().forEach((it:RPG.InventoryEntry) => {
-                    this.addChild(new Main_ItemListElement(it, !!it.item.useEffect), listContainer);
+                RPG.Party.getInventory(this.filterCB).forEach((it:RPG.InventoryEntry) => {
+                    this.addChild(new Main_ItemListElement(it, true), listContainer);
                 });
 
                 this.selections = [];
@@ -40,7 +49,7 @@ module SimpleQuest {
                 if (this.selections.length < 1) return;
                 if (!this.firstFixScroll) this.fixScroll();
                 var entry = RPG.Party.inventory[this.selectionIndex];
-                this.find('.description-row').innerHTML = entry.item.description;
+                this.parent.find('.description-row').innerHTML = entry.item.description;
             }
 
             fixScroll() {
@@ -62,11 +71,7 @@ module SimpleQuest {
 
             choose(element:HTMLElement) {
                 var itemKey = element.getAttribute('data-item');
-                var item = RPG.Item.lookup(itemKey);
-
-                // TODO target selection
-                item.activate(RPG.Party.members[0].character);
-                this.rerenderItemList();
+                this.chooseCB(itemKey);
             }
         }
     }

@@ -12,7 +12,7 @@ module Egg {
             this.children = [];
             this.element = document.createElement(this.tag);
 
-            var html = args.html || this.html || '';            
+            var html = args.html || this.html || '';
             this.element.innerHTML = Egg.File.fixHTML(html);
         }
 
@@ -37,6 +37,7 @@ module Egg {
 
         addChild(child:UiComponent, parentElement?:HTMLElement|string) {
             child.setParent(this, parentElement);
+            return child;
         }
 
         find(selector:string):HTMLElement {

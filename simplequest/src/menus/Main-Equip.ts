@@ -1,21 +1,41 @@
 ///<reference path="Main-Equip-Slot.ts"/>
+///<reference path="Main-Equip-Items.ts"/>
 
 module SimpleQuest {
     export module Menu {
         var html:string = `
             <section class="layout-row title-row">Equip</section>
-            <section class="layout-row slots-row">
-                <ul class="slots selections">
-                </ul>
+            <section class="layout-row equip-info-row">
+                <section class="layout-column stats-column">
+                    <section class="layout-row" data-stat="attack">
+                        <span class="label">ATK</span>
+                        <span class="value">0</span>
+                    </section>
+                    <section class="layout-row" data-stat="defense">
+                        <span class="label">DEF</span>
+                        <span class="value">0</span>
+                    </section>
+                    <section class="layout-row" data-stat="critical">
+                        <span class="label">CRT</span>
+                        <span class="value">0</span>
+                    </section>
+                    <section class="layout-row" data-stat="evade">
+                        <span class="label">EVD</span>
+                        <span class="value">0</span>
+                    </section>
+                </section>
+                <section class="layout-column slots-column">
+                    <ul class="slots selections">
+                    </ul>
+                </section>
             </section>
-            <section class="layout-row items-row">
-                <ul class="items selections">
-                </ul>
-            </section>
+            <section class="layout-row items-row"></section>
             <section class="layout-row description-row"></section>
         `;
         export class Main_EquipSubmenu extends RPG.Menu {
             character:RPG.Character;
+            itemMenu:Main_EquipItemsSubmenu;
+            slotChildren:any;
 
             constructor() {
                 super({ html: html, cancelable: true });
@@ -24,23 +44,26 @@ module SimpleQuest {
                 // TODO character select
                 this.character = RPG.characters['hero'];
 
+                this.slotChildren = {};
                 var listContainer = this.find('.slots');
                 _.each(RPG.equipSlots, (slot:string) => {
-                    this.addChild(new Main_EquipSlot(this.character, slot), listContainer);
+                    this.slotChildren[slot] = this.addChild(new Main_EquipSlot(this.character, slot), listContainer);
                 });
+
+                this.itemMenu = new Main_EquipItemsSubmenu();
+                this.addChild(this.itemMenu, '.items-row');
+
+                this.updateEquipInfo();
                 this.setupSelections(this.find('.slots'));
             }
 
-            rerenderItemList() {
-                if (this.selections.length < 1) return;
-
-                var listItem = this.selections[this.selectionIndex];
-                var selectedSlot = listItem.getAttribute('data-value');
-
-                var listContainer = this.find('ul.items');
-                while(listContainer.firstChild) { listContainer.removeChild(listContainer.lastChild); }
-                RPG.Party.getInventory((item) => { return item.equipSlot === selectedSlot }).forEach((it:RPG.InventoryEntry) => {
-                    this.addChild(new Main_ItemListElement(it, true), listContainer);
+            updateEquipInfo() {
+                _.each(RPG.equipSlots, (slot:string) => {
+                    this.slotChildren[slot].rerender();
+                });
+                this.findAll('.stats-column .layout-row').forEach((row) => {
+                    var stat = row.getAttribute('data-stat');
+                    (<HTMLElement>row.querySelector('.value')).innerText = this.character.get(stat);
                 });
             }
 
@@ -55,44 +78,25 @@ module SimpleQuest {
                 } else {
                     this.find('.description-row').innerHTML = '';
                 }
-                this.rerenderItemList();
+                this.itemMenu.setFilter((item) => { return item.equipSlot === selectedSlot });
             }
 
             slot(which:any) {
                 var slot = which.getAttribute('data-value');
                 if (this.find('ul.items').children.length > 0) {
-                    this.setupSelections(this.find('ul.items'));
+                    this.itemMenu.setChooseCallback((itemKey) => {
+                        console.log("equipping", this.character, "with", itemKey, "in", slot);
+                        this.character.equipItem(itemKey, slot);
+                        this.updateEquipInfo();
+                        RPG.Menu.pop();
+                    });
+
+                    RPG.Menu.push(this.itemMenu, this, '.items-row');
                 } else {
                     SimpleQuest.sfx['menu_bad'].play();
                     return false;
                 }
             }
-
-            // fixScroll() {
-            //     super.fixScroll();
-            //
-            //     if (document.contains(this.element)) {
-            //         this.firstFixScroll = true;
-            //         var itemsRow = this.find('.items-row');
-            //         var st = this.selectionContainer.scrollTop;
-            //         var sh = this.selectionContainer.scrollHeight;
-            //         var ch = this.selectionContainer.clientHeight;
-            //
-            //         if (ch < sh) {
-            //             st > 0 ? itemsRow.classList.add('can-scroll-up') : itemsRow.classList.remove('can-scroll-up');
-            //             st < sh - ch ? itemsRow.classList.add('can-scroll-down') : itemsRow.classList.remove('can-scroll-down');
-            //         }
-            //     }
-            // }
-            //
-            // activate(element:HTMLElement) {
-            //     var itemKey = element.getAttribute('data-item');
-            //     var item = RPG.Item.lookup(itemKey);
-            //
-            //     // TODO target selection
-            //     item.activate(RPG.Party.members[0].character);
-            //     this.rerenderItemList();
-            // }
         }
     }
 }
