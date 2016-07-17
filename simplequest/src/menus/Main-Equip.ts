@@ -36,6 +36,7 @@ module SimpleQuest {
             character:RPG.Character;
             itemMenu:Main_EquipItemsSubmenu;
             slotChildren:any;
+            selectedSlot:string;
 
             constructor() {
                 super({ html: html, cancelable: true });
@@ -63,6 +64,7 @@ module SimpleQuest {
                 });
                 this.findAll('.stats-column .layout-row').forEach((row) => {
                     var stat = row.getAttribute('data-stat');
+                    (<HTMLElement>row.querySelector('.value')).classList.remove('better', 'worse');
                     (<HTMLElement>row.querySelector('.value')).innerText = this.character.get(stat);
                 });
             }
@@ -81,13 +83,31 @@ module SimpleQuest {
                 this.itemMenu.setFilter((item) => { return item.equipSlot === selectedSlot });
             }
 
+            updatePreview(it:RPG.Item) {
+                this.find('.description-row').innerHTML = it.description;
+
+                var tryDict:{[slot:string]:RPG.Item} = {};
+                tryDict[this.selectedSlot] = it;
+                var other = this.character.tryOn(tryDict);
+
+                this.findAll('.stats-column .layout-row').forEach((row) => {
+                    var stat = row.getAttribute('data-stat');
+                    var current = this.character.get(stat);
+
+                    (<HTMLElement>row.querySelector('.value')).classList.remove('better', 'worse');
+                    (<HTMLElement>row.querySelector('.value')).innerText = other[stat];
+                    if (other[stat] > current) (<HTMLElement>row.querySelector('.value')).classList.add('better');
+                    if (other[stat] < current) (<HTMLElement>row.querySelector('.value')).classList.add('worse');
+                });
+            }
+
             slot(which:any) {
-                var slot = which.getAttribute('data-value');
                 if (this.find('ul.items').children.length > 0) {
+                    this.selectedSlot = which.getAttribute('data-value');
                     this.itemMenu.setChooseCallback((itemKey) => {
-                        console.log("equipping", this.character, "with", itemKey, "in", slot);
-                        this.character.equipItem(itemKey, slot);
+                        this.character.equipItem(itemKey, this.selectedSlot);
                         this.updateEquipInfo();
+                        this.selectedSlot = null;
                         RPG.Menu.pop();
                     });
 

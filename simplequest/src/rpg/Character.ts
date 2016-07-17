@@ -94,6 +94,28 @@ module RPG {
             return true;
         }
 
+        tryOn(items:{ [slot:string]:RPG.Item }) {
+            var stats = {};
+
+            Character.attributes.forEach((attribute) => {
+                stats[attribute] = this.baseAttribute[attribute];
+            });
+            _.each(RPG.equipSlots, (slot:string) => {
+                var item = items[slot] || this.equipped[slot] || null;
+                if (!item || !item.equipEffect) return;
+                
+                _.each(item.equipEffect.attributes, (v:number, k:string) => {
+                    if (Character.attributes.indexOf(k) !== -1) {
+                        stats[k] += v;
+                    } else {
+                        throw new Error("Tried to adjust bad attribute '" + k + "'");
+                    }
+                });
+            });
+
+            return stats;
+        }
+
         get xp():number { return this._xp; }
         get level():number { return this._level; }
 
