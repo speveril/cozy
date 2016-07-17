@@ -9,6 +9,7 @@ module SimpleQuest {
             firstFixScroll:boolean = false;
             chooseCB:any;
             filterCB:any;
+            descriptions:string[];
 
             constructor() {
                 super({ html: html, cancelable: true });
@@ -33,9 +34,11 @@ module SimpleQuest {
                 while(listContainer.firstChild) { listContainer.removeChild(listContainer.lastChild); }
 
                 var resetSelection = this.selectionIndex || 0;
+                this.descriptions = [];
 
-                RPG.Party.getInventory(this.filterCB).forEach((it:RPG.InventoryEntry) => {
+                RPG.Party.getInventory(this.filterCB).forEach((it:RPG.InventoryEntry, index) => {
                     this.addChild(new Main_ItemListElement(it, true), listContainer);
+                    this.descriptions[index] = it.item.description;
                 });
 
                 this.selections = [];
@@ -48,8 +51,7 @@ module SimpleQuest {
 
                 if (this.selections.length < 1) return;
                 if (!this.firstFixScroll) this.fixScroll();
-                var entry = RPG.Party.inventory[this.selectionIndex];
-                this.parent.find('.description-row').innerHTML = entry.item.description;
+                this.parent.find('.description-row').innerHTML = this.descriptions[this.selectionIndex];
             }
 
             fixScroll() {
