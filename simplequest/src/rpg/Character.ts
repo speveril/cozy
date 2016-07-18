@@ -101,9 +101,13 @@ module RPG {
                 stats[attribute] = this.baseAttribute[attribute];
             });
             _.each(RPG.equipSlots, (slot:string) => {
-                var item = items[slot] || this.equipped[slot] || null;
+                var item = this.equipped[slot];
+                if (_.has(items, slot)) {
+                    item = items[slot];
+                }
+
                 if (!item || !item.equipEffect) return;
-                
+
                 _.each(item.equipEffect.attributes, (v:number, k:string) => {
                     if (Character.attributes.indexOf(k) !== -1) {
                         stats[k] += v;

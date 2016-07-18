@@ -26,7 +26,7 @@ module SimpleQuest {
             }
 
             stop() {
-                // do nothing
+                (<Main_EquipSubmenu>this.parent).clearPreview();
             }
 
             rerenderItemList() {

@@ -83,8 +83,14 @@ module SimpleQuest {
                 this.itemMenu.setFilter((item) => { return item.equipSlot === selectedSlot });
             }
 
+            clearPreview() {
+                this.updateEquipInfo();
+            }
+
             updatePreview(it:RPG.Item) {
-                this.find('.description-row').innerHTML = it.description;
+                if (it) {
+                    this.find('.description-row').innerHTML = it.description;
+                }
 
                 var tryDict:{[slot:string]:RPG.Item} = {};
                 tryDict[this.selectedSlot] = it;
