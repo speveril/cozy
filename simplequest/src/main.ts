@@ -77,16 +77,20 @@ module SimpleQuest {
 
             oak_sword: {
                 name: "Oak Sword", icon: "ui/item_icons.png", icon_frame: { x:0, y:0 }, description: "Made of wood. Might still hurt.", sort: 10.00,
+                slot: 'weapon', equip: { attributes: { attack: 0 } }
+            },
+            short_sword: {
+                name: "Short Sword", icon: "ui/item_icons.png", icon_frame: { x:14, y:0 }, description: "A small sword for stabbing. Easy on the budget.", sort: 10.01,
                 slot: 'weapon', equip: { attributes: { attack: 1 } }
             },
             arming_sword: {
-                name: "Arming Sword", icon: "ui/item_icons.png", icon_frame: { x:14, y:0 }, description: "A steel sword. Popular in fights the world over.", sort: 10.01,
+                name: "Arming Sword", icon: "ui/item_icons.png", icon_frame: { x:28, y:0 }, description: "A steel sword. Popular in fights the world over.", sort: 10.02,
                 slot: 'weapon', equip: { attributes: { attack: 2 } }
             },
 
             quilt_armor: {
                 name: "Quilt Armor", icon: "ui/item_icons.png", icon_frame: { x:0, y:28 }, description: "A very thick shirt. Better than nothing.", sort: 15.00,
-                slot: 'armor', equip: { attributes: { defense: 3 } }
+                slot: 'armor', equip: { attributes: { defense: 2 } }
             },
 
             amulet: {

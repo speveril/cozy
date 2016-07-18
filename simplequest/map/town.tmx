@@ -123,7 +123,7 @@
   </object>
   <object id="57" name="open_chest" type="trigger" x="48" y="80" width="16" height="16">
    <properties>
-    <property name="contents" value="arming_sword"/>
+    <property name="contents" value="short_sword"/>
    </properties>
   </object>
   <object id="58" name="open_chest" type="trigger" x="32" y="96" width="16" height="16">

@@ -20,18 +20,17 @@ module SimpleQuest {
             }
 
             rerenderItemList() {
-                var listContainer = this.find('ul.items');
-                while(listContainer.firstChild) { listContainer.removeChild(listContainer.lastChild); }
-
                 var resetSelection = this.selectionIndex || 0;
+                var listContainer = this.find('ul.items');
 
+                while(listContainer.firstChild) { listContainer.removeChild(listContainer.lastChild); }
                 RPG.Party.getInventory().forEach((it:RPG.InventoryEntry) => {
                     this.addChild(new Main_ItemListElement(it, !!it.item.useEffect), listContainer);
                 });
 
                 this.selections = [];
                 this.setupSelections(listContainer);
-                this.selectionIndex = Math.min(this.selections.length, resetSelection);
+                this.setSelection(Math.min(this.selections.length, resetSelection));
             }
 
             setSelection(index:number) {
