@@ -12,12 +12,17 @@ module RPG {
         NUM: /\d+/
     }
 
-    export class Roll {
+    export class Dice {
         actor:RPG.Character;
         tokens:string[];
         parseIndex:number;
         tree:any;
         indent:number;
+
+        static roll(actor:RPG.Character, s:string) {
+            var roll = new Dice(s);
+            return roll.resolve(actor);
+        }
 
         constructor(s:string) {
             var re = new RegExp(tokenRegexp, 'g');
@@ -184,11 +189,15 @@ module RPG {
                     result = this.resolveNode(actor, node.lhs) / this.resolveNode(actor, node.rhs);
                     break;
                 case 'roll':
-                    var rolls = this.resolveNode(actor, node.lhs);
+                    var numRolls = this.resolveNode(actor, node.lhs);
                     var dieSize = this.resolveNode(actor, node.rhs);
-                    _.times(rolls, () => {
-                        result += Math.floor(Math.random() * dieSize) + 1;
+                    var rolls = [];
+                    _.times(numRolls, () => {
+                        // TODO collapse this, it's only necessary to save the rolls for debugging
+                        rolls.push(Math.floor(Math.random() * dieSize) + 1)
+                        result += rolls[rolls.length - 1];
                     });
+                    // console.log("#", numRolls + "d" + dieSize + ":", rolls.join(" "));
                     break;
                 default:
                     throw new Error("Unrecognized node in AST: " + node.type);
