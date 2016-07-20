@@ -39,6 +39,10 @@ namespace RPG {
             this.useEffect = def.use;
         }
 
+        get effectSummary() {
+            return '';
+        }
+
         makeIcon(element:HTMLElement) {
             element.style.backgroundImage = "url(" + this.icon + ")";
             if (this.iconFrame) {
@@ -46,17 +50,34 @@ namespace RPG {
             }
         }
 
-        activate(character:RPG.Character) {
-            if (RPG.Effect[this.useEffect.effect]) {
-                var args = this.useEffect.effect_params.slice(0);
-                args.unshift(character);
-                args.unshift(this);
-                if (RPG.Effect[this.useEffect.effect].apply(undefined, args)) {
-                    Party.removeItem(this.key, 1);
-                }
-            } else {
-                console.warn("! Bad effect", this.useEffect.effect, "triggered from", this.key);
+        canUse(character:RPG.Character, target:RPG.Character) {
+            if (!this.useEffect) return false;
+            switch (this.useEffect._target) {
+                case 'self':
+                    return true;
+                // TODO
             }
+
+            return false;
+        }
+
+        activate(character:RPG.Character) {
+            if (!this.useEffect) return;
+            _.each(this.useEffect, (params:any, effect:string) => {
+                if (effect === '_target') return;
+
+                if (RPG.Effect[effect]) {
+                    var args = params.slice(0);
+                    args.unshift(character);
+                    args.unshift(this);
+
+                    if (RPG.Effect[effect].apply(undefined, args)) {
+                        Party.removeItem(this.key, 1);
+                    }
+                } else {
+                    console.warn("! Bad effect", effect, "triggered from", this.key);
+                }
+            })
         }
     }
 }

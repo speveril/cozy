@@ -125,15 +125,17 @@ module Egg {
         }
 
         static debounce(name, duration?:number) {
-            this.button[name] = Egg.ButtonState.IGNORED;
-            if (duration !== undefined) {
-                this.buttonTimeouts[name] = setTimeout(function() {
-                    this.button[name] = Egg.ButtonState.DOWN;
+            if (this.button[name] === Egg.ButtonState.DOWN) {
+                this.button[name] = Egg.ButtonState.IGNORED;
+                if (duration !== undefined) {
+                    this.buttonTimeouts[name] = setTimeout(function() {
+                        this.button[name] = Egg.ButtonState.DOWN;
 
-                    var eventInfo = { button: name, pressed: true };
-                    this.triggerCallbacks(name, eventInfo);
-                    this.triggerCallbacks(name + ".down", eventInfo);
-                }.bind(this), duration * 1000);
+                        var eventInfo = { button: name, pressed: true };
+                        this.triggerCallbacks(name, eventInfo);
+                        this.triggerCallbacks(name + ".down", eventInfo);
+                    }.bind(this), duration * 1000);
+                }
             }
         }
 

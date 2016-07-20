@@ -46,15 +46,18 @@ module SimpleQuest {
         RPG.Battle.setFightMusic(music['battle']);
         RPG.Battle.setVictoryMusic(music['victory']);
         RPG.Battle.setMonsters({
-            skellington: { name: "Skellington", xp: 20, hp: 5, attributes: { attack: 6, defense: 2, critical: 3, evade: 0 },
+            skellington: { name: "Skellington", xp: 20,
+                hp: 5, attributes: { attack: 6, defense: 2, critical: 3, evade: 0 },
                 image: 'ui/battle/monster_skellington.png',
                 treasure: function() { return { money:(3 + Math.random() * 4) | 0 }; }
             },
-            blueslime: { name: "Blue Slime", xp: 15, hp: 7, attributes: { attack: 3, defense: 4, critical: 1, evade: 3 },
+            blueslime: { name: "Blue Slime", xp: 15,
+                hp: 7, attributes: { attack: 3, defense: 4, critical: 1, evade: 3 },
                 image: 'ui/battle/monster_blueslime.png',
                 treasure: function() { return { money:(1 + Math.random() * 3) | 0 }; }
             },
-            stabber: { name: "Stabber", xp: 35, hp: 10, attributes: { attack: 3, defense: 3, critical: 10, evade: 10 },
+            stabber: { name: "Stabber", xp: 35,
+                hp: 10, attributes: { attack: 3, defense: 3, critical: 10, evade: 10 },
                 image: 'ui/battle/monster_stabber.png',
                 treasure: function() { return { money:(5 + Math.random() * 5) | 0 }; }
             }
@@ -64,15 +67,15 @@ module SimpleQuest {
         RPG.Item.load({
             tonic: {
                 name: "Tonic", icon: "ui/item_icons.png", icon_frame: { x:0, y:14 }, description: "A light healing potion. Restores 5 HP.", sort: 0.01,
-                canStack: true, use: { target: 'self', effect: 'heal', effect_params: [ 5 ] }
+                canStack: true, use: { _target: 'self', heal: [ 5 ] }
             },
             potion: {
                 name: "Potion", icon: "ui/item_icons.png", icon_frame: { x:14, y:14 }, description: "A healing potion. Restores 15 HP.", sort: 0.02,
-                canStack: true, use: { target: 'self', effect: 'heal', effect_params: [ 15 ] }
+                canStack: true, use: { _target: 'self', heal: [ 15 ] }
             },
             elixir: {
                 name: "Elixir", icon: "ui/item_icons.png", icon_frame: { x:28, y:14 }, description: "A powerful healing potion. Restores 50 HP.", sort: 0.03,
-                canStack: true, use: { target: 'self', effect: 'heal', effect_params: [ 50 ] }
+                canStack: true, use: { _target: 'self', heal: [ 50 ] }
             },
 
             oak_sword: {
@@ -139,7 +142,6 @@ module SimpleQuest {
         // music['forest'].start();
         // RPG.startMap(new Map_Forest(), 7, 43);
 
-        console.log("setting controls");
         RPG.controls = RPG.ControlMode.Map;
         Egg.unpause();
     }

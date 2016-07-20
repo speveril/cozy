@@ -16,6 +16,7 @@
     padding: 3px;
     border-style: solid;
     border-image: url(box.png) 2 2 fill repeat;
+    border-width: 2px;
 }
 .main-menu .overview {
     text-align: right;
@@ -29,6 +30,7 @@
     /*overflow: hidden;*/
     border-style: solid;
     border-image: url(box.png) 2 2 fill repeat;
+    border-width: 2px;
     margin: 2px;
     padding: 0;
     position: relative;

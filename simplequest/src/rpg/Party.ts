@@ -2,6 +2,7 @@ module RPG {
     export class InventoryEntry {
         public item:Item;
         public count:number;
+        public equipped:number; // TODO
 
         constructor(item, count) {
             this.item = item;

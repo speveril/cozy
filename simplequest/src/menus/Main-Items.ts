@@ -25,7 +25,7 @@ module SimpleQuest {
 
                 while(listContainer.firstChild) { listContainer.removeChild(listContainer.lastChild); }
                 RPG.Party.getInventory().forEach((it:RPG.InventoryEntry) => {
-                    this.addChild(new Main_ItemListElement(it, !!it.item.useEffect), listContainer);
+                    this.addChild(new Main_ItemListElement(it, it.item.canUse(RPG.Party.members[0].character, RPG.Party.members[0].character)), listContainer);
                 });
 
                 this.selections = [];
