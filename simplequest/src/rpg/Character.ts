@@ -23,7 +23,12 @@ module RPG {
             this.sprite   = args.sprite;
             this.maxhp    = args.hp;
             this.treasure = args.treasure;
+            this.xp       = args.xp || 0;
             this.levels   = args.levels;
+
+            if (this.treasure && this.treasure['money']) {
+                this.treasure['money'] = new RPG.Dice(this.treasure['money']);
+            }
 
             Character.attributes.forEach((attribute) => this.baseAttribute[attribute] = 0);
             this.adjust(args.attributes);

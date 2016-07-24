@@ -169,9 +169,12 @@ module RPG {
                             yield* RPG.Scene.waitTime(0.75);
 
                             this.text("You gained " + this.enemy.xp + " XP!");
-                            this.text("You found " + this.enemy.treasure.money + " " + RPG.moneyName + "!");
                             Party.each(function(ch:Character) { ch.xp += this.enemy.xp; }.bind(this));
-                            Party.money += this.enemy.treasure.money;
+
+                            var money = this.enemy.treasure.money.resolve();
+                            this.text("You found " + money + " " + RPG.moneyName + "!");
+                            Party.money += money;
+
                             yield* RPG.Scene.waitButton('confirm');
 
                             Battle.end();

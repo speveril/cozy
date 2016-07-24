@@ -49,17 +49,17 @@ module SimpleQuest {
             skellington: { name: "Skellington", xp: 20,
                 hp: 5, attributes: { attack: 6, defense: 2, critical: 3, evade: 0 },
                 image: 'ui/battle/monster_skellington.png',
-                treasure: function() { return { money:(3 + Math.random() * 4) | 0 }; }
+                treasure: { money: '1d4 + 2' }
             },
             blueslime: { name: "Blue Slime", xp: 15,
                 hp: 7, attributes: { attack: 3, defense: 4, critical: 1, evade: 3 },
                 image: 'ui/battle/monster_blueslime.png',
-                treasure: function() { return { money:(1 + Math.random() * 3) | 0 }; }
+                treasure: { money: '1d3' }
             },
             stabber: { name: "Stabber", xp: 35,
                 hp: 10, attributes: { attack: 3, defense: 3, critical: 10, evade: 10 },
                 image: 'ui/battle/monster_stabber.png',
-                treasure: function() { return { money:(5 + Math.random() * 5) | 0 }; }
+                treasure: { money: '2d6' }
             }
         });
 
