@@ -69,6 +69,20 @@
    <frame tileid="207" duration="125"/>
   </animation>
  </tile>
+ <tile id="214">
+  <animation>
+   <frame tileid="214" duration="125"/>
+   <frame tileid="215" duration="125"/>
+   <frame tileid="216" duration="999999999"/>
+  </animation>
+ </tile>
+ <tile id="218">
+  <animation>
+   <frame tileid="218" duration="125"/>
+   <frame tileid="219" duration="125"/>
+   <frame tileid="220" duration="999999999"/>
+  </animation>
+ </tile>
  <tile id="221">
   <animation>
    <frame tileid="221" duration="125"/>

@@ -96,8 +96,12 @@ module SimpleQuest {
                 slot: 'armor', equip: { attributes: { defense: 2 } }
             },
 
+            oak_shield: {
+                name: "Oak Shield", icon: "ui/item_icons.png", icon_frame: { x:70, y:28 }, description: "A stout wooden shield. Too small to make a good table.", sort: 20.00,
+            },
+
             amulet: {
-                name: "Amulet", icon: "ui/item_icons.png", icon_frame: { x:0, y:42 }, description: "This pendant may or may not have any useful properties.", sort: 20.00,
+                name: "Amulet", icon: "ui/item_icons.png", icon_frame: { x:0, y:42 }, description: "This pendant may or may not have any useful properties.", sort: 30.00,
                 slot: 'accessory', equip: { status: ['lucky'] }
             },
         });
