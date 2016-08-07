@@ -17,6 +17,10 @@ module SimpleQuest {
             }
         }
 
+        enter_castle(args) {
+            this.map_switch(new Map_Castle(), 25, 43);
+        }
+
         examine_ship(args) {
             RPG.Scene.do(function*() {
                 yield* this.waitTextbox(null, ["You can't leave this place until you've found what you're looking for."]);
