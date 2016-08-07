@@ -1,17 +1,31 @@
+## Credits
 
-##Credits
-Tiny16 tileset created by Lanea Zimmerman (http://opengameart.org/content/tiny-16-basic)
-- Some modifications/additions by Shamus Peveril
+Game developed by Shamus Peveril (http://shamuspeveril.com) with the Egg Engine.
+
+### Art
+
+Tiny16 tileset created by Lanea Zimmerman
+- http://opengameart.org/content/tiny-16-basic
+    - with modifications/additions by Shamus Peveril
+
+Item graphics by Jerom, recolored by PriorBlue
+
+- http://opengameart.org/content/recolor-all-the-items
+    - with modifications/additions by Shamus Peveril
+
+Other art by Shamus Peveril
+- Fonts built with Fontstruct
+    - http://fontstruct.com/
+
+### Audio
 
 Some of the sounds in this project were created by David McKee (ViRiX)
-soundcloud.com/virix
-
+- http://soundcloud.com/virix
 - http://opengameart.org/comment/20356
     - MENU A_Select.wav
     - MENU B_Select.wav
     - MENU_Pick.wav
     - MENU B_Back.wav
-
 - http://opengameart.org/content/magic-sfx-sample
     - Healing Full.wav
 
@@ -25,8 +39,7 @@ Some music from the RMN Music Pack
 - Subaru - Resonant Hopes Ignited Wills
 - 800 M.P.H. - Mellow Darkness
 - Subaru - Victory Theme
+- Snowy Fox - The Ritual
 
-Item graphics by Jerom, recolored by PriorBlue
-
-- http://opengameart.org/content/recolor-all-the-items
-- Some modifications/additions by Shamus Peveril
+Other sounds created by Shamus Peveril using sfxr
+- http://www.drpetter.se/project_sfxr.html

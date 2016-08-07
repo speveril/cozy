@@ -5,8 +5,9 @@
 
 ///<reference path="characters/Hero.ts"/>
 
-///<reference path="../map/town.ts"/>
+///<reference path="../map/castle.ts"/>
 ///<reference path="../map/forest.ts"/>
+///<reference path="../map/town.ts"/>
 ///<reference path="../map/overworld.ts"/>
 
 window['RPG'] = RPG;
@@ -33,6 +34,7 @@ module SimpleQuest {
             'village':    new Egg.Music({ tracks: ["audio/music/1-01 Town of Wishes.ogg"] }),
             'overworld':  new Egg.Music({ tracks: ["audio/music/Death Is Just Another Path.ogg"] }),
             'forest':     new Egg.Music({ tracks: ["audio/music/2-05 Mellow Darkness.ogg"] }),
+            'castle':     new Egg.Music({ tracks: ["audio/music/1-12 The Ritual.ogg" ]}),
             'battle':     new Egg.Music({ tracks: ["audio/music/1-02 Resonant Hopes Ignited Wills.ogg"] }),
             'victory':    new Egg.Music({ tracks: ["audio/music/2-12 Victory Theme.ogg"] })
         };
