@@ -149,6 +149,7 @@ module RPG {
         tileSize:PIXI.Point;
         tilesets:Array<MapTileset>;
         filename:string = null;
+        cameraBoxes:Array<PIXI.Rectangle>;
 
         loadFromTMX(path:string) {
             this.filename = path;
@@ -161,7 +162,7 @@ module RPG {
             this.size = new PIXI.Point(parseInt(mapEl.getAttribute('width'), 10), parseInt(mapEl.getAttribute('height'), 10));
             this.tileSize = new PIXI.Point(parseInt(mapEl.getAttribute('tilewidth'), 10), parseInt(mapEl.getAttribute('tileheight'), 10));
 
-            _.each(mapEl.children, function(el:HTMLElement) {
+            _.each(mapEl.children, (el:HTMLElement) => {
                 switch (el.tagName) {
                     case "tileset":
                         if (el.getAttribute('source')) {
@@ -251,12 +252,12 @@ module RPG {
                                     layer.triggers.push(tr);
                                     break;
                                 case "entity":
-                                    var x = parseInt(objectEl.getAttribute('x')) + parseInt(objectEl.getAttribute('width'), 10) / 2,
-                                        y = parseInt(objectEl.getAttribute('y')) + parseInt(objectEl.getAttribute('height'), 10) / 2,
-                                        propertiesEl = <HTMLElement>objectEl.getElementsByTagName('properties')[0],
+                                    var propertiesEl = <HTMLElement>objectEl.getElementsByTagName('properties')[0],
                                         args = {
                                             name: objectEl.getAttribute('name')
                                         };
+                                    x += parseInt(objectEl.getAttribute('width'), 10) / 2;
+                                    y += parseInt(objectEl.getAttribute('height'), 10) / 2;
                                     if (propertiesEl) {
                                         _.each(propertiesEl.children, function(property) {
                                             args[property.getAttribute('name')] = property.getAttribute('value');
@@ -265,6 +266,11 @@ module RPG {
                                     var e = new Entity(args);
                                     e.spawn = new PIXI.Point(x, y);
                                     layer.entities.push(e);
+                                    break;
+                                case 'camerabox':
+                                    var w = parseInt(objectEl.getAttribute('width')),
+                                        h = parseInt(objectEl.getAttribute('height'));
+                                    this.cameraBoxes.push(new PIXI.Rectangle(x, y, w, h));
                                     break;
                                 default:
                                     var name = objectEl.hasAttribute('name') ? objectEl.getAttribute('name') : null;
@@ -299,13 +305,18 @@ module RPG {
                     default:
                         console.log("Got a '" + el.tagName + "' in the map, not sure what to do with it so I'm ignoring it.");
                 }
-            }.bind(this));
+            });
+
+            if (this.cameraBoxes.length === 0) {
+                this.cameraBoxes.push(new PIXI.Rectangle(0, 0, this.size.x * this.tileSize.x, this.size.y * this.tileSize.y));
+            }
         }
 
         constructor(args) {
             this.layers = [];
             this.tilesets = [];
             this.layerLookup = {};
+            this.cameraBoxes = [];
 
             if (typeof args === 'string') {
                 this.loadFromTMX(args);

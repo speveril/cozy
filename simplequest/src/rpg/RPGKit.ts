@@ -92,7 +92,7 @@ module RPG {
     export function centerCameraOn(pt:PIXI.Point) {
         var cx = pt.x;
         var cy = pt.y;
-        var cameraBox = new PIXI.Rectangle(0, 0, map.size.x * map.tileSize.x, map.size.y * map.tileSize.y);
+        var cameraBox = _.find(map.cameraBoxes, (box) => box.contains(cx, cy));
 
         if (cameraBox.width <= Egg.config['width']) {
             cx = cameraBox.x + cameraBox.width / 2;
