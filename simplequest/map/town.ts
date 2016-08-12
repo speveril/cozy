@@ -31,16 +31,6 @@ module SimpleQuest {
             }.bind(this));
         }
 
-        trigger_well(args) {
-            RPG.Scene.do(function*() {
-                SimpleQuest.sfx['restore'].play();
-                RPG.Party.each(function(ch:RPG.Character) {
-                    ch.hp = ch.maxhp;
-                });
-                yield* this.waitTextbox(null, ["\n<center>HP restored!</center>"]);
-            }.bind(this));
-        }
-
         shopkeeper_left(args) {
             RPG.Scene.do(function*() {
                 yield* this.waitTextbox("SHOPKEEP", ["Don't you just love shopping?!"]);

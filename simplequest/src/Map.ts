@@ -86,44 +86,6 @@ module SimpleQuest {
             }
         }
 
-        private lastSpeaker:string = null;
-
-        doScene(steps:Array<any>) {
-            console.trace("doScene");
-            var s = RPG.Scene.start();
-
-            _.each(steps, function(step) {
-                if (typeof step === "string") {
-                    s = s.then(function() {
-                        RPG.Textbox.show(step);
-                        return RPG.Scene.waitForButton("confirm");
-                    });
-                } else if (typeof step === 'function') {
-                    s = s.then(step);
-                } else {
-                    throw new Error("doScene() got something weird for a step; not sure what you want me to do with it.");
-                }
-            }.bind(this));
-
-            return s.then(function() {
-                this.lastSpeaker = null;
-                RPG.Textbox.hide();
-                RPG.Scene.finish();
-            }.bind(this));
-        }
-
-        sceneText(speaker:string, text:string) {
-            return function() {
-                if (this.lastSpeaker && this.lastSpeaker === speaker) {
-                    RPG.Textbox.box.appendText("\n" + text);
-                } else {
-                    RPG.Textbox.show("<span class=\"speaker\">" + speaker + ":</span> " + text);
-                }
-                this.lastSpeaker = speaker;
-                return RPG.Scene.waitForButton("confirm");
-            }.bind(this);
-        }
-
         *waitTextbox(speaker, lines:string[]) {
             for(var i = 0; i < lines.length; i++) {
                 if (i === 0) {
@@ -204,6 +166,33 @@ module SimpleQuest {
                     }.bind(this));
                 }
             }
+        }
+
+        teleport(args) {
+            var pos = args.event.properties.to.split(','),
+                x = parseInt(pos[0], 10),
+                y = parseInt(pos[1], 10),
+                z = pos[2] === undefined ? RPG.player.layer : this.getLayerByName(pos[2]);
+
+            RPG.Scene.do(function*() {
+                yield* RPG.Scene.waitFadeTo("black", 0.2);
+
+                RPG.player.place((x + 0.5) * RPG.map.tileSize.x, (y + 0.5) * RPG.map.tileSize.y, z);
+                RPG.centerCameraOn(RPG.player.position);
+
+                yield* RPG.Scene.waitFadeFrom("black", 0.2);
+            }.bind(this));
+
+        }
+
+        trigger_well(args) {
+            RPG.Scene.do(function*() {
+                SimpleQuest.sfx['restore'].play();
+                RPG.Party.each(function(ch:RPG.Character) {
+                    ch.hp = ch.maxhp;
+                });
+                yield* this.waitTextbox(null, ["\n<center>HP restored!</center>"]);
+            }.bind(this));
         }
 
         open_chest(args) {

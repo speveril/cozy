@@ -71,6 +71,9 @@ module RPG {
         }
 
         move(dx:number, dy:number):void {
+            var tx = Math.floor(this.position.x / this.layer.map.tileSize.x),
+                ty = Math.floor(this.position.y / this.layer.map.tileSize.y);
+
             if (dy !== 0 || dx !== 0) {
                 if (dx < 0 && dy === 0) this.sprite.animation = "walk_l";
                 if (dx > 0 && dy === 0) this.sprite.animation = "walk_r";
@@ -162,16 +165,21 @@ module RPG {
             }
 
             if (this.triggersEvents) {
-                _.each(this.layer.events, function(e) {
-                    if (e.active && e.rect.contains(this.sprite.position.x, this.sprite.position.y) && this.layer.map[e.name]) {
-                        this.layer.map[e.name]({
-                            entity: this,
-                            event: e,
-                            x: this.sprite.position.x, y: this.sprite.position.y,
-                            tx: Math.floor(this.sprite.position.x / this.layer.map.tileSize.x), ty: Math.floor(this.sprite.position.y / this.layer.map.tileSize.y)
-                        });
-                    }
-                }.bind(this));
+                var tx_ = Math.floor(this.position.x / this.layer.map.tileSize.x),
+                    ty_ = Math.floor(this.position.y / this.layer.map.tileSize.y);
+
+                if (tx !== tx_ || ty !== ty_) {
+                    _.each(this.layer.events, function(e) {
+                        if (e.active && e.rect.contains(this.sprite.position.x, this.sprite.position.y) && this.layer.map[e.name]) {
+                            this.layer.map[e.name]({
+                                entity: this,
+                                event: e,
+                                x: this.sprite.position.x, y: this.sprite.position.y,
+                                tx: Math.floor(this.sprite.position.x / this.layer.map.tileSize.x), ty: Math.floor(this.sprite.position.y / this.layer.map.tileSize.y)
+                            });
+                        }
+                    }.bind(this));
+                }
             }
         }
     }
