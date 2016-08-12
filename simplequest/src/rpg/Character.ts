@@ -22,7 +22,7 @@ module RPG {
             this.name     = args.name;
             this.sprite   = args.sprite;
             this.maxhp    = args.hp;
-            this.treasure = args.treasure;
+            this.treasure = _.clone(args.treasure);
             this.xp       = args.xp || 0;
             this.levels   = args.levels;
 
