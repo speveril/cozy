@@ -262,12 +262,12 @@
   <object id="89" name="examine_statue" type="trigger" x="96" y="512" width="16" height="16"/>
   <object id="91" name="examine_statue" type="trigger" x="128" y="512" width="16" height="16"/>
   <object id="92" name="open_door" type="event" x="352" y="496" width="16" height="16"/>
-  <object id="95" name="key_door_A" type="trigger" x="336" y="400" width="16" height="16">
+  <object id="95" name="forest_door_A" type="trigger" x="336" y="400" width="16" height="16">
    <properties>
     <property name="solid" value="0"/>
    </properties>
   </object>
-  <object id="96" name="key_door_B" type="trigger" x="576" y="560" width="16" height="16">
+  <object id="96" name="forest_door_B" type="trigger" x="576" y="560" width="16" height="16">
    <properties>
     <property name="solid" value="0"/>
    </properties>
@@ -288,12 +288,12 @@
     <property name="group" value="forest_B"/>
    </properties>
   </object>
-  <object id="106" name="set_threat" type="event" x="336" y="400" width="16" height="16">
+  <object id="106" name="set_threat" type="event" x="336" y="384" width="16" height="16">
    <properties>
     <property name="group" value="forest_A"/>
    </properties>
   </object>
-  <object id="107" name="set_threat" type="event" x="576" y="560" width="16" height="16">
+  <object id="107" name="set_threat" type="event" x="576" y="544" width="16" height="16">
    <properties>
     <property name="group" value="forest_B"/>
    </properties>

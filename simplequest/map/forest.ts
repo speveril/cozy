@@ -21,6 +21,20 @@ module SimpleQuest {
                 this.layers[1].setTile(tx, ty, this.layers[1].getTile(tx, ty) + 3);
                 trigger.solid = false;
             }
+
+            _.each(['forest_door_A','forest_door_B'], (key) => {
+                if (SimpleQuest.Map.persistent['global']['opened_' + key]) {
+                    trigger = spriteLayer.getTriggersByName(key)[0];
+                    if (!trigger) {
+                        return;
+                    }
+
+                    tx = Math.floor(trigger.rect.x / this.tileSize.x);
+                    ty = Math.floor(trigger.rect.y / this.tileSize.y);
+                    this.layers[1].setTile(tx, ty, this.layers[1].getTile(tx, ty) + 3);
+                    trigger.solid = false;
+                }
+            });
         }
 
         exit_forest(args) {
@@ -66,14 +80,14 @@ module SimpleQuest {
             }.bind(this));
         }
 
-        key_door_A(args) {
-            var switchName = 'key_forest_door_A';
+        forest_door_A(args) {
+            var switchName = 'opened_forest_door_A';
             if (Map.persistent['global'][switchName]) return;
-            Map.persistent['global'][switchName] = true;
 
             RPG.Scene.do(function*() {
                 yield* this.waitTextbox(null, ["This door is locked."]);
                 yield* this.waitTextbox(null, ["\n<center>Used Magical Plotkey!\n</center>"]);
+                Map.persistent['global'][switchName] = true;
 
                 this.layers[1].setTile(args.tx, args.ty, this.layers[1].getTile(args.tx, args.ty) + 1);
                 sfx['thud'].play();
@@ -81,14 +95,14 @@ module SimpleQuest {
             }.bind(this));
         }
 
-        key_door_B(args) {
-            var switchName = 'key_forest_door_B';
+        forest_door_B(args) {
+            var switchName = 'opened_forest_door_B';
             if (Map.persistent['global'][switchName]) return;
-            Map.persistent['global'][switchName] = true;
 
             RPG.Scene.do(function*() {
                 yield* this.waitTextbox(null, ["This door is locked."]);
                 yield* this.waitTextbox(null, ["\n<center>Used Magical Plotkey #2!\n</center>"]);
+                Map.persistent['global'][switchName] = true;
 
                 this.layers[1].setTile(args.tx, args.ty, this.layers[1].getTile(args.tx, args.ty) + 1);
                 sfx['thud'].play();
