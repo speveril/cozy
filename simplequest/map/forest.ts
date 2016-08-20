@@ -69,6 +69,7 @@ module SimpleQuest {
         key_door_A(args) {
             var switchName = 'key_forest_door_A';
             if (Map.persistent['global'][switchName]) return;
+            Map.persistent['global'][switchName] = true;
 
             RPG.Scene.do(function*() {
                 yield* this.waitTextbox(null, ["This door is locked."]);
@@ -83,6 +84,7 @@ module SimpleQuest {
         key_door_B(args) {
             var switchName = 'key_forest_door_B';
             if (Map.persistent['global'][switchName]) return;
+            Map.persistent['global'][switchName] = true;
 
             RPG.Scene.do(function*() {
                 yield* this.waitTextbox(null, ["This door is locked."]);
