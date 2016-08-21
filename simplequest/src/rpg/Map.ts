@@ -82,19 +82,37 @@ module RPG {
         }
     }
 
-    export class MapEvent {
+    class MapRect {
         name:string;
         rect:PIXI.Rectangle;
         properties:any;
         active:boolean = true;
+        tileSize:any;
+
+        constructor(tileSize) {
+            this.tileSize = tileSize;
+        }
+
+        get tx():number {
+            return Math.floor(this.rect.x / this.tileSize.x);
+        }
+
+        get ty():number {
+            return Math.floor(this.rect.y / this.tileSize.y);
+        }
+
+        get tw():number {
+            return Math.floor(this.rect.width / this.tileSize.x);
+        }
+
+        get th():number {
+            return Math.floor(this.rect.height / this.tileSize.y);
+        }
     }
 
-    export class MapTrigger {
-        name:string;
-        rect:PIXI.Rectangle;
+    export class MapEvent extends MapRect {}
+    export class MapTrigger extends MapRect {
         obstructions:Array<MapObstruction>;
-        properties:any;
-        active:boolean = true;
         private _solid:boolean = true;
 
         get solid():boolean {
@@ -209,7 +227,7 @@ module RPG {
                                     var w = parseInt(objectEl.getAttribute('width'), 10),
                                         h = parseInt(objectEl.getAttribute('height'), 10),
                                         propertiesEl = <HTMLElement>objectEl.getElementsByTagName('properties')[0],
-                                        ev = new MapEvent();
+                                        ev = new MapEvent(this.tileSize);
                                     ev.name = objectEl.getAttribute('name');
                                     ev.rect = new PIXI.Rectangle(x, y, w, h);
                                     ev.properties = {};
@@ -224,7 +242,7 @@ module RPG {
                                     var w = parseInt(objectEl.getAttribute('width'), 10),
                                         h = parseInt(objectEl.getAttribute('height'), 10),
                                         propertiesEl = <HTMLElement>objectEl.getElementsByTagName('properties')[0],
-                                        tr = new MapTrigger();
+                                        tr = new MapTrigger(this.tileSize);
                                     tr.name = objectEl.getAttribute('name');
                                     tr.rect = new PIXI.Rectangle(x, y, w, h);
                                     tr.properties = {};
@@ -311,9 +329,7 @@ module RPG {
                 }
             });
 
-            if (this.cameraBoxes.length === 0) {
-                this.cameraBoxes.push(new PIXI.Rectangle(0, 0, this.size.x * this.tileSize.x, this.size.y * this.tileSize.y));
-            }
+            this.cameraBoxes.push(new PIXI.Rectangle(0, 0, this.size.x * this.tileSize.x, this.size.y * this.tileSize.y));
         }
 
         constructor(args) {

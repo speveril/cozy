@@ -20,14 +20,13 @@ module SimpleQuest {
         }
     };
 
-    var switchesFlipped:any = {};
-
     export class Map extends RPG.Map {
         static persistent:any = {};
 
         private threatGroup:string;
         private nextBattle:number;
         private lastPlayerPosition:PIXI.Point;
+        private onetimeSwitches:any;
         public music:Egg.Music;
 
         open() {
@@ -84,6 +83,128 @@ module SimpleQuest {
                 this.lastPlayerPosition.x = RPG.player.position.x;
                 this.lastPlayerPosition.y = RPG.player.position.y;
             }
+        }
+
+        doDoor(name) {
+            var doors = RPG.player.layer.getTriggersByName(name); // TODO check ALL spritelayers
+
+            if (doors.length < 1) {
+                throw new Error(`Couldn't find '${name}' trigger.`);
+            }
+
+            _.each(doors, (door) => {
+                var tx = door.tx,
+                    ty = door.ty,
+                    x, y;
+
+                for (y = 0; y < door.th; y++) {
+                    for (x = 0; x < door.tw; x++) {
+                        sfx['thud'].play();
+                        this.layers[1].setTile(tx + x, ty + y, this.layers[1].getTile(tx + x, ty + y) + 1);
+                    }
+                }
+
+                door.solid = false;
+            });
+        }
+
+        doKeyDoor(name, keyName, message?) {
+            if (!keyName) {
+                this.doDoor(name);
+            }
+
+            if (Map.persistent[this.filename][name + "__opened"]) return;
+
+            var key = RPG.Party.hasItem(keyName);
+            if (key) {
+                RPG.Scene.do(function*() {
+                    Map.persistent[this.filename][name + "__opened"] = true;
+                    yield* this.waitCenteredTextbox(`Used ${key.item.makeIconString()}${key.item.name}.`);
+                    this.doDoor(name)
+                }.bind(this));
+            } else {
+                RPG.Scene.do(function*() {
+                    yield* this.waitTextbox(null, [message || "This door is locked. You'll have to find the key."]);
+                }.bind(this));
+            }
+        }
+
+        doSwitchDoor(switchName, message?) {
+            if (Map.persistent[this.filename][switchName + '__switched']) return;
+
+            RPG.Scene.do(function*() {
+                yield* this.waitTextbox(null, [message || "This door has no obvious way to open it. It must be opened some other way."]);
+            }.bind(this));
+        }
+
+        doSwitch(switchName, doorName?, message?) {
+            if (Map.persistent[this.filename][switchName + '__switched']) return;
+
+            Map.persistent[this.filename][switchName + '__switched'] = true;
+
+            var trigger = RPG.player.layer.getTriggersByName(switchName)[0];
+
+            RPG.Scene.do(function*() {
+                yield *this.waitLever(trigger.tx, trigger.ty);
+                if (doorName) {
+                    this.doDoor(doorName);
+                }
+                yield* this.waitTextbox(null, [message || "Something opened in the distance."]);
+            }.bind(this))
+        }
+
+        fixDoor(name) {
+            var doors = RPG.player.layer.getTriggersByName(name); // TODO check ALL spritelayers
+
+            if (doors.length < 1) {
+                throw new Error(`Couldn't find '${name}' trigger.`);
+            }
+
+            _.each(doors, (door) => {
+                var tx = door.tx,
+                    ty = door.ty,
+                    x, y;
+
+                for (y = 0; y < door.th; y++) {
+                    for (x = 0; x < door.tw; x++) {
+                        this.layers[1].setTile(tx + x, ty + y, this.layers[1].getTile(tx + x, ty + y) + 3);
+                    }
+                }
+
+                door.solid = false;
+            });
+        }
+
+        fixSwitch(name) {
+            if (Map.persistent[this.filename][name + '__switched']) {
+                var trigger = RPG.player.layer.getTriggersByName(name)[0];
+                this.layers[1].setTile(trigger.tx, trigger.ty, this.layers[1].getTile(trigger.tx, trigger.ty) + 2);
+            }
+        }
+
+        fixKeyDoor(name) {
+            if (Map.persistent[this.filename][name + "__opened"]) {
+                this.fixDoor(name);
+            }
+        }
+
+        fixSwitchDoor(switchName, doorName) {
+            if (Map.persistent[this.filename][switchName + '__switched']) {
+                this.fixSwitch(switchName);
+                this.fixDoor(doorName);
+            }
+        }
+
+        *waitLever(tx, ty) {
+            var t = this.layers[1].getTile(tx, ty);
+
+            this.layers[1].setTile(tx, ty, t + 1);
+            sfx['chnk'].play();
+            yield* RPG.Scene.waitTime(0.5);
+
+            this.layers[1].setTile(tx, ty, t + 2);
+            sfx['chnk'].play();
+            yield* RPG.Scene.waitTime(0.5);
         }
 
         *waitTextbox(speaker, lines:string[]) {
@@ -234,16 +355,10 @@ module SimpleQuest {
                             var item = RPG.Item.lookup(itemkey);
                             RPG.Party.addItem(itemkey, count);
 
-                            var container = document.createElement('div');
-                            var icon = document.createElement('span');
-                            icon.classList.add('item-icon');
-                            item.makeIcon(icon);
-                            container.appendChild(icon);
-
                             if (count > 1) {
-                                yield* this.waitCenteredTextbox(`Found ${container.innerHTML}${item.name} x${count}!`);
+                                yield* this.waitCenteredTextbox(`Found ${item.makeIconString()}${item.name} x${count}!`);
                             } else {
-                                yield* this.waitCenteredTextbox(`Found ${container.innerHTML}${item.name}!`);
+                                yield* this.waitCenteredTextbox(`Found ${item.makeIconString()}${item.name}!`);
                             }
                         }
                     }.bind(this));

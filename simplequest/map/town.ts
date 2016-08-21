@@ -13,6 +13,10 @@ module SimpleQuest {
             this.map_switch(new Map_Overworld, 14, 12);
         }
 
+        test_key_door(args) {
+            this.doKeyDoor('test_key_door', 'iron_key', 'Sorry, this is locked bucko.');
+        }
+
         sign_house(args) {
             RPG.Scene.do(function*() {
                 yield* this.waitCenteredTextbox("Mayor's Office\nThe mayor is: IN");

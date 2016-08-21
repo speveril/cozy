@@ -6,6 +6,7 @@
 ///<reference path="characters/Hero.ts"/>
 
 ///<reference path="../map/castle.ts"/>
+///<reference path="../map/debugmap.ts"/>
 ///<reference path="../map/forest.ts"/>
 ///<reference path="../map/town.ts"/>
 ///<reference path="../map/overworld.ts"/>
@@ -108,18 +109,18 @@ module SimpleQuest {
                 slot: 'accessory', equip: { status: ['lucky'] }
             },
 
-            key_castle_door_A: {
-                name: 'Iron Castle Key', icon: "ui/item_icons.png", icon: frame: { x: 84, y: 14 }, description: "An iron key from the abandoned castle.", sort: 95.00
+            iron_key: {
+                name: 'Iron Key', icon: "ui/item_icons.png", icon_frame: { x: 84, y: 14 }, description: "An iron key from the abandoned castle.", sort: 95.00
             },
-            key_castle_door_B: {
-                name: 'Steel Castle Key', icon: "ui/item_icons.png", icon: frame: { x: 98, y: 14 }, description: "A steel key from the abandoned castle.", sort: 95.01
+            steel_key: {
+                name: 'Steel Key', icon: "ui/item_icons.png", icon_frame: { x: 98, y: 14 }, description: "A steel key from the abandoned castle.", sort: 95.01
             },
-            key_forest_door: {
-                name: 'Gold Key', icon: "ui/item_icons.png", icon: frame: { x: 112, y: 14 }, description: "A golden key.", sort: 95.02
+            gold_key: {
+                name: 'Gold Key', icon: "ui/item_icons.png", icon_frame: { x: 112, y: 14 }, description: "A golden key.", sort: 95.02
             },
-            key_cave_door: {
-                name: 'Massive Key', icon: "ui/item_icons.png", icon: frame: { x: 112, y: 14 }, description: "A big, heavy key.", sort: 95.02
-            },
+            massive_key: {
+                name: 'Massive Key', icon: "ui/item_icons.png", icon_frame: { x: 112, y: 14 }, description: "A big, heavy key.", sort: 95.02
+            }
         });
 
         var promises = [];
@@ -157,10 +158,11 @@ module SimpleQuest {
         RPG.Party.add(RPG.characters['hero']);
         RPG.player = RPG.Party.members[0].makeEntity();
 
-        music['village'].start();
-        RPG.startMap(new Map_Town(), 10, 7);
+        // music['village'].start();
+        // RPG.startMap(new Map_Town(), 10, 7);
         // music['forest'].start();
         // RPG.startMap(new Map_Forest(), 7, 43);
+        RPG.startMap(new Map_Debug(), 11, 20);
 
         RPG.controls = RPG.ControlMode.Map;
         Egg.unpause();

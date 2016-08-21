@@ -50,6 +50,15 @@ namespace RPG {
             }
         }
 
+        makeIconString() {
+            var container = document.createElement('div');
+            var icon = document.createElement('span');
+            icon.classList.add('item-icon');
+            this.makeIcon(icon);
+            container.appendChild(icon);
+            return container.innerHTML;
+        }
+
         canUse(character:RPG.Character, target:RPG.Character) {
             if (!this.useEffect) return false;
             switch (this.useEffect._target) {
