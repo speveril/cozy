@@ -237,9 +237,9 @@ module SimpleQuest {
                             container.appendChild(icon);
 
                             if (count > 1) {
-                                yield* this.waitCenteredTextbox(`Found ${container.innerHTML} ${item.name} x${count}!`);
+                                yield* this.waitCenteredTextbox(`Found ${container.innerHTML}${item.name} x${count}!`);
                             } else {
-                                yield* this.waitCenteredTextbox(`Found ${container.innerHTML} ${item.name}!`);
+                                yield* this.waitCenteredTextbox(`Found ${container.innerHTML}${item.name}!`);
                             }
                         }
                     }.bind(this));
