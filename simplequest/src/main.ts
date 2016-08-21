@@ -100,11 +100,25 @@ module SimpleQuest {
 
             oak_shield: {
                 name: "Oak Shield", icon: "ui/item_icons.png", icon_frame: { x:70, y:28 }, description: "A stout wooden shield. Too small to make a good table.", sort: 20.00,
+                slot: 'shield', equip: { attributes: { defense: 2 } }
             },
 
             amulet: {
                 name: "Amulet", icon: "ui/item_icons.png", icon_frame: { x:0, y:42 }, description: "This pendant may or may not have any useful properties.", sort: 30.00,
                 slot: 'accessory', equip: { status: ['lucky'] }
+            },
+
+            key_castle_door_A: {
+                name: 'Iron Castle Key', icon: "ui/item_icons.png", icon: frame: { x: 84, y: 14 }, description: "An iron key from the abandoned castle.", sort: 95.00
+            },
+            key_castle_door_B: {
+                name: 'Steel Castle Key', icon: "ui/item_icons.png", icon: frame: { x: 98, y: 14 }, description: "A steel key from the abandoned castle.", sort: 95.01
+            },
+            key_forest_door: {
+                name: 'Gold Key', icon: "ui/item_icons.png", icon: frame: { x: 112, y: 14 }, description: "A golden key.", sort: 95.02
+            },
+            key_cave_door: {
+                name: 'Massive Key', icon: "ui/item_icons.png", icon: frame: { x: 112, y: 14 }, description: "A big, heavy key.", sort: 95.02
             },
         });
 
