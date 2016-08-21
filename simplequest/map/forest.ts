@@ -24,15 +24,22 @@ module SimpleQuest {
 
             _.each(['forest_door_A','forest_door_B'], (key) => {
                 if (SimpleQuest.Map.persistent['global']['opened_' + key]) {
-                    trigger = spriteLayer.getTriggersByName(key)[0];
-                    if (!trigger) {
-                        return;
+                    var trigger = spriteLayer.getTriggersByName(key)[0];
+                    if (trigger) {
+                        tx = Math.floor(trigger.rect.x / this.tileSize.x);
+                        ty = Math.floor(trigger.rect.y / this.tileSize.y);
+                        this.layers[1].setTile(tx, ty, this.layers[1].getTile(tx, ty) + 3);
+                        trigger.solid = false;
                     }
+                }
+            });
 
-                    tx = Math.floor(trigger.rect.x / this.tileSize.x);
-                    ty = Math.floor(trigger.rect.y / this.tileSize.y);
-                    this.layers[1].setTile(tx, ty, this.layers[1].getTile(tx, ty) + 3);
-                    trigger.solid = false;
+            _.each(['skeleton_doorguard'], (name) => {
+                if (SimpleQuest.Map.persistent['global']['defeated_' + name]) {
+                    var entity = spriteLayer.getEntitiesByName(name)[0];
+                    if (entity) {
+                        entity.destroy();
+                    }
                 }
             });
         }
@@ -117,6 +124,7 @@ module SimpleQuest {
             })
             .then(function() {
                 args.target.destroy();
+                Map.persistent['global']['defeated_skeleton_doorguard'] = true;
             }.bind(this));
         }
 

@@ -8,7 +8,7 @@ module RPG {
         events:Array<MapEvent>;
         triggers:Array<MapTrigger>;
         displayLayer:Egg.Layer;
-        entities:Array<any>;
+        entities:Array<Entity>;
 
         getTile(x:number, y:number):number {
             if (!this.tiles) return 0;
@@ -61,6 +61,10 @@ module RPG {
 
         getObstructionsByName(name:string):MapObstruction[] {
             return _.where(this.obstructions, { name: name });
+        }
+
+        getEntitiesByName(name:string):Array<Entity> {
+            return _.where(this.entities, { name: name });
         }
     }
 
