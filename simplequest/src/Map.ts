@@ -178,14 +178,18 @@ module SimpleQuest {
         teleport(args) {
             var pos = args.event.properties.to.split(','),
                 x = parseInt(pos[0], 10),
-                y = parseInt(pos[1], 10) * RPG.map.tileSize.y,
-                z = pos[2] === undefined ? RPG.player.layer : this.getLayerByName(pos[2]);
+                y = parseInt(pos[1], 10),
+                z = pos.length > 2 ? this.getLayerByName(pos[2]) : RPG.player.layer;
 
             RPG.Scene.do(function*() {
                 yield* RPG.Scene.waitFadeTo("black", 0.2);
 
                 RPG.player.place((x + 0.5) * RPG.map.tileSize.x, (y + 0.5) * RPG.map.tileSize.y, z);
                 RPG.centerCameraOn(RPG.player.position);
+
+                _.each(this.layers, (lyr:RPG.MapLayer) => {
+                    console.log(lyr.displayLayer);
+                });
 
                 yield* RPG.Scene.waitFadeFrom("black", 0.2);
             }.bind(this));

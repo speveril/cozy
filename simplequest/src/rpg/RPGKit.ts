@@ -109,8 +109,8 @@ module RPG {
                 cy = Math.min(cameraBox.y + cameraBox.height - cameraHalf.y, cy);
             }
         }
-        
-        _.each(map.layers, function(layer) {
+
+        _.each(map.layers, (layer) => {
             layer.displayLayer.offset(-cx + cameraHalf.x, -cy + cameraHalf.y);
         });
     }
