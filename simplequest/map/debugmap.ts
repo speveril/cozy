@@ -7,10 +7,22 @@ module SimpleQuest {
 
         open() {
             super.open();
-            
+
             this.fixSwitch('trigger_useless_switch');
             this.fixSwitchDoor('trigger_switch', 'trigger_switchdoor');
             this.fixKeyDoor('trigger_keydoor');
+        }
+
+        goto_village(args) {
+            this.map_switch(new Map_Town(), 8, 1);
+        }
+
+        goto_forest(args) {
+            this.map_switch(new Map_Forest(), 7, 43);
+        }
+
+        goto_castle(args) {
+            this.map_switch(new Map_Castle(), 25, 43);
         }
 
         trigger_restartmap(args) {
