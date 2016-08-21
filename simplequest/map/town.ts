@@ -15,19 +15,13 @@ module SimpleQuest {
 
         sign_house(args) {
             RPG.Scene.do(function*() {
-                yield* this.waitTextbox(null, ["<center>Mayor's Office\n\nThe mayor is: IN</center>"]);
+                yield* this.waitCenteredTextbox("Mayor's Office\nThe mayor is: IN");
             }.bind(this));
         }
 
         sign_shops(args) {
             RPG.Scene.do(function*() {
-                yield* this.waitTextbox(null, ["<center>Carp's Bend\nShopping Centre</center>"]);
-            }.bind(this));
-        }
-
-        trigger_rocks(args) {
-            RPG.Scene.do(function*() {
-                yield* this.waitTextbox(null, ["\n<center>Found some... rocks</center>"]);
+                yield* this.waitCenteredTextbox("Carp's Bend\nShopping Centre");
             }.bind(this));
         }
 
@@ -92,7 +86,7 @@ module SimpleQuest {
                 if (RPG.Party.hasItem('tonic')) {
                     yield* this.waitTextbox("VILLAGER", ["Know what? I'mma steal a tonic from you!"]);
                     RPG.Party.removeItem('tonic');
-                    yield* this.waitTextbox(null, ["<center>You lost a tonic!</center>"]);
+                    yield* this.waitCenteredTextbox("You lost a tonic!");
                     yield* this.waitTextbox("HERO", ["..."]);
                 }
             }.bind(this));

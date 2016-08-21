@@ -31,19 +31,26 @@ body {
     position: absolute;
     top: 0px;
     overflow: hidden;
-    transition: top 0.2s;
+    display: relative;
 }
 
-.textstart {
-    display: inline;
+.inner-text .cursor ~ * {
+    visibility: hidden;
 }
 
-.cursor {
-    display: inline;
+.inner-text .__c {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    display: flex;
 }
-.cursor .spacer::after {
-    display: inline;
-    content: "\000A\000A\000A\000A\000A\000A\000A\000A\000A\000A";
+
+.inner-text .__c .__c_i {
+  margin: auto;
+}
+
+.item-name {
+    white-space: pre;
 }
 
 .item-icon {

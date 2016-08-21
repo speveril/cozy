@@ -90,7 +90,7 @@ module SimpleQuest {
             for(var i = 0; i < lines.length; i++) {
                 if (i === 0) {
                     if (speaker) {
-                        RPG.Textbox.show("<span class=\"speaker\">" + speaker + ":</span> " + lines[i]);
+                        RPG.Textbox.show(`<span class="speaker">${speaker}:</span> ${lines[i]}`);
                     } else {
                         RPG.Textbox.show(lines[i]);
                     }
@@ -102,6 +102,13 @@ module SimpleQuest {
                 Egg.Input.debounce("confirm");
             }
 
+            RPG.Textbox.hide();
+        }
+
+        *waitCenteredTextbox(text:string) {
+            RPG.Textbox.show(`<div class="__c"><div class="__c_i">${text}</div></div>`);
+            yield* RPG.Scene.waitButton("confirm");
+            Egg.Input.debounce("confirm");
             RPG.Textbox.hide();
         }
 
@@ -171,7 +178,7 @@ module SimpleQuest {
         teleport(args) {
             var pos = args.event.properties.to.split(','),
                 x = parseInt(pos[0], 10),
-                y = parseInt(pos[1], 10),
+                y = parseInt(pos[1], 10) * RPG.map.tileSize.y,
                 z = pos[2] === undefined ? RPG.player.layer : this.getLayerByName(pos[2]);
 
             RPG.Scene.do(function*() {
@@ -191,7 +198,7 @@ module SimpleQuest {
                 RPG.Party.each(function(ch:RPG.Character) {
                     ch.hp = ch.maxhp;
                 });
-                yield* this.waitTextbox(null, ["\n<center>HP restored!</center>"]);
+                yield* this.waitCenteredTextbox("HP restored!");
             }.bind(this));
         }
 
@@ -218,7 +225,7 @@ module SimpleQuest {
 
                         if (itemkey === '#money') {
                             RPG.Party.money += count;
-                            yield* this.waitTextbox(null, ["\n<center>Found " + count + RPG.moneyName + "!</center>"]);
+                            yield* this.waitCenteredTextbox(`Found ${count} ${RPG.moneyName}!`);
                         } else {
                             var item = RPG.Item.lookup(itemkey);
                             RPG.Party.addItem(itemkey, count);
@@ -230,21 +237,20 @@ module SimpleQuest {
                             container.appendChild(icon);
 
                             if (count > 1) {
-                                yield* this.waitTextbox(null, ["\n<center>Found " + container.innerHTML + item.name + " x" + count + "!</center>"]);
+                                yield* this.waitCenteredTextbox(`Found ${container.innerHTML} ${item.name} x${count}!`);
                             } else {
-                                yield* this.waitTextbox(null, ["\n<center>Found " + container.innerHTML + item.name + "!</center>"]);
+                                yield* this.waitCenteredTextbox(`Found ${container.innerHTML} ${item.name}!`);
                             }
                         }
                     }.bind(this));
                 } else {
                     RPG.Scene.do(function*() {
-                        yield* this.waitTextbox(null, ["\n<center>The chest was empty!\n<span style=\"font-size:60%\">How disappointing.</font></center>"]);
+                        yield* this.waitCenteredTextbox(`The chest was empty!\n<span style="font-size:60%">How disappointing.</font>`);
                     }.bind(this));
                 }
             } else {
-                console.log("opened chest?");
                 RPG.Scene.do(function*() {
-                    yield* this.waitTextbox(null, ["\n<center>The chest is empty.</center>"]);
+                    yield* this.waitCenteredTextbox("The chest is empty.");
                 }.bind(this));
             }
         }
