@@ -11,6 +11,7 @@ Game developed by Shamus Peveril (http://shamuspeveril.com) with the Egg Engine.
 ### Art
 
 Tiny16 tileset created by Lanea Zimmerman
+
 - http://opengameart.org/content/tiny-16-basic
     - with modifications/additions by Shamus Peveril
 
@@ -20,12 +21,14 @@ Item graphics by Jerom, recolored by PriorBlue
     - with modifications/additions by Shamus Peveril
 
 Other art by Shamus Peveril
+
 - Fonts built with Fontstruct
     - http://fontstruct.com/
 
 ### Audio
 
 Some of the sounds in this project were created by David McKee (ViRiX)
+
 - http://soundcloud.com/virix
 - http://opengameart.org/comment/20356
     - MENU A_Select.wav
@@ -48,4 +51,5 @@ Some music from the RMN Music Pack
 - Snowy Fox - The Ritual
 
 Other sounds created by Shamus Peveril using sfxr
+
 - http://www.drpetter.se/project_sfxr.html
