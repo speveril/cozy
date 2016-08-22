@@ -416,5 +416,18 @@ module RPG {
         getLayerByName(name:string):MapLayer {
             return this.layerLookup[name];
         }
+
+        getAllTriggersByName(name:string):MapTrigger[] {
+            return _.flatten(_.map(this.layers, (lyr) => lyr.getTriggersByName(name)));
+        }
+
+        getAllObstructionsByName(name:string):MapObstruction[] {
+            return _.flatten(_.map(this.layers, (lyr) => lyr.getObstructionsByName(name)));
+        }
+
+        getAllEntitiesByName(name:string):Array<Entity> {
+            return _.flatten(_.map(this.layers, (lyr) => lyr.getEntitiesByName(name)));
+        }
+
     }
 }

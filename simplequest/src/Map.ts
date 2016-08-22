@@ -86,7 +86,7 @@ module SimpleQuest {
         }
 
         doDoor(name) {
-            var doors = RPG.player.layer.getTriggersByName(name); // TODO check ALL spritelayers
+            var doors = this.getAllTriggersByName(name);
 
             if (doors.length < 1) {
                 throw new Error(`Couldn't find '${name}' trigger.`);
@@ -124,7 +124,7 @@ module SimpleQuest {
                 }.bind(this));
             } else {
                 RPG.Scene.do(function*() {
-                    yield* this.waitTextbox(null, [message || "This door is locked. You'll have to find the key."]);
+                    yield* this.waitTextbox(null, [message || "This door is locked, and you don't have the key."]);
                 }.bind(this));
             }
         }
@@ -133,7 +133,7 @@ module SimpleQuest {
             if (Map.persistent[this.filename][switchName + '__switched']) return;
 
             RPG.Scene.do(function*() {
-                yield* this.waitTextbox(null, [message || "This door has no obvious way to open it. It must be opened some other way."]);
+                yield* this.waitTextbox(null, [message || "There is no obvious way to open this door."]);
             }.bind(this));
         }
 
@@ -142,10 +142,10 @@ module SimpleQuest {
 
             Map.persistent[this.filename][switchName + '__switched'] = true;
 
-            var trigger = RPG.player.layer.getTriggersByName(switchName)[0];
+            var triggers = this.getAllTriggersByName(switchName);
 
             RPG.Scene.do(function*() {
-                yield *this.waitLever(trigger.tx, trigger.ty);
+                yield *this.waitLevers(_.map(triggers, (tr) => [tr.tx,tr.ty]));
                 if (doorName) {
                     this.doDoor(doorName);
                 }
@@ -154,31 +154,33 @@ module SimpleQuest {
         }
 
         fixDoor(name) {
-            var doors = RPG.player.layer.getTriggersByName(name); // TODO check ALL spritelayers
+            var doors = this.getAllTriggersByName(name);
 
             if (doors.length < 1) {
                 throw new Error(`Couldn't find '${name}' trigger.`);
             }
 
             _.each(doors, (door) => {
-                var tx = door.tx,
-                    ty = door.ty,
-                    x, y;
+                var x, y;
 
                 for (y = 0; y < door.th; y++) {
                     for (x = 0; x < door.tw; x++) {
-                        this.layers[1].setTile(tx + x, ty + y, this.layers[1].getTile(tx + x, ty + y) + 3);
+                        this.layers[1].setTile(door.tx + x, door.ty + y, this.layers[1].getTile(door.tx + x, door.ty + y) + 3);
                     }
                 }
 
                 door.solid = false;
             });
+
+
         }
 
         fixSwitch(name) {
             if (Map.persistent[this.filename][name + '__switched']) {
-                var trigger = RPG.player.layer.getTriggersByName(name)[0];
-                this.layers[1].setTile(trigger.tx, trigger.ty, this.layers[1].getTile(trigger.tx, trigger.ty) + 2);
+                var triggers = this.getAllTriggersByName(name);
+                _.each(triggers, (trigger) => {
+                    this.layers[1].setTile(trigger.tx, trigger.ty, this.layers[1].getTile(trigger.tx, trigger.ty) + 2);
+                });
             }
         }
 
@@ -195,14 +197,17 @@ module SimpleQuest {
             }
         }
 
-        *waitLever(tx, ty) {
-            var t = this.layers[1].getTile(tx, ty);
-
-            this.layers[1].setTile(tx, ty, t + 1);
+        *waitLevers(tiles:any) {
+            console.log(tiles);
+            _.each(tiles, (tile) => {
+                this.layers[1].setTile(tile[0], tile[1], this.layers[1].getTile(tile[0], tile[1]) + 1);
+            });
             sfx['chnk'].play();
             yield* RPG.Scene.waitTime(0.5);
 
-            this.layers[1].setTile(tx, ty, t + 2);
+            _.each(tiles, (tile) => {
+                this.layers[1].setTile(tile[0], tile[1], this.layers[1].getTile(tile[0], tile[1]) + 1);
+            });
             sfx['chnk'].play();
             yield* RPG.Scene.waitTime(0.5);
         }

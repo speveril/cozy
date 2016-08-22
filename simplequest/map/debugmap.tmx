@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="30" tilewidth="16" tileheight="16" nextobjectid="37">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="30" tilewidth="16" tileheight="16" nextobjectid="39">
  <tileset firstgid="1" source="tileset.tsx"/>
  <layer name="background" width="40" height="30">
   <data encoding="csv">
@@ -51,7 +51,7 @@
 0,138,0,0,0,0,0,0,0,0,0,0,0,0,214,0,138,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,138,37,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,65,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,65,0,65,0,65,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -152,5 +152,7 @@
   <object id="34" name="goto_castle" type="trigger" x="352" y="288" width="16" height="16"/>
   <object id="35" name="goto_forest" type="trigger" x="304" y="320" width="16" height="16"/>
   <object id="36" name="goto_village" type="trigger" x="336" y="368" width="16" height="16"/>
+  <object id="37" name="trigger_useless_switch" type="trigger" x="48" y="224" width="16" height="16"/>
+  <object id="38" name="trigger_useless_switch" type="trigger" x="112" y="224" width="16" height="16"/>
  </objectgroup>
 </map>
