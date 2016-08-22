@@ -311,7 +311,7 @@ module SimpleQuest {
                 yield* RPG.Scene.waitFadeTo("black", 0.2);
 
                 RPG.player.place((x + 0.5) * RPG.map.tileSize.x, (y + 0.5) * RPG.map.tileSize.y, z);
-                RPG.centerCameraOn(RPG.player.position);
+                RPG.centerCameraOn(RPG.player.position, true);
 
                 _.each(this.layers, (lyr:RPG.MapLayer) => {
                     console.log(lyr.displayLayer);

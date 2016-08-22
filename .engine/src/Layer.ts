@@ -19,6 +19,10 @@ module Egg {
             this.innerContainer.position.y = Math.floor(y);
         }
 
+        getOffset() {
+            return _.clone(this.innerContainer.position);
+        }
+
         add(thing:any) {
             if (thing instanceof Sprite) {
                 this.sprites.push(thing);

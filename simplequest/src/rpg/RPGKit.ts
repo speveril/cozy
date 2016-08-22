@@ -19,6 +19,8 @@ module RPG {
     export var UILayer:Egg.Layer;
     export var loadSkip:Array<string> = [];
     export var cameraHalf:PIXI.Point;
+    export var cameraFocus:PIXI.Point;
+    export var cameraSpeed:number = 750;
     export var controls:ControlMode;
     export var renderPlane:Egg.RenderPlane;
     export var battleRenderPlane:Egg.RenderPlane;
@@ -46,6 +48,7 @@ module RPG {
         var fonts = [];
         var directories = ['.'];
         cameraHalf = new PIXI.Point(Egg.config['width'] / 2, Egg.config['height'] / 2);
+        cameraFocus = new PIXI.Point(0, 0);
 
         // scrape all images under the project
         while (directories.length > 0) {
@@ -87,9 +90,31 @@ module RPG {
         } else if (controls === ControlMode.Battle && Battle.active) {
             Battle.update(dt);
         }
+
+        if (player && player.layer) {
+            var offs = player.layer.displayLayer.getOffset(),
+                dx = (cameraFocus.x) - (-offs.x + cameraHalf.x),
+                dy = (cameraFocus.y) - (-offs.y + cameraHalf.y),
+                dd = Math.sqrt(dx * dx + dy * dy),
+                maxDist = cameraSpeed * dt;
+
+            if (dx !== 0 || dy !== 0) {
+                console.log(cameraFocus, offs, dx, dy, dd, maxDist, maxDist / dd);
+            }
+
+            if (dd > maxDist) {
+                dx *= (maxDist / dd);
+                dy *= (maxDist / dd);
+            }
+
+            _.each(map.layers, (layer) => {
+                console.log(" =>", offs.x, offs.y, "->", offs.x - dx, offs.y - dy);
+                layer.displayLayer.offset(offs.x - dx, offs.y - dy);
+            });
+        }
     }
 
-    export function centerCameraOn(pt:PIXI.Point) {
+    export function centerCameraOn(pt:PIXI.Point, snap?:boolean) {
         var cx = pt.x;
         var cy = pt.y;
         var cameraBox = _.find(map.cameraBoxes, (box) => box.contains(cx, cy));
@@ -110,9 +135,14 @@ module RPG {
             }
         }
 
-        _.each(map.layers, (layer) => {
-            layer.displayLayer.offset(-cx + cameraHalf.x, -cy + cameraHalf.y);
-        });
+        cameraFocus.x = cx;
+        cameraFocus.y = cy;
+
+        if (snap) {
+            _.each(map.layers, (layer) => {
+                layer.displayLayer.offset(-cx + cameraHalf.x, -cy + cameraHalf.y);
+            });
+        }
     }
 
     export function startMap(newMap:Map|string, x?:number, y?:number, layerName?:string) {
@@ -125,6 +155,6 @@ module RPG {
         UILayer = RPG.renderPlane.addRenderLayer();
 
         player.place((x + 0.5) * map.tileSize.x, (y + 0.5) * map.tileSize.y, map.getLayerByName(layerName || '#spritelayer'));
-        RPG.centerCameraOn(player.position);
+        RPG.centerCameraOn(player.position, true);
     }
 }
