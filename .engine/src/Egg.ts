@@ -16,10 +16,6 @@
 var Electron = require('electron');
 declare var FontFace:any;
 
-function include(path) {
-    return require(process.cwd() + "/" + path);
-}
-
 /**
  * The main container for everything Egg.
  */
@@ -50,7 +46,7 @@ module Egg {
     }
 
     export function run() {
-        var eggPath = path.join(process.cwd(), ".engine", "resources", "runner"); // TODO this isn't necessarily true
+        var eggPath = path.join(process.cwd(), ".engine", "resources", "app"); // TODO this isn't necessarily true
         var gamePath = path.join(process.cwd(), this.gameName);
 
         process.chdir(gamePath);
@@ -92,7 +88,7 @@ module Egg {
         document['fonts'].ready
             .then(function() {
                 // start the game
-                this.Game = include("/main.js");
+                this.Game = require(File.projectFile("main.js"));
                 this.Game.start();
 
                 this.onResize();
