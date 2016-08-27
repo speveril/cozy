@@ -509,13 +509,15 @@ var Browser = {
             cp(Path.join(appPath, 'x_package.json'), Path.join(outAppPath, 'package.json'));
 
             var exclude = exportConfig.exclude || [];
-            cp(srcPath, Path.join(outAppPath, "g"), (f) => {
-                // TODO exclude should be a list of regexes, and just test each
-                if (f.match(/.ts$/)) return false;
-                if (f.match(/.js.map$/)) return false;
-                if (f.match(/src_image.*/)) return false;
-                if (exclude.indexOf(f) !== -1) return false;
+            exclude.push(".ts$", ".js.map$");
+            for (var i = 0; i < exclude.length; i++) {
+                exclude[i] = new RegExp(exclude[i]);
+            }
 
+            cp(srcPath, Path.join(outAppPath, "g"), (f) => {
+                for (var i = 0; i < exclude.length; i++) {
+                    if (f.match(exclude[i])) return false;
+                }
                 return true;
             });
 
