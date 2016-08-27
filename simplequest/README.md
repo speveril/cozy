@@ -35,13 +35,14 @@ Some of the sounds in this project were created by David McKee (ViRiX)
     - MENU B_Select.wav
     - MENU_Pick.wav
     - MENU B_Back.wav
+    - ALERT_Error.wav
 - http://opengameart.org/content/magic-sfx-sample
     - Healing Full.wav
 
-Some sounds created by LokiF
+Some sound effects from Michael Koenig
 
-- http://opengameart.org/content/gui-sound-effects
-    -   negative_2.wav
+- http://soundbible.com/1165-Dinosaur-Roar.html
+    - dinosaur_roar.wav
 
 Some music by Otto Halmén
 

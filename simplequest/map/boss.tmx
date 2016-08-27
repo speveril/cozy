@@ -64,7 +64,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup name="#spritelayer" visible="0">
+ <objectgroup name="#spritelayer">
   <object id="1" type="camerabox" x="32" y="16" width="304" height="240" visible="0"/>
   <object id="2" name="exit_door" type="trigger" x="176" y="224" width="16" height="16"/>
   <object id="11" x="176" y="256">

@@ -27,12 +27,14 @@ module SimpleQuest {
             'restore': new Egg.Sound("audio/sfx/Healing Full.wav"),
             'thud': new Egg.Sound("audio/sfx/thud.wav"),
             'chnk': new Egg.Sound("audio/sfx/chnk.ogg"),
-            'negative': new Egg.Sound("audio/sfx/negative_2.wav"),
+            'negative': new Egg.Sound("audio/sfx/ALERT_Error.wav"),
 
             'menu_move': new Egg.Sound('audio/sfx/MENU_Pick.wav'),
             'menu_choose': new Egg.Sound('audio/sfx/MENU B_Select.wav'),
             'menu_bad': new Egg.Sound('audio/sfx/MENU B_Back.wav'),
             'menu_newgame': new Egg.Sound('audio/sfx/MENU A_Select.wav'),
+
+            'dragon_roar': new Egg.Sound('audio/sfx/dinosaur_roar.wav'),
         };
         music = {
             'village':    new Egg.Music({ tracks: ["audio/music/1-01 Town of Wishes.ogg"] }),

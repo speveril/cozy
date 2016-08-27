@@ -4,7 +4,7 @@
     "hotspot": { "x":16, "y":16 },
     "radius": 16,
     "animations": {
-        "stand_d": { "loop": true, "frames": [[0,999]] }
+        "stand_d": { "loop": true, "frames": [[0,0.3],[1,0.3],[2,0.3],[1,0.3]] }
     },
     "frameRate": 8,
     "currentAnimation": "stand_d"

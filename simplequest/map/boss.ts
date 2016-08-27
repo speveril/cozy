@@ -162,8 +162,18 @@ module SimpleQuest {
             this.sequence.pop();
 
             RPG.Scene.do(function*() {
-                var time = (3 - this.platformHeight) * 0.25;
                 var letters = ['a','b','c'];
+
+                for (var i = 0; i < letters.length; i++) {
+                    var letter = letters[i];
+                    this.layers[1].setTile(this.torches[letter].tx, this.torches[letter].ty, this.torchTiles.none);
+                }
+
+                sfx['dragon_roar'].play();
+                // TODO dragon animation
+                yield *RPG.Scene.waitTime(2.0);
+
+                var time = (3 - this.platformHeight) * 0.25;
                 for (var i = 0; i < letters.length; i++) {
                     var letter = letters[i];
 
