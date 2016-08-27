@@ -29,9 +29,9 @@ Just run the Egg shortcut (or .engine/egg.exe). This will open the launcher/proj
 ## Roadmap/TODOs
 
 - RPGkit
-    - Battle should actually use the Menu stuff rather than rolling its own
-    - Branching Scenes
+    - ...
 - Reconcile File stuff
+    - Don't make it required that the current working directory is actually the gamepath
 - Make it work in a browser too
 - config.json should be able to define an expected version, Egg should be smart enough to do the right thing
 - Make an export
