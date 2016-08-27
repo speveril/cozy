@@ -25,9 +25,9 @@ module SimpleQuest {
 
         exit_forest(args) {
             if (args.ty == 0) {
-                this.map_switch(new Map_Overworld, 16, 5);
+                RPG.startMap(new Map_Overworld, 16, 5);
             } else {
-                this.map_switch(new Map_Overworld, 13, 8)
+                RPG.startMap(new Map_Overworld, 13, 8)
             }
         }
 

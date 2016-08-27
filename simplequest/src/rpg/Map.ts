@@ -37,6 +37,8 @@ module RPG {
                     this.tileLookup[i].frame = tileInfo.frame;
                     if (tileInfo.animations[tileInfo.frame]) {
                         this.tileLookup[i].animation = tileInfo.frame;
+                    } else {
+                        this.tileLookup[i].animation = null;
                     }
                 }
             } else {
@@ -369,6 +371,10 @@ module RPG {
                     entity.place(entity.spawn.x, entity.spawn.y, mapLayer);
                 }.bind(this));
             }.bind(this));
+        }
+
+        start() {
+            console.log("MAP START");
         }
 
         update(dt):void {

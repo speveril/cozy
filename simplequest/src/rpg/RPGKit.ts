@@ -21,7 +21,7 @@ module RPG {
     export var cameraHalf:PIXI.Point;
     export var cameraFocus:PIXI.Point;
     export var cameraSpeed:number = 750;
-    export var controls:ControlMode;
+    export var controlStack:Array<ControlMode> = [];
     export var renderPlane:Egg.RenderPlane;
     export var battleRenderPlane:Egg.RenderPlane;
     export var battleUiPlane:Egg.UiPlane;
@@ -81,6 +81,7 @@ module RPG {
             map.update(dt);
         }
 
+        var controls = controlStack[controlStack.length - 1];
         if (controls === ControlMode.Map && map && player) {
             RPG.frameMapMode(dt);
         } else if (controls === ControlMode.Scene && Scene.currentScene) {
@@ -98,17 +99,12 @@ module RPG {
                 dd = Math.sqrt(dx * dx + dy * dy),
                 maxDist = cameraSpeed * dt;
 
-            if (dx !== 0 || dy !== 0) {
-                console.log(cameraFocus, offs, dx, dy, dd, maxDist, maxDist / dd);
-            }
-
             if (dd > maxDist) {
                 dx *= (maxDist / dd);
                 dy *= (maxDist / dd);
             }
 
             _.each(map.layers, (layer) => {
-                console.log(" =>", offs.x, offs.y, "->", offs.x - dx, offs.y - dy);
                 layer.displayLayer.offset(offs.x - dx, offs.y - dy);
             });
         }
@@ -145,16 +141,29 @@ module RPG {
         }
     }
 
-    export function startMap(newMap:Map|string, x?:number, y?:number, layerName?:string) {
-        if (typeof newMap === 'string') {
-            map = new Map(newMap);
-        } else {
-            map = newMap;
-        }
-        map.open();
-        UILayer = RPG.renderPlane.addRenderLayer();
+    export function startMap(newMap:Map|string, x?:number, y?:number, layerName?:string, options?:any) {
+        var opts = options || {};
+        Scene.do(function*() {
+            if (!opts.noFadeOut)
+                yield* Scene.waitFadeTo("black", 0.2);
 
-        player.place((x + 0.5) * map.tileSize.x, (y + 0.5) * map.tileSize.y, map.getLayerByName(layerName || '#spritelayer'));
-        RPG.centerCameraOn(player.position, true);
+            if (typeof newMap === 'string') {
+                map = new Map(newMap);
+            } else {
+                map = newMap;
+            }
+
+            map.open();
+
+            UILayer = renderPlane.addRenderLayer();
+
+            player.place((x + 0.5) * map.tileSize.x, (y + 0.5) * map.tileSize.y, map.getLayerByName(layerName || '#spritelayer'));
+            RPG.centerCameraOn(player.position, true);
+
+            if (!opts.noFadeIn)
+                yield* RPG.Scene.waitFadeFrom("black", 0.2);
+
+            map.start();
+        });
     }
 }

@@ -1,0 +1,11 @@
+{
+    "texture": "sprites/dragon.png",
+    "frameSize": { "x":32, "y":32 },
+    "hotspot": { "x":16, "y":16 },
+    "radius": 16,
+    "animations": {
+        "stand_d": { "loop": true, "frames": [[0,999]] }
+    },
+    "frameRate": 8,
+    "currentAnimation": "stand_d"
+}

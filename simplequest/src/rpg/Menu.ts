@@ -54,7 +54,7 @@ module RPG {
             if (Menu.menuStack.length > 0) {
                 Menu.currentMenu.pause();
             }
-            RPG.controls = RPG.ControlMode.Menu;
+            RPG.controlStack.push(RPG.ControlMode.Menu);
             Menu.menuStack.push(m);
 
             if (parentComponent) {
@@ -74,7 +74,7 @@ module RPG {
             if (Menu.menuStack.length > 0) {
                 Menu.currentMenu.unpause();
             } else {
-                RPG.controls = RPG.ControlMode.Map;
+                RPG.controlStack.pop();
             }
         }
 

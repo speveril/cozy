@@ -10,7 +10,7 @@ module SimpleQuest {
         }
 
         exit_town(args) {
-            this.map_switch(new Map_Overworld, 14, 12);
+            RPG.startMap(new Map_Overworld, 14, 12);
         }
 
         test_key_door(args) {

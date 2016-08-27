@@ -5,7 +5,9 @@
 
 ///<reference path="characters/Hero.ts"/>
 
+///<reference path="../map/boss.ts"/>
 ///<reference path="../map/castle.ts"/>
+///<reference path="../map/cave.ts"/>
 ///<reference path="../map/debugmap.ts"/>
 ///<reference path="../map/forest.ts"/>
 ///<reference path="../map/town.ts"/>
@@ -25,6 +27,7 @@ module SimpleQuest {
             'restore': new Egg.Sound("audio/sfx/Healing Full.wav"),
             'thud': new Egg.Sound("audio/sfx/thud.wav"),
             'chnk': new Egg.Sound("audio/sfx/chnk.ogg"),
+            'negative': new Egg.Sound("audio/sfx/negative_2.wav"),
 
             'menu_move': new Egg.Sound('audio/sfx/MENU_Pick.wav'),
             'menu_choose': new Egg.Sound('audio/sfx/MENU B_Select.wav'),
@@ -36,6 +39,8 @@ module SimpleQuest {
             'overworld':  new Egg.Music({ tracks: ["audio/music/Death Is Just Another Path.ogg"] }),
             'forest':     new Egg.Music({ tracks: ["audio/music/2-05 Mellow Darkness.ogg"] }),
             'castle':     new Egg.Music({ tracks: ["audio/music/1-12 The Ritual.ogg" ]}),
+            'cave':       new Egg.Music({ tracks: ["audio/music/1-10 Brazen.ogg" ]}),
+            'boss':       new Egg.Music({ tracks: ["audio/music/3-11 Royalty of Sin.ogg"] }),
             'battle':     new Egg.Music({ tracks: ["audio/music/1-02 Resonant Hopes Ignited Wills.ogg"] }),
             'victory':    new Egg.Music({ tracks: ["audio/music/2-12 Victory Theme.ogg"] })
         };
@@ -138,7 +143,7 @@ module SimpleQuest {
 
     export function bootSequence() {
         music['overworld'].start();
-        RPG.controls = RPG.ControlMode.Scene;
+        RPG.controlStack.push(RPG.ControlMode.Map);
         RPG.Menu.push(new Menu.Boot());
         Egg.unpause();
     }
@@ -162,9 +167,8 @@ module SimpleQuest {
         // RPG.startMap(new Map_Town(), 10, 7);
         // music['forest'].start();
         // RPG.startMap(new Map_Forest(), 7, 43);
-        RPG.startMap(new Map_Debug(), 11, 20);
+        RPG.startMap(new Map_Debug(), 11, 20, undefined, { noFadeOut: true });
 
-        RPG.controls = RPG.ControlMode.Map;
         Egg.unpause();
     }
 

@@ -16,7 +16,7 @@ module SimpleQuest {
         }
 
         exit_castle(args) {
-            this.map_switch(new Map_Overworld(), 3, 6);
+            RPG.startMap(new Map_Overworld(), 3, 6);
         }
 
         castle_door_A(args) {

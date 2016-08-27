@@ -63,6 +63,11 @@ module SimpleQuest {
             }.bind(this));
 
             this.threatGroup = null;
+
+            if (this.music && this.music !== Egg.Audio.currentMusic) {
+                Egg.Audio.currentMusic.stop();
+                this.music.start();
+            }
         }
 
         update(dt) {
@@ -198,7 +203,6 @@ module SimpleQuest {
         }
 
         *waitLevers(tiles:any) {
-            console.log(tiles);
             _.each(tiles, (tile) => {
                 this.layers[1].setTile(tile[0], tile[1], this.layers[1].getTile(tile[0], tile[1]) + 1);
             });
@@ -369,7 +373,7 @@ module SimpleQuest {
                     }.bind(this));
                 } else {
                     RPG.Scene.do(function*() {
-                        yield* this.waitCenteredTextbox(`The chest was empty!\n<span style="font-size:60%">How disappointing.</font>`);
+                        yield* this.waitCenteredTextbox(`The chest was empty!\n<span style="font-size:60%">How disappointing.</span>`);
                     }.bind(this));
                 }
             } else {
@@ -377,20 +381,6 @@ module SimpleQuest {
                     yield* this.waitCenteredTextbox("The chest is empty.");
                 }.bind(this));
             }
-        }
-
-        map_switch(m, x, y) {
-            RPG.Scene.do(function*() {
-                yield* RPG.Scene.waitFadeTo("black", 0.2);
-
-                if (m.music && m.music !== Egg.Audio.currentMusic) {
-                    Egg.Audio.currentMusic.stop();
-                    m.music.start();
-                }
-                RPG.startMap(m, x, y);
-
-                yield* RPG.Scene.waitFadeFrom("black", 0.2);
-            }.bind(this));
         }
 
         switch_layers(args) {

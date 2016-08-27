@@ -38,6 +38,11 @@ Some of the sounds in this project were created by David McKee (ViRiX)
 - http://opengameart.org/content/magic-sfx-sample
     - Healing Full.wav
 
+Some sounds created by LokiF
+
+- http://opengameart.org/content/gui-sound-effects
+    -   negative_2.wav
+
 Some music by Otto Halmén
 
 - Otto Halmén - Death Is Just Another Path
@@ -49,7 +54,9 @@ Some music from the RMN Music Pack
 - 800 M.P.H. - Mellow Darkness
 - Subaru - Victory Theme
 - Snowy Fox - The Ritual
+- Tarranon - Brazen
+- Jeremiah George - Royalty of Sin
 
-Other sounds created by Shamus Peveril using sfxr
+Other sounds created by Shamus Peveril using bfxr
 
-- http://www.drpetter.se/project_sfxr.html
+- http://www.bfxr.net/

@@ -39,7 +39,6 @@ module RPG {
     export class Battle {
         static active:boolean = false;
         static resolve:()=>void;
-        static savedControls:RPG.ControlMode;
         static enemy:Character;
         static player:Character;
         static monsters:any;
@@ -67,8 +66,7 @@ module RPG {
                 this.resolve = resolve;
                 this.active = true;
 
-                this.savedControls = RPG.controls;
-                RPG.controls = RPG.ControlMode.Battle;
+                RPG.controlStack.push(RPG.ControlMode.Battle);
 
                 this.monsterLayer = RPG.battleRenderPlane.addRenderLayer();
                 this.monsterLayer.add(new Egg.Sprite({
@@ -216,7 +214,7 @@ module RPG {
             RPG.battleRenderPlane.clear();
             RPG.battleUiPlane.hide();
             RPG.battleUiPlane.clear();
-            RPG.controls = this.savedControls;
+            RPG.controlStack.pop();
             Textbox.hide();
             this.active = false;
 
