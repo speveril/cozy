@@ -1,6 +1,6 @@
 'use strict';
 const Electron = require('electron');
-const FS = require('fs');
+const FS = require('fs-extra');
 const Path = require('path');
 const Process = require('process');
 const WindowStateKeeper = require('electron-window-state');
@@ -88,6 +88,7 @@ function play(path, debug) {
         });
 
         params['game'] = path;
+        params['enginePath'] = '.engine';
         params['width'] = params['width'] || 320;
         params['height'] = params['height'] || 240;
         params['debug'] = debug;

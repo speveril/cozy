@@ -107,6 +107,7 @@ body > section {
 }
 
 #game-list footer {
+    margin: 1em 0;
     padding: 0.5em 0;
     cursor: pointer;
 }
@@ -121,6 +122,7 @@ body > section {
 #game-list li {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     padding: 0.5em 0 0.5em 1em;
     cursor: pointer;
     list-style: none;
@@ -177,6 +179,37 @@ body > section {
     flex-grow: 1;
     font-style: italic;
     color: #888;
+}
+
+#game-list li .extra {
+    display: none;
+    flex-basis: 100%;
+    padding-left: 3em;
+    padding-top: 0.5em;
+}
+
+#game-list li .extra > span {
+    display: inline-block;
+    padding: 0em 1em;
+    color: #555;
+}
+
+#game-list li .extra > span:hover {
+    text-decoration: underline;
+    color: #000;
+}
+
+#game-list li .extra > span.export input.directory-picker {
+    display: none;
+}
+
+
+#game-list li.active {
+    background: #fff;
+}
+
+#game-list li.active .extra {
+    display: block;
 }
 
 #game-list li .recompile {

@@ -1,5 +1,5 @@
 'use strict';
-const FS = require('fs');
+const FS = require('fs-extra');
 const Child = require('child_process');
 const Path = require('path');
 const Process = require('process');
@@ -36,6 +36,7 @@ var Browser = {
         this.engineStatus = $('#engine-status')[0];
         this.dialogContainer = $('#dialogs')[0];
         this.recompileInterval = null;
+        this.activeGame = null;
 
         this.rebuildGameList();
 
@@ -103,22 +104,16 @@ var Browser = {
             if (target.parentNode.parentNode.classList.contains('folder') && target.previousSibling === null) {
                 target.parentNode.parentNode.classList.toggle('closed');
             } else {
-                var path = target.getAttribute('data-path');
-
-                target.classList.add('compiling');
-
-                this.output("");
-                this.buildGame(path)
-                    .then(() => {
-                        target.classList.remove('compiling');
-                        Electron.ipcRenderer.send('control-message', {
-                            command: 'play',
-                            path: path,
-                            debug: true
-                        });
-                    }, () => {
-                        target.classList.remove('compiling');
-                    });
+                if (this.activeGame && this.activeGame === target) {
+                    this.activeGame.classList.remove('active');
+                    this.activeGame = null;
+                } else {
+                    if (this.activeGame) {
+                        this.activeGame.classList.remove('active');
+                    }
+                    target.classList.add('active');
+                    this.activeGame = target;
+                }
             }
         }
 
@@ -217,6 +212,7 @@ var Browser = {
                 }
             });
             games.forEach((path) => {
+                // TODO keep active game open
                 this.addGame(path, list);
             });
         };
@@ -224,6 +220,7 @@ var Browser = {
         GAMELIBDIRS.forEach((f) => {
             proc(f, this.gameList);
         });
+
     },
 
     addGame: function(path, parent) {
@@ -243,14 +240,74 @@ var Browser = {
         var author = config.author ? scrub(config.author) : 'no author';
         var info = config.width && config.height ? scrub(config.width) + ' x ' + scrub(config.height) : '';
 
-        li.innerHTML =
-            '<div class="icon"><img src="' + icon + '"></div>' +
-            '<div class="title">' + title + '</div>' +
-            '<div class="author">' + author + '</div>' +
-            '<div class="info">' + info + '</div>' +
-            '<div class="recompile" title="Game will be rebuilt when run"></div>';
+        li.innerHTML = `
+            <div class="icon"><img src="${icon}"></div>
+            <div class="title">${title}</div>
+            <div class="author">${author}</div>
+            <div class="info">${info}</div>
+            <div class="extra">
+                <span class="run">&rarr; Compile and Run</span>
+                <span class="export">&rarr; Export... <input class="directory-picker" type="file" webkitdirectory></span>
+            </div>
+        `;
 
+        li.querySelector('.extra > .run').onclick = (e) => { e.stopPropagation(); this.clickCompileAndRun(li, path); };
+        li.querySelector('.extra > .export').onclick = (e) => { e.stopPropagation(); this.clickExport(li, path); };
         parent.appendChild(li);
+
+        return li;
+    },
+
+    clickCompileAndRun: function(li, path) {
+        li.classList.add('compiling');
+
+        this.output("");
+        this.buildGame(path)
+            .then(() => {
+                li.classList.remove('compiling');
+                Electron.ipcRenderer.send('control-message', {
+                    command: 'play',
+                    path: path,
+                    debug: true
+                });
+            }, () => {
+                li.classList.remove('compiling');
+            });
+    },
+
+    clickExport: function(li, path) {
+        // TODO check for engine dirty flag, wait for that to compile?
+        // maybe buildGame should just do that?
+
+        var dirSelector = li.querySelector('input.directory-picker');
+
+        dirSelector.onchange = () => {
+            var outputPath = dirSelector.files[0].path;
+            var existingFiles = FS.readdirSync(outputPath);
+
+            dirSelector.onchange = null;
+            dirSelector.value = null;
+
+            if (existingFiles.length > 0) {
+                if (!confirm(outputPath + " isn't empty, and some files may be overwritten. Continue?")) {
+                    return;
+                }
+            }
+
+            li.classList.add('compiling');
+
+            this.output("");
+            this.buildGame(path)
+                .then(() => {
+                    return this.export(path, outputPath);
+                }).then(() => {
+                    li.classList.remove('compiling');
+                }, (e) => {
+                    li.classList.remove('compiling');
+                });
+        }
+
+        dirSelector.click();
     },
 
     addGameFolder: function(path, parent) {
@@ -320,18 +377,6 @@ var Browser = {
     },
 
     buildGame: function(buildPath) {
-        // TODO ?? copy all the stuff we need into a lib/ directory in the game
-        //   - need to add the d.ts files for PIXI, node, etc
-        // var filesToCopy = [
-        //     'Egg.js',
-        //     'Egg.js.map',
-        //     'Egg.d.ts'
-        // ];
-        // filesToCopy.forEach(function(filename) {
-        //     var contents = FS.readFileSync(__dirname + "/" + filename, { encoding: 'UTF-8' });
-        //     FS.writeFileSync(gamePath + "/" + filename, contents);
-        // });
-
         var config;
         try {
             config = JSON.parse(FS.readFileSync(Path.join(buildPath, "config.json")));
@@ -395,6 +440,118 @@ var Browser = {
                 }
             });
         });
+    },
+
+    export: function(srcPath, outPath) {
+        var config = JSON.parse(FS.readFileSync(Path.join(srcPath, "config.json")));
+        var exportConfig = config.export || {};
+        var displayName = scrub(config.title ? `${config.title} (${srcPath})` : srcPath);
+
+        return new Promise((resolve, reject) => {
+            var cp = (src, dest, filt) => {
+                this.output(`Copy ${src} -> ${dest}`);
+                try {
+                    FS.copySync(src, dest, {
+                        clobber: true,
+                        preserveTimestamps: true,
+                        filter: filt
+                    });
+                } catch (e) {
+                    this.output(e);
+                    this.output("<span style='color:red'>[ FAILURE ]</span>\n");
+                    reject(error);
+                }
+            }
+
+            this.output(`<hr>\n<span style="color:white">[ Exporting ${displayName}]</span>`);
+
+            var paths = [
+                Path.join(outPath, "resources"),
+                Path.join(outPath, "resources", "app"),
+                Path.join(outPath, "resources", "app", "lib"),
+                Path.join(outPath, "resources", "app", "g")
+            ];
+
+            paths.forEach((p) => {
+                FS.ensureDir(p)
+            });
+
+            FS.readdirSync(ENGINEDIR).forEach((f) => {
+                if (!FS.statSync(Path.join(ENGINEDIR, f)).isDirectory()) {
+                    if (f === 'egg.exe' && exportConfig.executable) {
+                        cp(Path.join(ENGINEDIR, f), Path.join(outPath, exportConfig.executable + '.exe'));
+                    } else {
+                        cp(Path.join(ENGINEDIR, f), Path.join(outPath, f));
+                    }
+                }
+            });
+
+            process.noAsar = true; // turn off asar support so it will copy these as files
+            FS.readdirSync(Path.join(ENGINEDIR, "resources")).forEach((f) => {
+                if (f.match(/.asar$/)) {
+                    cp(Path.join(ENGINEDIR, "resources", f), Path.join(outPath, "resources", f));
+                }
+            });
+            process.noAsar = false;
+
+            var appPath = Path.join(ENGINEDIR, "resources", "app");
+            var outAppPath = Path.join(outPath, "resources", "app");
+
+            var files = [
+                'Egg.js', 'game.css', 'game.html',
+                Path.join('lib','pixi.js'),
+                Path.join('lib','underscore.js')
+            ];
+
+            files.forEach((f) => cp(Path.join(appPath, f), Path.join(outAppPath, f)));
+
+            cp(Path.join(appPath, 'x_launch.js'), Path.join(outAppPath, 'launch.js'));
+            cp(Path.join(appPath, 'x_package.json'), Path.join(outAppPath, 'package.json'));
+
+            var exclude = exportConfig.exclude || [];
+            cp(srcPath, Path.join(outAppPath, "g"), (f) => {
+                // TODO exclude should be a list of regexes, and just test each
+                if (f.match(/.ts$/)) return false;
+                if (f.match(/.js.map$/)) return false;
+                if (f.match(/src_image.*/)) return false;
+                if (exclude.indexOf(f) !== -1) return false;
+
+                return true;
+            });
+
+            this.output("-- Done copying.");
+
+            // TODO more steps?
+            //  - uglifyjs
+            //  - concat css
+            //  - definable steps
+
+            var rceditParams = [
+                Path.join(outPath, exportConfig.executable ? exportConfig.executable + '.exe' : 'egg.exe')
+            ];
+
+            if (config.icon) rceditParams.push('--set-icon', Path.join(outAppPath, 'g', config.icon));
+            if (config.title) rceditParams.push('--set-version-string', 'FileDescription', config.title);
+
+            if (rceditParams.length < 2) {
+                this.output("<span style='color:#0f0'>[ Success ]</span>\n");
+                resolve();
+                return;
+            }
+
+            this.output(`\n$ ${Path.join(ENGINEDIR, 'tool', 'rcedit.exe')} ${rceditParams.join(' ')}`);
+            Child.execFile(Path.join(ENGINEDIR, 'tool', 'rcedit.exe'), rceditParams, (error, stdout, stderr) => {
+                if (stdout) this.output(stdout);
+                if (stderr) this.output(stderr);
+                if (!error) {
+                    this.output("<span style='color:#0f0'>[ Success ]</span>\n");
+                    resolve();
+                } else {
+                    this.output("<span style='color:red'>[ FAILURE ]</span>\n");
+                    reject(error);
+                }
+            });
+        })
     },
 
     doc: function(srcPath, outputPath) {

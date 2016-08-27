@@ -28,6 +28,7 @@ module Egg {
     export var browserWindow: GitHubElectron.BrowserWindow;
 
     var gameName: string;
+    var enginePath:string;
     var paused: Boolean;
     var sizeMultiplier: Number;
     var lastTime: number;
@@ -41,13 +42,17 @@ module Egg {
         this.browserWindow = Electron.remote.getCurrentWindow();
         // this.browserWindow.toggleDevTools();
 
+        this.enginePath = opts.enginePath;
+
         this.textures = {};
         this.paused = true;
     }
 
     export function run() {
-        var eggPath = path.join(process.cwd(), ".engine", "resources", "app"); // TODO this isn't necessarily true
+        var eggPath = path.join(process.cwd(), this.enginePath, "resources", "app"); // TODO this isn't necessarily true
         var gamePath = path.join(process.cwd(), this.gameName);
+
+        console.log("paths->", eggPath, gamePath);
 
         process.chdir(gamePath);
         File.setPaths(eggPath, gamePath);

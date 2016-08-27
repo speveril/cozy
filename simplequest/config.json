@@ -1,7 +1,7 @@
 {
     "title": "SimpleQuest",
     "author": "Shamus Peveril <http://shamuspeveril.com>",
-    "icon": "icon.png",
+    "icon": "icon.ico",
     "main": "src/main.ts",
 
     "width": 320,
@@ -9,12 +9,17 @@
     "fullscreen": false,
     "volume": {
         "sfx": 0.5,
-        "//music": 0,
-        "music": 0.7
+        "music": 0,
+        "//music": 0.7
     },
     "css": [
         "font/fonts.css",
         "ui/menu.css",
         "ui/text.css"
-    ]
+    ],
+
+    "export": {
+        "executable": "SimpleQuest",
+        "exclude": ["src","src_image"]
+    }
 }

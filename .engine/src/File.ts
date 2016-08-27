@@ -80,6 +80,7 @@ module Egg {
         static setPaths(eggPath, gamePath) {
             File.eggPath = eggPath;
             File.gamePath = gamePath;
+            console.log("Paths:", eggPath, gamePath);
         }
     }
 
