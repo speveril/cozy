@@ -43,17 +43,14 @@ module RPG {
             }
 
             var wrapper = function*() {
-                console.log(" > START SCENE", sceneFunc);
                 if (RPG.player && RPG.player.sprite) {
                     RPG.player.sprite.animation = "stand_" + RPG.player.dir;
                 }
 
                 RPG.controlStack.push(RPG.ControlMode.Scene);
                 yield* sceneFunc();
-                console.log(" > END SCENE", sceneFunc);
             }
 
-            console.log("PUSHING SCENE", sceneFunc);
             this.scenes.push([wrapper.call(this)]);
             this.currentScene[1] = this.currentScene[0].next(0);
         }
@@ -61,9 +58,7 @@ module RPG {
         static update(dt:number) {
             if (this.currentScene) {
                 this.currentScene[1] = this.currentScene[0].next(dt);
-                console.log(this.scenes);
                 while (this.currentScene && this.currentScene[1].done) {
-                    console.log("POPPING SCENE", this.currentScene[0]);
 
                     if (this.scenes.length === 1) {
                         this.fadeLayer.style.opacity = '0';
