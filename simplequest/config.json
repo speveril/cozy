@@ -9,8 +9,7 @@
     "fullscreen": false,
     "volume": {
         "sfx": 0.5,
-        "music": 0,
-        "//music": 0.7
+        "music": 0.7
     },
     "css": [
         "font/fonts.css",
@@ -20,6 +19,8 @@
 
     "export": {
         "executable": "SimpleQuest",
-        "exclude": ["src","src_image"]
+        "exclude": [
+            "src_image.*"
+        ]
     }
 }
