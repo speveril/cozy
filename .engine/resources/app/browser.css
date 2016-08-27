@@ -89,6 +89,10 @@ body > section {
     color: #fff;
 }
 
+#controls button.off {
+    color: red;
+}
+
 #game-list {
     flex-basis: 0;
     flex-grow: 1;

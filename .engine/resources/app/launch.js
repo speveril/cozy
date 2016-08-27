@@ -36,7 +36,7 @@ function setup() {
 
         switch(command) {
             case 'play':
-                play(arg.path, arg.debug || false)
+                play(arg.path, arg.override || {}, arg.debug || false)
                     .then(() => {
                         output("<span style='color:#0f0'>[ Done ]</span>\n");
                     }, (e) => {
@@ -56,7 +56,7 @@ function setup() {
     // mainWindow.toggleDevTools();
 }
 
-function play(path, debug) {
+function play(path, override, debug) {
     path = path || '';
 
     return new Promise((resolve, reject) => {
@@ -68,6 +68,15 @@ function play(path, debug) {
             output("Couldn't load game in " + Path.join(process.cwd(), path) + ".");
             output("<span style='color:red'>" + e.toString() + "</span>");
             reject(e);
+        }
+
+        for (var k in override) {
+            if (k === 'sfx' || k === 'music') {
+                params['volume'] = params['volume'] || {};
+                params['volume'][k] = override[k];
+            } else {
+                params[k] = override[k];
+            }
         }
 
         output("<span style='color:white'>[ Launching " + (params.title || path) + " ]</span>");

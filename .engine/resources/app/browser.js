@@ -37,7 +37,9 @@ var Browser = {
         this.dialogContainer = $('#dialogs')[0];
         this.recompileInterval = null;
         this.activeGame = null;
+        this.override = null;
 
+        this.loadOverrides();
         this.rebuildGameList();
 
         this.setEngineStatus('ready');
@@ -89,6 +91,14 @@ var Browser = {
                 case 'newgame':
                     this.newGame();
                     break;
+                case 'sfx':
+                case 'music':
+                    if (target.classList.contains('off')) {
+                        this.setOverride(action, null);
+                    } else {
+                        this.setOverride(action, 0.0);
+                    }
+                    break;
                 default:
                     this.output("Unknown control action", action);
             }
@@ -122,6 +132,35 @@ var Browser = {
         this.newGameFooter.onclick = () => this.newGame();
 
         this.output("Egg project browser loaded.\n");
+    },
+
+    loadOverrides: function() {
+        this.override = JSON.parse(localStorage.getItem('override')) || {};
+        for (var k in this.override) {
+            this.setOverride(k, this.override[k]);
+        }
+    },
+
+    setOverride: function(k, v) {
+        if (v === null) {
+            delete this.override[k];
+        } else {
+            this.override[k] = v;
+        }
+
+        localStorage.setItem('override', JSON.stringify(this.override));
+
+        // reconcile UI
+        var el;
+        switch (k) {
+            case 'music':
+            case 'sfx':
+                el = document.querySelector('#controls button[data-action=' + k + ']');
+                v === null ? el.classList.remove('off') : el.classList.add('off');
+                break;
+            default:
+                break;
+        }
     },
 
     newGameDialog: function() {
@@ -265,10 +304,12 @@ var Browser = {
         this.buildGame(path)
             .then(() => {
                 li.classList.remove('compiling');
+
                 Electron.ipcRenderer.send('control-message', {
                     command: 'play',
                     path: path,
-                    debug: true
+                    debug: true,
+                    override: this.override
                 });
             }, () => {
                 li.classList.remove('compiling');
