@@ -170,8 +170,9 @@ module SimpleQuest {
                 }
 
                 sfx['dragon_roar'].play();
-                // TODO dragon animation
+                this.dragon.sprite.animation = 'roar';
                 yield *RPG.Scene.waitTime(2.0);
+                this.dragon.sprite.animation = 'stand_d';
 
                 var time = (3 - this.platformHeight) * 0.25;
                 for (var i = 0; i < letters.length; i++) {
