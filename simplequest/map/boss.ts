@@ -82,7 +82,6 @@ module SimpleQuest {
                     }
                 } else {
                     sfx['negative'].play();
-                    yield *this.waitCenteredTextbox("WRONG-O");
                     this.resetSwitches();
                     this.newSequence();
                 }
@@ -140,9 +139,33 @@ module SimpleQuest {
                         }
                     }
 
+                    sfx['dragon_roar'].play();
+                    this.dragon.sprite.animation = 'roar';
+                    yield *RPG.Scene.waitTime(2.0);
+
+                    sfx['dragon_roar'].play();
+                    music['victory'].start();
+
+                    var i, q = 0;
+                    for (i = 0; i < 2.0; i += 1/16) {
+                        this.dragon.adjust(-q, 0);
+                        if (q > 0) {
+                            q = -Math.random() * 2
+                        } else {
+                            q = Math.random() * 2;
+                        }
+                        this.dragon.adjust(q, 1);
+                        this.dragon.sprite.setClip(
+                            this.dragon.sprite.clip.y,
+                            this.dragon.sprite.clip.x,
+                            this.dragon.sprite.clip.width,
+                            this.dragon.sprite.clip.height - 1
+                        );
+                        yield *RPG.Scene.waitTime(1/16);
+                    }
+
                     this.dragon.destroy();
 
-                    music['victory'].start();
                     yield *this.waitCenteredTextbox('The dragon is defeated!');
 
                     this.doDoor('exit_door');
@@ -164,14 +187,15 @@ module SimpleQuest {
             RPG.Scene.do(function*() {
                 var letters = ['a','b','c'];
 
+                sfx['dragon_roar'].play();
+                this.dragon.sprite.animation = 'roar';
+                yield *RPG.Scene.waitTime(1.0);
                 for (var i = 0; i < letters.length; i++) {
                     var letter = letters[i];
                     this.layers[1].setTile(this.torches[letter].tx, this.torches[letter].ty, this.torchTiles.none);
                 }
+                yield *RPG.Scene.waitTime(1.0);
 
-                sfx['dragon_roar'].play();
-                this.dragon.sprite.animation = 'roar';
-                yield *RPG.Scene.waitTime(2.0);
                 this.dragon.sprite.animation = 'stand_d';
 
                 var time = (3 - this.platformHeight) * 0.25;

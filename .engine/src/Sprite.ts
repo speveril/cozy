@@ -2,12 +2,14 @@ module Egg {
     export class Sprite {
         texture: PIXI.Texture;
         textureFrame: PIXI.Rectangle;
+        clip: PIXI.Rectangle;
         innerSprite: PIXI.Sprite;
         hotspot: PIXI.Point;
         position: PIXI.Point;
         frameSize: PIXI.Point;
         frameCounts: PIXI.Point;
         layer: Egg.Layer;
+        frame_:number;
 
         animations: {};
         currentAnimation: {};
@@ -29,7 +31,7 @@ module Egg {
                 frameRate: <number>
             }
         **/
-        
+
         constructor(args) {
             if (typeof args === "string") {
                 args = JSON.parse(File.read(args));
@@ -51,8 +53,11 @@ module Egg {
             this.position = new PIXI.Point(args.position.x || 0, args.position.y || 0 );
             this.frameSize = new PIXI.Point(args.frameSize.x || args.texture.width, args.frameSize.y || args.texture.height);
             this.textureFrame = new PIXI.Rectangle(0, 0, this.frameSize.x, this.frameSize.y);
+            this.frame_ = 0;
             this.frameCounts = new PIXI.Point(Math.floor(this.texture.width / this.frameSize.x), Math.floor(this.texture.height / this.frameSize.y));
-            this.texture.frame = this.textureFrame;
+            this.clip = new PIXI.Rectangle(0, 0, this.frameSize.x, this.frameSize.y);
+
+            this.updateTextureFrame();
 
             this.animations = args.animations || {};
             this.frameRate = args.frameRate || 60;
@@ -64,9 +69,12 @@ module Egg {
         }
 
         set frame(f:number) {
-            this.textureFrame.x = this.frameSize.x * (f % this.frameCounts.x);
-            this.textureFrame.y = this.frameSize.y *  Math.floor(f / this.frameCounts.x);
-            this.texture.frame = this.textureFrame;
+            this.frame_ = f;
+            this.updateTextureFrame();
+        }
+
+        get frame() {
+            return this.frame_;
         }
 
         set animation(anim:string) {
@@ -90,6 +98,22 @@ module Egg {
             } else {
                 return undefined;
             }
+        }
+
+        setClip(x:number, y:number, w:number, h:number) {
+            this.clip.x = x;
+            this.clip.y = y;
+            this.clip.width = w;
+            this.clip.height = h;
+            this.updateTextureFrame();
+        }
+
+        private updateTextureFrame() {
+            this.textureFrame.x = this.frameSize.x * (this.frame % this.frameCounts.x) + this.clip.x;
+            this.textureFrame.y = this.frameSize.y *  Math.floor(this.frame / this.frameCounts.x) + this.clip.y;
+            this.texture.frame.width = Math.max(Math.min(this.frameSize.x, this.clip.width), 0);
+            this.texture.frame.height = Math.max(Math.min(this.frameSize.y, this.clip.height), 0);
+            this.texture.frame = this.textureFrame;
         }
 
         quake(t:number, range:any, decay?:any): void {

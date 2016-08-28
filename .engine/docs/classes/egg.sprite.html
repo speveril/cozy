@@ -93,11 +93,13 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="egg.sprite.html#animationscratch" class="tsd-kind-icon">animation<wbr>Scratch</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="egg.sprite.html#animations" class="tsd-kind-icon">animations</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="egg.sprite.html#clip" class="tsd-kind-icon">clip</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="egg.sprite.html#currentanimation" class="tsd-kind-icon">current<wbr>Animation</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="egg.sprite.html#currentquake" class="tsd-kind-icon">current<wbr>Quake</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="egg.sprite.html#framecounts" class="tsd-kind-icon">frame<wbr>Counts</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="egg.sprite.html#framerate" class="tsd-kind-icon">frame<wbr>Rate</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="egg.sprite.html#framesize" class="tsd-kind-icon">frame<wbr>Size</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="egg.sprite.html#frame_" class="tsd-kind-icon">frame_</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="egg.sprite.html#hotspot" class="tsd-kind-icon">hotspot</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="egg.sprite.html#innersprite" class="tsd-kind-icon">inner<wbr>Sprite</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="egg.sprite.html#layer" class="tsd-kind-icon">layer</a></li>
@@ -110,7 +112,7 @@
 							<h3>Accessors</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-external"><a href="egg.sprite.html#animation" class="tsd-kind-icon">animation</a></li>
-								<li class="tsd-kind-set-signature tsd-parent-kind-class tsd-is-external"><a href="egg.sprite.html#frame" class="tsd-kind-icon">frame</a></li>
+								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-external"><a href="egg.sprite.html#frame" class="tsd-kind-icon">frame</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-external">
@@ -120,8 +122,10 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="egg.sprite.html#overlaps" class="tsd-kind-icon">overlaps</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-external"><a href="egg.sprite.html#positioninnersprite" class="tsd-kind-icon">position<wbr>Inner<wbr>Sprite</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="egg.sprite.html#quake" class="tsd-kind-icon">quake</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="egg.sprite.html#setclip" class="tsd-kind-icon">set<wbr>Clip</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="egg.sprite.html#setposition" class="tsd-kind-icon">set<wbr>Position</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="egg.sprite.html#update" class="tsd-kind-icon">update</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-external"><a href="egg.sprite.html#updatetextureframe" class="tsd-kind-icon">update<wbr>Texture<wbr>Frame</a></li>
 							</ul>
 						</section>
 					</div>
@@ -139,7 +143,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Sprite.ts:16</li>
+									<li>Defined in Sprite.ts:18</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -180,7 +184,7 @@
 					<div class="tsd-signature tsd-kind-icon">animation<wbr>Scratch<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Sprite.ts:14</li>
+							<li>Defined in Sprite.ts:16</li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -195,7 +199,7 @@
 					<div class="tsd-signature tsd-kind-icon">animations<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Sprite.ts:12</li>
+							<li>Defined in Sprite.ts:14</li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -205,12 +209,22 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
+					<a name="clip" class="tsd-anchor"></a>
+					<h3>clip</h3>
+					<div class="tsd-signature tsd-kind-icon">clip<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Rectangle</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in Sprite.ts:5</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
 					<a name="currentanimation" class="tsd-anchor"></a>
 					<h3>current<wbr>Animation</h3>
 					<div class="tsd-signature tsd-kind-icon">current<wbr>Animation<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Sprite.ts:13</li>
+							<li>Defined in Sprite.ts:15</li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -225,7 +239,7 @@
 					<div class="tsd-signature tsd-kind-icon">current<wbr>Quake<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Sprite.ts:16</li>
+							<li>Defined in Sprite.ts:18</li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -240,7 +254,7 @@
 					<div class="tsd-signature tsd-kind-icon">frame<wbr>Counts<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Point</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Sprite.ts:9</li>
+							<li>Defined in Sprite.ts:10</li>
 						</ul>
 					</aside>
 				</section>
@@ -250,7 +264,7 @@
 					<div class="tsd-signature tsd-kind-icon">frame<wbr>Rate<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Sprite.ts:15</li>
+							<li>Defined in Sprite.ts:17</li>
 						</ul>
 					</aside>
 				</section>
@@ -260,7 +274,17 @@
 					<div class="tsd-signature tsd-kind-icon">frame<wbr>Size<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Point</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Sprite.ts:8</li>
+							<li>Defined in Sprite.ts:9</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
+					<a name="frame_" class="tsd-anchor"></a>
+					<h3>frame_</h3>
+					<div class="tsd-signature tsd-kind-icon">frame_<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in Sprite.ts:12</li>
 						</ul>
 					</aside>
 				</section>
@@ -270,7 +294,7 @@
 					<div class="tsd-signature tsd-kind-icon">hotspot<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Point</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Sprite.ts:6</li>
+							<li>Defined in Sprite.ts:7</li>
 						</ul>
 					</aside>
 				</section>
@@ -280,7 +304,7 @@
 					<div class="tsd-signature tsd-kind-icon">inner<wbr>Sprite<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Sprite</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Sprite.ts:5</li>
+							<li>Defined in Sprite.ts:6</li>
 						</ul>
 					</aside>
 				</section>
@@ -290,7 +314,7 @@
 					<div class="tsd-signature tsd-kind-icon">layer<span class="tsd-signature-symbol">:</span> <a href="egg.layer.html" class="tsd-signature-type">Layer</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Sprite.ts:10</li>
+							<li>Defined in Sprite.ts:11</li>
 						</ul>
 					</aside>
 				</section>
@@ -300,7 +324,7 @@
 					<div class="tsd-signature tsd-kind-icon">position<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Point</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Sprite.ts:7</li>
+							<li>Defined in Sprite.ts:8</li>
 						</ul>
 					</aside>
 				</section>
@@ -338,7 +362,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Sprite.ts:87</li>
+									<li>Defined in Sprite.ts:95</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -346,7 +370,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Sprite.ts:72</li>
+									<li>Defined in Sprite.ts:80</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -359,17 +383,26 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-set-signature tsd-parent-kind-class tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
 					<a name="frame" class="tsd-anchor"></a>
 					<h3>frame</h3>
-					<ul class="tsd-signatures tsd-kind-set-signature tsd-parent-kind-class tsd-is-external">
+					<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> frame<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
 						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> frame<span class="tsd-signature-symbol">(</span>f<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Sprite.ts:66</li>
+									<li>Defined in Sprite.ts:76</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in Sprite.ts:71</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -395,7 +428,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Sprite.ts:156</li>
+									<li>Defined in Sprite.ts:180</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -421,7 +454,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Sprite.ts:162</li>
+									<li>Defined in Sprite.ts:186</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -444,7 +477,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Sprite.ts:184</li>
+									<li>Defined in Sprite.ts:208</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -461,7 +494,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Sprite.ts:95</li>
+									<li>Defined in Sprite.ts:119</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -481,6 +514,38 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="setclip" class="tsd-anchor"></a>
+					<h3>set<wbr>Clip</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Clip<span class="tsd-signature-symbol">(</span>x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, w<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, h<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in Sprite.ts:103</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>x: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>y: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>w: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>h: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
 					<a name="setposition" class="tsd-anchor"></a>
 					<h3>set<wbr>Position</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
@@ -490,7 +555,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Sprite.ts:150</li>
+									<li>Defined in Sprite.ts:174</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -516,7 +581,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Sprite.ts:107</li>
+									<li>Defined in Sprite.ts:131</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -525,6 +590,23 @@
 									<h5>dt: <span class="tsd-signature-type">any</span></h5>
 								</li>
 							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-external">
+					<a name="updatetextureframe" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> update<wbr>Texture<wbr>Frame</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">update<wbr>Texture<wbr>Frame<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in Sprite.ts:111</li>
+								</ul>
+							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -595,6 +677,9 @@
 								<a href="egg.sprite.html#animations" class="tsd-kind-icon">animations</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
+								<a href="egg.sprite.html#clip" class="tsd-kind-icon">clip</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
 								<a href="egg.sprite.html#currentanimation" class="tsd-kind-icon">current<wbr>Animation</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
@@ -608,6 +693,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
 								<a href="egg.sprite.html#framesize" class="tsd-kind-icon">frame<wbr>Size</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
+								<a href="egg.sprite.html#frame_" class="tsd-kind-icon">frame_</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
 								<a href="egg.sprite.html#hotspot" class="tsd-kind-icon">hotspot</a>
@@ -630,7 +718,7 @@
 							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
 								<a href="egg.sprite.html#animation" class="tsd-kind-icon">animation</a>
 							</li>
-							<li class=" tsd-kind-set-signature tsd-parent-kind-class tsd-is-external">
+							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
 								<a href="egg.sprite.html#frame" class="tsd-kind-icon">frame</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
@@ -646,10 +734,16 @@
 								<a href="egg.sprite.html#quake" class="tsd-kind-icon">quake</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="egg.sprite.html#setclip" class="tsd-kind-icon">set<wbr>Clip</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="egg.sprite.html#setposition" class="tsd-kind-icon">set<wbr>Position</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="egg.sprite.html#update" class="tsd-kind-icon">update</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-external">
+								<a href="egg.sprite.html#updatetextureframe" class="tsd-kind-icon">update<wbr>Texture<wbr>Frame</a>
 							</li>
 						</ul>
 					</li>
