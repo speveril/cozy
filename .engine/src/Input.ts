@@ -15,13 +15,18 @@ module Egg {
                 });
             }
             if (axisMap) {
-                // TODO
+                _.each(axisMap, (ids, axis) => {
+                    _.each(ids, (id) => {
+                        if (!_.has(this.axisMap, id.toString())) this.axisMap[id] = [];
+                        this.axisMap[id].push(axis);
+                    })
+                });
             }
         }
 
-        getSnapshot() {
-            // override for each device
-        }
+        // override for each device
+        getButtonState():{[name:string]:number} { return {}; }
+        getAxisState():{[name:string]:number} { return {}; }
     }
 
     class KeyboardDevice extends Device {
@@ -65,7 +70,7 @@ module Egg {
             }
         }
 
-        getSnapshot() {
+        getButtonState():{[name:string]:number} {
             return _.mapObject(this.pressed, () => {
                 return 1.0;
             });
@@ -78,11 +83,12 @@ module Egg {
         constructor(index:number, buttonMap?:{[name:string]:Array<number>}, axisMap?:{[name:string]:Array<number>}) {
             super(buttonMap, axisMap);
             this.index = index;
+            console.log(navigator.getGamepads()[this.index]);
         }
 
-        getSnapshot() {
+        getButtonState():{[name:string]:number} {
             var pad = navigator.getGamepads()[this.index];
-            var state = {};
+            var state:{[name:string]:number} = {};
             _.each(pad.buttons, (button, id) => {
                 if (button.pressed && _.has(this.buttonMap, id.toString())) {
                     _.each(this.buttonMap[id], (b) => {
@@ -92,23 +98,44 @@ module Egg {
             });
             return state;
         }
+
+        getAxisState():{[name:string]:number} {
+            var pad = navigator.getGamepads()[this.index];
+            var state:{[name:string]:number} = {};
+            var count:{[name:string]:number} = {};
+
+            _.each(pad.axes, (d, axisIndex) => {
+                if (Math.abs(d) < Input.deadzone) return;
+                if (_.has(this.axisMap, axisIndex.toString())) {
+                    _.each(this.axisMap[axisIndex], (axisName) => {
+                        count[axisName] = (count[axisName] || 0) + 1;
+                        state[axisName] = (state[axisName] || 0) + d;
+                    });
+                }
+            });
+            return _.mapObject(state, (d, name) => {
+                return d / count[name];
+            });
+        }
     }
 
     export class Input {
+        public static deadzone:number = 0.15;
         private static buttonMap: { [key:number]:string[] };
         private static button: { [name:string]:ButtonState };
+        private static axes: { [name:string]:number };
         private static buttonTimeouts: { [name:string]:number };
         private static callbacks: { [name:string]:any[] };
         private static devices:Array<Device>;
+        private static controlConfig:{ [name:string]: any };
 
         static init(controls?:{ [name:string]: any }) {
+            this.axes = {};
             this.button = {};
             this.buttonMap = {};
             this.buttonTimeouts = {};
             this.callbacks = {};
             this.devices = [];
-
-            var b:{[name:string]: number[]};
 
             window.addEventListener("gamepadconnected", (evt) => {
                 var gamepad = navigator.getGamepads()[evt['gamepad'].index];
@@ -122,31 +149,42 @@ module Egg {
                 console.log("Lost gamepad.", gamepad);
             });
 
-            if (controls && controls['keyboard']) {
-                this.addKeyboard(controls['keyboard']);
-            } else {
-                this.addKeyboard(null);
-            }
+            this.controlConfig = controls || {};
+            this.addKeyboard();
         }
 
         static update(dt) {
-            var deviceState = {};
+            var buttonState = {};
+            var axisState = {};
+
             _.each(Input.devices, (device) => {
-                deviceState = _.extend(deviceState, device.getSnapshot())
+                buttonState = _.extend(buttonState, device.getButtonState());
+                _.each(device.getAxisState(), (d:number, id:string) => {
+                    axisState[id] = axisState[id] || [];
+                    axisState[id].push(d);
+                });
             });
 
             _.each(this.button, (state, b) => {
-                if (state !== ButtonState.IGNORED && deviceState[b] > 0.15) {
+                if (state !== ButtonState.IGNORED && buttonState[b] > Input.deadzone) {
                     this.button[b] = ButtonState.DOWN;
                     var eventInfo = { button: b, pressed: true };
                     this.triggerCallbacks(b, eventInfo);
                     this.triggerCallbacks(b + ".down", eventInfo);
-                } else if (state !== ButtonState.UP && (!deviceState[b] || deviceState[b] < 0.15)) {
+                } else if (state !== ButtonState.UP && (!buttonState[b] || buttonState[b] < Input.deadzone)) {
                     this.button[b] = ButtonState.UP;
                     var eventInfo = { button: b, pressed: false };
                     this.triggerCallbacks(b, eventInfo);
                     this.triggerCallbacks(b + ".up", eventInfo);
                     clearTimeout(this.buttonTimeouts[b]);
+                }
+            });
+
+            _.each(_.keys(this.axes), (a) => {
+                if (axisState[a]) {
+                    this.axes[a] = _.reduce(axisState[a], (acc:number, x:number) => acc + x) / axisState[a].length;
+                } else {
+                    this.axes[a] = 0.0;
                 }
             });
         }
@@ -175,8 +213,8 @@ module Egg {
             }
         }
 
-        private static addKeyboard(buttons) {
-            var b;
+        private static addKeyboard() {
+            var b, buttons = this.controlConfig['keyboard'];
 
             if (buttons) {
                 b = _.mapObject(buttons, (v) => typeof v === 'number' ? [v] : v);
@@ -224,9 +262,15 @@ module Egg {
             });
 
             a = {
-                "left-right": [0, 2], // left-stick horiz, right-stick horiz
-                "up-down": [1, 3] //left-stick vert, right-stick vert
+                "horizontal": [0, 2], // left-stick horiz, right-stick horiz
+                "vertical": [1, 3] //left-stick vert, right-stick vert
             };
+
+            _.each(_.keys(a), (axisName) => {
+                if (!_.has(this.axes, axisName)) {
+                    this.axes[axisName] = 0.0;
+                }
+            });
 
             this.devices.push(new GamepadDevice(index, b, a));
         }
@@ -240,6 +284,10 @@ module Egg {
 
         static pressed(name):Boolean {
             return (this.button[name] === ButtonState.DOWN);
+        }
+
+        static axis(name):number {
+            return this.axes[name];
         }
 
         static debounce(name, duration?:number) {

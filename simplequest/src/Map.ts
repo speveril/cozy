@@ -74,7 +74,7 @@ module SimpleQuest {
             super.update(dt);
 
             if (this.threatGroup) {
-                var d = dist(this.lastPlayerPosition, RPG.player.position);
+                var d = Trig.dist(this.lastPlayerPosition, RPG.player.position);
                 this.nextBattle -= d;
 
                 if (this.nextBattle < 0) {

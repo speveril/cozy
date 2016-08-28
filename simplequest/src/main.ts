@@ -166,10 +166,10 @@ module SimpleQuest {
         RPG.player = RPG.Party.members[0].makeEntity();
 
         // music['village'].start();
-        // RPG.startMap(new Map_Town(), 10, 7);
+        RPG.startMap(new Map_Town(), 10, 7);
         // music['forest'].start();
         // RPG.startMap(new Map_Forest(), 7, 43);
-        RPG.startMap(new Map_Debug(), 11, 20, undefined, { noFadeOut: true });
+        // RPG.startMap(new Map_Debug(), 11, 20, undefined, { noFadeOut: true });
 
         Egg.unpause();
     }

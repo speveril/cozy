@@ -13,8 +13,8 @@ module SimpleQuest {
             RPG.startMap(new Map_Overworld, 14, 12);
         }
 
-        test_key_door(args) {
-            this.doKeyDoor('test_key_door', 'iron_key', 'Sorry, this is locked bucko.');
+        goto_debug(args) {
+            RPG.startMap(new Map_Debug(), 11, 20);
         }
 
         sign_house(args) {

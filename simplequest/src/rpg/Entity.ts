@@ -1,22 +1,3 @@
-// obstruction utils
-// http://stackoverflow.com/questions/849211/shortest-distance-between-a-point-and-a-line-segment
-function sqr(x) { return x * x }
-function dist(v, w) { return Math.sqrt(dist2(v, w)); }
-function dist2(v, w) { return sqr(v.x - w.x) + sqr(v.y - w.y) }
-function closestPointOnLine(p, v, w) {
-    var len = dist2(v, w);
-    if (len === 0) return v;
-    var t = ((p.x - v.x) * (w.x - v.x) + (p.y - v.y) * (w.y - v.y)) / len;
-    if (t < 0) return v;
-    if (t > 1) return w;
-    return {
-        x: v.x + t * (w.x - v.x),
-        y: v.y + t * (w.y - v.y)
-    };
-}
-function distToSegmentSquared(p, v, w) { return dist2(p, closestPointOnLine(p, v, w)); }
-function distToSegment(p, v, w) { return Math.sqrt(distToSegmentSquared(p, v, w)); }
-
 module RPG {
     export class Entity {
         private spriteDef:any; // can be an object or a string
@@ -79,8 +60,8 @@ module RPG {
                 ty = Math.floor(this.position.y / this.layer.map.tileSize.y);
 
             if (dy !== 0 || dx !== 0) {
-                if (dx < 0 && dy === 0) this.sprite.animation = "walk_l";
-                if (dx > 0 && dy === 0) this.sprite.animation = "walk_r";
+                if (dx < 0 && Math.abs(dx) > Math.abs(dy)) this.sprite.animation = "walk_l";
+                if (dx > 0 && Math.abs(dx) > Math.abs(dy)) this.sprite.animation = "walk_r";
                 if (dy < 0) this.sprite.animation = "walk_u";
                 if (dy > 0) this.sprite.animation = "walk_d";
 
@@ -107,8 +88,8 @@ module RPG {
                         if (!obstructions[i].active) {
                             continue;
                         }
-                        var closest = closestPointOnLine(projectedPosition, obstructions[i].a, obstructions[i].b);
-                        d = Math.sqrt(dist2(projectedPosition, closest));
+                        var closest = Trig.closestPointOnLine(projectedPosition, obstructions[i].a, obstructions[i].b);
+                        d = Math.sqrt(Trig.dist2(projectedPosition, closest));
                         if (d < this.radius) {
                             var ang = Math.atan2(projectedPosition.y - closest.y, projectedPosition.x - closest.x);
                             projectedPosition.x += Math.cos(ang) * (this.radius - d);
@@ -118,7 +99,7 @@ module RPG {
                     for (i = 0; i < entities.length; i++) {
                         if (entities[i] === this) continue;
 
-                        d = Math.sqrt(dist2(projectedPosition, entities[i].position));
+                        d = Math.sqrt(Trig.dist2(projectedPosition, entities[i].position));
 
                         var stationary = true;
                         // TODO set stationary to false if the entity is moving
@@ -140,8 +121,8 @@ module RPG {
                                 [ { x: entityX - entityR, y: entityY - entityR }, { x: entityX - entityR, y: entityY + entityR } ]
                             ];
                             for (e = 0; e < edges.length; e++) {
-                                var closest = closestPointOnLine(projectedPosition, edges[e][0], edges[e][1]);
-                                d = Math.sqrt(dist2(projectedPosition, closest));
+                                var closest = Trig.closestPointOnLine(projectedPosition, edges[e][0], edges[e][1]);
+                                d = Math.sqrt(Trig.dist2(projectedPosition, closest));
                                 if (d < this.radius) {
                                     var ang = Math.atan2(projectedPosition.y - closest.y, projectedPosition.x - closest.x);
                                     projectedPosition.x += Math.cos(ang) * (this.radius - d);
@@ -157,7 +138,7 @@ module RPG {
                         }
                     }
 
-                    d = Math.sqrt(dist2(this.sprite.position, projectedPosition));
+                    d = Math.sqrt(Trig.dist2(this.sprite.position, projectedPosition));
                     if (d === 0) break;
 
                     travelled += d / dist;

@@ -81,6 +81,10 @@ module RPG {
             map.update(dt);
         }
 
+        if (controlStack.length < 1) {
+            throw new Error("Control stack got emptied");
+        }
+
         var controls = controlStack[controlStack.length - 1];
         if (controls === ControlMode.Map && map && player) {
             RPG.frameMapMode(dt);

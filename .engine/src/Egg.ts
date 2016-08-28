@@ -13,6 +13,8 @@
 /// <reference path="Texture.ts"/>
 /// <reference path="UiComponent.ts"/>
 
+/// <reference path="Trig.ts"/>
+
 var Electron = require('electron');
 declare var FontFace:any;
 
@@ -40,7 +42,7 @@ module Egg {
         this.debug = !!opts.debug;
         this.gameName = opts.game;
         this.browserWindow = Electron.remote.getCurrentWindow();
-        
+
         if (this.debug)
             this.browserWindow.toggleDevTools();
 

@@ -2,18 +2,25 @@ module RPG {
     export function frameMapMode(dt) {
         // handle movement
         var dx = 0, dy = 0;
-        if (Egg.Input.pressed('up')) dy -= player.speed * dt;
-        if (Egg.Input.pressed('down')) dy += player.speed * dt;
-        if (Egg.Input.pressed('left')) dx -= player.speed * dt;
-        if (Egg.Input.pressed('right')) dx += player.speed * dt;
+        var movex = Egg.Input.axis('horizontal') || 0,
+            movey = Egg.Input.axis('vertical') || 0;
 
-        // diagonal movement should only be as fast as cardinal movement
-        if (dx !== 0 && dy !== 0) {
-            dx *= 0.707;
-            dy *= 0.707;
-            // correct for shuddering on diagonal movement; I kind of hate this hack
-            player.sprite.setPosition(Math.round(player.position.x), Math.round(player.position.y));
+        if (Egg.Input.pressed('up')) movey -= 1;
+        if (Egg.Input.pressed('down')) movey += 1;
+        if (Egg.Input.pressed('left')) movex -= 1;
+        if (Egg.Input.pressed('right')) movex += 1;
+
+        var move = Trig.dist({x:0,y:0}, {x:movex, y:movey});
+        if (Math.abs(move) < Egg.Input.deadzone) {
+            movex = 0;
+            movey = 0;
+        } else if (move > 1 ) {
+            movex *= (1 / move);
+            movey *= (1 / move);
         }
+
+        dx = movex * player.speed * dt;
+        dy = movey * player.speed * dt;
 
         player.move(dx, dy);
 
@@ -39,7 +46,7 @@ module RPG {
             }
 
             _.each(player.layer.entities, function(entity) {
-                if (Math.sqrt(dist2({x:tx, y:ty}, entity.position)) < entity.radius && player.layer.map[entity.name]) {
+                if (Math.sqrt(Trig.dist2({x:tx, y:ty}, entity.position)) < entity.radius && player.layer.map[entity.name]) {
                     player.layer.map[entity.name]({
                         entity: player,
                         target: entity,
