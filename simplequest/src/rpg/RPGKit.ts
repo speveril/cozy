@@ -94,6 +94,8 @@ module RPG {
             Menu.update(dt);
         } else if (controls === ControlMode.Battle && Battle.active) {
             Battle.update(dt);
+        } else {
+            console.log("update() has some bad controls:", controls);
         }
 
         if (player && player.layer) {

@@ -73,9 +73,8 @@ module RPG {
             Menu.menuStack.pop().stop();
             if (Menu.menuStack.length > 0) {
                 Menu.currentMenu.unpause();
-            } else {
-                RPG.controlStack.pop();
             }
+            RPG.controlStack.pop();
         }
 
         static replace(m:Menu):void {
