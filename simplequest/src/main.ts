@@ -126,7 +126,7 @@ module SimpleQuest {
                 name: 'Gold Key', icon: "ui/item_icons.png", icon_frame: { x: 112, y: 14 }, description: "A golden key.", sort: 95.02
             },
             massive_key: {
-                name: 'Massive Key', icon: "ui/item_icons.png", icon_frame: { x: 112, y: 14 }, description: "A big, heavy key.", sort: 95.02
+                name: 'Massive Key', icon: "ui/item_icons.png", icon_frame: { x: 126, y: 14 }, description: "A big, heavy key.", sort: 95.02
             }
         });
 

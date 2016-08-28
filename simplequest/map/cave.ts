@@ -42,5 +42,9 @@ module SimpleQuest {
         exit_door(args) {
             this.doKeyDoor('exit_door', 'massive_key');
         }
+
+        exit_boss(args) {
+            RPG.startMap(new Map_Boss(), 11, 13);
+        }
     }
 }
