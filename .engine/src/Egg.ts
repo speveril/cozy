@@ -40,7 +40,9 @@ module Egg {
         this.debug = !!opts.debug;
         this.gameName = opts.game;
         this.browserWindow = Electron.remote.getCurrentWindow();
-        // this.browserWindow.toggleDevTools();
+        
+        if (this.debug)
+            this.browserWindow.toggleDevTools();
 
         this.enginePath = opts.enginePath;
 
@@ -56,7 +58,7 @@ module Egg {
 
         process.chdir(gamePath);
         File.setPaths(eggPath, gamePath);
-        Egg.Input.init(this.config['buttons']);
+        Egg.Input.init(this.config['controls']);
 
         // set up window
         var multX = screen.availWidth / this.config['width'],
@@ -66,9 +68,16 @@ module Egg {
         this.browserWindow.setContentSize(this.config['width'] * mult, this.config['height'] * mult);
         this.browserWindow.center();
 
-        window.addEventListener('keydown', (e) => Input.onKeyDown(e));
-        window.addEventListener('keyup', (e) => Input.onKeyUp(e));
         window.addEventListener('resize', (e) => this.onResize(e));
+
+        // debugging
+        if (this.debug) { // ~ key, opens console
+            window.addEventListener('onkeydown', (e) => {
+                if (e['keyCode'] === 192) {
+                    Egg.browserWindow['toggleDevTools']();
+                }
+            });
+        }
 
         // set up graphics
         PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
@@ -110,6 +119,8 @@ module Egg {
         var dt = Date.now() - this.lastTime;
         this.lastTime += dt;
         dt /= 1000;
+
+        Input.update(dt);
 
         if (this.paused) { return; }
 
