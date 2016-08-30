@@ -120,7 +120,7 @@ module Egg {
     }
 
     export class Input {
-        public static deadzone:number = 0.15;
+        public static deadzone:number = 0.25;
         private static buttonMap: { [key:number]:string[] };
         private static button: { [name:string]:ButtonState };
         private static axes: { [name:string]:number };
@@ -252,7 +252,7 @@ module Egg {
 
                 "confirm": [0, 2], // A, X
                 "cancel": [1], // B
-                "menu": [3, 9] // X, Y, "start"
+                "menu": [3, 9] // Y, "start"
             };
 
             _.each(_.keys(b), (buttonName) => {

@@ -61,9 +61,9 @@ module RPG {
 
             if (dy !== 0 || dx !== 0) {
                 if (dx < 0 && Math.abs(dx) > Math.abs(dy)) this.sprite.animation = "walk_l";
-                if (dx > 0 && Math.abs(dx) > Math.abs(dy)) this.sprite.animation = "walk_r";
-                if (dy < 0) this.sprite.animation = "walk_u";
-                if (dy > 0) this.sprite.animation = "walk_d";
+                else if (dx > 0 && Math.abs(dx) > Math.abs(dy)) this.sprite.animation = "walk_r";
+                else if (dy < 0) this.sprite.animation = "walk_u";
+                else if (dy > 0) this.sprite.animation = "walk_d";
 
                 if (!this.respectsObstructions) {
                     this.sprite.adjustPosition(dx, dy);
