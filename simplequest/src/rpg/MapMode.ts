@@ -46,7 +46,7 @@ module RPG {
             }
 
             _.each(player.layer.entities, function(entity) {
-                if (Math.sqrt(Trig.dist2({x:tx, y:ty}, entity.position)) < entity.radius && player.layer.map[entity.name]) {
+                if (player.layer.map[entity.name] && Math.sqrt(Trig.dist2({x:tx, y:ty}, entity.position)) < entity.radius) {
                     player.layer.map[entity.name]({
                         entity: player,
                         target: entity,
