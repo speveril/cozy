@@ -34,28 +34,22 @@ Just run the Egg shortcut (or .engine/egg.exe). This will open the launcher/proj
     - Don't make it required that the current working directory is actually the gamepath
 - Make it work in a browser too
 - config.json should be able to define an expected version, Egg should be smart enough to do the right thing
-- Make an export
-    - Pick a directory somewhere on the drive
-    - Copy over ONLY the stuff needed to run one game
-    - Use a stripped down version of the launcher; no debug, no compilation, no browser, etc
 
 Feature wish list (some day):
 
 - PlatformerKit
 - Slim down Electron so the executable isn't so huge
 - Replace rendering engine with something SDL-based
-- Post-process filters, scaling filters (CRT emulation?) <http://chadaustin.me/2015/11/crts-pixels-and-video-games/>
+- Post-process filters, scaling filters (CRT emulation?)
+    - <http://chadaustin.me/2015/11/crts-pixels-and-video-games/>
 - More complex songs -- intros, loops, multiple tracks that you can control separately
 
 ## Things to consider/remember
 
-- Make it easier to work with the HTML elements in the overlay.
 - Split config.json into necessary game setup vs. player configuration
 - Integrate SCSS? ReactJS?
-- Events should really only trigger on entering the tile, not every frame (I was thinking of including "zones" for continuous fire events)
 - It'd be nice if the persistent stuff in map was easier to use in general
 - Should I treat other entities for purposes of collisions as circles?
-- Move the dist/closestpoint/etc functions in Entity into a general util somewhere
 - Can I just slurp in all of the map .ts files automatically instead of having to reference each one?
 
 
