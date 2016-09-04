@@ -93,6 +93,7 @@ module RPG {
         selectionContainer:HTMLElement;
         selections:HTMLElement[];
         cancelable:boolean;
+        private firstScrollFix:boolean = false;
 
         constructor(args) {
             super(args);
@@ -130,7 +131,12 @@ module RPG {
             this.remove();
         }
 
-        update(dt) {}
+        update(dt) {
+            if (!this.firstScrollFix) {
+                this.firstScrollFix = true;
+                this.fixScroll();
+            }
+        }
 
         confirmSelection() {
             if (this.selections.length < 1) return;
