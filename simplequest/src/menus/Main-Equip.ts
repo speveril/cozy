@@ -118,6 +118,8 @@ module SimpleQuest {
                     });
 
                     RPG.Menu.push(this.itemMenu, this, '.items-row');
+                    
+                    this.itemMenu.selectItem(this.character.equipped[this.selectedSlot] ? this.character.equipped[this.selectedSlot].key : '');
                 } else {
                     SimpleQuest.sfx['menu_bad'].play();
                     return false;

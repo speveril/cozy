@@ -14,7 +14,7 @@ module SimpleQuest {
         }
 
         goto_debug(args) {
-            RPG.startMap(new Map_Debug(), 11, 20);
+            RPG.startMap(new Map_Debug(), 9, 7);
         }
 
         sign_house(args) {
@@ -29,39 +29,39 @@ module SimpleQuest {
             }.bind(this));
         }
 
-        doShop(args) {
-            // TODO move to Map
-            Egg.Input.debounce('menu');
-            Egg.Input.debounce('cancel');
-            RPG.Menu.push(new SimpleQuest.Menu.Shop(args));
-            // end TODO move to map
-        }
-
         shopkeeper_left(args) {
-            RPG.Scene.do(function*() {
-                // yield* this.waitTextbox("SHOPKEEP", ["Don't you just love shopping?!"]);
-                // yield* this.waitTextbox("HERO", ["..."]);
-                // yield* this.waitTextbox("SHOPKEEP", ["Me too!"]);
-
+            if (!this.persisted('talked to item shop')) {
+                this.persist('talked to item shop');
+                RPG.Scene.do(function*() {
+                    yield* this.waitTextbox("SHOPKEEP", ["Don't you just love shopping?!"]);
+                    yield* this.waitTextbox("HERO", ["..."]);
+                    yield* this.waitTextbox("SHOPKEEP", ["Me too!"]);
+                }.bind(this));
+            } else {
                 this.doShop({
-                    shopName: "Don't you just love shopping!?",
-                    products: [ 'tonic', 'potion' ]
+                    shopName: "Item Shop",
+                    products: [
+                        'tonic', 'potion'
+                    ]
                 });
-            }.bind(this));
+            }
         }
 
         shopkeeper_right(args) {
-            RPG.Scene.do(function*() {
-                // yield* this.waitTextbox("SHOPKEEP", ["Buy somethin', will ya!"]);
-
-                // TODO move to a shop() function
+            if (!this.persisted('talked to equip shop')) {
+                this.persist('talked to equip shop');
+                RPG.Scene.do(function*() {
+                    yield* this.waitTextbox("SHOPKEEP", ["Buy somethin', will ya!"]);
+                }.bind(this));
+            } else {
                 this.doShop({
-                    shopName: "Buy somethin', will ya!",
-                    priceMultiplier: 1.5,
-                    products: [ 'tonic', 'short_sword', 'arming_sword' ]
+                    shopName: "Equipment Shop",
+                    products: [
+                        'short_sword', 'arming_sword',
+                        'oak_shield'
+                    ]
                 });
-                // end hypothetical shop()
-            }.bind(this));
+            }
         }
 
         villager_well(args) {

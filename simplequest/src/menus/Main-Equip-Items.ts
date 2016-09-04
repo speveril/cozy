@@ -16,6 +16,21 @@ module SimpleQuest {
                 this.element.classList.add('panel','items-submenu','layout-column');
             }
 
+            selectItem(key:string) {
+                if (key) {
+                    console.log("Find", key, "in", this.items, "?");
+                    var index = _.findIndex(this.items, (it) => it.key === key);
+                    if (index > -1) {
+                        console.log(" ->", index);
+                        this.setSelection(index);
+                        return;
+                    }
+                }
+
+                console.log(" -> NO");
+                this.setSelection(0);
+            }
+
             setChooseCallback(chooseCB:any) {
                 this.chooseCB = chooseCB;
             }
@@ -51,7 +66,7 @@ module SimpleQuest {
 
                 this.selections = [];
                 this.setupSelections(listContainer);
-                this.selectionIndex = Math.min(this.selections.length, resetSelection);
+                this.selectionIndex = 0; //Math.min(this.selections.length - 1, resetSelection);
             }
 
             setSelection(index:number) {

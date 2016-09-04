@@ -4,6 +4,8 @@ module SimpleQuest {
     export module Menu {
         export class Shop extends RPG.Menu {
             priceMultiplier:number;
+            products:RPG.Item[];
+            firstFixScroll:boolean = false;
 
             constructor(args) {
                 super({
@@ -14,7 +16,13 @@ module SimpleQuest {
 
                         <div class="main-area">
                             <div class="shop-name">${args.shopName}</div>
-                            <ul class="items selections"></ul>
+                            <div class="info">
+                                <div>Buy</div>
+                                <div class="money">${RPG.Party.money}${RPG.moneyName}</div>
+                            </div>
+                            <div class="items-container">
+                                <ul class="items selections"></ul>
+                            </div>
                             <div class="description"></div>
                         </div>
                     `
@@ -24,22 +32,22 @@ module SimpleQuest {
 
                 var listContainer = this.find('.selections');
 
-                var resumeElement = document.createElement('li');
-                resumeElement.setAttribute('data-menu', 'resume');
-                resumeElement.innerHTML = 'Leave'
-                listContainer.appendChild(resumeElement);
+                // var resumeElement = document.createElement('li');
+                // resumeElement.setAttribute('data-menu', 'resume');
+                // resumeElement.innerHTML = 'Leave'
+                // listContainer.appendChild(resumeElement);
 
                 this.priceMultiplier = args.priceMultiplier || 1;
 
                 var products = _.map(args.products, (i:string) => RPG.Item.lookup(i));
-                products = _.sortBy(products, (p:RPG.Item) => p.sort);
+                this.products = _.sortBy(products, (p:RPG.Item) => p.sort);
 
-                products.forEach((item:RPG.Item) => {
+                this.products.forEach((item:RPG.Item) => {
                     var price = Math.ceil(item.price * this.priceMultiplier);
                     var el = this.addChild(new ItemComponent({
                         icon: item.iconHTML,
                         name: item.name,
-                        count: price
+                        count: price + RPG.moneyName
                     }), listContainer);
 
                     el.element.setAttribute('data-item', item.key);
@@ -48,6 +56,10 @@ module SimpleQuest {
                 });
 
                 this.setupSelections(listContainer);
+            }
+
+            updateMoney() {
+                this.find('.money').innerHTML = `${RPG.Party.money}${RPG.moneyName}`;
             }
 
             updateEnabled() {
@@ -60,6 +72,13 @@ module SimpleQuest {
                 });
             }
 
+            setSelection(index:number) {
+                super.setSelection(index);
+
+                if (this.selections.length < 1) return;
+                this.find('.description').innerHTML = this.products[this.selectionIndex].description;
+            }
+
             choose(el) {
                 var itemKey = el.getAttribute('data-item');
                 var price = parseInt(el.getAttribute('data-price'), 10);
@@ -68,8 +87,9 @@ module SimpleQuest {
                     RPG.Party.money -= price;
                     RPG.Party.addItem(itemKey);
                 }
-                
+
                 this.updateEnabled();
+                this.updateMoney();
             }
 
             resume() { RPG.Menu.pop(); }

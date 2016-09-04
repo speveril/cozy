@@ -29,6 +29,21 @@ module SimpleQuest {
         private onetimeSwitches:any;
         public music:Egg.Music;
 
+        persisted(k):boolean {
+            return Map.persistent[this.filename][k];
+        }
+
+        persist(k:string, v?:any):void {
+            if (v === undefined) v = true;
+            Map.persistent[this.filename][k] = v;
+        }
+
+        doShop(args) {
+            Egg.Input.debounce('menu');
+            Egg.Input.debounce('cancel');
+            RPG.Menu.push(new SimpleQuest.Menu.Shop(args));
+        }
+
         open() {
             super.open();
 

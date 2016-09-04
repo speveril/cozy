@@ -52,5 +52,13 @@ module SimpleQuest {
         trigger_useless_switch(args) {
             this.doSwitch('trigger_useless_switch', null, 'Well, that was unsatisfying.');
         }
+
+        test_shop(args) {
+            this.doShop({
+                shopName: "The Shop",
+                priceMultiplier: 1,
+                products: _.keys(RPG.items)
+            });
+        }
     }
 }

@@ -95,7 +95,16 @@ module RPG {
         } else if (controls === ControlMode.Battle && Battle.active) {
             Battle.update(dt);
         } else {
-            console.log("update() has some bad controls:", controls);
+            switch(controls) {
+                case ControlMode.Map:
+                    console.log("bad controls [map]: >>",map,player); break;
+                case ControlMode.Scene:
+                    console.log("bad controls [scene]: >>",Scene.currentScene); break;
+                case ControlMode.Menu:
+                    console.log("bad controls [menu]: >>",Menu.currentMenu); break;
+                case ControlMode.Battle:
+                    console.log("bad controls [battle]: >>",Battle.active); break;
+            }
         }
 
         if (player && player.layer) {

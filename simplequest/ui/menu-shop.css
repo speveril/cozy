@@ -8,19 +8,64 @@
 
 .shop-menu .main-area {
     box-sizing: border-box;
-    width: 75%;
+    width: calc(100% - 70px);
     height: 80%;
     border-style: solid;
     border-image: url(box.png) 2 2 fill repeat;
     border-width: 2px;
     margin: auto;
-    padding: 0;
+    padding: 5px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.shop-menu .main-area .shop-name {
+.shop-menu .main-area .info {
+    display: flex;
+    flex: 0 0 18px;
+    flex-direction: row;
+    width: 100%;
+}
+
+.shop-menu .main-area .info .money {
+    flex: 1 0;
+    text-align: right;
+}
+
+.shop-menu .main-area .items-container {
+    width: 100%;
+    flex: 1 0;
+    margin-bottom: 2px;
+    position: relative;
+    display: flex;
+}
+.shop-menu .items::before {
+    position: absolute;
+    display: block;
+    top: -2px;
+    right: -2px;
+    width: 14px;
+    height: 14px;
+    content: "";
+    background-image: url("ui_icons.png");
+    background-position: -28px 0px;
+}
+.shop-menu .items.can-scroll-up::before {
+    background-position: 0px 0px;
+}
+.shop-menu .items::after {
+    position: absolute;
+    display: block;
+    bottom: -2px;
+    right: -2px;
+    width: 14px;
+    height: 14px;
+    content: "";
+    background-image: url("ui_icons.png");
+    background-position: -42px 0px;
+}
+.shop-menu .items.can-scroll-down::after {
+    background-position: -14px 0px;
 }
 
 .shop-menu .main-area .items {
@@ -29,9 +74,20 @@
     overflow: hidden;
 }
 
-.shop-menu .main-area .description {
-    flex-grow: 0;
-    flex-shrink: 0;
-    flex-basis: 41px;
+.shop-menu .items .item {
+    display: flex;
+    flex-flow: row nowrap;
+    flex: 0 0;
+    padding-top: 1px;
+}
+
+.shop-menu .items .item .name {
+    flex: 1 0;
+}
+
+.shop-menu .description {
+    width: 100%;
+    flex: 0 0 41px;
     padding: 3px 0;
+    text-align: left;
 }

@@ -18,7 +18,7 @@ namespace RPG {
         name:string;
         price:number;
         icon:string;
-        iconFrame:any;
+        iconFrame:number[];
         description:string;
         useEffect:any;
         canStack:boolean;
@@ -48,14 +48,14 @@ namespace RPG {
 
         get iconHTML() {
             var style = `background-image:url(${this.icon});`;
-            style += this.iconFrame ? `background-position: -${this.iconFrame.x}px -${this.iconFrame.y}px` : '';
+            style += this.iconFrame ? `background-position: -${this.iconFrame[0]}px -${this.iconFrame[1]}px` : '';
             return `<span class="item-icon" style="${style}"></span>`
         }
 
         makeIcon(element:HTMLElement) {
             element.style.backgroundImage = "url(" + this.icon + ")";
             if (this.iconFrame) {
-                element.style.backgroundPosition = "-" + this.iconFrame.x + "px -" + this.iconFrame.y + "px";
+                element.style.backgroundPosition = "-" + this.iconFrame[0] + "px -" + this.iconFrame[1] + "px";
             }
         }
 

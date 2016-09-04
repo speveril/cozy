@@ -48,27 +48,27 @@ module SimpleQuest {
                 super.setSelection(index);
 
                 if (this.selections.length < 1) return;
-                if (!this.firstFixScroll) this.fixScroll();
+                // if (!this.firstFixScroll) this.fixScroll();
                 var entry = RPG.Party.inventory[this.selectionIndex];
                 this.find('.description-row').innerHTML = entry.item.description;
             }
 
-            fixScroll() {
-                super.fixScroll();
-
-                if (document.contains(this.element)) {
-                    this.firstFixScroll = true;
-                    var itemsRow = this.find('.items-row');
-                    var st = this.selectionContainer.scrollTop;
-                    var sh = this.selectionContainer.scrollHeight;
-                    var ch = this.selectionContainer.clientHeight;
-
-                    if (ch < sh) {
-                        st > 0 ? itemsRow.classList.add('can-scroll-up') : itemsRow.classList.remove('can-scroll-up');
-                        st < sh - ch ? itemsRow.classList.add('can-scroll-down') : itemsRow.classList.remove('can-scroll-down');
-                    }
-                }
-            }
+            // fixScroll() {
+            //     super.fixScroll();
+            //
+            //     if (document.contains(this.element)) {
+            //         this.firstFixScroll = true;
+            //         var itemsRow = this.find('.items-row');
+            //         var st = this.selectionContainer.scrollTop;
+            //         var sh = this.selectionContainer.scrollHeight;
+            //         var ch = this.selectionContainer.clientHeight;
+            //
+            //         if (ch < sh) {
+            //             st > 0 ? itemsRow.classList.add('can-scroll-up') : itemsRow.classList.remove('can-scroll-up');
+            //             st < sh - ch ? itemsRow.classList.add('can-scroll-down') : itemsRow.classList.remove('can-scroll-down');
+            //         }
+            //     }
+            // }
 
             choose(element:HTMLElement) {
                 var itemKey = element.getAttribute('data-item');

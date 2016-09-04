@@ -116,7 +116,6 @@ module RPG {
         }
 
         start() {
-            console.log("setting selection")
             this.setSelection(0);
         }
         unpause() {
@@ -179,6 +178,15 @@ module RPG {
             }
             if (dbot < 0) {
                 this.selectionContainer.scrollTop -=  Math.ceil(dbot / adjustedHeight) * adjustedHeight;
+            }
+
+            var st = this.selectionContainer.scrollTop;
+            var sh = this.selectionContainer.scrollHeight;
+            var ch = this.selectionContainer.clientHeight;
+
+            if (ch < sh) {
+                st > 0 ? this.selectionContainer.classList.add('can-scroll-up') : this.selectionContainer.classList.remove('can-scroll-up');
+                st < sh - ch ? this.selectionContainer.classList.add('can-scroll-down') : this.selectionContainer.classList.remove('can-scroll-down');
             }
         }
     }
