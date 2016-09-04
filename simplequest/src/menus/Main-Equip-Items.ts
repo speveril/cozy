@@ -2,9 +2,6 @@
 
 module SimpleQuest {
     export module Menu {
-        var html:string = `
-            <ul class="items selections"></ul>
-        `;
         export class Main_EquipItemsSubmenu extends RPG.Menu {
             firstFixScroll:boolean = false;
             chooseCB:any;
@@ -12,22 +9,24 @@ module SimpleQuest {
             items:RPG.Item[];
 
             constructor() {
-                super({ html: html, cancelable: true });
-                this.element.classList.add('panel','items-submenu','layout-column');
+                super({
+                    cancelable: true,
+                    className: 'items-submenu layout-column',
+                    html: `
+                        <ul class="items selections"></ul>
+                    `
+                });
             }
 
             selectItem(key:string) {
                 if (key) {
-                    console.log("Find", key, "in", this.items, "?");
                     var index = _.findIndex(this.items, (it) => it.key === key);
                     if (index > -1) {
-                        console.log(" ->", index);
                         this.setSelection(index);
                         return;
                     }
                 }
 
-                console.log(" -> NO");
                 this.setSelection(0);
             }
 
@@ -83,7 +82,7 @@ module SimpleQuest {
 
                 if (document.contains(this.element)) {
                     this.firstFixScroll = true;
-                    var itemsRow = this.find('.items-row');
+                    var itemsRow = this.find('.items');
                     var st = this.selectionContainer.scrollTop;
                     var sh = this.selectionContainer.scrollHeight;
                     var ch = this.selectionContainer.clientHeight;
