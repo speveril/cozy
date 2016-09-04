@@ -14,6 +14,7 @@ module Egg {
 
             var html = args.html || this.html || '';
             this.element.innerHTML = Egg.File.fixHTML(html);
+            if (args.className) this.element.className = args.className;
         }
 
         setParent(parent:UiComponent, parentElement?:HTMLElement|string):void {

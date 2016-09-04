@@ -29,17 +29,38 @@ module SimpleQuest {
             }.bind(this));
         }
 
+        doShop(args) {
+            // TODO move to Map
+            Egg.Input.debounce('menu');
+            Egg.Input.debounce('cancel');
+            RPG.Menu.push(new SimpleQuest.Menu.Shop(args));
+            // end TODO move to map
+        }
+
         shopkeeper_left(args) {
             RPG.Scene.do(function*() {
-                yield* this.waitTextbox("SHOPKEEP", ["Don't you just love shopping?!"]);
-                yield* this.waitTextbox("HERO", ["..."]);
-                yield* this.waitTextbox("SHOPKEEP", ["Me too!"]);
+                // yield* this.waitTextbox("SHOPKEEP", ["Don't you just love shopping?!"]);
+                // yield* this.waitTextbox("HERO", ["..."]);
+                // yield* this.waitTextbox("SHOPKEEP", ["Me too!"]);
+
+                this.doShop({
+                    shopName: "Don't you just love shopping!?",
+                    products: [ 'tonic', 'potion' ]
+                });
             }.bind(this));
         }
 
         shopkeeper_right(args) {
             RPG.Scene.do(function*() {
-                yield* this.waitTextbox("SHOPKEEP", ["Buy somethin', will ya!"]);
+                // yield* this.waitTextbox("SHOPKEEP", ["Buy somethin', will ya!"]);
+
+                // TODO move to a shop() function
+                this.doShop({
+                    shopName: "Buy somethin', will ya!",
+                    priceMultiplier: 1.5,
+                    products: [ 'tonic', 'short_sword', 'arming_sword' ]
+                });
+                // end hypothetical shop()
             }.bind(this));
         }
 

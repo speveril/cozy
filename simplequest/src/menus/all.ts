@@ -1,5 +1,6 @@
 ///<reference path="Boot.ts"/>
 ///<reference path="Main.ts"/>
+///<reference path="Shop.ts"/>
 
 module SimpleQuest {
     export module Menu {

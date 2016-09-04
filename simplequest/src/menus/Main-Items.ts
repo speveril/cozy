@@ -1,4 +1,4 @@
-///<reference path="Main-Items-Item.ts"/>
+///<reference path="ItemComponent.ts"/>
 
 module SimpleQuest {
     export module Menu {
@@ -25,7 +25,18 @@ module SimpleQuest {
 
                 while(listContainer.firstChild) { listContainer.removeChild(listContainer.lastChild); }
                 RPG.Party.getInventory().forEach((it:RPG.InventoryEntry) => {
-                    this.addChild(new Main_ItemListElement(it, it.item.canUse(RPG.Party.members[0].character, RPG.Party.members[0].character)), listContainer);
+                    var el = this.addChild(new ItemComponent({
+                        icon: it.item.iconHTML,
+                        name: it.item.name,
+                        count: it.count
+                    }), listContainer);
+
+                    if (it.item.canUse(RPG.Party.members[0].character, RPG.Party.members[0].character)) {
+                        el.element.setAttribute('data-menu', 'choose');
+                        el.element.setAttribute('data-item', it.item.key);
+                    } else {
+                        el.element.setAttribute('data-menu', '@disabled');
+                    }
                 });
 
                 this.selections = [];

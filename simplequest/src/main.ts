@@ -76,15 +76,15 @@ module SimpleQuest {
         // TODO should be able to load icons as frames in an atlas
         RPG.Item.load({
             tonic: {
-                name: "Tonic", icon: "ui/item_icons.png", icon_frame: { x:0, y:14 }, description: "A light healing potion. Restores 5 HP.", sort: 0.01,
+                name: "Tonic", price: 15, icon: "ui/item_icons.png", icon_frame: { x:0, y:14 }, description: "A light healing potion. Restores 5 HP.", sort: 0.01,
                 canStack: true, use: { _target: 'self', heal: [ 5 ] }
             },
             potion: {
-                name: "Potion", icon: "ui/item_icons.png", icon_frame: { x:14, y:14 }, description: "A healing potion. Restores 15 HP.", sort: 0.02,
+                name: "Potion", price: 50, icon: "ui/item_icons.png", icon_frame: { x:14, y:14 }, description: "A healing potion. Restores 15 HP.", sort: 0.02,
                 canStack: true, use: { _target: 'self', heal: [ 15 ] }
             },
             elixir: {
-                name: "Elixir", icon: "ui/item_icons.png", icon_frame: { x:28, y:14 }, description: "A powerful healing potion. Restores 50 HP.", sort: 0.03,
+                name: "Elixir", price: 200, icon: "ui/item_icons.png", icon_frame: { x:28, y:14 }, description: "A powerful healing potion. Restores 50 HP.", sort: 0.03,
                 canStack: true, use: { _target: 'self', heal: [ 50 ] }
             },
 

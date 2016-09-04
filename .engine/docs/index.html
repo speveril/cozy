@@ -93,30 +93,24 @@
 					</li>
 					<li>Make it work in a browser too</li>
 					<li>config.json should be able to define an expected version, Egg should be smart enough to do the right thing</li>
-					<li>Make an export<ul>
-							<li>Pick a directory somewhere on the drive</li>
-							<li>Copy over ONLY the stuff needed to run one game</li>
-							<li>Use a stripped down version of the launcher; no debug, no compilation, no browser, etc</li>
-						</ul>
-					</li>
 				</ul>
 				<p>Feature wish list (some day):</p>
 				<ul>
 					<li>PlatformerKit</li>
 					<li>Slim down Electron so the executable isn&#39;t so huge</li>
 					<li>Replace rendering engine with something SDL-based</li>
-					<li>Post-process filters, scaling filters (CRT emulation?) <a href="http://chadaustin.me/2015/11/crts-pixels-and-video-games/">http://chadaustin.me/2015/11/crts-pixels-and-video-games/</a></li>
+					<li>Post-process filters, scaling filters (CRT emulation?)<ul>
+							<li><a href="http://chadaustin.me/2015/11/crts-pixels-and-video-games/">http://chadaustin.me/2015/11/crts-pixels-and-video-games/</a></li>
+						</ul>
+					</li>
 					<li>More complex songs -- intros, loops, multiple tracks that you can control separately</li>
 				</ul>
 				<h2 id="things-to-consider-remember">Things to consider/remember</h2>
 				<ul>
-					<li>Make it easier to work with the HTML elements in the overlay.</li>
 					<li>Split config.json into necessary game setup vs. player configuration</li>
 					<li>Integrate SCSS? ReactJS?</li>
-					<li>Events should really only trigger on entering the tile, not every frame (I was thinking of including &quot;zones&quot; for continuous fire events)</li>
 					<li>It&#39;d be nice if the persistent stuff in map was easier to use in general</li>
 					<li>Should I treat other entities for purposes of collisions as circles?</li>
-					<li>Move the dist/closestpoint/etc functions in Entity into a general util somewhere</li>
 					<li>Can I just slurp in all of the map .ts files automatically instead of having to reference each one?</li>
 				</ul>
 				<h2 id="examples">Examples</h2>

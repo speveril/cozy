@@ -16,6 +16,7 @@ namespace RPG {
         key:string;
         sort:number;
         name:string;
+        price:number;
         icon:string;
         iconFrame:any;
         description:string;
@@ -34,6 +35,8 @@ namespace RPG {
             this.description = def.description;
             this.canStack = !!def.canStack;
 
+            this.price = def.price || 1;
+
             this.equipSlot = def.slot;
             this.equipEffect = def.equip;
             this.useEffect = def.use;
@@ -43,6 +46,12 @@ namespace RPG {
             return '';
         }
 
+        get iconHTML() {
+            var style = `background-image:url(${this.icon});`;
+            style += this.iconFrame ? `background-position: -${this.iconFrame.x}px -${this.iconFrame.y}px` : '';
+            return `<span class="item-icon" style="${style}"></span>`
+        }
+
         makeIcon(element:HTMLElement) {
             element.style.backgroundImage = "url(" + this.icon + ")";
             if (this.iconFrame) {
@@ -50,6 +59,7 @@ namespace RPG {
             }
         }
 
+        // deprecate
         makeIconString() {
             var container = document.createElement('div');
             var icon = document.createElement('span');

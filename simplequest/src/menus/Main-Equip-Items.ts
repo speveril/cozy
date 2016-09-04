@@ -1,4 +1,4 @@
-///<reference path="Main-Items-Item.ts"/>
+///<reference path="ItemComponent.ts"/>
 
 module SimpleQuest {
     export module Menu {
@@ -37,8 +37,16 @@ module SimpleQuest {
                 this.items = [];
 
                 RPG.Party.getInventory(this.filterCB).forEach((it:RPG.InventoryEntry, index) => {
-                    this.addChild(new Main_ItemListElement(it, true), listContainer);
                     this.items[index] = it.item;
+
+                    var el = this.addChild(new ItemComponent({
+                        icon: it.item.iconHTML,
+                        name: it.item.name,
+                        count: it.count
+                    }), listContainer);
+
+                    el.element.setAttribute('data-menu', 'choose');
+                    el.element.setAttribute('data-item', it.item.key);
                 });
 
                 this.selections = [];
