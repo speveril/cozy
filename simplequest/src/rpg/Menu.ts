@@ -13,7 +13,7 @@ module RPG {
             var cb;
 
             cb = () => {
-                if (!Menu.currentMenu || !Menu.currentMenu.cancelable) return;
+                if (!Menu.currentMenu || !Menu.currentMenu.cancelable || Menu.currentMenu.paused) return;
 
                 Egg.Input.debounce('menu');
                 Egg.Input.debounce('cancel');
@@ -23,7 +23,7 @@ module RPG {
             Egg.Input.on('cancel.down', cb, this);
 
             Egg.Input.on('up.down', () => {
-                if (!Menu.currentMenu) return;
+                if (!Menu.currentMenu || Menu.currentMenu.paused) return;
 
                 Egg.Input.debounce('up', 0.2);
                 Menu.currentMenu.moveSelection(-1);
@@ -33,7 +33,7 @@ module RPG {
             }, this);
 
             Egg.Input.on('down.down', () => {
-                if (!Menu.currentMenu) return;
+                if (!Menu.currentMenu || Menu.currentMenu.paused) return;
 
                 Egg.Input.debounce('down', 0.2);
                 Menu.currentMenu.moveSelection(+1);
@@ -42,7 +42,7 @@ module RPG {
                 }
             }, this);
             Egg.Input.on('confirm.down', () => {
-                if (!Menu.currentMenu) return;
+                if (!Menu.currentMenu || Menu.currentMenu.paused) return;
 
                 Egg.Input.debounce('confirm');
                 Menu.currentMenu.confirmSelection();
@@ -93,6 +93,7 @@ module RPG {
         selections:HTMLElement[];
         cancelable:boolean;
         done:boolean;
+        paused:boolean;
         private firstScrollFix:boolean = false;
 
         constructor(args) {
@@ -118,18 +119,25 @@ module RPG {
 
         start() {
             this.done = false;
+            this.paused = false;
             this.setSelection(0);
         }
         unpause() {
-            this.setSelection(this.selectionIndex);
+            if (this.paused) {
+                this.paused = false;
+                this.setSelection(this.selectionIndex);
+            }
         }
 
         pause() {
-            this.find('li.active').classList.remove('active');
+            if (!this.paused) {
+                this.paused = true;
+                this.find('li.active').classList.remove('active');
+            }
         }
         stop() {
+            this.pause();
             this.done = true;
-            this.find('li.active').classList.remove('active');
             this.remove();
         }
 

@@ -36,8 +36,7 @@ module SimpleQuest {
         read_sign(args) {
             RPG.Scene.do(function*() {
                 yield* this.waitTextbox(null, [
-                    "Welcome to the debug map!",
-                    "This map showcases many of the things that SimpleQuest and the RPGKit can do.",
+                    `<div style="text-align:center">Welcome to the debug map!</div>This map showcases many of the things that SimpleQuest and the RPGKit can do.`,
                     "It also provides a convenient way to skip to any maps.",
                     "If you'd like to go back to town, simply go and activate the town to south."
                 ]);

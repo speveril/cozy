@@ -35,8 +35,10 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
     - Add Sell to shop
     - Add dialog box options -- yes/no, more complicated things
     - Make up/down axis work in menus like up/down buttons
+    - Add saving/loading games
     - Add scripted movement for entities in Scenes
     - Add scripted movement and wandering for entities on the map
+    - Load CSS all at the beginning somehow so you don't get flashes of unstyled content when opening menus
     - It'd be nice if the persistent stuff in map was easier to use in general
     - Can I just slurp in all of the map .ts files automatically instead of having to reference each one?
 - Reconcile File stuff

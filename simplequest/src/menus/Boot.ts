@@ -12,13 +12,13 @@ module SimpleQuest {
         `;
 
         export class Boot extends RPG.Menu {
-
             constructor() {
                 super({ html: html });
                 this.element.classList.add("menu","boot-menu");
             }
 
             newGame() {
+                this.pause();
                 RPG.Scene.do(function*() {
                     sfx['menu_newgame'].play();
                     yield* RPG.Scene.waitFadeTo("black", 1.0);
