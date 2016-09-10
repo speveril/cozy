@@ -59,7 +59,6 @@ module RPG {
             if (this.currentScene) {
                 this.currentScene[1] = this.currentScene[0].next(dt);
                 while (this.currentScene && this.currentScene[1].done) {
-
                     if (this.scenes.length === 1) {
                         this.fadeLayer.style.opacity = '0';
                     }

@@ -33,8 +33,19 @@ module SimpleQuest {
             RPG.startMap(new Map_Boss(), 11, 13);
         }
 
+        read_sign(args) {
+            RPG.Scene.do(function*() {
+                yield* this.waitTextbox(null, [
+                    "Welcome to the debug map!",
+                    "This map showcases many of the things that SimpleQuest and the RPGKit can do.",
+                    "It also provides a convenient way to skip to any maps.",
+                    "If you'd like to go back to town, simply go and activate the town to south."
+                ]);
+            }.bind(this));
+        }
+
         trigger_restartmap(args) {
-            RPG.startMap(new Map_Debug(), 11, 20);
+            RPG.startMap(new Map_Debug(), 9, 7);
         }
 
         trigger_switchdoor(args) {
@@ -54,11 +65,13 @@ module SimpleQuest {
         }
 
         test_shop(args) {
-            this.doShop({
-                shopName: "The Shop",
-                priceMultiplier: 1,
-                products: _.keys(RPG.items)
-            });
+            RPG.Scene.do(function*() {
+                yield* this.waitShop({
+                    shopName: "Ye Olde Test Shoppe",
+                    priceMultiplier: 1,
+                    products: _.keys(RPG.items)
+                });
+            }.bind(this));
         }
     }
 }

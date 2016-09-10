@@ -5,7 +5,6 @@ module RPG {
         static choose:Egg.Sound = null;
         static sfxBad:Egg.Sound = null;
 
-
         static get currentMenu():Menu {
             return Menu.menuStack[Menu.menuStack.length - 1] || null;
         }
@@ -93,6 +92,7 @@ module RPG {
         selectionContainer:HTMLElement;
         selections:HTMLElement[];
         cancelable:boolean;
+        done:boolean;
         private firstScrollFix:boolean = false;
 
         constructor(args) {
@@ -117,6 +117,7 @@ module RPG {
         }
 
         start() {
+            this.done = false;
             this.setSelection(0);
         }
         unpause() {
@@ -127,6 +128,7 @@ module RPG {
             this.find('li.active').classList.remove('active');
         }
         stop() {
+            this.done = true;
             this.find('li.active').classList.remove('active');
             this.remove();
         }

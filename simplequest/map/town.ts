@@ -30,38 +30,36 @@ module SimpleQuest {
         }
 
         shopkeeper_left(args) {
-            if (!this.persisted('talked to item shop')) {
-                this.persist('talked to item shop');
-                RPG.Scene.do(function*() {
+            RPG.Scene.do(function*() {
+                if (!this.persisted('talked to item shop')) {
+                    this.persist('talked to item shop');
                     yield* this.waitTextbox("SHOPKEEP", ["Don't you just love shopping?!"]);
                     yield* this.waitTextbox("HERO", ["..."]);
                     yield* this.waitTextbox("SHOPKEEP", ["Me too!"]);
-                }.bind(this));
-            } else {
-                this.doShop({
+                }
+
+                yield* this.waitShop({
                     shopName: "Item Shop",
-                    products: [
-                        'tonic', 'potion'
-                    ]
+                    products: [ 'tonic', 'potion' ]
                 });
-            }
+            }.bind(this));
         }
 
         shopkeeper_right(args) {
-            if (!this.persisted('talked to equip shop')) {
-                this.persist('talked to equip shop');
-                RPG.Scene.do(function*() {
+            RPG.Scene.do(function*() {
+                if (!this.persisted('talked to equip shop')) {
+                    this.persist('talked to equip shop');
                     yield* this.waitTextbox("SHOPKEEP", ["Buy somethin', will ya!"]);
-                }.bind(this));
-            } else {
-                this.doShop({
+                }
+
+                yield* this.waitShop({
                     shopName: "Equipment Shop",
                     products: [
                         'short_sword', 'arming_sword',
                         'oak_shield'
                     ]
                 });
-            }
+            }.bind(this));
         }
 
         villager_well(args) {

@@ -38,12 +38,6 @@ module SimpleQuest {
             Map.persistent[this.filename][k] = v;
         }
 
-        doShop(args) {
-            Egg.Input.debounce('menu');
-            Egg.Input.debounce('cancel');
-            RPG.Menu.push(new SimpleQuest.Menu.Shop(args));
-        }
-
         open() {
             super.open();
 
@@ -255,6 +249,16 @@ module SimpleQuest {
             yield* RPG.Scene.waitButton("confirm");
             Egg.Input.debounce("confirm");
             RPG.Textbox.hide();
+        }
+
+        *waitShop(args) {
+            Egg.Input.debounce('menu');
+            Egg.Input.debounce('cancel');
+            var m = new SimpleQuest.Menu.Shop(args);
+            RPG.Menu.push(m);
+            while (!m.done) {
+                yield;
+            }
         }
 
         set_threat(args) {
