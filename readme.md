@@ -43,13 +43,20 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
     - Can I just slurp in all of the map .ts files automatically instead of having to reference each one?
 - Reconcile File stuff
     - Don't make it required that the current working directory is actually the gamepath
-- More complex songs -- intros, loops, multiple tracks that you can control separately
+    - More complex songs -- intros, loops, multiple tracks that you can control separately
+- Exporting
+    - Ship minified pixi/underscore
 - Other platforms
     - Mac OS
     - Linux
 - config.json should be able to define an expected version, Egg should be smart enough to do the right thing
     - I think this means "shipping" compiled .js blobs of previous versions along with the engine, and having the player select the right one
     - This is irrelevant for exported games; they'll be packaged with the version they were used to create it
+- Split config.json into necessary game setup vs. player configuration
+- Release stuff
+    - Check for existence of .engine/src and do not do core watch or compiles if it doesn't
+    - Ship without .engine/src directory
+- ENGINE RELEASE 1.0
 
 
 ## Wish list/Ideas (some day maybe):
@@ -62,10 +69,10 @@ Stuff I've thought of and would be nice, or might be useful. I may or may not ev
     - ActionAdventureKit (for Zelda type games)
     - etc.
 - Slim down Electron so the executable isn't so huge
-- Replace rendering engine with something SDL-based
+- Replace rendering engine with something native
+    - SDL? OpenGL?
 - Post-process filters, scaling filters (CRT emulation?)
     - <http://chadaustin.me/2015/11/crts-pixels-and-video-games/>
-- Split config.json into necessary game setup vs. player configuration
 - Integrate SCSS? ReactJS?
 - Other platforms
     - Browser
