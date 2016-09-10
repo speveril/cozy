@@ -1,4 +1,4 @@
-# Egg Engine
+# Egg Engine (to be renamed)
 
 A generic game engine. For now this is pretty hacked together. Things might get better in the future!
 
@@ -32,9 +32,9 @@ Just run the Egg shortcut (or .engine/egg.exe). This will open the launcher/proj
 This is stuff I intend to do, and/or am actively working on. I'm trying to keep this up to date with my commits.
 
 - RPGKit
-    - Fix opening menus in Scenes
     - Add Sell to shop
     - Add dialog box options -- yes/no, more complicated things
+    - Make up/down axis work in menus like up/down buttons
     - Add scripted movement for entities in Scenes
     - Add scripted movement and wandering for entities on the map
     - It'd be nice if the persistent stuff in map was easier to use in general
