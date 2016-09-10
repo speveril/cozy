@@ -26,39 +26,58 @@ Just run the Egg shortcut (or .engine/egg.exe). This will open the launcher/proj
 - Underscore: <http://underscorejs.org>
 - Typescript: <http://typescriptlang.org>
 
-## Roadmap/TODOs
 
-- RPGkit
-    - ...
+## Roadmap
+
+This is stuff I intend to do, and/or am actively working on. I'm trying to keep this up to date with my commits.
+
+- RPGKit
+    - Fix opening menus in Scenes
+    - Add Sell to shop
+    - Add dialog box options -- yes/no, more complicated things
+    - Add scripted movement for entities in Scenes
+    - Add scripted movement and wandering for entities on the map
+    - It'd be nice if the persistent stuff in map was easier to use in general
+    - Can I just slurp in all of the map .ts files automatically instead of having to reference each one?
 - Reconcile File stuff
     - Don't make it required that the current working directory is actually the gamepath
-- Make it work in a browser too
+- More complex songs -- intros, loops, multiple tracks that you can control separately
+- Other platforms
+    - Mac OS
+    - Linux
 - config.json should be able to define an expected version, Egg should be smart enough to do the right thing
+    - I think this means "shipping" compiled .js blobs of previous versions along with the engine, and having the player select the right one
+    - This is irrelevant for exported games; they'll be packaged with the version they were used to create it
 
-Feature wish list (some day):
 
-- PlatformerKit
+## Wish list/Ideas (some day maybe):
+
+Stuff I've thought of and would be nice, or might be useful. I may or may not ever get around to these or consider them worthwhile.
+
+- Other Kits
+    - Beef up the Kit system to make it easier to share/use them
+    - PlatformerKit (for Metroidvania type games)
+    - ActionAdventureKit (for Zelda type games)
+    - etc.
 - Slim down Electron so the executable isn't so huge
 - Replace rendering engine with something SDL-based
 - Post-process filters, scaling filters (CRT emulation?)
     - <http://chadaustin.me/2015/11/crts-pixels-and-video-games/>
-- More complex songs -- intros, loops, multiple tracks that you can control separately
-
-## Things to consider/remember
-
 - Split config.json into necessary game setup vs. player configuration
 - Integrate SCSS? ReactJS?
-- It'd be nice if the persistent stuff in map was easier to use in general
-- Should I treat other entities for purposes of collisions as circles?
-- Can I just slurp in all of the map .ts files automatically instead of having to reference each one?
+- Other platforms
+    - Browser
+    - Mobile
 
 
 ## Examples
 
-- **example_pong**: A simple 2-player pong game
-- **example_invaders**: A partial Space Invaders clone
-- **simplequest**: SimpleQuest, a small RPG
+- **SimpleQuest** - SimpleQuest, a small but complete RPG
     - See simplequest/README.md for more information
+    - Currently still a work in progress
+- **examples/EggInvaders** - A simple 2-player pong game
+- **examples/EggPong** - A partial Space Invaders clone
+- **toys** - Random junk that demonstrates something
 
 To run the examples, simply click them in the game list in the launcher.
 
@@ -66,4 +85,4 @@ To run the examples, simply click them in the game list in the launcher.
 
 ## Who is responsible for this mess
 
-[Shamus Peveril](http://shamuspeveril.com) -- architect, lead (only) developer, example maker
+[Shamus Peveril](http://shamuspeveril.com) &mdash; architect, lead (only) developer, example maker
