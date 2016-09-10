@@ -70,20 +70,21 @@ module RPG {
                     return;
                 }
 
-                var ang = Math.atan2(dy, dx);
+                var ang;
                 var dist = Math.sqrt(dx * dx + dy * dy);
                 var travelled = 0;
                 var iter = 0;
                 var d;
-                var obstructions = this.layer.obstructions;
+                var obstructions = this.layer.obstructions, o = [];
                 var entities = this.layer.entities;
-                var i, e;
+                var i:number, j:number, e:any;
 
                 while (travelled < 0.999 && iter < 20) {
                     iter++;
 
                     var projectedPosition = { x: this.sprite.position.x + dx * (1 - travelled), y: this.sprite.position.y + dy * (1 - travelled) };
 
+                    o = [];
                     for (i = 0; i < obstructions.length; i++) {
                         if (!obstructions[i].active) {
                             continue;
@@ -91,22 +92,21 @@ module RPG {
                         var closest = Trig.closestPointOnLine(projectedPosition, obstructions[i].a, obstructions[i].b);
                         d = Math.sqrt(Trig.dist2(projectedPosition, closest));
                         if (d < this.radius) {
-                            var ang = Math.atan2(projectedPosition.y - closest.y, projectedPosition.x - closest.x);
-                            projectedPosition.x += Math.cos(ang) * (this.radius - d);
-                            projectedPosition.y += Math.sin(ang) * (this.radius - d);
+                            e = { d: d, type: 'line', a: obstructions[i].a, b: obstructions[i].b };
+                            o.splice(_.sortedIndex(o, e, (x) => x.d), 0, e);
                         }
                     }
+
                     for (i = 0; i < entities.length; i++) {
                         if (entities[i] === this) continue;
 
                         d = Math.sqrt(Trig.dist2(projectedPosition, entities[i].position));
 
-                        var stationary = true;
                         // TODO set stationary to false if the entity is moving
+                        var stationary = true;
 
-                        // short circuit if we're at more than 1.5 x the radius of the entity
-                        //    theoretically this "should" be 1 if stationary, and 1.414(etc.) if not, but this is
-                        //    good enough
+                        // short circuit if we're at more than 1.5 x the radius of the entity -- theoretically this
+                        // "should" be 1 if in motion, and 1.414(etc.) if not, but this is good enough for a first pass
                         if (d > (entities[i].radius + this.radius) * 1.5) continue;
 
                         // treat stationary entities as squares, and moving ones as circles
@@ -120,21 +120,34 @@ module RPG {
                                 [ { x: entityX - entityR, y: entityY + entityR }, { x: entityX + entityR, y: entityY + entityR } ],
                                 [ { x: entityX - entityR, y: entityY - entityR }, { x: entityX - entityR, y: entityY + entityR } ]
                             ];
-                            for (e = 0; e < edges.length; e++) {
-                                var closest = Trig.closestPointOnLine(projectedPosition, edges[e][0], edges[e][1]);
+                            for (j = 0; j < edges.length; j++) {
+                                var closest = Trig.closestPointOnLine(projectedPosition, edges[j][0], edges[j][1]);
                                 d = Math.sqrt(Trig.dist2(projectedPosition, closest));
                                 if (d < this.radius) {
-                                    var ang = Math.atan2(projectedPosition.y - closest.y, projectedPosition.x - closest.x);
-                                    projectedPosition.x += Math.cos(ang) * (this.radius - d);
-                                    projectedPosition.y += Math.sin(ang) * (this.radius - d);
+                                    e = { d: d, type: 'line', a: edges[j][0], b: edges[j][1] };
+                                    o.splice(_.sortedIndex(o, e, (x) => x.d), 0, e);
                                 }
                             }
                         } else {
-                            if (entities[i].radius) {
-                                var ang = Math.atan2(projectedPosition.y - entities[i].sprite.position.y, projectedPosition.x - entities[i].sprite.position.x);
-                                projectedPosition.x += Math.cos(ang) * (this.radius + entities[i].radius - d);
-                                projectedPosition.y += Math.sin(ang) * (this.radius + entities[i].radius - d);
+                            if (d < this.radius + entities[i].radius) {
+                                e = { d: d - entities[i].radius, type: 'circ', x: entities[i].sprite.position.x, y: entities[i].sprite.position.y, r: entities[i].radius };
+                                o.splice(_.sortedIndex(o, e, (x) => x.d), 0, e);
                             }
+                        }
+                    }
+
+                    for (i = 0; i < o.length; i++) {
+                        if (o[i].type === 'line') {
+                            closest = Trig.closestPointOnLine(projectedPosition, o[i].a, o[i].b);
+                            d = Math.sqrt(Trig.dist2(projectedPosition, closest));
+                            ang = Math.atan2(projectedPosition.y - closest.y, projectedPosition.x - closest.x);
+                        } else if (o[i].type === 'circ') {
+                            d = Math.sqrt(Trig.dist2(projectedPosition, { x: o[i].x, y: o[i].y })) - o[i].r;
+                            ang = Math.atan2(projectedPosition.y -  o[i].y, projectedPosition.x -  o[i].x);
+                        }
+                        if (this.radius - d > 0) {
+                            projectedPosition.x += Math.cos(ang) * (this.radius - d);
+                            projectedPosition.y += Math.sin(ang) * (this.radius - d);
                         }
                     }
 
