@@ -167,7 +167,12 @@ module Egg {
         var newSize = this.browserWindow.getContentSize(),
             multX   = newSize[0] / this.config['width'],
             multY   = newSize[1] / this.config['height'],
-            mult    = Math.floor(Math.min(multX, multY));
+            mult    = Math.min(multX, multY);
+
+        if (mult > 1) {
+            mult = Math.floor(mult);
+        }
+
         this.sizeMultiplier = mult;
 
         _.each(this.planes, function(plane) {
@@ -175,7 +180,7 @@ module Egg {
         }.bind(this));
 
         // force everything to update properly
-        document.body.style.margin = "" + (newSize[1] - mult * this.config['height']) / 2 + "px " + (newSize[0] - mult * this.config['width']) / 2 + "px";
+        document.body.style.margin = "" + Math.floor((newSize[1] - mult * this.config['height']) / 2) + "px " + Math.floor((newSize[0] - mult * this.config['width']) / 2) + "px";
         document.body.style.display = 'none';
         document.body.offsetHeight;
         document.body.style.display = '';

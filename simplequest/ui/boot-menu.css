@@ -6,8 +6,9 @@
 
 .boot-menu h1 {
     font-family: EggWhite;
+    font-weight: normal;
     font-size: 32px;
-    text-shadow: 3px 3px 0px rgba(0, 0, 0, 1);
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 1);
     position: absolute;
     top: 50px;
     left: 0;
@@ -19,5 +20,6 @@
     position: absolute;
     bottom: 15px;
     left: 50%;
+    width: 70px;
     transform: translateX(-50%);
 }
