@@ -65,7 +65,7 @@
 	<div class="row">
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
-				<h1 id="egg-engine">Egg Engine</h1>
+				<h1 id="egg-engine-to-be-renamed-">Egg Engine (to be renamed)</h1>
 				<p>A generic game engine. For now this is pretty hacked together. Things might get better in the future!</p>
 				<p>Currently this is only set up to work on Windows. It should be fairly straightforward to get it working on other platforms, but I don&#39;t have ready access to them.</p>
 				<h2 id="plans">Plans</h2>
@@ -81,46 +81,84 @@
 					<li>Underscore: <a href="http://underscorejs.org">http://underscorejs.org</a></li>
 					<li>Typescript: <a href="http://typescriptlang.org">http://typescriptlang.org</a></li>
 				</ul>
-				<h2 id="roadmap-todos">Roadmap/TODOs</h2>
+				<h2 id="roadmap">Roadmap</h2>
+				<p>This is stuff I intend to do, and/or am actively working on. I&#39;m trying to keep this up to date with my commits.</p>
 				<ul>
-					<li>RPGkit<ul>
-							<li>...</li>
+					<li>RPGKit<ul>
+							<li>Add Sell to shop</li>
+							<li>Add dialog box options -- yes/no, more complicated things</li>
+							<li>Make up/down axis work in menus like up/down buttons</li>
+							<li>Add saving/loading games</li>
+							<li>Add scripted movement for entities in Scenes</li>
+							<li>Add scripted movement and wandering for entities on the map</li>
+							<li>Load CSS all at the beginning somehow so you don&#39;t get flashes of unstyled content when opening menus</li>
+							<li>It&#39;d be nice if the persistent stuff in map was easier to use in general</li>
+							<li>Can I just slurp in all of the map .ts files automatically instead of having to reference each one?</li>
 						</ul>
 					</li>
 					<li>Reconcile File stuff<ul>
 							<li>Don&#39;t make it required that the current working directory is actually the gamepath</li>
+							<li>More complex songs -- intros, loops, multiple tracks that you can control separately</li>
 						</ul>
 					</li>
-					<li>Make it work in a browser too</li>
-					<li>config.json should be able to define an expected version, Egg should be smart enough to do the right thing</li>
+					<li>Exporting<ul>
+							<li>Ship minified pixi/underscore</li>
+						</ul>
+					</li>
+					<li>Other platforms<ul>
+							<li>Mac OS</li>
+							<li>Linux</li>
+						</ul>
+					</li>
+					<li>config.json should be able to define an expected version, Egg should be smart enough to do the right thing<ul>
+							<li>I think this means &quot;shipping&quot; compiled .js blobs of previous versions along with the engine, and having the player select the right one</li>
+							<li>This is irrelevant for exported games; they&#39;ll be packaged with the version they were used to create it</li>
+						</ul>
+					</li>
+					<li>Split config.json into necessary game setup vs. player configuration</li>
+					<li>Release stuff<ul>
+							<li>Check for existence of .engine/src and do not do core watch or compiles if it doesn&#39;t</li>
+							<li>Ship without .engine/src directory</li>
+						</ul>
+					</li>
+					<li>ENGINE RELEASE 1.0</li>
 				</ul>
-				<p>Feature wish list (some day):</p>
+				<h2 id="wish-list-ideas-some-day-maybe-">Wish list/Ideas (some day maybe):</h2>
+				<p>Stuff I&#39;ve thought of and would be nice, or might be useful. I may or may not ever get around to these or consider them worthwhile.</p>
 				<ul>
-					<li>PlatformerKit</li>
+					<li>Other Kits<ul>
+							<li>Beef up the Kit system to make it easier to share/use them</li>
+							<li>PlatformerKit (for Metroidvania type games)</li>
+							<li>ActionAdventureKit (for Zelda type games)</li>
+							<li>etc.</li>
+						</ul>
+					</li>
 					<li>Slim down Electron so the executable isn&#39;t so huge</li>
-					<li>Replace rendering engine with something SDL-based</li>
+					<li>Replace rendering engine with something native<ul>
+							<li>SDL? OpenGL?</li>
+						</ul>
+					</li>
 					<li>Post-process filters, scaling filters (CRT emulation?)<ul>
 							<li><a href="http://chadaustin.me/2015/11/crts-pixels-and-video-games/">http://chadaustin.me/2015/11/crts-pixels-and-video-games/</a></li>
 						</ul>
 					</li>
-					<li>More complex songs -- intros, loops, multiple tracks that you can control separately</li>
-				</ul>
-				<h2 id="things-to-consider-remember">Things to consider/remember</h2>
-				<ul>
-					<li>Split config.json into necessary game setup vs. player configuration</li>
 					<li>Integrate SCSS? ReactJS?</li>
-					<li>It&#39;d be nice if the persistent stuff in map was easier to use in general</li>
-					<li>Should I treat other entities for purposes of collisions as circles?</li>
-					<li>Can I just slurp in all of the map .ts files automatically instead of having to reference each one?</li>
+					<li>Other platforms<ul>
+							<li>Browser</li>
+							<li>Mobile</li>
+						</ul>
+					</li>
 				</ul>
 				<h2 id="examples">Examples</h2>
 				<ul>
-					<li><strong>example_pong</strong>: A simple 2-player pong game</li>
-					<li><strong>example_invaders</strong>: A partial Space Invaders clone</li>
-					<li><strong>simplequest</strong>: SimpleQuest, a small RPG<ul>
+					<li><strong>SimpleQuest</strong> - SimpleQuest, a small but complete RPG<ul>
 							<li>See simplequest/README.md for more information</li>
+							<li>Currently still a work in progress</li>
 						</ul>
 					</li>
+					<li><strong>examples/EggInvaders</strong> - A simple 2-player pong game</li>
+					<li><strong>examples/EggPong</strong> - A partial Space Invaders clone</li>
+					<li><strong>toys</strong> - Random junk that demonstrates something</li>
 				</ul>
 				<p>To run the examples, simply click them in the game list in the launcher.</p>
 				<h2 id="who-is-responsible-for-this-mess">Who is responsible for this mess</h2>

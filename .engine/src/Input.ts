@@ -165,6 +165,18 @@ module Egg {
                 });
             });
 
+            _.each(_.keys(this.axes), (a) => {
+                if (axisState[a]) {
+                    this.axes[a] = _.reduce(axisState[a], (acc:number, x:number) => acc + x) / axisState[a].length;
+                    buttonState[`${a}+`] = this.axes[a] > 0 ? 1 : 0;
+                    buttonState[`${a}-`] = this.axes[a] < 0 ? 1 : 0;
+                } else {
+                    this.axes[a] = 0.0;
+                    buttonState[`${a}+`] = 0;
+                    buttonState[`${a}-`] = 0;
+                }
+            });
+
             _.each(this.button, (state, b) => {
                 if (state !== ButtonState.IGNORED && buttonState[b] > Input.deadzone) {
                     this.button[b] = ButtonState.DOWN;
@@ -180,13 +192,7 @@ module Egg {
                 }
             });
 
-            _.each(_.keys(this.axes), (a) => {
-                if (axisState[a]) {
-                    this.axes[a] = _.reduce(axisState[a], (acc:number, x:number) => acc + x) / axisState[a].length;
-                } else {
-                    this.axes[a] = 0.0;
-                }
-            });
+
         }
 
         static on(eventName, cb, ctx) {
@@ -269,6 +275,8 @@ module Egg {
             _.each(_.keys(a), (axisName) => {
                 if (!_.has(this.axes, axisName)) {
                     this.axes[axisName] = 0.0;
+                    this.button[`${axisName}+`] = ButtonState.UP;
+                    this.button[`${axisName}-`] = ButtonState.UP;
                 }
             });
 

@@ -22,31 +22,39 @@ module RPG {
             Egg.Input.on('menu.down', cb, this);
             Egg.Input.on('cancel.down', cb, this);
 
-            Egg.Input.on('up.down', () => {
+            cb = () => {
                 if (!Menu.currentMenu || Menu.currentMenu.paused) return;
 
                 Egg.Input.debounce('up', 0.2);
+                Egg.Input.debounce('vertical-', 0.2);
                 Menu.currentMenu.moveSelection(-1);
                 if (Menu.blip) {
                     Menu.blip.play();
                 }
-            }, this);
+            };
+            Egg.Input.on('up.down', cb, this);
+            Egg.Input.on('vertical-.down', cb, this);
 
-            Egg.Input.on('down.down', () => {
+            cb = () => {
                 if (!Menu.currentMenu || Menu.currentMenu.paused) return;
 
                 Egg.Input.debounce('down', 0.2);
+                Egg.Input.debounce('vertical+', 0.2);
                 Menu.currentMenu.moveSelection(+1);
                 if (Menu.blip) {
                     Menu.blip.play();
                 }
-            }, this);
-            Egg.Input.on('confirm.down', () => {
+            };
+            Egg.Input.on('down.down', cb, this);
+            Egg.Input.on('vertical+.down', cb, this);
+
+            cb = () => {
                 if (!Menu.currentMenu || Menu.currentMenu.paused) return;
 
                 Egg.Input.debounce('confirm');
                 Menu.currentMenu.confirmSelection();
-            }, this);
+            };
+            Egg.Input.on('confirm.down', cb, this);
         }
 
         static push(m:Menu, parentComponent?:Egg.UiComponent, parentElement?:HTMLElement|string):void {
