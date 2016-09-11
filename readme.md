@@ -94,4 +94,4 @@ To run the examples, simply click them in the game list in the launcher.
 
 ## Who is responsible for this mess
 
-[Shamus Peveril](http://shamuspeveril.com) &mdash; architect, lead (only) developer, example maker
+[Shamus Peveril](http://shamuspeveril.com) -- architect, lead (only) developer, example maker
