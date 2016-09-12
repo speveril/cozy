@@ -84,6 +84,8 @@ module RPG {
         static removeItem(itemKey:string, count?:number) {
             if (count === undefined) count = 1;
 
+            console.log(">> removeItem", itemKey, count);
+
             var existingEntry = Party.hasItem(itemKey);
             if (existingEntry && existingEntry.count > count) {
                 existingEntry.count -= count;

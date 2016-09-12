@@ -1,20 +1,21 @@
 module SimpleQuest {
     export module Menu {
-        var html:string = `
-            <link rel="stylesheet" type="text/css" href="ui/boot-menu.css">
-
-            <h1>Simple Quest</h1>
-            <ul class="selections">
-                <li data-menu="newGame">New Game</li>
-                <li data-menu="@disabled">Load Game</li>
-                <li data-menu="exit">Exit</li>
-            </ul>
-        `;
-
         export class Boot extends RPG.Menu {
             constructor() {
-                super({ html: html });
-                this.element.classList.add("menu","boot-menu");
+                super({
+                    className: 'menu boot-menu',
+                    html: `
+                        <link rel="stylesheet" type="text/css" href="ui/boot-menu.css">
+
+                        <h1>Simple Quest</h1>
+                        <ul class="selections">
+                            <li data-menu="newGame">New Game</li>
+                            <li data-menu="@disabled">Load Game</li>
+                            <li data-menu="exit">Exit</li>
+                        </ul>
+                    `
+                });
+                this.setupSelections(this.find('.selections'));
             }
 
             newGame() {

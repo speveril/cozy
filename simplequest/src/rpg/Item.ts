@@ -17,6 +17,7 @@ namespace RPG {
         sort:number;
         name:string;
         price:number;
+        sellable:boolean;
         icon:string;
         iconFrame:number[];
         description:string;
@@ -36,6 +37,7 @@ namespace RPG {
             this.canStack = !!def.canStack;
 
             this.price = def.price || 1;
+            this.sellable = _.has(def, 'sellable') ? def.sellable : true;
 
             this.equipSlot = def.slot;
             this.equipEffect = def.equip;

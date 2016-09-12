@@ -85,15 +85,15 @@
     },
 
     "iron_key": {
-        "name": "Iron Key", "icon": "ui/item_icons.png", "icon_frame": [84,14], "description": "An iron key from the abandoned castle.", "sort": 95.00
+        "name": "Iron Key", "sellable": false, "icon": "ui/item_icons.png", "icon_frame": [84,14], "description": "An iron key from the abandoned castle.", "sort": 95.00
     },
     "steel_key": {
-        "name": "Steel Key", "icon": "ui/item_icons.png", "icon_frame": [98,14], "description": "A steel key from the abandoned castle.", "sort": 95.01
+        "name": "Steel Key", "sellable": false, "icon": "ui/item_icons.png", "icon_frame": [98,14], "description": "A steel key from the abandoned castle.", "sort": 95.01
     },
     "gold_key": {
-        "name": "Gold Key", "icon": "ui/item_icons.png", "icon_frame": [112,14], "description": "A golden key.", "sort": 95.02
+        "name": "Gold Key", "sellable": false, "icon": "ui/item_icons.png", "icon_frame": [112,14], "description": "A golden key.", "sort": 95.02
     },
     "massive_key": {
-        "name": "Massive Key", "icon": "ui/item_icons.png", "icon_frame": [126,14], "description": "A big, heavy key.", "sort": 95.02
+        "name": "Massive Key", "sellable": false, "icon": "ui/item_icons.png", "icon_frame": [126,14], "description": "A big, heavy key.", "sort": 95.02
     }
 }

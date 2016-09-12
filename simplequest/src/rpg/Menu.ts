@@ -1,5 +1,5 @@
 module RPG {
-    export enum MenuDirection { VERTICAL, HORIZONTAL }; // TODO GRID
+    export enum MenuDirection { VERTICAL, HORIZONTAL, GRID };
 
     export class Menu extends Egg.UiComponent {
         static menuStack:Menu[] = [];
@@ -29,7 +29,7 @@ module RPG {
 
                 Egg.Input.debounce('up', 0.2);
                 Egg.Input.debounce('vertical-', 0.2);
-                Menu.currentMenu.moveSelection(-1);
+                Menu.currentMenu.moveSelection(-1, MenuDirection.VERTICAL);
                 if (Menu.blip) {
                     Menu.blip.play();
                 }
@@ -42,7 +42,7 @@ module RPG {
 
                 Egg.Input.debounce('down', 0.2);
                 Egg.Input.debounce('vertical+', 0.2);
-                Menu.currentMenu.moveSelection(+1);
+                Menu.currentMenu.moveSelection(+1, MenuDirection.VERTICAL);
                 if (Menu.blip) {
                     Menu.blip.play();
                 }
@@ -55,7 +55,7 @@ module RPG {
 
                 Egg.Input.debounce('left', 0.2);
                 Egg.Input.debounce('horizontal-', 0.2);
-                Menu.currentMenu.moveSelection(-1);
+                Menu.currentMenu.moveSelection(-1, MenuDirection.HORIZONTAL);
                 if (Menu.blip) {
                     Menu.blip.play();
                 }
@@ -68,7 +68,7 @@ module RPG {
 
                 Egg.Input.debounce('right', 0.2);
                 Egg.Input.debounce('horizontal+', 0.2);
-                Menu.currentMenu.moveSelection(+1);
+                Menu.currentMenu.moveSelection(+1, MenuDirection.HORIZONTAL);
                 if (Menu.blip) {
                     Menu.blip.play();
                 }
@@ -129,29 +129,39 @@ module RPG {
         selectionContainer:HTMLElement;
         selections:HTMLElement[];
         cancelable:boolean;
-        done:boolean;
-        paused:boolean;
+        done:boolean = false;
+        paused:boolean = true;
         private firstScrollFix:boolean = false;
 
         constructor(args) {
             super(args);
 
-            this.direction = MenuDirection.VERTICAL;
+            this.direction = args.direction === undefined ? MenuDirection.VERTICAL : args.direction;
             this.cancelable = !!args.cancelable;
             this.element.classList.add("rpg-menu");
-            this.setupSelections(args.selectionContainer || this.element);
+            this.setupSelections(this.find(args.selectionContainer) || this.element);
         }
 
         setupSelections(parent) {
+            if (this.selectionContainer) {
+                this.selectionContainer.classList.remove('active');
+            }
+
             this.selectionContainer = parent;
+            this.selectionContainer.classList.add('active');
             this.selections = [];
             _.each(parent.getElementsByTagName('*'), (element:HTMLElement) => {
                 if (element.getAttribute('data-menu')) {
                     this.selections.push(element);
                 }
             });
-            if (this.selectionIndex >= this.selections.length) {
-                this.setSelection(this.selections.length - 1);
+
+            if (!this.paused) {
+                if (this.selectionIndex >= this.selections.length) {
+                    this.setSelection(this.selections.length - 1);
+                } else {
+                    this.setSelection(this.selectionIndex);
+                }
             }
         }
 
@@ -164,13 +174,18 @@ module RPG {
             if (this.paused) {
                 this.paused = false;
                 this.setSelection(this.selectionIndex);
+                if (this.selectionContainer) {
+                    this.selectionContainer.classList.add('active');
+                }
             }
         }
 
         pause() {
             if (!this.paused) {
                 this.paused = true;
-                this.find('li.active').classList.remove('active');
+                if (this.selectionContainer) {
+                    this.selectionContainer.classList.remove('active');
+                }
             }
         }
         stop() {
@@ -180,7 +195,7 @@ module RPG {
         }
 
         update(dt) {
-            if (!this.firstScrollFix) {
+            if (!this.firstScrollFix && this.selectionIndex !== undefined) {
                 this.firstScrollFix = true;
                 this.fixScroll();
             }
@@ -203,15 +218,16 @@ module RPG {
 
         setSelection(index:number) {
             if (this.selections.length < 1) return;
-            if (this.selectionIndex !== undefined) {
+            if (this.selectionIndex !== undefined && this.selections[this.selectionIndex] !== undefined) {
                 this.selections[this.selectionIndex].classList.remove('active');
             }
+
             this.selectionIndex = Egg.wrap(index, this.selections.length);
             this.selections[this.selectionIndex].classList.add('active');
             this.fixScroll();
         }
 
-        moveSelection(delta:number) {
+        moveSelection(delta:number, direction:MenuDirection) {
             this.setSelection(this.selectionIndex + delta);
         }
 

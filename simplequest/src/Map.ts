@@ -254,7 +254,7 @@ module SimpleQuest {
         *waitShop(args) {
             Egg.Input.debounce('menu');
             Egg.Input.debounce('cancel');
-            var m = new SimpleQuest.Menu.Shop(args);
+            var m = new SimpleQuest.Menu.ShopMenu(args);
             RPG.Menu.push(m);
             while (!m.done) {
                 yield;
