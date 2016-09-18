@@ -20,6 +20,12 @@ Item graphics by Jerom, recolored by PriorBlue
 - http://opengameart.org/content/recolor-all-the-items
     - with modifications/additions by Shamus Peveril
 
+Some monster graphics by Hyptosis
+
+- http://www.lorestrome.com/
+    - Blue Slime
+    - Stabber
+
 Other art by Shamus Peveril
 
 - Fonts built with Fontstruct
