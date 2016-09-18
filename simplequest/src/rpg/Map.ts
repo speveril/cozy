@@ -373,9 +373,15 @@ module RPG {
             }.bind(this));
         }
 
-        start() {
-            console.log("MAP START");
-        }
+        /**
+            Override for setup stuff on this map.
+        **/
+        start() {}
+
+        /**
+            Override for clean up stuff on this map.
+        **/
+        finish() {}
 
         update(dt):void {
             this.layers.forEach((layer) => {

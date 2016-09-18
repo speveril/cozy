@@ -162,6 +162,10 @@ module RPG {
             if (!opts.noFadeOut)
                 yield* Scene.waitFadeTo("black", 0.2);
 
+            if (map) {
+                map.finish();
+            }
+
             if (typeof newMap === 'string') {
                 map = new Map(newMap);
             } else {

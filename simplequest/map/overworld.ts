@@ -5,6 +5,14 @@ module SimpleQuest {
             this.music = SimpleQuest.music['overworld'];
         }
 
+        start() {
+            RPG.player.speed *= 0.6;
+        }
+
+        finish() {
+            RPG.player.speed /= 0.6;
+        }
+
         enter_town(args) {
             RPG.startMap(new Map_Town(), 8, 1);
         }
