@@ -43,8 +43,14 @@ module Egg {
         this.gameName = opts.game;
         this.browserWindow = Electron.remote.getCurrentWindow();
 
-        if (this.debug)
-            this.browserWindow.toggleDevTools();
+        if (this.debug) {
+            this.browserWindow.webContents.once('devtools-opened', () => {
+                this.browserWindow.focus();
+            });
+            this.browserWindow.openDevTools({
+                mode: 'detach'
+            });
+        }
 
         this.enginePath = opts.enginePath;
 
