@@ -5,8 +5,6 @@ module SimpleQuest {
                 super({
                     className: 'menu boot-menu',
                     html: `
-                        <link rel="stylesheet" type="text/css" href="ui/boot-menu.css">
-
                         <h1>Simple Quest</h1>
                         <ul class="selections">
                             <li data-menu="newGame">New Game</li>

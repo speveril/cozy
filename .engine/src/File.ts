@@ -1,5 +1,6 @@
 var fs = require('fs');
 var path = require('path');
+var glob = require('glob');
 
 module Egg {
     export class File {
@@ -15,6 +16,10 @@ module Egg {
         static pathname(f):string { return path.dirname(this.projectFile(f)); }
         static relative(from, to):string { return path.relative(from, to); }
         static stripProtocol(f):string { return f.replace("/^.*?:[/\\]{2}/",""); }
+
+        static glob(f:string, opts?:any):Array<string> {
+            return glob.sync(f, opts);
+        }
 
         static readHTML(f):string {
             return Egg.File.fixHTML(Egg.File.read(Egg.File.projectFile(f)), Egg.File.pathname(f));

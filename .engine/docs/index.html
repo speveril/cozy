@@ -86,11 +86,11 @@
 				<ul>
 					<li>RPGKit<ul>
 							<li>Add Sell to shop</li>
+							<li>Load CSS all at the beginning somehow so you don&#39;t get flashes of unstyled content when opening menus (css in config.json)</li>
 							<li>Add dialog box options -- yes/no, more complicated things</li>
 							<li>Add saving/loading games</li>
 							<li>Add scripted movement for entities in Scenes</li>
 							<li>Add scripted movement and wandering for entities on the map</li>
-							<li>Load CSS all at the beginning somehow so you don&#39;t get flashes of unstyled content when opening menus</li>
 							<li>It&#39;d be nice if the persistent stuff in map was easier to use in general</li>
 							<li>Can I just slurp in all of the map .ts files automatically instead of having to reference each one?</li>
 						</ul>
@@ -114,7 +114,10 @@
 							<li>This is irrelevant for exported games; they&#39;ll be packaged with the version they were used to create it</li>
 						</ul>
 					</li>
-					<li>Split config.json into necessary game setup vs. player configuration</li>
+					<li>Split config.json into necessary game setup vs. player configuration<ul>
+							<li>Bake non-player config into game setup on export, leave config as only player config</li>
+						</ul>
+					</li>
 					<li>Release stuff<ul>
 							<li>Check for existence of .engine/src and do not do core watch or compiles if it doesn&#39;t</li>
 							<li>Ship without .engine/src directory</li>
@@ -191,6 +194,9 @@
 					</li>
 					<li class=" tsd-kind-variable tsd-is-external tsd-is-not-exported">
 						<a href="globals.html#fs" class="tsd-kind-icon">fs</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external tsd-is-not-exported">
+						<a href="globals.html#glob" class="tsd-kind-icon">glob</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-is-external tsd-is-not-exported">
 						<a href="globals.html#path" class="tsd-kind-icon">path</a>

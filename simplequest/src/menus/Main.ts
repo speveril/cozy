@@ -13,8 +13,6 @@ module SimpleQuest {
                     className: 'menu main-menu',
                     cancelable: true,
                     html: `
-                        <link rel="stylesheet" type="text/css" href="ui/main-menu.css">
-
                         <div class="main-area">
                         </div>
 

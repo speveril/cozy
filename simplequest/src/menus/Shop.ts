@@ -12,8 +12,6 @@ module SimpleQuest {
                     cancelable: true,
                     direction: RPG.MenuDirection.HORIZONTAL,
                     html: `
-                        <link rel="stylesheet" type="text/css" href="ui/menu-shop.css">
-
                         <div class="main-area">
                             <div class="shop-name">${args.shopName}</div>
                             <ul class="info selections">

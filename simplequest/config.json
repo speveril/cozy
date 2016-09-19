@@ -3,24 +3,20 @@
     "author": "Shamus Peveril <http://shamuspeveril.com>",
     "icon": "icon.ico",
     "main": "src/main.ts",
-
     "width": 320,
     "height": 240,
-    "fullscreen": false,
-    "volume": {
-        "sfx": 0.25,
-        "music": 0.5
-    },
-    "css": [
-        "font/fonts.css",
-        "ui/menu.css",
-        "ui/text.css"
-    ],
-
+    "css": [ "**/*.css" ],
     "export": {
         "executable": "SimpleQuest",
         "exclude": [
             "src_image.*"
         ]
+    },
+
+
+    "fullscreen": false,
+    "volume": {
+        "sfx": 0.25,
+        "music": 0.5
     }
 }

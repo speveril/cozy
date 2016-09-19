@@ -1,28 +1,4 @@
 var battleHTML = `
-    <style>
-        .right-align { text-align: right; }
-
-        .left-sidebar {
-            width: 66px;
-            height: 128px;
-            position: absolute;
-            top: 29px;
-            left: 16px;
-            padding: 4px;
-            box-sizing: border-box;
-        }
-        .right-sidebar {
-            width: 66px;
-            height: 128px;
-            position: absolute;
-            top: 29px;
-            right: 16px;
-            left: initial;
-            padding: 4px;
-            box-sizing: border-box;
-        }
-    </style>
-
     <div class="left-sidebar">
         <div><span class="name"></span></div>
         <div>HP <span class="hp"></span></div>

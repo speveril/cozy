@@ -1,0 +1,22 @@
+.battle-ui .right-align { text-align: right; }
+
+.battle-ui .left-sidebar {
+    width: 66px;
+    height: 128px;
+    position: absolute;
+    top: 29px;
+    left: 16px;
+    padding: 4px;
+    box-sizing: border-box;
+}
+
+.battle-ui .right-sidebar {
+    width: 66px;
+    height: 128px;
+    position: absolute;
+    top: 29px;
+    right: 16px;
+    left: initial;
+    padding: 4px;
+    box-sizing: border-box;
+}

@@ -104,7 +104,9 @@ module Egg {
 
         var styles = [];
         _.each(this.config['css'], function(path:string) {
-            Egg.addStyleSheet(path);
+            _.each(File.glob(path), (f:string) => {
+                Egg.addStyleSheet(f);
+            })
         });
 
         document['fonts'].ready
