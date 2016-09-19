@@ -2,11 +2,12 @@ module RPG {
     export class InventoryEntry {
         public item:Item;
         public count:number;
-        public equipped:number; // TODO
+        public equipped:number;
 
         constructor(item, count) {
             this.item = item;
             this.count = count;
+            this.equipped = 0;
         }
     }
 
@@ -30,8 +31,8 @@ module RPG {
     }
 
     export class Party {
-        static members:PartyMember[] = [];
-        static inventory:InventoryEntry[] = [];
+        static members:Array<PartyMember> = [];
+        static inventory:Array<InventoryEntry> = [];
         static money:number = 0;
 
         static add(ch:Character) {
@@ -53,20 +54,27 @@ module RPG {
             }
         }
 
-        static addItem(itemKey:string, count?:number) {
+        static addItem(itemKey:string, count?:number):Array<InventoryEntry> {
             if (count === undefined) count = 1;
 
             var item = Item.lookup(itemKey);
+            var inv:Array<InventoryEntry> = [];
 
             if (item.canStack) {
                 var existingEntry = Party.hasItem(itemKey);
                 if (existingEntry) {
+                    inv.push(existingEntry);
                     existingEntry.count += count;
                 } else {
-                    Party.inventory.push(new InventoryEntry(item, count));
+                    inv.push(new InventoryEntry(item, count));
+                    Party.inventory.push(inv[0]);
                 }
             } else {
-                _.times(count, () => Party.inventory.push(new InventoryEntry(item, 1)));
+                _.times(count, () => {
+                    var i = new InventoryEntry(item, 1);
+                    inv.push(i);
+                    Party.inventory.push(i)
+                });
             }
 
             Party.inventory.sort((a,b) => {
@@ -75,22 +83,21 @@ module RPG {
                 }
                 return a.item.sort - b.item.sort;
             });
+
+            return inv;
         }
 
         static hasItem(itemKey:string) {
             return _.find(Party.inventory, (e) => e.item.key === itemKey);
         }
 
-        static removeItem(itemKey:string, count?:number) {
+        static removeItem(inv:InventoryEntry, count?:number) {
             if (count === undefined) count = 1;
 
-            console.log(">> removeItem", itemKey, count);
-
-            var existingEntry = Party.hasItem(itemKey);
-            if (existingEntry && existingEntry.count > count) {
-                existingEntry.count -= count;
-            } else if (existingEntry) {
-                Party.inventory.splice(_.indexOf(Party.inventory, existingEntry), 1);
+            if (inv.count > count) {
+                inv.count -= count;
+            } else if (inv) {
+                Party.inventory.splice(_.indexOf(Party.inventory, inv), 1);
             }
             // TODO throw error if insufficient to remove?
         }

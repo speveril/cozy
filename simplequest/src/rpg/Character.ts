@@ -16,7 +16,7 @@ module RPG {
         private effectiveAttribute:{ [key:string]:number } = {};
 
         levels:number[] = [];
-        equipped:{ [key:string]: Item } = {};
+        equipped:{ [key:string]: InventoryEntry } = {};
 
         constructor(args:any) {
             this.name     = args.name;
@@ -65,7 +65,10 @@ module RPG {
             Character.attributes.forEach((attribute) => {
                 this.effectiveAttribute[attribute] = this.baseAttribute[attribute];
             });
-            _.each(this.equipped, (item:Item, slot:string) => {
+            _.each(this.equipped, (inv:InventoryEntry, slot:string) => {
+                if (!inv) return;
+
+                var item = inv.item;
                 if (item && item.equipEffect && item.equipEffect.attributes) {
                     _.each(item.equipEffect.attributes, (v:number, k:string) => {
                         if (Character.attributes.indexOf(k) !== -1) {
@@ -82,17 +85,20 @@ module RPG {
             this._level = level;
         }
 
-        equipItem(itemKey:string, slot:string) {
-            if (itemKey === null) {
+        equipItem(inv:InventoryEntry, slot:string) {
+            var current = this.equipped[slot];
+            if (current) {
+                current.equipped--;
+            }
+
+            if (inv === null || inv.item === undefined) {
                 this.equipped[slot] = null;
             } else {
-                var invEntry = Party.hasItem(itemKey);
-                if (!invEntry) return false;
-
-                var item = invEntry.item;
+                var item = inv.item;
                 if (item.equipSlot !== slot) return false;
 
-                this.equipped[slot] = item;
+                this.equipped[slot] = inv;
+                inv.equipped++;
             }
 
             this.recalcAttributes();
@@ -107,7 +113,7 @@ module RPG {
                 stats[attribute] = this.baseAttribute[attribute];
             });
             _.each(RPG.equipSlots, (slot:string) => {
-                var item = this.equipped[slot];
+                var item = this.equipped[slot] ? this.equipped[slot].item : null;
                 if (_.has(items, slot)) {
                     item = items[slot];
                 }

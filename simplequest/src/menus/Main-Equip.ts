@@ -76,7 +76,7 @@ module SimpleQuest {
                 var listItem = this.selections[this.selectionIndex];
                 var selectedSlot = listItem.getAttribute('data-value');
                 if (this.character.equipped[selectedSlot]) {
-                    this.find('.description-row').innerHTML = this.character.equipped[selectedSlot].description;
+                    this.find('.description-row').innerHTML = this.character.equipped[selectedSlot].item.description;
                 } else {
                     this.find('.description-row').innerHTML = '';
                 }
@@ -110,16 +110,16 @@ module SimpleQuest {
             slot(which:any) {
                 if (this.find('ul.items').children.length > 0) {
                     this.selectedSlot = which.getAttribute('data-value');
-                    this.itemMenu.setChooseCallback((itemKey) => {
-                        this.character.equipItem(itemKey, this.selectedSlot);
+                    this.itemMenu.setChooseCallback((inv) => {
+                        this.character.equipItem(inv, this.selectedSlot);
                         this.updateEquipInfo();
                         this.selectedSlot = null;
                         RPG.Menu.pop();
                     });
 
                     RPG.Menu.push(this.itemMenu, this, '.items-row');
-                    
-                    this.itemMenu.selectItem(this.character.equipped[this.selectedSlot] ? this.character.equipped[this.selectedSlot].key : '');
+
+                    this.itemMenu.selectItem(this.character.equipped[this.selectedSlot]);
                 } else {
                     SimpleQuest.sfx['menu_bad'].play();
                     return false;

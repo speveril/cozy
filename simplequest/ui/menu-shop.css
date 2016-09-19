@@ -72,25 +72,26 @@
     background-position: -14px 0px;
 }
 
-.shop-menu .main-area .items {
+.shop-menu .main-area .items,
+.shop-menu .main-area .confirm-sell-menu {
     padding: 0 16px;
     width: 100%;
     position: relative;
     overflow: hidden;
 }
 
-.shop-menu .items .item {
+.shop-menu .item {
     display: flex;
     flex-flow: row nowrap;
     flex: 0 0;
     padding-top: 1px;
 }
 
-.shop-menu .items .item span:not(:last-child) {
+.shop-menu .item span:not(:last-child) {
     padding-right: 4px;
 }
 
-.shop-menu .items .item .name {
+.shop-menu .item .name {
     flex: 1 0;
 }
 

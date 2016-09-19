@@ -93,7 +93,8 @@ namespace RPG {
                     args.unshift(this);
 
                     if (RPG.Effect[effect].apply(undefined, args)) {
-                        Party.removeItem(this.key, 1);
+                        var toApply = RPG.Party.hasItem(this.key);
+                        Party.removeItem(toApply, 1);
                     }
                 } else {
                     console.warn("! Bad effect", effect, "triggered from", this.key);

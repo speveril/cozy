@@ -151,7 +151,8 @@ module SimpleQuest {
 
                     el.element.setAttribute('data-item', item.key);
                     el.element.setAttribute('data-price', price.toString());
-                    el.element.setAttribute('data-menu', true ? 'choose' : '@disabled');
+                    el.element.setAttribute('data-menu', inv.equipped < inv.count && inv.count > 0 ? 'choose' : '@disabled');
+                    console.log(inv);
 
                     this.itemComponents.push(<ItemComponent>el);
                 });
@@ -221,6 +222,8 @@ module SimpleQuest {
             count_:number;
             equipped_:number;
             price:number;
+            itemComponent:ItemComponent;
+            inventoryEntry:RPG.InventoryEntry;
 
             constructor(args) {
                 super({
@@ -230,14 +233,16 @@ module SimpleQuest {
                     selectionContainer: '.selections',
                     html: `
                         <div class="item-container"></div>
-                        <div class="owned-container">
-                            <span class="label">Owned</span> <span class="count"></span>
-                        </div>
-                        <div class="equipped-container">
-                            <span class="label">Equipped</span> <span class="count"></span>
-                        </div>
                         <ul class="sell-container selections">
                             <li><span class="label" data-menu="confirm">Sell</span> <span class="count"></span></li>
+                        </div>
+                        <div class="other-info">
+                            <div class="owned-container">
+                                <span class="label">Owned</span> <span class="count"></span>
+                            </div>
+                            <div class="equipped-container">
+                                <span class="label">Equipped</span> <span class="count"></span>
+                            </div>
                         </div>
                     `
                 });
@@ -245,18 +250,23 @@ module SimpleQuest {
                 this.itemKey = args.item;
                 this.price = args.price;
 
-                var inventoryEntry = RPG.Party.hasItem(this.itemKey);
-                var item = inventoryEntry.item;
+                this.inventoryEntry = RPG.Party.hasItem(this.itemKey);
+                var item = this.inventoryEntry.item;
 
-                this.addChild(new ItemComponent({
+                this.itemComponent = new ItemComponent({
                     icon: item.iconHTML,
                     name: item.name,
                     price: args.price
-                }), this.find('.item-container'));
+                });
+                this.addChild(this.itemComponent, this.find('.item-container'));
 
-                this.owned = inventoryEntry.count;
+                this.owned = this.inventoryEntry.count;
                 this.count = 1;
-                this.equipped = 0; // TODO don't show equipped if it's not equippable
+
+                if (!item.equipSlot) {
+                    this.find('.equipped-container').style.display = 'none';
+                }
+                this.equipped = this.inventoryEntry.equipped;
             }
 
             // TODO: make this pattern easier?
@@ -264,6 +274,7 @@ module SimpleQuest {
             set count(x:number) {
                 this.count_ = x;
                 this.find('.sell-container .count').innerText = x.toString();
+                this.itemComponent.setPrice(this.price * this.count_);
             }
 
             get owned():number { return this.owned_; }
@@ -272,7 +283,7 @@ module SimpleQuest {
                 this.find('.owned-container .count').innerText = x.toString();
             }
 
-            get equipped():number { return this.owned_; }
+            get equipped():number { return this.equipped_; }
             set equipped(x:number) {
                 this.equipped_ = x;
                 this.find('.equipped-container .count').innerText = x.toString();
@@ -281,13 +292,12 @@ module SimpleQuest {
             moveSelection(delta:number, direction:RPG.MenuDirection) {
                 var d = delta;
                 if (direction === RPG.MenuDirection.VERTICAL) d *= -10;
-                this.count = Math.max(0, Math.min(this.owned, this.count + d));
+                this.count = Math.max(0, Math.min(this.owned - this.equipped, this.count + d));
             }
 
             confirm() {
                 RPG.Party.money += this.price * this.count;
-                RPG.Party.removeItem(this.itemKey, this.count);
-
+                RPG.Party.removeItem(this.inventoryEntry, this.count);
                 RPG.Menu.pop();
             }
         }

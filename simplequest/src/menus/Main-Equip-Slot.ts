@@ -31,7 +31,9 @@ module SimpleQuest {
             rerender() {
                 this.find('.slot-name').innerText = slotDisplayNames[this.slot];
 
-                var item = this.character.equipped[this.slot];
+                var inv = this.character.equipped[this.slot];
+                var item = inv ? inv.item : null;
+
                 if (item) {
                     item.makeIcon(this.find('.item-icon'));
                     this.find('.item-name').innerText = item.name;

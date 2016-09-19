@@ -96,18 +96,22 @@ module SimpleQuest {
     }
 
     export function newGame() {
+        var i;
+
         console.log("newGame");
         Egg.pause();
 
-        RPG.Party.addItem('tonic', 2);
-        RPG.Party.addItem('oak_sword');
-        RPG.Party.addItem('quilt_armor');
-
         RPG.characters['hero'] = new Characters.Hero();
-        RPG.characters['hero'].equipItem('oak_sword', "weapon");
-        RPG.characters['hero'].equipItem('quilt_armor', "armor");
-
         RPG.Party.add(RPG.characters['hero']);
+
+        RPG.Party.addItem('tonic', 2);
+
+        i = RPG.Party.addItem('oak_sword');
+        RPG.characters['hero'].equipItem(i[0], "weapon");
+
+        i = RPG.Party.addItem('quilt_armor');
+        RPG.characters['hero'].equipItem(i[0], "armor");
+
         RPG.player = RPG.Party.members[0].makeEntity();
 
         // music['village'].start();

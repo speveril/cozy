@@ -6,7 +6,7 @@ module SimpleQuest {
             firstFixScroll:boolean = false;
             chooseCB:any;
             filterCB:any;
-            items:RPG.Item[];
+            items:Array<RPG.InventoryEntry>;
 
             constructor() {
                 super({
@@ -18,9 +18,9 @@ module SimpleQuest {
                 });
             }
 
-            selectItem(key:string) {
-                if (key) {
-                    var index = _.findIndex(this.items, (it) => it.key === key);
+            selectItem(inv:RPG.InventoryEntry) {
+                if (inv) {
+                    var index = _.indexOf(this.items, inv);
                     if (index > -1) {
                         this.setSelection(index);
                         return;
@@ -51,7 +51,7 @@ module SimpleQuest {
                 this.items = [];
 
                 RPG.Party.getInventory(this.filterCB).forEach((it:RPG.InventoryEntry, index) => {
-                    this.items[index] = it.item;
+                    this.items[index] = it;
 
                     var el = this.addChild(new ItemComponent({
                         icon: it.item.iconHTML,
@@ -60,7 +60,7 @@ module SimpleQuest {
                     }), listContainer);
 
                     el.element.setAttribute('data-menu', 'choose');
-                    el.element.setAttribute('data-item', it.item.key);
+                    el.element.setAttribute('data-index', index);
                 });
 
                 this.selections = [];
@@ -74,7 +74,7 @@ module SimpleQuest {
                 if (this.selections.length < 1) return;
                 if (!this.firstFixScroll) this.fixScroll();
 
-                (<Main_EquipSubmenu>this.parent).updatePreview(this.items[this.selectionIndex]);
+                (<Main_EquipSubmenu>this.parent).updatePreview(this.items[this.selectionIndex].item);
             }
 
             fixScroll() {
@@ -95,8 +95,7 @@ module SimpleQuest {
             }
 
             choose(element:HTMLElement) {
-                var itemKey = element.getAttribute('data-item');
-                this.chooseCB(itemKey);
+                this.chooseCB(this.items[element.getAttribute('data-index')]);
             }
         }
     }

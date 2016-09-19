@@ -106,9 +106,10 @@ module SimpleQuest {
                     "Whoa there! This here's private property.",
                     "Go find your own dang bushes!"
                 ]);
-                if (RPG.Party.hasItem('tonic')) {
+                var tonics = RPG.Party.getInventory((it) => it.key === 'tonic');
+                if (tonics.length > 0) {
                     yield* this.waitTextbox("VILLAGER", ["Know what? I'mma steal a tonic from you!"]);
-                    RPG.Party.removeItem('tonic');
+                    RPG.Party.removeItem(tonics[0]);
                     yield* this.waitCenteredTextbox("You lost a tonic!");
                     yield* this.waitTextbox("HERO", ["..."]);
                 }
