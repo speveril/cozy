@@ -3,12 +3,13 @@
 module SimpleQuest {
     export module Menu {
         export class Main_EquipItemsSubmenu extends RPG.Menu {
+            character:RPG.Character;
             firstFixScroll:boolean = false;
             chooseCB:any;
             filterCB:any;
             items:Array<Array<RPG.Item>>;
 
-            constructor() {
+            constructor(args:any) {
                 super({
                     cancelable: true,
                     className: 'items-submenu layout-column',
@@ -16,6 +17,7 @@ module SimpleQuest {
                         <ul class="items selections"></ul>
                     `
                 });
+                this.character = args.character;
             }
 
             selectItem(item:RPG.Item) {
@@ -52,7 +54,10 @@ module SimpleQuest {
                         name: stack[0].name,
                         count: stack.length
                     }), listContainer);
-                    el.element.setAttribute('data-menu', 'choose');
+
+                    var equippable = _.findIndex(stack, (item) => item.canEquip(this.character, item.equipSlot)) !== -1;
+
+                    el.element.setAttribute('data-menu', equippable ? 'choose' : '@disabled');
                 });
 
                 this.selections = [];
@@ -87,7 +92,8 @@ module SimpleQuest {
             }
 
             choose(element:HTMLElement) {
-                this.chooseCB(this.items[this.selectionIndex]);
+                var stack = this.items[this.selectionIndex];
+                this.chooseCB(_.find(stack, (item) => item.canEquip(this.character, item.equipSlot)));
             }
         }
     }

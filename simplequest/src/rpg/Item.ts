@@ -110,6 +110,12 @@ namespace RPG {
             return false;
         }
 
+        canEquip(character:RPG.Character, slot:string) {
+            if (this.equipSlot !== slot) return false;
+            if (this.location !== character && this.location !== RPG.Party.inventory) return false;
+            return true;
+        }
+
         activate(character:RPG.Character) {
             if (!this.def.useEffect) return;
             _.each(this.def.useEffect, (params:any, effect:string) => {

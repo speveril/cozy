@@ -85,7 +85,10 @@ module RPG {
         }
 
         equipItem(item:Item, slot:string) {
+            console.log("EQUIP", item, "->", slot);
+
             if (item.equipSlot !== slot) return false;
+            console.log(" OK");
 
             let current = this.equipped[slot];
             if (current) {
@@ -95,8 +98,8 @@ module RPG {
             if (item === null) {
                 this.equipped[slot] = null;
             } else {
-                if (item.equipSlot !== slot) return false;
                 this.equipped[slot] = item;
+                item.location = this;
             }
 
             this.recalcAttributes();
@@ -105,13 +108,13 @@ module RPG {
         }
 
         tryOn(items:{ [slot:string]:RPG.Item }) {
-            var stats = {};
+            let stats = {};
 
             Character.attributes.forEach((attribute) => {
                 stats[attribute] = this.baseAttribute[attribute];
             });
             _.each(RPG.equipSlots, (slot:string) => {
-                var item = this.equipped[slot];
+                let item = this.equipped[slot];
                 if (_.has(items, slot)) {
                     item = items[slot];
                 }

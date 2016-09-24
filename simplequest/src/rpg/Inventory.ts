@@ -25,7 +25,7 @@ namespace RPG {
             else if (filterFunc) f = filterFunc;
 
             _.each(this.items, (item:Item) => {
-                if (!f || !f(item)) return;
+                if (f && !f(item)) return;
 
                 if (!row || !item.canStack || item.key !== row[0].key) {
                     row = [];

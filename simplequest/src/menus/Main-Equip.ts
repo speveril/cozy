@@ -53,8 +53,9 @@ module SimpleQuest {
                     this.slotChildren[slot] = this.addChild(new Main_EquipSlot(this.character, slot), listContainer);
                 });
 
-                this.itemMenu = new Main_EquipItemsSubmenu();
-                this.addChild(this.itemMenu, '.items-row');
+                this.itemMenu = new Main_EquipItemsSubmenu({
+                    character: this.character
+                });
 
                 this.updateEquipInfo();
                 this.setupSelections(this.find('.slots'));
@@ -112,8 +113,8 @@ module SimpleQuest {
             slot(which:any) {
                 if (this.itemMenu.items.length > 0) {
                     this.selectedSlot = which.getAttribute('data-value');
-                    this.itemMenu.setChooseCallback((inv) => {
-                        this.character.equipItem(inv, this.selectedSlot);
+                    this.itemMenu.setChooseCallback((item:RPG.Item) => {
+                        this.character.equipItem(item, this.selectedSlot);
                         this.updateEquipInfo();
                         this.selectedSlot = null;
                         RPG.Menu.pop();
