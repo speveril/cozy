@@ -16,7 +16,7 @@ module RPG {
         private effectiveAttribute:{ [key:string]:number } = {};
 
         levels:number[] = [];
-        equipped:{ [key:string]: InventoryEntry } = {};
+        equipped:{ [key:string]: Item } = {};
 
         constructor(args:any) {
             this.name     = args.name;
@@ -65,11 +65,10 @@ module RPG {
             Character.attributes.forEach((attribute) => {
                 this.effectiveAttribute[attribute] = this.baseAttribute[attribute];
             });
-            _.each(this.equipped, (inv:InventoryEntry, slot:string) => {
-                if (!inv) return;
+            _.each(this.equipped, (item:Item, slot:string) => {
+                if (!item) return;
 
-                var item = inv.item;
-                if (item && item.equipEffect && item.equipEffect.attributes) {
+                if (item.equipEffect && item.equipEffect.attributes) {
                     _.each(item.equipEffect.attributes, (v:number, k:string) => {
                         if (Character.attributes.indexOf(k) !== -1) {
                             this.effectiveAttribute[k] += v;
@@ -85,20 +84,19 @@ module RPG {
             this._level = level;
         }
 
-        equipItem(inv:InventoryEntry, slot:string) {
-            var current = this.equipped[slot];
+        equipItem(item:Item, slot:string) {
+            if (item.equipSlot !== slot) return false;
+
+            let current = this.equipped[slot];
             if (current) {
-                current.equipped--;
+                current.location = Party.inventory;
             }
 
-            if (inv === null || inv.item === undefined) {
+            if (item === null) {
                 this.equipped[slot] = null;
             } else {
-                var item = inv.item;
                 if (item.equipSlot !== slot) return false;
-
-                this.equipped[slot] = inv;
-                inv.equipped++;
+                this.equipped[slot] = item;
             }
 
             this.recalcAttributes();
@@ -113,7 +111,7 @@ module RPG {
                 stats[attribute] = this.baseAttribute[attribute];
             });
             _.each(RPG.equipSlots, (slot:string) => {
-                var item = this.equipped[slot] ? this.equipped[slot].item : null;
+                var item = this.equipped[slot];
                 if (_.has(items, slot)) {
                     item = items[slot];
                 }

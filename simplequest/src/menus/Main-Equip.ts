@@ -3,35 +3,6 @@
 
 module SimpleQuest {
     export module Menu {
-        var html:string = `
-            <section class="layout-row title-row">Equip</section>
-            <section class="layout-row equip-info-row">
-                <section class="layout-column stats-column">
-                    <section class="layout-row" data-stat="attack">
-                        <span class="label">ATK</span>
-                        <span class="value">0</span>
-                    </section>
-                    <section class="layout-row" data-stat="defense">
-                        <span class="label">DEF</span>
-                        <span class="value">0</span>
-                    </section>
-                    <section class="layout-row" data-stat="critical">
-                        <span class="label">CRT</span>
-                        <span class="value">0</span>
-                    </section>
-                    <section class="layout-row" data-stat="evade">
-                        <span class="label">EVD</span>
-                        <span class="value">0</span>
-                    </section>
-                </section>
-                <section class="layout-column slots-column">
-                    <ul class="slots selections">
-                    </ul>
-                </section>
-            </section>
-            <section class="layout-row items-row"></section>
-            <section class="layout-row description-row"></section>
-        `;
         export class Main_EquipSubmenu extends RPG.Menu {
             character:RPG.Character;
             itemMenu:Main_EquipItemsSubmenu;
@@ -39,11 +10,42 @@ module SimpleQuest {
             selectedSlot:string;
 
             constructor() {
-                super({ html: html, cancelable: true });
-                this.element.classList.add('panel','equip-submenu','layout-column');
+                super({
+                    cancelable: true,
+                    className: 'panel equip-submenu layout-column',
+                    html: `
+                        <section class="layout-row title-row">Equip</section>
+                        <section class="layout-row equip-info-row">
+                            <section class="layout-column stats-column">
+                                <section class="layout-row" data-stat="attack">
+                                    <span class="label">ATK</span>
+                                    <span class="value">0</span>
+                                </section>
+                                <section class="layout-row" data-stat="defense">
+                                    <span class="label">DEF</span>
+                                    <span class="value">0</span>
+                                </section>
+                                <section class="layout-row" data-stat="critical">
+                                    <span class="label">CRT</span>
+                                    <span class="value">0</span>
+                                </section>
+                                <section class="layout-row" data-stat="evade">
+                                    <span class="label">EVD</span>
+                                    <span class="value">0</span>
+                                </section>
+                            </section>
+                            <section class="layout-column slots-column">
+                                <ul class="slots selections">
+                                </ul>
+                            </section>
+                        </section>
+                        <section class="layout-row items-row"></section>
+                        <section class="layout-row description-row"></section>
+                    `
+                });
 
                 // TODO character select
-                this.character = RPG.characters['hero'];
+                this.character = RPG.Party.members[0].character;
 
                 this.slotChildren = {};
                 var listContainer = this.find('.slots');
@@ -76,11 +78,11 @@ module SimpleQuest {
                 var listItem = this.selections[this.selectionIndex];
                 var selectedSlot = listItem.getAttribute('data-value');
                 if (this.character.equipped[selectedSlot]) {
-                    this.find('.description-row').innerHTML = this.character.equipped[selectedSlot].item.description;
+                    this.find('.description-row').innerHTML = this.character.equipped[selectedSlot].description;
                 } else {
                     this.find('.description-row').innerHTML = '';
                 }
-                this.itemMenu.setFilter((item) => { return item.equipSlot === selectedSlot });
+                this.itemMenu.setFilter((item) => item.equipSlot === selectedSlot);
             }
 
             clearPreview() {
@@ -108,7 +110,7 @@ module SimpleQuest {
             }
 
             slot(which:any) {
-                if (this.find('ul.items').children.length > 0) {
+                if (this.itemMenu.items.length > 0) {
                     this.selectedSlot = which.getAttribute('data-value');
                     this.itemMenu.setChooseCallback((inv) => {
                         this.character.equipItem(inv, this.selectedSlot);

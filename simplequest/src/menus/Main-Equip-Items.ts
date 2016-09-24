@@ -6,7 +6,7 @@ module SimpleQuest {
             firstFixScroll:boolean = false;
             chooseCB:any;
             filterCB:any;
-            items:Array<RPG.InventoryEntry>;
+            items:Array<Array<RPG.Item>>;
 
             constructor() {
                 super({
@@ -18,16 +18,11 @@ module SimpleQuest {
                 });
             }
 
-            selectItem(inv:RPG.InventoryEntry) {
-                if (inv) {
-                    var index = _.indexOf(this.items, inv);
-                    if (index > -1) {
-                        this.setSelection(index);
-                        return;
-                    }
-                }
-
-                this.setSelection(0);
+            selectItem(item:RPG.Item) {
+                var index = _.findIndex(this.items, (stack:Array<RPG.Item>) => {
+                    return _.indexOf(stack, item) !== -1;
+                });
+                this.setSelection(index < 0 ? 0 : index);
             }
 
             setChooseCallback(chooseCB:any) {
@@ -40,6 +35,7 @@ module SimpleQuest {
             }
 
             stop() {
+                super.stop();
                 (<Main_EquipSubmenu>this.parent).clearPreview();
             }
 
@@ -48,19 +44,15 @@ module SimpleQuest {
                 while(listContainer.firstChild) { listContainer.removeChild(listContainer.lastChild); }
 
                 var resetSelection = this.selectionIndex || 0;
-                this.items = [];
 
-                RPG.Party.getInventory(this.filterCB).forEach((it:RPG.InventoryEntry, index) => {
-                    this.items[index] = it;
-
+                this.items = RPG.Party.inventory.stacked(this.filterCB);
+                this.items.forEach((stack:Array<RPG.Item>, index:number) => {
                     var el = this.addChild(new ItemComponent({
-                        icon: it.item.iconHTML,
-                        name: it.item.name,
-                        count: it.count
+                        icon: stack[0].iconHTML,
+                        name: stack[0].name,
+                        count: stack.length
                     }), listContainer);
-
                     el.element.setAttribute('data-menu', 'choose');
-                    el.element.setAttribute('data-index', index);
                 });
 
                 this.selections = [];
@@ -74,7 +66,7 @@ module SimpleQuest {
                 if (this.selections.length < 1) return;
                 if (!this.firstFixScroll) this.fixScroll();
 
-                (<Main_EquipSubmenu>this.parent).updatePreview(this.items[this.selectionIndex].item);
+                (<Main_EquipSubmenu>this.parent).updatePreview(this.items[this.selectionIndex][0]);
             }
 
             fixScroll() {
@@ -95,7 +87,7 @@ module SimpleQuest {
             }
 
             choose(element:HTMLElement) {
-                this.chooseCB(this.items[element.getAttribute('data-index')]);
+                this.chooseCB(this.items[this.selectionIndex]);
             }
         }
     }

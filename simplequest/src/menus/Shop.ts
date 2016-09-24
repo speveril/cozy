@@ -4,7 +4,7 @@ module SimpleQuest {
     export module Menu {
         export class ShopMenu extends RPG.Menu {
             priceMultiplier:number;
-            products:RPG.Item[];
+            products:RPG.ItemDef[];
 
             constructor(args) {
                 super({
@@ -27,7 +27,7 @@ module SimpleQuest {
                 });
 
                 this.priceMultiplier = args.priceMultiplier || 1;
-                this.products = _.sortBy(_.map(args.products, (i:string) => RPG.Item.lookup(i)), (p:RPG.Item) => p.sort);
+                this.products = _.map(args.products, (i:string) => RPG.Item.library[i]);
 
                 this.setupSelections(this.find('.info.selections'));
             }
@@ -35,7 +35,7 @@ module SimpleQuest {
             unpause() {
                 super.unpause();
                 this.updateDescription('');
-                if (RPG.Party.inventory.length < 1) {
+                if (RPG.Party.inventory.count() < 1) {
                     this.find('.selections .sell').setAttribute('data-menu', '@disabled');
                 } else {
                     this.find('.selections .sell').setAttribute('data-menu', 'sell');
@@ -70,7 +70,7 @@ module SimpleQuest {
         class BuyMenu extends RPG.Menu {
             parent:ShopMenu;
             priceMultiplier:number;
-            products:RPG.Item[];
+            products:Array<RPG.ItemDef>;
 
             constructor(args) {
                 super({
@@ -81,15 +81,15 @@ module SimpleQuest {
                 this.products = args.products;
                 this.priceMultiplier = args.priceMultiplier;
 
-                this.products.forEach((item:RPG.Item) => {
-                    var price = Math.ceil(item.price * this.priceMultiplier);
-                    var el = this.addChild(new ItemComponent({
-                        icon: item.iconHTML,
-                        name: item.name,
+                this.products.forEach((itemDef:RPG.ItemDef) => {
+                    let price = Math.ceil(itemDef.price * this.priceMultiplier);
+                    let el = this.addChild(new ItemComponent({
+                        icon: itemDef.iconHTML,
+                        name: itemDef.name,
                         price: price
                     }));
 
-                    el.element.setAttribute('data-item', item.key);
+                    el.element.setAttribute('data-item', itemDef.key);
                     el.element.setAttribute('data-price', price.toString());
                     el.element.setAttribute('data-menu', price <= RPG.Party.money ? 'choose' : '@disabled');
                 });
@@ -99,7 +99,7 @@ module SimpleQuest {
 
             updateEnabled() {
                 _.each(this.findAll('li.item'), (el:HTMLElement) => {
-                    var item = RPG.Item.lookup(el.getAttribute('data-item'));
+                    var item = RPG.Item.library[el.getAttribute('data-item')];
                     el.setAttribute(
                         'data-menu',
                         item.price * this.priceMultiplier <= RPG.Party.money ? 'choose' : '@disabled'
@@ -120,7 +120,7 @@ module SimpleQuest {
 
                 if (price <= RPG.Party.money) {
                     RPG.Party.money -= price;
-                    RPG.Party.addItem(itemKey);
+                    RPG.Party.inventory.add(itemKey);
                 }
 
                 this.updateEnabled();
@@ -138,19 +138,17 @@ module SimpleQuest {
                     cancelable: true
                 });
 
-                RPG.Party.getInventory((i) => i.sellable).forEach((inv:RPG.InventoryEntry) => {
-                    var item = inv.item;
-                    var price = Math.ceil(item.price * 0.2);
+                RPG.Party.inventory.stacked((i) => i.sellable).forEach((stack:Array<RPG.Item>) => {
+                    var price = Math.ceil(stack[0].price * 0.2);
                     var el = this.addChild(new ItemComponent({
-                        icon: item.iconHTML,
-                        name: item.name,
-                        price: price
+                        icon: stack[0].iconHTML,
+                        name: stack[0].name,
+                        price: stack[0].price
                     }));
 
-                    el.element.setAttribute('data-item', item.key);
+                    el.element.setAttribute('data-item', stack[0].key);
                     el.element.setAttribute('data-price', price.toString());
-                    el.element.setAttribute('data-menu', inv.equipped < inv.count && inv.count > 0 ? 'choose' : '@disabled');
-                    console.log(inv);
+                    el.element.setAttribute('data-menu', true ? 'choose' : '@disabled'); // TODO
 
                     this.itemComponents.push(<ItemComponent>el);
                 });
@@ -162,7 +160,7 @@ module SimpleQuest {
                 var toDelete = [];
                 _.each(this.itemComponents, (ic:ItemComponent, index:number) => {
                     var itemKey = ic.element.getAttribute('data-item');
-                    var inv = RPG.Party.hasItem(itemKey);
+                    var inv = RPG.Party.inventory.has(itemKey);
                     if (!inv) {
                         ic.remove();
                         toDelete.unshift(index);
@@ -182,7 +180,7 @@ module SimpleQuest {
                 super.setSelection(index);
 
                 if (this.selections.length < 1) return;
-                this.parent.updateDescription(RPG.Party.hasItem(this.findAll('.item')[this.selectionIndex].getAttribute('data-item')).item.description);
+                this.parent.updateDescription(RPG.Party.inventory.has(this.findAll('.item')[this.selectionIndex].getAttribute('data-item')).description);
             }
 
             pause() {
@@ -193,7 +191,7 @@ module SimpleQuest {
                 this.updateList();
                 this.parent.updateMoney();
 
-                if (RPG.Party.inventory.length < 1) {
+                if (RPG.Party.inventory.count() < 1) {
                     RPG.Menu.pop();
                     return;
                 }
@@ -221,7 +219,7 @@ module SimpleQuest {
             equipped_:number;
             price:number;
             itemComponent:ItemComponent;
-            inventoryEntry:RPG.InventoryEntry;
+            item:RPG.Item;
 
             constructor(args) {
                 super({
@@ -248,23 +246,24 @@ module SimpleQuest {
                 this.itemKey = args.item;
                 this.price = args.price;
 
-                this.inventoryEntry = RPG.Party.hasItem(this.itemKey);
-                var item = this.inventoryEntry.item;
+                this.item = RPG.Party.inventory.has(this.itemKey);
 
                 this.itemComponent = new ItemComponent({
-                    icon: item.iconHTML,
-                    name: item.name,
+                    icon: this.item.iconHTML,
+                    name: this.item.name,
                     price: args.price
                 });
                 this.addChild(this.itemComponent, this.find('.item-container'));
 
-                this.owned = this.inventoryEntry.count;
+                // this.owned = this.item.count;
+                this.owned = 1; // TODO
                 this.count = 1;
 
-                if (!item.equipSlot) {
+                if (!this.item.equipSlot) {
                     this.find('.equipped-container').style.display = 'none';
                 }
-                this.equipped = this.inventoryEntry.equipped;
+                // this.equipped = this.item.equipped;
+                this.equipped = 0; // TODO
             }
 
             // TODO: make this pattern easier?
@@ -294,8 +293,8 @@ module SimpleQuest {
             }
 
             confirm() {
-                RPG.Party.money += this.price * this.count;
-                RPG.Party.removeItem(this.inventoryEntry, this.count);
+                RPG.Party.money += this.price; // * this.count;
+                RPG.Party.inventory.remove(this.item); // TODO multiple
                 RPG.Menu.pop();
             }
         }

@@ -104,12 +104,12 @@ module SimpleQuest {
         RPG.characters['hero'] = new Characters.Hero();
         RPG.Party.add(RPG.characters['hero']);
 
-        RPG.Party.addItem('tonic', 2);
+        RPG.Party.inventory.add('tonic', 2);
 
-        i = RPG.Party.addItem('oak_sword');
+        i = RPG.Party.inventory.add('oak_sword');
         RPG.characters['hero'].equipItem(i[0], "weapon");
 
-        i = RPG.Party.addItem('quilt_armor');
+        i = RPG.Party.inventory.add('quilt_armor');
         RPG.characters['hero'].equipItem(i[0], "armor");
 
         RPG.player = RPG.Party.members[0].makeEntity();

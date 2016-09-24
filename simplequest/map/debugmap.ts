@@ -68,9 +68,20 @@ module SimpleQuest {
                 yield* this.waitShop({
                     shopName: "Ye Olde Test Shoppe",
                     priceMultiplier: 1,
-                    products: _.keys(RPG.items)
+                    products: _.keys(RPG.Item.library)
                 });
             }.bind(this));
         }
+
+        test_fight(enemy) {
+            RPG.Battle.start({
+                enemy: enemy,
+                scene: 'ui/battle/scene_test.png'
+            });
+        }
+
+        fight_slime(args)              { this.test_fight("blueslime"); }
+        fight_stabber(args)            { this.test_fight("stabber"); }
+        fight_skeleton(args)           { this.test_fight("skellington"); }
     }
 }

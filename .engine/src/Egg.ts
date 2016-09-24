@@ -18,6 +18,8 @@
 var Electron = require('electron');
 declare var FontFace:any;
 
+type Dict<T> = { [key:string]: T }
+
 /**
  * The main container for everything Egg.
  */
@@ -244,5 +246,10 @@ module Egg {
         while (n < 0) n += range;
         n %= range;
         return n;
+    }
+
+    let lastID = -1;
+    export function uniqueID() {
+        return (++lastID).toString();
     }
 }

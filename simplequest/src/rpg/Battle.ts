@@ -200,6 +200,7 @@ module RPG {
                 Egg.Audio.currentMusic.stop();
             }
 
+            Egg.Input.debounce('confirm');
             this.resolve();
         }
 

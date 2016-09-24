@@ -2,20 +2,23 @@
 
 module SimpleQuest {
     export module Menu {
-        var html:string = `
-            <section class="layout-row title-row">Items</section>
-            <section class="layout-row items-row">
-                <ul class="items selections">
-                </ul>
-            </section>
-            <section class="layout-row description-row"></section>
-        `;
         export class Main_ItemsSubmenu extends RPG.Menu {
-            firstFixScroll:boolean = false;
+            // firstFixScroll:boolean = false;
+            itemList:Array<Array<RPG.Item>>;
 
             constructor() {
-                super({ html: html, cancelable: true });
-                this.element.classList.add('panel','items-submenu','layout-column');
+                super({
+                    cancelable: true,
+                    className: 'panel items-submenu layout-column',
+                    html: `
+                        <section class="layout-row title-row">Items</section>
+                        <section class="layout-row items-row">
+                            <ul class="items selections">
+                            </ul>
+                        </section>
+                        <section class="layout-row description-row"></section>
+                    `
+                });
                 this.rerenderItemList();
             }
 
@@ -23,17 +26,19 @@ module SimpleQuest {
                 var resetSelection = this.selectionIndex || 0;
                 var listContainer = this.find('ul.items');
 
+                this.itemList = RPG.Party.inventory.stacked();
+
                 while(listContainer.firstChild) { listContainer.removeChild(listContainer.lastChild); }
-                RPG.Party.getInventory().forEach((it:RPG.InventoryEntry) => {
+                this.itemList.forEach((row:Array<RPG.Item>) => {
                     var el = this.addChild(new ItemComponent({
-                        icon: it.item.iconHTML,
-                        name: it.item.name,
-                        count: it.count
+                        icon: row[0].iconHTML,
+                        name: row[0].name,
+                        count: row.length
                     }), listContainer);
 
-                    if (it.item.canUse(RPG.Party.members[0].character, RPG.Party.members[0].character)) {
+                    if (row[0].canUse(RPG.Party.members[0].character, RPG.Party.members[0].character)) {
                         el.element.setAttribute('data-menu', 'choose');
-                        el.element.setAttribute('data-item', it.item.key);
+                        el.element.setAttribute('data-item', row[0].key);
                     } else {
                         el.element.setAttribute('data-menu', '@disabled');
                     }
@@ -48,9 +53,7 @@ module SimpleQuest {
                 super.setSelection(index);
 
                 if (this.selections.length < 1) return;
-                // if (!this.firstFixScroll) this.fixScroll();
-                var entry = RPG.Party.inventory[this.selectionIndex];
-                this.find('.description-row').innerHTML = entry.item.description;
+                this.find('.description-row').innerHTML = this.itemList[this.selectionIndex][0].description;
             }
 
             // fixScroll() {
@@ -71,11 +74,8 @@ module SimpleQuest {
             // }
 
             choose(element:HTMLElement) {
-                var itemKey = element.getAttribute('data-item');
-                var item = RPG.Item.lookup(itemKey);
-
                 // TODO target selection
-                item.activate(RPG.Party.members[0].character);
+                this.itemList[this.selectionIndex][0].activate(RPG.Party.members[0].character);
                 this.rerenderItemList();
             }
         }

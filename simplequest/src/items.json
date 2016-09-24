@@ -50,7 +50,7 @@
         "slot": "armor", "equip": { "attributes": { "defense": 8 } }
     },
     "magic_armor": {
-        "name": "Magic Armor", "price": 3000, "icon": "ui/item_icons.png", "icon_frame": [70,28], "description": "It's oh, so magical.", "sort": 15.04,
+        "name": "Magic Armor", "price": 3000, "icon": "ui/item_icons.png", "icon_frame": [70,28], "description": "It's oh, so magical.", "sort": 15.05,
         "slot": "armor", "equip": { "attributes": { "defense": 10 } }
     },
 

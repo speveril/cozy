@@ -129,11 +129,11 @@ module SimpleQuest {
 
             if (Map.persistent[this.filename][name + "__opened"]) return;
 
-            var key = RPG.Party.hasItem(keyName);
+            var key = RPG.Party.inventory.has(keyName);
             if (key) {
                 RPG.Scene.do(function*() {
                     Map.persistent[this.filename][name + "__opened"] = true;
-                    yield* this.waitCenteredTextbox(`Used ${key.item.makeIconString()}${key.item.name}.`);
+                    yield* this.waitCenteredTextbox(`Used ${key.iconHTML}${key.name}.`);
                     this.doDoor(name)
                 }.bind(this));
             } else {
@@ -380,13 +380,12 @@ module SimpleQuest {
                             RPG.Party.money += count;
                             yield* this.waitCenteredTextbox(`Found ${count} ${RPG.moneyName}!`);
                         } else {
-                            var item = RPG.Item.lookup(itemkey);
-                            RPG.Party.addItem(itemkey, count);
+                            var items = RPG.Party.inventory.add(itemkey, count);
 
                             if (count > 1) {
-                                yield* this.waitCenteredTextbox(`Found ${item.makeIconString()}${item.name} x${count}!`);
+                                yield* this.waitCenteredTextbox(`Found ${items[0].iconHTML}${items[0].name} x${count}!`);
                             } else {
-                                yield* this.waitCenteredTextbox(`Found ${item.makeIconString()}${item.name}!`);
+                                yield* this.waitCenteredTextbox(`Found ${items[0].iconHTML}${items[0].name}!`);
                             }
                         }
                     }.bind(this));

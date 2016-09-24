@@ -139,7 +139,8 @@ module Egg {
 
             window.addEventListener("gamepadconnected", (evt) => {
                 var gamepad = navigator.getGamepads()[evt['gamepad'].index];
-                if (gamepad.connected && gamepad.id.match(/XInput STANDARD GAMEPAD/)) {
+                console.log("CONNECTED ->", evt['gamepad'], gamepad);
+                if (gamepad && gamepad.connected && gamepad.id.match(/XInput STANDARD GAMEPAD/)) {
                     this.addGamepad(gamepad.index);
                 }
             });
