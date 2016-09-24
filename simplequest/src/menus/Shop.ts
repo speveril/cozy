@@ -130,7 +130,7 @@ module SimpleQuest {
 
         class SellMenu extends RPG.Menu {
             parent:ShopMenu;
-            itemComponents:ItemComponent[] = [];
+            items:Array<Array<RPG.Item>>;
 
             constructor(args) {
                 super({
@@ -138,7 +138,14 @@ module SimpleQuest {
                     cancelable: true
                 });
 
-                RPG.Party.inventory.stacked((i) => i.sellable).forEach((stack:Array<RPG.Item>) => {
+                this.rebuildList();
+            }
+
+            rebuildList():void {
+                this.items = RPG.Party.inventory.stacked((item) => item.sellable);
+                this.element.innerHTML = '';
+
+                this.items.forEach((stack:Array<RPG.Item>) => {
                     var price = Math.ceil(stack[0].price * 0.2);
                     var el = this.addChild(new ItemComponent({
                         icon: stack[0].iconHTML,
@@ -146,41 +153,21 @@ module SimpleQuest {
                         price: stack[0].price
                     }));
 
+                    var sellable = _.findIndex(stack, (item) => item.location === RPG.Party.inventory) !== -1;
+
                     el.element.setAttribute('data-item', stack[0].key);
                     el.element.setAttribute('data-price', price.toString());
-                    el.element.setAttribute('data-menu', true ? 'choose' : '@disabled'); // TODO
-
-                    this.itemComponents.push(<ItemComponent>el);
+                    el.element.setAttribute('data-menu', sellable ? 'choose' : '@disabled');
                 });
 
                 this.setupSelections(this.element);
-            }
-
-            updateList() {
-                var toDelete = [];
-                _.each(this.itemComponents, (ic:ItemComponent, index:number) => {
-                    var itemKey = ic.element.getAttribute('data-item');
-                    var inv = RPG.Party.inventory.has(itemKey);
-                    if (!inv) {
-                        ic.remove();
-                        toDelete.unshift(index);
-                    }
-                });
-
-                _.each(toDelete, (i:number) => {
-                    this.itemComponents.splice(i, 1);
-                });
-
-                if (toDelete.length > 0) {
-                    this.setupSelections(this.element);
-                }
             }
 
             setSelection(index:number) {
                 super.setSelection(index);
 
                 if (this.selections.length < 1) return;
-                this.parent.updateDescription(RPG.Party.inventory.has(this.findAll('.item')[this.selectionIndex].getAttribute('data-item')).description);
+                this.parent.updateDescription(this.items[this.selectionIndex][0].description);
             }
 
             pause() {
@@ -188,7 +175,7 @@ module SimpleQuest {
             }
 
             unpause() {
-                this.updateList();
+                this.rebuildList();
                 this.parent.updateMoney();
 
                 if (RPG.Party.inventory.count() < 1) {
@@ -200,26 +187,20 @@ module SimpleQuest {
             }
 
             choose(el) {
-                var itemKey = el.getAttribute('data-item');
-                var price = parseInt(el.getAttribute('data-price'), 10);
-
                 var m = new ConfirmSellMenu({
-                    item: itemKey,
-                    price: price
+                    stack: this.items[this.selectionIndex]
                 });
                 RPG.Menu.push(m, this, <HTMLElement>this.element.parentNode);
             }
         }
 
         class ConfirmSellMenu extends RPG.Menu {
-            itemKey:string;
-            itemPrice:number;
             owned_:number;
             count_:number;
             equipped_:number;
             price:number;
             itemComponent:ItemComponent;
-            item:RPG.Item;
+            stack:Array<RPG.Item>;
 
             constructor(args) {
                 super({
@@ -243,27 +224,25 @@ module SimpleQuest {
                     `
                 });
 
-                this.itemKey = args.item;
-                this.price = args.price;
-
-                this.item = RPG.Party.inventory.has(this.itemKey);
+                this.stack = args.stack;
+                this.price = this.stack[0].price * 0.2;
 
                 this.itemComponent = new ItemComponent({
-                    icon: this.item.iconHTML,
-                    name: this.item.name,
-                    price: args.price
+                    icon: this.stack[0].iconHTML,
+                    name: this.stack[0].name,
+                    price: this.price
                 });
                 this.addChild(this.itemComponent, this.find('.item-container'));
 
-                // this.owned = this.item.count;
-                this.owned = 1; // TODO
+                this.owned = this.stack.length;
                 this.count = 1;
 
-                if (!this.item.equipSlot) {
+                if (!this.stack[0].equipSlot) {
                     this.find('.equipped-container').style.display = 'none';
+                    this.equipped = 0;
+                } else {
+                    this.equipped = _.reduce(this.stack, (n:number, item:RPG.Item) => n += (item.location === RPG.Party.inventory ? 1 : 0), 0);
                 }
-                // this.equipped = this.item.equipped;
-                this.equipped = 0; // TODO
             }
 
             // TODO: make this pattern easier?
@@ -293,8 +272,17 @@ module SimpleQuest {
             }
 
             confirm() {
-                RPG.Party.money += this.price; // * this.count;
-                RPG.Party.inventory.remove(this.item); // TODO multiple
+                RPG.Party.money += this.price * this.count;
+
+                var toSell = [];
+                _.times(this.count, (i:number) => {
+                    if (toSell.length >= this.count) return;
+                    if (this.stack[i].location === RPG.Party.inventory) {
+                        toSell.push(this.stack[i]);
+                    }
+                });
+
+                RPG.Party.inventory.remove(toSell);
                 RPG.Menu.pop();
             }
         }

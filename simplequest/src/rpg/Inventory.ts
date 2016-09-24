@@ -38,7 +38,7 @@ namespace RPG {
         }
 
         has(key:string):Item {
-            return _.find(items, (e) => e.key === key);
+            return _.find(this.items, (e) => e.key === key);
         }
 
         count(key?:string):number {

@@ -85,10 +85,7 @@ module RPG {
         }
 
         equipItem(item:Item, slot:string) {
-            console.log("EQUIP", item, "->", slot);
-
             if (item.equipSlot !== slot) return false;
-            console.log(" OK");
 
             let current = this.equipped[slot];
             if (current) {
