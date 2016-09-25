@@ -54,7 +54,6 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
     - Bake non-player config into game setup on export, leave config as only player config
 - Release stuff
     - Check for existence of .engine/src and do not do core watch or compiles if it doesn't
-    - Ship without .engine/src directory
 - ENGINE RELEASE 1.0
 
 
