@@ -32,8 +32,6 @@ Just run the Egg shortcut (or .engine/egg.exe). This will open the launcher/proj
 This is stuff I intend to do, and/or am actively working on. I'm trying to keep this up to date with my commits.
 
 - RPGKit
-    - Add Sell to shop
-    - Load CSS all at the beginning somehow so you don't get flashes of unstyled content when opening menus (css in config.json)
     - Add dialog box options -- yes/no, more complicated things
     - Add saving/loading games
     - Add scripted movement for entities in Scenes
@@ -42,8 +40,8 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
     - Can I just slurp in all of the map .ts files automatically instead of having to reference each one?
 - Reconcile File stuff
     - Don't make it required that the current working directory is actually the gamepath
-    - More complex songs -- intros, loops, multiple tracks that you can control separately
 - Exporting
+    - Make glob.js easier to recreate
     - Ship minified pixi/underscore
 - Other platforms
     - Mac OS
@@ -68,6 +66,7 @@ Stuff I've thought of and would be nice, or might be useful. I may or may not ev
     - PlatformerKit (for Metroidvania type games)
     - ActionAdventureKit (for Zelda type games)
     - etc.
+- More complex songs -- intros, loops, multiple tracks that you can control separately
 - Slim down Electron so the executable isn't so huge
 - Replace rendering engine with something native
     - SDL? OpenGL?
