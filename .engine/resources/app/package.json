@@ -4,7 +4,9 @@
   "version": "0.0.1",
   "main": "launch.js",
   "dependencies": {
+    "browserify": "^13.1.0",
     "electron-window-state": "^3.0.3",
+    "glob": "^7.1.0",
     "typedoc": "^0.4.4",
     "typescript": "^1.8.10"
   }

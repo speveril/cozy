@@ -1,6 +1,5 @@
 var fs = require('fs');
 var path = require('path');
-var glob = require('glob');
 
 module Egg {
     export class File {
@@ -18,7 +17,7 @@ module Egg {
         static stripProtocol(f):string { return f.replace("/^.*?:[/\\]{2}/",""); }
 
         static glob(f:string, opts?:any):Array<string> {
-            return glob.sync(f, opts);
+            return window['glob'].sync(f, opts);
         }
 
         static readHTML(f):string {

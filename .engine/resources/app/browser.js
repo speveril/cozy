@@ -417,6 +417,15 @@ var Browser = {
             });
     },
 
+    fork: function(cmd, params) {
+        return new Promise((resolve, reject) => {
+            var childproc = Child.fork(cmd, params, { silent: true, env: {"ATOM_SHELL_INTERNAL_RUN_AS_NODE":"0"} });
+            childproc.stdout.on('data', (s) => this.output(s.toString().trim()));
+            childproc.stderr.on('data', (s) => this.output(s.toString().trim()));
+            childproc.on('exit', (returnCode) => returnCode ? reject(returnCode) : resolve());
+        })
+    },
+
     buildGame: function(buildPath) {
         var config;
         try {
@@ -457,30 +466,15 @@ var Browser = {
             .then(() => {
                 this.output(" - Built engine");
                 this.output("<span style='color:#0f0'>[ Success ]</span>\n");
-                return Promise.resolve();
             }, (code) => {
-                this.output("<span style='color:red'>[ FAILURE (code: " + code + ") ]</span>\n");
+                this.output("<span style='color:red'>[ BUILD FAILURE (code: " + code + ") ]</span>\n");
                 return Promise.reject();
             });
     },
 
     build: function(buildParams) { //buildPath, outputFile) {
         buildParams.push('--target', 'ES6');
-
-        return new Promise((resolve, reject) => {
-            var tsc = Child.fork(Path.join(ENGINEDIR, 'resources', 'app', 'node_modules', 'typescript', 'bin', 'tsc'), buildParams, { silent: true, env: {"ATOM_SHELL_INTERNAL_RUN_AS_NODE":"0"} });
-
-            tsc.stdout.on('data', this.output.bind(this));
-            tsc.stderr.on('data', this.output.bind(this));
-
-            tsc.on('exit', (returnCode) => {
-                if (!returnCode) {
-                    resolve();
-                } else {
-                    reject(returnCode);
-                }
-            });
-        });
+        return this.fork(Path.join(ENGINEDIR, 'resources', 'app', 'node_modules', 'typescript', 'bin', 'tsc'), buildParams);
     },
 
     export: function(srcPath, outPath) {
@@ -540,6 +534,7 @@ var Browser = {
 
             var files = [
                 'Egg.js', 'game.css', 'game.html',
+                Path.join('lib','glob.js'),
                 Path.join('lib','pixi.js'),
                 Path.join('lib','underscore.js')
             ];
@@ -605,26 +600,20 @@ var Browser = {
                 " - destination: " + outputPath
             );
 
-            var typedoc = Child.fork(Path.join(ENGINEDIR, 'resources', 'app', 'builddoc'), [
-                '--out', outputPath,
-                '--mode', 'file',
-                '--target', 'ES6',
-                '--name', 'Egg Engine',
-                srcPath
-            ], { silent: true, env: {"ATOM_SHELL_INTERNAL_RUN_AS_NODE":"0"} });
-
-            // do some trimming because typedoc likes its newlines
-            typedoc.stdout.on('data', (s) => this.output(s.toString().trim()));
-            typedoc.stderr.on('data', (s) => this.output(s.toString().trim()));
-
-            typedoc.on('exit', (returnCode) => {
-                if (!returnCode) {
-                    this.output("<span style='color:#0f0'>[ Success ]</span>\n");
-                    resolve();
-                } else {
-                    this.output("<span style='color:red'>[ FAILURE (code: " + returnCode + ") ]</span>\n");
-                    reject();
-                }
+            this.fork(
+                Path.join(ENGINEDIR, 'resources', 'app', 'builddoc'), [
+                    '--out', outputPath,
+                    '--mode', 'file',
+                    '--target', 'ES6',
+                    '--name', 'Egg Engine',
+                    srcPath
+                ]
+            ).then(() => {
+                this.output("<span style='color:#0f0'>[ Success ]</span>\n");
+                resolve();
+            }, (code) => {
+                this.output("<span style='color:red'>[ FAILURE (code: " + returnCode + ") ]</span>\n");
+                reject(code)
             });
         });
     },
