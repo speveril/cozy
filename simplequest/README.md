@@ -10,32 +10,23 @@ Game developed by Shamus Peveril (http://shamuspeveril.com) with the Egg Engine.
 
 ### Art
 
-Tiny16 tileset created by Lanea Zimmerman
+Tiny16 tileset and sprites created by Lanea Zimmerman - http://opengameart.org/content/tiny-16-basic)
 
-- http://opengameart.org/content/tiny-16-basic
-    - with modifications/additions by Shamus Peveril
+Item graphics by Jerom, recolored by PriorBlue - http://opengameart.org/content/recolor-all-the-items
 
-Item graphics by Jerom, recolored by PriorBlue
+Some monster graphics by Hyptosis - http://www.lorestrome.com/
 
-- http://opengameart.org/content/recolor-all-the-items
-    - with modifications/additions by Shamus Peveril
+- Slime battle graphic
+- Stabber battle graphic
 
-Some monster graphics by Hyptosis
+Other art, including additions and modifications of above, by Shamus Peveril
 
-- http://www.lorestrome.com/
-    - Blue Slime
-    - Stabber
-
-Other art by Shamus Peveril
-
-- Fonts built with Fontstruct
-    - http://fontstruct.com/
+Fonts created with [Fontstruct](http://fontstruct.com/)
 
 ### Audio
 
-Some of the sounds in this project were created by David McKee (ViRiX)
+Some of the sounds in this project were created by David McKee (ViRiX) - http://soundcloud.com/virix
 
-- http://soundcloud.com/virix
 - http://opengameart.org/comment/20356
     - MENU A_Select.wav
     - MENU B_Select.wav
@@ -50,11 +41,11 @@ Some sound effects from Michael Koenig
 - http://soundbible.com/1165-Dinosaur-Roar.html
     - dinosaur_roar.wav
 
-Some music by Otto Halmén
+Some music by Otto Halmén - https://ottohalmen.bandcamp.com
 
 - Otto Halmén - Death Is Just Another Path
 
-Some music from the RMN Music Pack
+Some music from the RMN Music Pack - https://rpgmaker.net/musicpack/
 
 - Jasprelao - Town of Wishes
 - Subaru - Resonant Hopes Ignited Wills
@@ -64,6 +55,4 @@ Some music from the RMN Music Pack
 - Tarranon - Brazen
 - Jeremiah George - Royalty of Sin
 
-Other sounds created by Shamus Peveril using bfxr
-
-- http://www.bfxr.net/
+Other sounds created by Shamus Peveril using bfxr - http://www.bfxr.net/
