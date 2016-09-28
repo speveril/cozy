@@ -85,22 +85,22 @@
 				<p>This is stuff I intend to do, and/or am actively working on. I&#39;m trying to keep this up to date with my commits.</p>
 				<ul>
 					<li>RPGKit<ul>
-							<li>Add Sell to shop</li>
-							<li>Load CSS all at the beginning somehow so you don&#39;t get flashes of unstyled content when opening menus (css in config.json)</li>
+							<li>Add scripted movement and wandering for entities on the map</li>
+							<li>Add scripted movement for entities in Scenes</li>
+							<li>Finish up battle system.</li>
 							<li>Add dialog box options -- yes/no, more complicated things</li>
 							<li>Add saving/loading games</li>
-							<li>Add scripted movement for entities in Scenes</li>
-							<li>Add scripted movement and wandering for entities on the map</li>
 							<li>It&#39;d be nice if the persistent stuff in map was easier to use in general</li>
 							<li>Can I just slurp in all of the map .ts files automatically instead of having to reference each one?</li>
+							<li>Sprites should be able to define a rectangle for their frames, and refer to frames within that rectangle to facilitate sprite atlases</li>
 						</ul>
 					</li>
 					<li>Reconcile File stuff<ul>
 							<li>Don&#39;t make it required that the current working directory is actually the gamepath</li>
-							<li>More complex songs -- intros, loops, multiple tracks that you can control separately</li>
 						</ul>
 					</li>
 					<li>Exporting<ul>
+							<li>Make glob.js easier to recreate</li>
 							<li>Ship minified pixi/underscore</li>
 						</ul>
 					</li>
@@ -120,7 +120,6 @@
 					</li>
 					<li>Release stuff<ul>
 							<li>Check for existence of .engine/src and do not do core watch or compiles if it doesn&#39;t</li>
-							<li>Ship without .engine/src directory</li>
 						</ul>
 					</li>
 					<li>ENGINE RELEASE 1.0</li>
@@ -135,6 +134,7 @@
 							<li>etc.</li>
 						</ul>
 					</li>
+					<li>More complex songs -- intros, loops, multiple tracks that you can control separately</li>
 					<li>Slim down Electron so the executable isn&#39;t so huge</li>
 					<li>Replace rendering engine with something native<ul>
 							<li>SDL? OpenGL?</li>

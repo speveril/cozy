@@ -6,6 +6,7 @@ module Egg {
         innerSprite: PIXI.Sprite;
         hotspot: PIXI.Point;
         position: PIXI.Point;
+        frameBank: PIXI.Rectangle;
         frameSize: PIXI.Point;
         frameCounts: PIXI.Point;
         layer: Egg.Layer;
@@ -54,7 +55,8 @@ module Egg {
             this.frameSize = new PIXI.Point(args.frameSize.x || args.texture.width, args.frameSize.y || args.texture.height);
             this.textureFrame = new PIXI.Rectangle(0, 0, this.frameSize.x, this.frameSize.y);
             this.frame_ = 0;
-            this.frameCounts = new PIXI.Point(Math.floor(this.texture.width / this.frameSize.x), Math.floor(this.texture.height / this.frameSize.y));
+            this.frameBank = args.frameBank ? new PIXI.Rectangle(args.frameBank.x, args.frameBank.y, args.frameBank.width, args.frameBank.height) : new PIXI.Rectangle(0, 0, this.texture.width, this.texture.height);
+            this.frameCounts = new PIXI.Point(Math.floor(this.frameBank.width / this.frameSize.x), Math.floor(this.frameBank.height / this.frameSize.y));
             this.clip = new PIXI.Rectangle(0, 0, this.frameSize.x, this.frameSize.y);
 
             this.updateTextureFrame();
@@ -109,8 +111,8 @@ module Egg {
         }
 
         private updateTextureFrame() {
-            this.textureFrame.x = this.frameSize.x * (this.frame % this.frameCounts.x) + this.clip.x;
-            this.textureFrame.y = this.frameSize.y *  Math.floor(this.frame / this.frameCounts.x) + this.clip.y;
+            this.textureFrame.x = this.frameSize.x * (this.frame % this.frameCounts.x) + this.clip.x + this.frameBank.x;
+            this.textureFrame.y = this.frameSize.y *  Math.floor(this.frame / this.frameCounts.x) + this.clip.y + this.frameBank.y;
             this.texture.frame.width = Math.max(Math.min(this.frameSize.x, this.clip.width), 0);
             this.texture.frame.height = Math.max(Math.min(this.frameSize.y, this.clip.height), 0);
             this.texture.frame = this.textureFrame;

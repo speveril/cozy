@@ -3,7 +3,7 @@
     "frameSize": { "x":16, "y":16 },
     "hotspot": { "x":8, "y":8 },
     "radius": 8,
-    "frameBank": { "x":0, "y":0, "width":48, "height":64 },
+    "frameBank": { "x":0, "y":64, "width":48, "height":64 },
     "animations": {
         "stand_u": { "loop": true, "frames": [[9,999]] },
         "stand_r": { "loop": true, "frames": [[6,999]] },
