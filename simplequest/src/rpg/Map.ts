@@ -384,6 +384,8 @@ module RPG {
         finish() {}
 
         update(dt):void {
+            // TODO We don't need to be doing this sort every single frame for tile layers, and we can probably be
+            //      smarter about it for entity layers.
             this.layers.forEach((layer) => {
                 layer.displayLayer.sortSprites((a, b) => {
                     if (a.position.y === b.position.y) {
@@ -392,6 +394,11 @@ module RPG {
                         return a.position.y < b.position.y ? -1 : 1;
                     }
                 });
+                if (layer.entities && layer.entities.length > 0) {
+                    layer.entities.forEach((e) => {
+                        e.update(dt);
+                    });
+                }
             });
         }
 

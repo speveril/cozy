@@ -61,6 +61,11 @@ module SimpleQuest {
                 image: 'ui/battle/monster_skellington.png',
                 treasure: { money: '1d4 + 2' }
             },
+            slime: { name: "Slime", xp: 15,
+                hp: 7, attributes: { attack: 2, defense: 2, critical: 0, evade: 2 },
+                image: 'ui/battle/monster_slime.png',
+                treasure: { money: '1d2' }
+            },
             blueslime: { name: "Blue Slime", xp: 15,
                 hp: 7, attributes: { attack: 3, defense: 4, critical: 1, evade: 3 },
                 image: 'ui/battle/monster_blueslime.png',

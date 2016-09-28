@@ -1,9 +1,12 @@
 module RPG {
     export class Entity {
         private spriteDef:any; // can be an object or a string
+        private paused:boolean;
+
         public triggersEvents:boolean;
         public respectsObstructions:boolean;
         public name:string;
+        public behavior:any;
 
         public sprite:Egg.Sprite;
         public layer:MapLayer;
@@ -27,6 +30,8 @@ module RPG {
             this.respectsObstructions = (args.respectsObstructions !== undefined ? args.respectsObstructions : true);
             this.radius = args.radius || args.sprite.radius || 8;
             this.name = args.name;
+            this.behavior = args.behavior && RPG.Behavior[args.behavior] ? RPG.Behavior[args.behavior](this) : undefined;
+            this.paused = false;
         }
 
         place(x:number, y:number, lyr:MapLayer):void {
@@ -53,6 +58,23 @@ module RPG {
             var index = this.layer.entities.indexOf(this);
             this.layer.entities.splice(index, 1);
             this.sprite.layer.remove(this.sprite);
+        }
+
+        update(dt:number) {
+            if (!this.paused && this.behavior) {
+                var result = this.behavior.next(dt);
+                if (result.done) {
+                    this.behavior = result.value;
+                }
+            }
+        }
+
+        pause() {
+            this.paused = true;
+        }
+
+        unpause() {
+            this.paused = false;
         }
 
         move(dx:number, dy:number):void {

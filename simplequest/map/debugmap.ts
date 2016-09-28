@@ -80,7 +80,8 @@ module SimpleQuest {
             });
         }
 
-        fight_slime(args)              { this.test_fight("blueslime"); }
+        fight_slime(args)              { this.test_fight("slime"); }
+        fight_blueslime(args)          { this.test_fight("blueslime"); }
         fight_stabber(args)            { this.test_fight("stabber"); }
         fight_skeleton(args)           { this.test_fight("skellington"); }
     }

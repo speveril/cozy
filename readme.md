@@ -32,11 +32,11 @@ Just run the Egg shortcut (or .engine/egg.exe). This will open the launcher/proj
 This is stuff I intend to do, and/or am actively working on. I'm trying to keep this up to date with my commits.
 
 - RPGKit
+    - Add scripted movement and wandering for entities on the map
+    - Add scripted movement for entities in Scenes
     - Finish up battle system.
     - Add dialog box options -- yes/no, more complicated things
     - Add saving/loading games
-    - Add scripted movement for entities in Scenes
-    - Add scripted movement and wandering for entities on the map
     - It'd be nice if the persistent stuff in map was easier to use in general
     - Can I just slurp in all of the map .ts files automatically instead of having to reference each one?
 - Reconcile File stuff

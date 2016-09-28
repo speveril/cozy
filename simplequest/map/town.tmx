@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="16" tileheight="16" nextobjectid="71">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="16" tileheight="16" nextobjectid="73">
  <tileset firstgid="1" source="tileset.tsx"/>
  <layer name="Tile Layer 1" width="20" height="15">
   <data encoding="csv">
@@ -103,6 +103,8 @@
   </object>
   <object id="51" name="villager_well" type="entity" x="112" y="128" width="16" height="16">
    <properties>
+    <property name="behavior" value="wander"/>
+    <property name="speed" value="10"/>
     <property name="sprite" value="sprites/villager_f.sprite"/>
    </properties>
   </object>
