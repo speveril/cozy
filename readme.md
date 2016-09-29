@@ -31,6 +31,8 @@ Just run the Egg shortcut (or .engine/egg.exe). This will open the launcher/proj
 
 This is stuff I intend to do, and/or am actively working on. I'm trying to keep this up to date with my commits.
 
+- Bugs/Unsorted
+    - Lock gamepad input to active window
 - RPGKit
     - Add scripted movement and wandering for entities on the map
     - Add scripted movement for entities in Scenes

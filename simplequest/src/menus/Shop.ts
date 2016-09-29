@@ -150,7 +150,7 @@ module SimpleQuest {
                     var el = this.addChild(new ItemComponent({
                         icon: stack[0].iconHTML,
                         name: stack[0].name,
-                        price: stack[0].price
+                        price: price
                     }));
 
                     var sellable = _.findIndex(stack, (item) => item.location === RPG.Party.inventory) !== -1;
@@ -171,10 +171,12 @@ module SimpleQuest {
             }
 
             pause() {
+                super.pause();
                 this.element.style.display = 'none';
             }
 
             unpause() {
+                super.unpause();
                 this.rebuildList();
                 this.parent.updateMoney();
 
@@ -210,15 +212,19 @@ module SimpleQuest {
                     selectionContainer: '.selections',
                     html: `
                         <div class="item-container"></div>
-                        <ul class="sell-container selections">
-                            <li><span class="label" data-menu="confirm">Sell</span> <span class="count"></span></li>
-                        </div>
-                        <div class="other-info">
+                        <div class="sell-info">
                             <div class="owned-container">
                                 <span class="label">Owned</span> <span class="count"></span>
                             </div>
                             <div class="equipped-container">
                                 <span class="label">Equipped</span> <span class="count"></span>
+                            </div>
+
+                            <ul class="sell-container selections">
+                                <li data-menu="confirm"><span class="label">Sell</span> <span class="count"></span></li>
+                            </ul>
+                            <div class="total-container">
+                                <span class="label">Total</span> <span class="total"></span>
                             </div>
                         </div>
                     `
@@ -249,8 +255,14 @@ module SimpleQuest {
             get count():number { return this.count_; }
             set count(x:number) {
                 this.count_ = x;
-                this.find('.sell-container .count').innerText = x.toString();
-                this.itemComponent.setPrice(this.price * this.count_);
+
+                var countSpan = this.find('.sell-container .count');
+                countSpan.innerText = x.toString();
+                countSpan.classList.toggle('floor', this.count_ === 0);
+                countSpan.classList.toggle('ceil', this.count_ === this.owned - this.equipped);
+
+                var totalSpan = this.find('.total-container .total');
+                totalSpan.innerText = (this.price * this.count_).toString() + RPG.moneyName;
             }
 
             get owned():number { return this.owned_; }

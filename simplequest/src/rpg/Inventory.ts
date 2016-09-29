@@ -63,8 +63,9 @@ namespace RPG {
             this.counts[key] += n;
 
             this.items.sort((a,b) => {
-                if (a.sort === b.sort) return a.name < b.name ? -1 : 1;
-                return a.sort - b.sort;
+                if (a.sort !== b.sort) return a.sort - b.sort;
+                if (a.name !== b.name) return a.name < b.name ? -1 : 1;
+                return a.id.localeCompare(b.id);
             });
 
             return items;

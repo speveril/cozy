@@ -80,6 +80,72 @@
     overflow: hidden;
 }
 
+.shop-menu .confirm-sell-menu .sell-info {
+    margin: 0em 2em;
+}
+
+.shop-menu .confirm-sell-menu .sell-info .label {
+    flex-grow: 1;
+}
+
+.shop-menu .confirm-sell-menu .sell-info .owned-container {
+    display:flex;
+}
+
+.shop-menu .confirm-sell-menu .sell-info .equipped-container {
+    display:flex;
+}
+
+.shop-menu .confirm-sell-menu .sell-info .sell-container li {
+    display:flex;
+}
+
+.shop-menu .confirm-sell-menu .sell-info .total-container li . {
+    text-align: right;
+}
+
+.shop-menu .confirm-sell-menu .sell-info .sell-container li .count::before,
+.shop-menu .confirm-sell-menu .sell-info .sell-container li .count::after {
+    position: absolute;
+    display: block;
+    top: -1px;
+    width: 14px;
+    height: 14px;
+    content: "";
+    background-image: url("ui_icons.png");
+}
+
+.shop-menu .confirm-sell-menu .sell-info .sell-container li .count::before {
+    left: -12px;
+    background-position: 0px -14px;
+}
+
+.shop-menu .confirm-sell-menu .sell-info .sell-container li .count.floor::before {
+    background-position: -28px -14px;
+}
+
+.shop-menu .confirm-sell-menu .sell-info .sell-container li .count::after {
+    right: -12px;
+    background-position: -14px -14px;
+}
+
+.shop-menu .confirm-sell-menu .sell-info .sell-container li .count.ceil::after {
+    background-position: -42px -14px;
+}
+
+.shop-menu .confirm-sell-menu .sell-info .sell-container li .count,
+.shop-menu .confirm-sell-menu .sell-info .total-container .total {
+    flex-basis: 2em;
+    text-align: right;
+    position: relative;
+}
+
+.shop-menu .confirm-sell-menu .sell-info .total-container {
+    margin-top: 0.5em;
+    padding-left: 1.5em;
+    display: flex;
+}
+
 .shop-menu .item {
     display: flex;
     flex-flow: row nowrap;

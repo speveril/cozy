@@ -74,7 +74,7 @@ module SimpleQuest {
                 console.log(args.entity.dir, args.target.animation);
 
                 yield* this.waitTextbox("VILLAGER", [
-                    "Fresh water is good for you! I'm so glad we have this well."
+                    "Fresh water is good for you! I'm so glad we have the well."
                 ]);
                 args.target.unpause();
             }.bind(this));
