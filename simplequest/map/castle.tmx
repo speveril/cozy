@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="60" tilewidth="16" tileheight="16" nextobjectid="124">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="60" tilewidth="16" tileheight="16" nextobjectid="143">
  <tileset firstgid="1" source="tileset.tsx"/>
  <layer name="background" width="40" height="60">
   <data encoding="csv">
@@ -469,6 +469,69 @@
    </properties>
   </object>
   <object id="123" name="open_door" type="event" x="400" y="576" width="16" height="16"/>
+  <object id="126" name="ghost_frontgate" type="entity" x="384" y="608" width="16" height="16">
+   <properties>
+    <property name="behavior" value="wander"/>
+    <property name="speed" type="int" value="10"/>
+    <property name="sprite" value="sprites/ghost.sprite"/>
+   </properties>
+  </object>
+  <object id="129" name="ghost_west_tower_floor" type="entity" x="176" y="304" width="16" height="16">
+   <properties>
+    <property name="behavior" value="wander"/>
+    <property name="speed" type="int" value="10"/>
+    <property name="sprite" value="sprites/ghost.sprite"/>
+   </properties>
+  </object>
+  <object id="132" name="ghost_east_tower_floor" type="entity" x="544" y="384" width="16" height="16">
+   <properties>
+    <property name="behavior" value="wander"/>
+    <property name="speed" type="int" value="10"/>
+    <property name="sprite" value="sprites/ghost.sprite"/>
+   </properties>
+  </object>
+  <object id="133" name="ghost_west_treasure" type="entity" x="48" y="464" width="16" height="16">
+   <properties>
+    <property name="behavior" value="wander"/>
+    <property name="speed" type="int" value="10"/>
+    <property name="sprite" value="sprites/ghost.sprite"/>
+   </properties>
+  </object>
+  <object id="138" name="ghost_throne_antechamber" type="entity" x="304" y="288" width="16" height="16">
+   <properties>
+    <property name="behavior" value="wander"/>
+    <property name="speed" type="int" value="10"/>
+    <property name="sprite" value="sprites/ghost.sprite"/>
+   </properties>
+  </object>
+  <object id="139" name="ghost_east_tower" type="entity" x="384" y="880" width="16" height="16">
+   <properties>
+    <property name="behavior" value="wander"/>
+    <property name="speed" type="int" value="10"/>
+    <property name="sprite" value="sprites/ghost.sprite"/>
+   </properties>
+  </object>
+  <object id="140" name="ghost_west_tower_A" type="entity" x="64" y="768" width="16" height="16">
+   <properties>
+    <property name="behavior" value="wander"/>
+    <property name="speed" type="int" value="10"/>
+    <property name="sprite" value="sprites/ghost.sprite"/>
+   </properties>
+  </object>
+  <object id="141" name="ghost_west_tower_B" type="entity" x="240" y="848" width="16" height="16">
+   <properties>
+    <property name="behavior" value="wander"/>
+    <property name="speed" type="int" value="10"/>
+    <property name="sprite" value="sprites/ghost.sprite"/>
+   </properties>
+  </object>
+  <object id="142" name="ghost_courtyard" type="entity" x="112" y="656" width="16" height="16">
+   <properties>
+    <property name="behavior" value="wander"/>
+    <property name="speed" type="int" value="10"/>
+    <property name="sprite" value="sprites/ghost.sprite"/>
+   </properties>
+  </object>
  </objectgroup>
  <layer name="foreground" width="40" height="60">
   <data encoding="csv">
