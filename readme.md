@@ -33,6 +33,7 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
 
 - Bugs/Unsorted
     - Lock gamepad input to active window
+    - In-game input config
 - RPGKit
     - Add scripted movement and wandering for entities on the map
     - Add scripted movement for entities in Scenes
@@ -41,19 +42,22 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
     - Add saving/loading games
     - It'd be nice if the persistent stuff in map was easier to use in general
     - Can I just slurp in all of the map .ts files automatically instead of having to reference each one?
+- Data Editor
+    - Manager .json files; top level is an object with a ".schemas" key plus "tables" of typed objects
 - Reconcile File stuff
     - Don't make it required that the current working directory is actually the gamepath
-- Exporting
-    - Make glob.js easier to recreate
-    - Ship minified pixi/underscore
 - Other platforms
     - Mac OS
     - Linux
 - config.json should be able to define an expected version, Egg should be smart enough to do the right thing
     - I think this means "shipping" compiled .js blobs of previous versions along with the engine, and having the player select the right one
     - This is irrelevant for exported games; they'll be packaged with the version they were used to create it
-- Split config.json into necessary game setup vs. player configuration
-    - Bake non-player config into game setup on export, leave config as only player config
+- Exporting
+    - Make glob.js easier to recreate
+    - Ship minified pixi/underscore
+    - Split config.json into necessary game setup vs. player configuration (bake non-player config into game setup on export, leave config as only player config)
+- Testing
+    - Investigate this
 - Release stuff
     - Check for existence of .engine/src and do not do core watch or compiles if it doesn't
 - ENGINE RELEASE 1.0

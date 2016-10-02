@@ -9,7 +9,7 @@ process.chdir(Path.join(Path.dirname(process.execPath), ".."));
 
 Electron.app.on('ready', setup);
 
-var mainWindow, docWindow;
+var mainWindow, editors = {};
 
 function output(text) {
     if (mainWindow) {
@@ -42,6 +42,9 @@ function setup() {
                     }, (e) => {
                         output("<span style='color:red'>[ Error: " + e.toString() + " ]</span>\n");
                     })
+                break;
+            case 'edit':
+                openEditor(arg.path);
                 break;
             case 'view-docs':
                 viewDocs();
@@ -92,17 +95,18 @@ function play(path, override, debug) {
         });
         // window.toggleDevTools();
 
-        window.once('close', () => {
-            resolve();
-        });
-
         params['game'] = path;
         params['enginePath'] = '.engine';
         params['width'] = params['width'] || 320;
         params['height'] = params['height'] || 240;
         params['debug'] = debug;
 
+        window.once('close', () => {
+            resolve();
+        });
+
         window.loadURL("file://" + __dirname + "/game.html");
+
         window.webContents.once('did-finish-load', () => {
             window.webContents.send('start', params);
         });
@@ -111,4 +115,49 @@ function play(path, override, debug) {
 
 function viewDocs() {
     require('shell').openExternal("file://" + Process.cwd() + "/.engine/docs/index.html");
+}
+
+function openEditor(path) {
+    if (editors[path]) {
+        editors[path].focus();
+        return;
+    }
+
+    path = path || '';
+
+    var params = {};
+
+    try {
+        params.config = JSON.parse(FS.readFileSync(Path.join(path, "config.json")));
+    } catch(e) {
+        output("Couldn't load game in " + Path.join(process.cwd(), path) + ".");
+        output("<span style='color:red'>" + e.toString() + "</span>");
+    }
+
+    var window = new Electron.BrowserWindow({
+        'width':              1024,
+        'height':             768,
+        'fullscreen':         false,
+        // 'icon':               params['icon'] ? Path.join(process.cwd(), path, params['icon']) : undefined,
+        'autoHideMenuBar':    false,
+        'useContentSize':     true
+    });
+    // window.toggleDevTools();
+
+    editors[path] = window;
+
+    params['gamePath'] = path;
+    params['enginePath'] = '.engine';
+
+    window.once('close', () => {
+        editors[path] = null;
+    });
+    window.webContents.once('did-finish-load', () => {
+        window.webContents.send('start', params);
+    });
+    window.once('ready-to-show', () => {
+        window.show();
+    })
+
+    window.loadURL("file://" + __dirname + "/editor/editor.html");
 }

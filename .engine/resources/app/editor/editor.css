@@ -84,12 +84,12 @@ body {
     margin: 3px;
 }
 .panel .sidebar {
-    flex: 0 1 250px;
+    flex: 0 0 250px;
     display: flex;
     flex-direction: column;
 }
 .panel .tabbar {
-    flex: 0 1 auto;
+    flex: 0 0 auto;
     display: flex;
     flex-direction: row;
 }
@@ -128,6 +128,51 @@ body {
     flex-direction: column;
     justify-content: center;
     padding: 0.5em 1em;
+}
+
+.data-edit-panel .tabbar .table-list {
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: row;
+}
+
+.data-edit-panel .workarea {
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+    padding: 3px;
+}
+
+.data-edit-panel .workarea .field-row {
+    flex: 0 0 35px;
+    display: flex;
+    flex-direction: row;
+    padding: 3px;
+}
+.data-edit-panel .workarea .field-row.text {
+    flex-basis: 80px;
+}
+
+.data-edit-panel .workarea .field-row > * {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.data-edit-panel .workarea .field-row .label {
+    flex: 0 0 150px;
+}
+.data-edit-panel .workarea .field-row .value {
+    flex: 1 0 auto;
+}
+
+.data-edit-panel .workarea .field-row textarea,
+.data-edit-panel .workarea .field-row input[type=text],
+.data-edit-panel .workarea .field-row input[type=number] {
+    font-family: Consolas;
+    padding: 3px;
+    width: 100%;
+    height: 100%;
+    resize: none;
 }
 
 /*** END ***/

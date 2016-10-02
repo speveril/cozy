@@ -286,11 +286,13 @@ var Browser = {
             <div class="info">${info}</div>
             <div class="extra">
                 <span class="run">&rarr; Compile and Run</span>
+                <span class="edit">&rarr; Edit</span>
                 <span class="export">&rarr; Export... <input class="directory-picker" type="file" webkitdirectory></span>
             </div>
         `;
 
         li.querySelector('.extra > .run').onclick = (e) => { e.stopPropagation(); this.clickCompileAndRun(li, path); };
+        li.querySelector('.extra > .edit').onclick = (e) => { e.stopPropagation(); this.clickEdit(li, path); };
         li.querySelector('.extra > .export').onclick = (e) => { e.stopPropagation(); this.clickExport(li, path); };
         parent.appendChild(li);
 
@@ -314,6 +316,13 @@ var Browser = {
             }, () => {
                 li.classList.remove('compiling');
             });
+    },
+
+    clickEdit: function(li, path) {
+        Electron.ipcRenderer.send('control-message', {
+            command: 'edit',
+            path: path,
+        });
     },
 
     clickExport: function(li, path) {
