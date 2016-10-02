@@ -1,0 +1,28 @@
+<html>
+    <head>
+        <title>Egg Editor</title>
+        <link rel="stylesheet" href="editor.css">
+        <script src="../lib/underscore.js"></script>
+        <script src="../lib/pixi.js"></script>
+        <script src="../lib/glob.js"></script>
+    </head>
+    <body>
+        <script>
+(function() {
+    const Electron = require('electron');
+    const browserWindow = Electron.remote.getCurrentWindow();
+
+    browserWindow.toggleDevTools();
+    browserWindow.webContents.once('devtools-opened', () => {
+        browserWindow.focus();
+    });
+
+    const Editor = require('./Editor');
+
+    Electron.ipcRenderer.on('start', function(event, args) {
+        Editor.go(args);
+    });
+})();
+        </script>
+    </body>
+</html>
