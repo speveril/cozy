@@ -30,9 +30,12 @@ button:active {
 .selection-list-item {
     cursor: pointer;
     padding: 3px;
-
 }
-.selection-list-item:hover {
+.selection-list-item.active {
+    background: #ddd;
+}
+.selection-list-item:hover,
+.selection-list-item.active:hover {
     background: #aaa;
     color: #fff;
 }
@@ -157,6 +160,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    margin: 3px;
 }
 .data-edit-panel .workarea .field-row .label {
     flex: 0 0 150px;
@@ -164,8 +168,20 @@ body {
 .data-edit-panel .workarea .field-row .value {
     flex: 1 0 auto;
 }
+.data-edit-panel .workarea .field-row .type {
+    flex 0 0 auto;
+}
+.data-edit-panel .workarea .field-row .constraints,
+.data-edit-panel .workarea .field-row .constraints > * {
+    flex 1 0 auto;
+    flex-direction: row;
+}
+.data-edit-panel .workarea .field-row .constraints > *:not(.active) {
+    display: none;
+}
 
 .data-edit-panel .workarea .field-row textarea,
+.data-edit-panel .workarea .field-row select,
 .data-edit-panel .workarea .field-row input[type=text],
 .data-edit-panel .workarea .field-row input[type=number] {
     font-family: Consolas;
@@ -173,6 +189,16 @@ body {
     width: 100%;
     height: 100%;
     resize: none;
+}
+
+.data-edit-panel .workarea .field-row .constraints span {
+    display: inline-block;
+    text-align: right;
+    width: 60px;
+}
+.data-edit-panel .workarea .field-row .constraints input[type=number] {
+    width: 80px;
+    height: auto;
 }
 
 /*** END ***/

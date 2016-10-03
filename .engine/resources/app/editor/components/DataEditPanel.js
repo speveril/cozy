@@ -19,6 +19,13 @@ class ObjectListComponent extends UiComponent {
         super({
             className: 'object-list selection-list'
         });
+        this.mode = null;
+    }
+
+    setActive(el) {
+        this.findAll('.active').forEach((e) => e.classList.remove('active'));
+        if (el)
+            el.classList.add('active');
     }
 }
 
@@ -33,6 +40,15 @@ class ObjectComponent extends UiComponent {
     }
 }
 
+class SchemaComponent extends UiComponent {
+    constructor(key) {
+        super({
+            className: 'object-entry selection-list-item',
+            html: `${key}`
+        });
+        this.element.setAttribute('data-type', key);
+    }
+}
 class RowType {
     constructor(def) {
         // TODO other types:
@@ -42,25 +58,53 @@ class RowType {
         this.fieldLookup = {};
 
         _.each(def, (fieldDef) => {
-            var attr = {};
+            var field = {};
 
-            attr.key = fieldDef.key;
-            attr.optional = fieldDef.optional ? true : false;
+            field.key = fieldDef.key;
+            field.optional = fieldDef.optional ? true : false;
 
             var matches = fieldDef.type.match(/^(\w+)(?:<(\d*)(?:,(\d*))?>)?$/);
             if (!matches) throw new Error("Bad type in RowType field: " + fieldDef.type);
 
-            attr.type = matches[1];
-            if (matches[1] === 'int' || matches[1] === 'number') {
-                attr.min = matches[2] ? parseInt(matches[2],10) : -Infinity;
-                attr.max = matches[3] ? parseInt(matches[3],10) : Infinity;
-            } else if (fieldDef.type === 'string' || fieldDef.type === 'text') {
-                attr.max = matches[2] ? parseInt(matches[2],10) : Infinity;
+            field.type = matches[1];
+            if (matches[1] === 'boolean') {
+                // no constraints on booleans, but they are allowed
+            } else if (matches[1] === 'int' || matches[1] === 'number') {
+                field.min = matches[2] ? parseInt(matches[2],10) : -Infinity;
+                field.max = matches[3] ? parseInt(matches[3],10) : Infinity;
+            } else if (matches[1] === 'string' || matches[1] === 'text') {
+                field.max = matches[2] ? parseInt(matches[2],10) : Infinity;
+            } else {
+                console.log("LOAD ERROR: Bad field def -", fieldDef);
             }
 
-            this.fields.push(attr);
-            this.fieldLookup[attr.key] = attr;
+            this.fields.push(field);
+            this.fieldLookup[field.key] = field;
         });
+    }
+
+    serializeTypes() {
+        var schema = [];
+        this.fields.forEach((field) => {
+            var f = { key: field.key, optional: field.optional, type: field.type };
+
+            switch (field.type) {
+                case 'int':
+                case 'number':
+                    if (field.min !== -Infinity || field.max !== Infinity) {
+                        f.type += `<${field.min !== -Infinity ? field.min : ''},${field.max !== Infinity ? field.max : ''}>`;
+                    }
+                    break;
+                case 'string':
+                case 'text':
+                    if (field.max !== Infinity) {
+                        f.type += "<" + field.max + ">";
+                    }
+                    break;
+            }
+            schema.push(f);
+        });
+        return schema;
     }
 
     parseValue(fieldKey, val) {
@@ -108,6 +152,100 @@ class WorkArea extends UiComponent {
         this.element.innerHTML = '';
     }
 
+    setupSchemaEditing(type) {
+        var el;
+
+        this.clear();
+
+        // TODO reordering controls
+
+        var updateFunc = (evt, forceUpdate) => {
+            var parent = evt.currentTarget;
+            var f = type.fields[parseInt(parent.getAttribute('data-index'), 10)];
+            var select = parent.querySelector('.type select');
+            var constraints = parent.querySelector('.constraints');
+            var constraintDiv = constraints.querySelector('.' + select.value);
+
+            if (select.value !== f.type || forceUpdate) {
+                var currentActive = constraints.querySelectorAll('.active');
+                if (currentActive) currentActive.forEach((e) => e.classList.remove('active'));
+
+                if (constraintDiv) {
+                    constraintDiv.classList.add('active');
+                    if (constraintDiv.querySelector('input[name=max]') && f.max !== Infinity)
+                        constraintDiv.querySelector('input[name=max]').value = f.max;
+                    if (constraintDiv.querySelector('input[name=min]') && f.min !== -Infinity)
+                        constraintDiv.querySelector('input[name=min]').value = f.min;
+                }
+            }
+
+            f.key = parent.querySelector('input[name=key]').value;
+            f.type = select.value;
+
+            if (constraintDiv) {
+                var minInput = constraintDiv.querySelector('input[name=min]');
+                var maxInput = constraintDiv.querySelector('input[name=max]');
+                if (maxInput) {
+                    f.max = maxInput.value === '' ? f.max = Infinity : parseInt(maxInput.value, 10);
+                }
+                if (minInput) {
+                    f.min = minInput.value === '' ? f.min = -Infinity : parseInt(minInput.value, 10);
+                }
+            }
+            console.log(f);
+        };
+
+        var makeRow = (field, index) => {
+            el = document.createElement('div');
+            el.className = 'field-row';
+            el.innerHTML = `
+                <div class="label"><input type="text" name="key" value="${field.key}"></div>
+                <div class="type">
+                    <select name="type">
+                        <option value="boolean">Boolean</option>
+                        <option value="string">String</option>
+                        <option value="text">Text</option>
+                        <option value="int">Integer</option>
+                        <option value="number">Number</option>
+                        <option disabled>-------</option>
+                    </select>
+                </div>
+                <div class="constraints">
+                    <div class="int number">
+                        <span>Range:</span> <input type="number" name="min">
+                        <span>to</span> <input type="number" name="max">
+                    </div>
+                    <div class="text string">
+                        <span>Length:</span> <input type="number" name="max">
+                    </div>
+                </div>
+            `;
+            el.setAttribute('data-index', index);
+
+            el.querySelector('.type select option[value='+field.type+']').setAttribute('selected','selected');
+            el.addEventListener('change', updateFunc);
+            updateFunc({ currentTarget: el }, true);
+
+            this.element.appendChild(el);
+            return el;
+        }
+
+        _.each(type.fields, makeRow);
+
+        this.addButton = document.createElement('div');
+        this.addButton.className = 'field-row';
+        this.addButton.innerHTML = `
+            <button>+ Add property</button>
+        `;
+        this.addButton.querySelector('button').addEventListener('click', () => {
+            type.fields.push({ key:'', type:'boolean' });
+            var row = makeRow(type.fields[type.fields.length - 1], type.fields.length - 1);
+            row.querySelector('input[name=key]').focus();
+            this.element.appendChild(this.addButton);
+        });
+        this.element.appendChild(this.addButton);
+    }
+
     setupObjectEditing(type, data) {
         var el;
 
@@ -136,7 +274,7 @@ class WorkArea extends UiComponent {
                     el.innerHTML = `
                         <input type="text"
                             name="${field.key}"
-                            value="${data[field.key]}"
+                            value="${data[field.key] === undefined ? '' : data[field.key]}"
                             ${field.max !== Infinity ? 'maxlength="'+field.max+'"' : ''}
                         >`;
                     break;
@@ -155,7 +293,7 @@ class WorkArea extends UiComponent {
                     el.innerHTML = `<input type="checkbox" ${data[field.key] ? 'checked' : ''}>`;
                     break;
                 case 'text':
-                    el.innerHTML = `<textarea name="${field.key}">${data[field.key]}</textarea>`;
+                    el.innerHTML = `<textarea name="${field.key}">${data[field.key] === undefined ? '' : data[field.key]}</textarea>`;
                     break;
                 default:
                     el.innerHTML = data[field.key];
@@ -165,6 +303,8 @@ class WorkArea extends UiComponent {
                 var key = evt.srcElement.getAttribute('name');
                 if (type.validate(field, evt.srcElement.value)) {
                     data[field.key] = type.parseValue(field, evt.srcElement.value);
+                } else {
+                    console.log("Value", evt.srcElement.value, "failed validation for type", type.key);
                 }
             });
         });
@@ -229,6 +369,8 @@ class DataEditPanel extends PanelComponent {
             });
             console.log("schema", this.schema);
         }
+
+        this.clickEditSchema();
     }
 
     addTable(t, nosort) {
@@ -244,7 +386,6 @@ class DataEditPanel extends PanelComponent {
         var nodes = _.toArray(this.tableList.childNodes);
         nodes.sort((a,b) => a.getAttribute('data-table').localeCompare(b.getAttribute('data-table')));
         nodes.forEach((n) => this.tableList.appendChild(n));
-
         p.replaceChild(this.tableList, r);
     }
 
@@ -254,6 +395,7 @@ class DataEditPanel extends PanelComponent {
 
         if (this.table === this.data[clicked.getAttribute('data-table')]) return;
 
+        this.objectList.mode = 'table';
         this.objectList.empty();
         this.workarea.clear();
         this.table = this.data[clicked.getAttribute('data-table')];
@@ -262,28 +404,50 @@ class DataEditPanel extends PanelComponent {
         });
     }
 
-    clickObjects(evt) {
-        var clicked = evt.toElement;
-        if (clicked === this.objectList.element) return;
-
-        var object = this.table.rows[clicked.getAttribute('data-index')];
-        var type = this.schema[this.table.type];
-        if (!type) throw new Error("Data includes an undefined Type:", type);
-
-        this.workarea.setupObjectEditing(type, object);
-    }
-
     clickAddTable() {
         console.log("TODO add table");
     }
 
     clickEditSchema() {
-        console.log("TODO edit schema");
+        var i = 0;
+
+        this.table = null;
+        this.objectList.mode = 'schema';
+        this.objectList.empty();
+        this.workarea.clear();
+        _.each(this.schema, (type, key) => {
+            this.objectList.addChild(new SchemaComponent(key));
+        });
+    }
+
+    clickObjects(evt) {
+        var clicked = evt.toElement;
+        if (clicked === this.objectList.element) return;
+
+        if (this.objectList.mode === 'table') {
+            var object = this.table.rows[clicked.getAttribute('data-index')];
+            var type = this.schema[this.table.type];
+            if (!type) throw new Error("Data includes an undefined Type:", this.table.type);
+
+            this.workarea.setupObjectEditing(type, object);
+        } else if (this.objectList.mode === 'schema') {
+            var type = this.schema[clicked.getAttribute('data-type')];
+            if (!type) throw new Error("Tried to edit an unrecognized Type:", clicked.getAttribute('data-type'));
+
+            this.workarea.setupSchemaEditing(type, object);
+        }
+
+        this.objectList.setActive(clicked);
     }
 
     clickSave() {
+        // TODO full validate before save
+
+        this.data['.schema'] = _.mapObject(this.schema, (type) => {
+            return type.serializeTypes();
+        });
+
         var fullPath = path.join(Editor.gamePath, this.fileName);
-        console.log(fullPath);
         fs.writeFileSync(fullPath, JSON.stringify(this.data));
     }
 }
