@@ -3,18 +3,18 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Egg Engine</title>
+	<title>Component | Egg Engine</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="assets/css/main.css">
-	<script src="assets/js/modernizr.js"></script>
+	<link rel="stylesheet" href="../assets/css/main.css">
+	<script src="../assets/js/modernizr.js"></script>
 </head>
 <body>
 <header>
 	<div class="tsd-page-toolbar">
 		<div class="container">
 			<div class="table-wrap">
-				<div class="table-cell" id="tsd-search" data-index="assets/js/search.js" data-base=".">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.js" data-base="..">
 					<div class="field">
 						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
 						<input id="tsd-search-field" type="text" />
@@ -23,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">Egg Engine</a>
+					<a href="../index.html" class="title">Egg Engine</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -54,144 +54,123 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="globals.html">Globals</a>
+					<a href="../globals.html">Globals</a>
+				</li>
+				<li>
+					<a href="../modules/egg.html">Egg</a>
+				</li>
+				<li>
+					<a href="egg.component.html">Component</a>
 				</li>
 			</ul>
-			<h1> Egg Engine</h1>
+			<h1>Class Component</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<span class="target">Component</span>
+					</li>
+				</ul>
+			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section tsd-is-external">
-							<h3>Modules</h3>
+							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-module tsd-is-external"><a href="modules/egg.html" class="tsd-kind-icon">Egg</a></li>
-								<li class="tsd-kind-module tsd-is-external"><a href="modules/trig.html" class="tsd-kind-icon">Trig</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="egg.component.html#owner" class="tsd-kind-icon">owner</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section tsd-is-not-exported">
-							<h3>Type aliases</h3>
+						<section class="tsd-index-section tsd-is-external">
+							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-type-alias tsd-is-not-exported"><a href="globals.html#dict" class="tsd-kind-icon">Dict</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section tsd-is-not-exported">
-							<h3>Variables</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-variable tsd-is-not-exported"><a href="globals.html#electron" class="tsd-kind-icon">Electron</a></li>
-								<li class="tsd-kind-variable tsd-is-not-exported"><a href="globals.html#fontface" class="tsd-kind-icon">Font<wbr>Face</a></li>
-								<li class="tsd-kind-variable tsd-is-external tsd-is-not-exported"><a href="globals.html#fs" class="tsd-kind-icon">fs</a></li>
-								<li class="tsd-kind-variable tsd-is-external tsd-is-not-exported"><a href="globals.html#path" class="tsd-kind-icon">path</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="egg.component.html#update" class="tsd-kind-icon">update</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
-				<h2>Type aliases</h2>
-				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-is-not-exported">
-					<a name="dict" class="tsd-anchor"></a>
-					<h3>Dict</h3>
-					<div class="tsd-signature tsd-kind-icon">Dict<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+			<section class="tsd-panel-group tsd-member-group tsd-is-external">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
+					<a name="owner" class="tsd-anchor"></a>
+					<h3>owner</h3>
+					<div class="tsd-signature tsd-kind-icon">owner<span class="tsd-signature-symbol">:</span> <a href="egg.entity.html" class="tsd-signature-type">Entity</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Egg.ts:22</li>
+							<li>Defined in Entity.ts:38</li>
 						</ul>
 					</aside>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter-index-signature">
-								<h5><span class="tsd-signature-symbol">[</span>key: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">T</span></h5>
-							</li>
-						</ul>
-					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
-				<h2>Variables</h2>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-not-exported">
-					<a name="electron" class="tsd-anchor"></a>
-					<h3>Electron</h3>
-					<div class="tsd-signature tsd-kind-icon">Electron<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> =&nbsp;require(&#x27;electron&#x27;)</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in Egg.ts:19</li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-not-exported">
-					<a name="fontface" class="tsd-anchor"></a>
-					<h3>Font<wbr>Face</h3>
-					<div class="tsd-signature tsd-kind-icon">Font<wbr>Face<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in Egg.ts:20</li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-external tsd-is-not-exported">
-					<a name="fs" class="tsd-anchor"></a>
-					<h3>fs</h3>
-					<div class="tsd-signature tsd-kind-icon">fs<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> =&nbsp;require(&#x27;fs&#x27;)</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in File.ts:1</li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-external tsd-is-not-exported">
-					<a name="path" class="tsd-anchor"></a>
-					<h3>path</h3>
-					<div class="tsd-signature tsd-kind-icon">path<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> =&nbsp;require(&#x27;path&#x27;)</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in File.ts:2</li>
-						</ul>
-					</aside>
+			<section class="tsd-panel-group tsd-member-group tsd-is-external">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="update" class="tsd-anchor"></a>
+					<h3>update</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">update<span class="tsd-signature-symbol">(</span>dt<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in Entity.ts:39</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>dt: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
 				</section>
 			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 			<nav class="tsd-navigation primary">
 				<ul>
-					<li class="globals current ">
-						<a href="globals.html"><em>Globals</em></a>
+					<li class="globals  ">
+						<a href="../globals.html"><em>Globals</em></a>
 					</li>
 					<li class="label tsd-is-external">
 						<span>Externals</span>
 					</li>
-					<li class=" tsd-kind-module tsd-is-external">
-						<a href="modules/egg.html">Egg</a>
+					<li class="current tsd-kind-module tsd-is-external">
+						<a href="../modules/egg.html">Egg</a>
 					</li>
 					<li class=" tsd-kind-module tsd-is-external">
-						<a href="modules/trig.html">Trig</a>
+						<a href="../modules/trig.html">Trig</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-type-alias tsd-is-not-exported">
-						<a href="globals.html#dict" class="tsd-kind-icon">Dict</a>
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-class tsd-parent-kind-module tsd-is-external">
+						<a href="egg.component.html" class="tsd-kind-icon">Component</a>
+						<ul>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
+								<a href="egg.component.html#owner" class="tsd-kind-icon">owner</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="egg.component.html#update" class="tsd-kind-icon">update</a>
+							</li>
+						</ul>
 					</li>
-					<li class=" tsd-kind-variable tsd-is-not-exported">
-						<a href="globals.html#electron" class="tsd-kind-icon">Electron</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-is-not-exported">
-						<a href="globals.html#fontface" class="tsd-kind-icon">Font<wbr>Face</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-is-external tsd-is-not-exported">
-						<a href="globals.html#fs" class="tsd-kind-icon">fs</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-is-external tsd-is-not-exported">
-						<a href="globals.html#path" class="tsd-kind-icon">path</a>
-					</li>
+				</ul>
+				<ul class="after-current">
 				</ul>
 			</nav>
 		</div>
@@ -260,7 +239,7 @@
 	<p>Generated using <a href="http://typedoc.io" target="_blank">TypeDoc</a></p>
 </div>
 <div class="overlay"></div>
-<script src="assets/js/main.js"></script>
-<script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
+<script src="../assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="../assets/js/search.js"><' + '/script>');</script>
 </body>
 </html>

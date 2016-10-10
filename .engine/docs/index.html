@@ -84,24 +84,27 @@
 				<h2 id="roadmap">Roadmap</h2>
 				<p>This is stuff I intend to do, and/or am actively working on. I&#39;m trying to keep this up to date with my commits.</p>
 				<ul>
+					<li>Bugs/Unsorted<ul>
+							<li>Lock gamepad input to active window</li>
+							<li>In-game input config</li>
+						</ul>
+					</li>
 					<li>RPGKit<ul>
-							<li>Add scripted movement and wandering for entities on the map</li>
-							<li>Add scripted movement for entities in Scenes</li>
-							<li>Finish up battle system.</li>
 							<li>Add dialog box options -- yes/no, more complicated things</li>
+							<li>Finish up battle system.</li>
 							<li>Add saving/loading games</li>
 							<li>It&#39;d be nice if the persistent stuff in map was easier to use in general</li>
+							<li>Add scripted movement for entities on the map</li>
+							<li>Add scripted movement for entities in Scenes</li>
 							<li>Can I just slurp in all of the map .ts files automatically instead of having to reference each one?</li>
-							<li>Sprites should be able to define a rectangle for their frames, and refer to frames within that rectangle to facilitate sprite atlases</li>
+						</ul>
+					</li>
+					<li>Data Editor<ul>
+							<li>Manager .json files; top level is an object with a &quot;.schemas&quot; key plus &quot;tables&quot; of typed objects</li>
 						</ul>
 					</li>
 					<li>Reconcile File stuff<ul>
 							<li>Don&#39;t make it required that the current working directory is actually the gamepath</li>
-						</ul>
-					</li>
-					<li>Exporting<ul>
-							<li>Make glob.js easier to recreate</li>
-							<li>Ship minified pixi/underscore</li>
 						</ul>
 					</li>
 					<li>Other platforms<ul>
@@ -114,8 +117,14 @@
 							<li>This is irrelevant for exported games; they&#39;ll be packaged with the version they were used to create it</li>
 						</ul>
 					</li>
-					<li>Split config.json into necessary game setup vs. player configuration<ul>
-							<li>Bake non-player config into game setup on export, leave config as only player config</li>
+					<li>Exporting<ul>
+							<li>Make glob.js easier to recreate</li>
+							<li>Ship minified pixi/underscore</li>
+							<li>Split config.json into necessary game setup vs. player configuration (bake non-player config into game setup on export, leave config as only player config)</li>
+						</ul>
+					</li>
+					<li>Testing<ul>
+							<li>Investigate this</li>
 						</ul>
 					</li>
 					<li>Release stuff<ul>

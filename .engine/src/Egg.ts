@@ -4,6 +4,7 @@
 /// <reference path="typescript/underscore.d.ts"/>
 
 /// <reference path="Audio.ts"/>
+/// <reference path="Entity.ts"/>
 /// <reference path="File.ts"/>
 /// <reference path="Input.ts"/>
 /// <reference path="Layer.ts"/>
