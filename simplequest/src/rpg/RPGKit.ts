@@ -6,7 +6,7 @@
 ///<reference path="Entity.ts"/>
 ///<reference path="Item.ts"/>
 ///<reference path="Inventory.ts"/>
-///<reference path="Map.ts"/>
+///<reference path="map/Map.ts"/>
 ///<reference path="MapMode.ts"/>
 ///<reference path="Menu.ts"/>
 ///<reference path="Party.ts"/>
@@ -17,7 +17,7 @@ module RPG {
     export enum ControlMode { None, Scene, Menu, Map, Battle };
 
     export var player:Entity;
-    export var map:Map;
+    export var map:Map.Map;
     export var UILayer:Egg.Layer;
     export var loadSkip:Array<string> = [];
     export var cameraHalf:PIXI.Point;
@@ -158,7 +158,7 @@ module RPG {
         }
     }
 
-    export function startMap(newMap:Map|string, x?:number, y?:number, layerName?:string, options?:any) {
+    export function startMap(newMap:Map.Map|string, x?:number, y?:number, layerName?:string, options?:any) {
         var opts = options || {};
         Scene.do(function*() {
             if (!opts.noFadeOut)
@@ -169,7 +169,7 @@ module RPG {
             }
 
             if (typeof newMap === 'string') {
-                map = new Map(newMap);
+                map = Map.Loader.load(newMap);
             } else {
                 map = newMap;
             }

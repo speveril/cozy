@@ -9,7 +9,7 @@ module RPG {
         public behavior:any;
 
         public sprite:Egg.Sprite;
-        public layer:MapLayer;
+        public layer:Map.MapLayer;
         public speed:number;
         public radius:number;
 
@@ -34,7 +34,7 @@ module RPG {
             this.paused = false;
         }
 
-        place(x:number, y:number, lyr:MapLayer):void {
+        place(x:number, y:number, lyr:Map.MapLayer):void {
             if (this.sprite) {
                 this.layer.displayLayer.remove(this.sprite);
             } else {

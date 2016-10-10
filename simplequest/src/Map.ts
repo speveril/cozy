@@ -20,7 +20,7 @@ module SimpleQuest {
         }
     };
 
-    export class Map extends RPG.Map {
+    export class Map extends RPG.Map.Map {
         static persistent:any = {};
 
         private threatGroup:string;
@@ -47,7 +47,7 @@ module SimpleQuest {
 
             _.each(Map.persistent[this.filename].smashedPots, function(coords) {
                 var tx = coords[0], ty = coords[1];
-                _.each(this.layers, function(lyr:RPG.MapLayer, i) {
+                _.each(this.layers, function(lyr:RPG.Map.MapLayer, i) {
                     var t = lyr.getTile(tx, ty);
                     if (t == 53) {
                         lyr.setTile(tx, ty, t + 3);
@@ -63,7 +63,7 @@ module SimpleQuest {
 
             _.each(Map.persistent[this.filename].openedChests, function(coords) {
                 var tx = coords[0], ty = coords[1];
-                _.each(this.layers, function(lyr:RPG.MapLayer, i) {
+                _.each(this.layers, function(lyr:RPG.Map.MapLayer, i) {
                     var t = lyr.getTile(tx, ty);
                     if (t == 37) {
                         lyr.setTile(tx, ty, t + 3);
@@ -343,7 +343,7 @@ module SimpleQuest {
                 RPG.player.place((x + 0.5) * RPG.map.tileSize.x, (y + 0.5) * RPG.map.tileSize.y, z);
                 RPG.centerCameraOn(RPG.player.position, true);
 
-                _.each(this.layers, (lyr:RPG.MapLayer) => {
+                _.each(this.layers, (lyr:RPG.Map.MapLayer) => {
                     console.log(lyr.displayLayer);
                 });
 
