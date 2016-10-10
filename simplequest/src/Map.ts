@@ -212,6 +212,12 @@ module SimpleQuest {
             }
         }
 
+        *waitChoice(topic, choices:string[]) {
+            RPG.Textbox.show(topic);
+            yield* RPG.Scene.waitButton("confirm");
+            RPG.Textbox.hide();
+        }
+
         *waitLevers(tiles:any) {
             _.each(tiles, (tile) => {
                 this.layers[1].setTile(tile[0], tile[1], this.layers[1].getTile(tile[0], tile[1]) + 1);

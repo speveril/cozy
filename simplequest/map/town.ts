@@ -14,7 +14,14 @@ module SimpleQuest {
         }
 
         goto_debug(args) {
-            RPG.startMap(new Map_Debug(), 9, 7);
+            RPG.Scene.do(function*() {
+                var go = yield* this.waitChoice("Go to the debug map?", [
+                    "What, no.",
+                    "Yeah okay."
+                ]);
+                console.log(go);
+                // RPG.startMap(new Map_Debug(), 9, 7);
+            }.bind(this));
         }
 
         sign_house(args) {

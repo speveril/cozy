@@ -35,12 +35,12 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
     - Lock gamepad input to active window
     - In-game input config
 - RPGKit
-    - Add scripted movement and wandering for entities on the map
-    - Add scripted movement for entities in Scenes
-    - Finish up battle system.
     - Add dialog box options -- yes/no, more complicated things
+    - Finish up battle system.
     - Add saving/loading games
     - It'd be nice if the persistent stuff in map was easier to use in general
+    - Add scripted movement for entities on the map
+    - Add scripted movement for entities in Scenes
     - Can I just slurp in all of the map .ts files automatically instead of having to reference each one?
 - Data Editor
     - Manager .json files; top level is an object with a ".schemas" key plus "tables" of typed objects
