@@ -1,11 +1,24 @@
 module Egg {
     export class Entity {
-        parent:Entity = null;
-        children:Array<Entity> = [];
+        parent:Entity              = null;
+        children:Array<Entity>     = [];
         components:Dict<Component> = {};
 
-        addChild(child?:Entity):Entity {
-            var ch = child ? child : new Entity();
+        constructor(components?:Array<Component>) {
+            if (components) {
+                components.forEach((c:Component) => this.addComponent(c));
+            }
+        }
+
+        addChild(child?:Entity|Array<Component>):Entity {
+            var ch:any;
+            if (child && child instanceof Array) {
+                ch = new Entity(<Array<Component>>child);
+            } else if (child) {
+                ch = child;
+            } else {
+                ch = new Entity();
+            }
             if (ch.parent) ch.parent.removeChild(child);
             ch.parent = this;
             this.children.push(ch);

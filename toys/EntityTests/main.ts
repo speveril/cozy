@@ -11,10 +11,10 @@ module EntityTests {
 
         update(dt) {
             super.update(dt);
-            this.accum += dt;
-            while (this.accum > 5) {
+            this.accum -= dt;
+            while (this.accum <= 0) {
                 console.log(">>", this.getFoo(), this.getBar());
-                this.accum -= 5;
+                this.accum += 5;
             }
         }
     }
@@ -31,12 +31,14 @@ module EntityTests {
         root = new Egg.Entity();
         window['sceneRoot'] = root;
 
-        var child = root.addChild();
-        child.addComponent(new TestComponentA("hello"));
+        root.addChild([
+            new TestComponentA("hello")
+        ]);
 
-        child = root.addChild();
-        child.addComponent(new TestComponentA("shmello"));
-        child.addComponent(new TestComponentB("smello"));
+        root.addChild([
+            new TestComponentA("shmello"),
+            new TestComponentB("smello")
+        ]);
 
         Egg.unpause();
     }
