@@ -25,12 +25,13 @@ type Dict<T> = { [key:string]: T }
  * The main container for everything Egg.
  */
 module Egg {
-    export var Game: any;
-    export var debug: boolean;
-    export var config: Object;
-    export var textures: {}[];
+    export var Game:any;
+    export var debug:boolean;
+    export var config:Object;
+    export var textures:{}[];
     export var planes:Plane[];
-    export var browserWindow: GitHubElectron.BrowserWindow;
+    export var browserWindow:GitHubElectron.BrowserWindow;
+    export var scene:Entity;
 
     var gameName: string;
     var enginePath:string;
@@ -141,6 +142,9 @@ module Egg {
             plane.update(dt);
         }.bind(this));
 
+        if (this.scene) {
+            this.scene.update(dt);
+        }
         if (this.Game && this.Game.frame) {
             this.Game.frame(dt);
         }
@@ -148,10 +152,17 @@ module Egg {
         _.each(this.planes, function(plane) {
             plane.render();
         }.bind(this));
+        if (this.scene) {
+            this.scene.render();
+        }
 
         if (this.Game && this.Game.postRender) {
             this.Game.postRender(dt);
         }
+    }
+
+    export function setScene(e:Entity) {
+        this.scene = e;
     }
 
     export function addPlane(Type:any, args?:any):Plane {

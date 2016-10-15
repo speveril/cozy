@@ -1,43 +1,28 @@
 module EntityTests {
     var root:Egg.Entity;
-
-    class TestComponent extends Egg.Component {
-        foo:string;
-        bar:string;
-        accum:number = 0;
-
-        getFoo() { return this.foo; }
-        getBar() { return this.bar; }
-
-        update(dt) {
-            super.update(dt);
-            this.accum -= dt;
-            while (this.accum <= 0) {
-                console.log(">>", this.getFoo(), this.getBar());
-                this.accum += 5;
-            }
-        }
-    }
-
-    class TestComponentA extends TestComponent {
-        constructor(f:string) { super(); this.foo = f; this.bar = "barbarbar"; }
-    }
-
-    class TestComponentB extends TestComponent {
-        constructor(b:string) { super(); this.bar = b; this.foo = "foofoofoo"; }
-    }
+    var mainLayer:Egg.Entity;
+    var player:Egg.Entity;
 
     export function start() {
-        root = new Egg.Entity();
-        window['sceneRoot'] = root;
+        Egg.loadTextures({
+            "sprites/monsters.png": "sprites/monsters.png"
+        }).then(go);
+    }
 
-        root.addChild([
-            new TestComponentA("hello")
+    function go() {
+        root = new Egg.Entity(null, [
+            new Egg.Components.Renderer()
+        ]);
+        Egg.setScene(root);
+
+        mainLayer = root.addChild([
+            new Egg.Components.SpriteLayer()
         ]);
 
-        root.addChild([
-            new TestComponentA("shmello"),
-            new TestComponentB("smello")
+        player = mainLayer.addChild([
+            new Egg.Components.Sprite({
+                s: new Egg.Sprite('sprites/monster_skeleton.sprite')
+            })
         ]);
 
         Egg.unpause();
