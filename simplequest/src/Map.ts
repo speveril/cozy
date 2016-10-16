@@ -262,10 +262,12 @@ module SimpleQuest {
             Egg.Input.debounce('menu');
             Egg.Input.debounce('cancel');
             var m = new SimpleQuest.Menu.ShopMenu(args);
+            RPG.uiPlane.addChild(m);
             RPG.Menu.push(m);
             while (!m.done) {
                 yield;
             }
+            m.remove();
         }
 
         set_threat(args) {

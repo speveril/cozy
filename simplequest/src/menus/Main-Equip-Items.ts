@@ -38,6 +38,7 @@ module SimpleQuest {
 
             stop() {
                 super.stop();
+                this.remove();
                 (<Main_EquipSubmenu>this.parent).clearPreview();
             }
 

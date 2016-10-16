@@ -60,7 +60,10 @@ module RPG {
         if (Egg.Input.pressed('menu') && RPG.mainMenuClass) {
             Egg.Input.debounce('menu');
             Egg.Input.debounce('cancel');
-            Menu.push(new RPG.mainMenuClass());
+            // TODO instantiate this once and show/hide it rather than re-creating
+            var menu = new RPG.mainMenuClass();
+            RPG.uiPlane.addChild(menu);
+            Menu.push(menu);
         }
 
         RPG.centerCameraOn(player.position);

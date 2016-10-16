@@ -56,9 +56,15 @@ module SimpleQuest {
                 this.statusPanel.updateFields();
             }
 
+            stop() {
+                super.stop();
+                this.remove();
+            }
+
             showSubmenu(key) {
                 if (this.submenus[key]) {
-                    RPG.Menu.push(new this.submenus[key](), this, '.main-area');
+                    RPG.Menu.push(new this.submenus[key]());
+                    this.addChild(RPG.Menu.currentMenu, '.main-area');
                 } else {
                     console.warn("! Tried to show bad submenu", key);
                 }

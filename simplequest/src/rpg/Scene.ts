@@ -29,6 +29,7 @@ module RPG {
         }
 
         static do(sceneFunc) {
+            // TODO remove fadeLayer when it's opacity 0, re-append it as necessary
             if (!this.fadeLayer) {
                 this.fadeLayer = document.createElement('div');
                 this.fadeLayer.style.height = "100%";

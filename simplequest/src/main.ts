@@ -19,6 +19,8 @@ module SimpleQuest {
     export var sfx:{ [name:string]: Egg.Sound } = {};
     export var music:{ [name:string]: Egg.Music } = {};
 
+    var bootMenu:RPG.Menu;
+
     export function start() {
         Map.persistent['global'] = {};
 
@@ -96,14 +98,17 @@ module SimpleQuest {
     export function bootSequence() {
         music['overworld'].start();
         RPG.controlStack.push(RPG.ControlMode.Map);
-        RPG.Menu.push(new Menu.Boot());
+
+        bootMenu = new Menu.Boot();
+        RPG.uiPlane.addChild(bootMenu);
+
+        RPG.Menu.push(bootMenu);
         Egg.unpause();
     }
 
     export function newGame() {
         var i;
 
-        console.log("newGame");
         Egg.pause();
 
         RPG.characters['hero'] = new Characters.Hero();

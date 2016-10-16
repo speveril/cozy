@@ -22,6 +22,7 @@ module SimpleQuest {
                     sfx['menu_newgame'].play();
                     yield* RPG.Scene.waitFadeTo("black", 1.0);
                     RPG.Menu.pop();
+                    this.remove();
                     SimpleQuest.newGame();
                 }.bind(this))
             }

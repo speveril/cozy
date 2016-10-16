@@ -43,17 +43,21 @@ module SimpleQuest {
             }
 
             buy() {
-                RPG.Menu.push(new BuyMenu({
+                var m = new BuyMenu({
                     parent: this,
                     products: this.products,
                     priceMultiplier: this.priceMultiplier
-                }), this, this.find('.items-container'));
+                });
+                this.addChild(m, '.items-container');
+                RPG.Menu.push(m);
             }
 
             sell() {
-                RPG.Menu.push(new SellMenu({
+                var m = new SellMenu({
                     parent: this,
-                }), this, this.find('.items-container'));
+                });
+                this.addChild(m, '.items-container');
+                RPG.Menu.push(m);
             }
 
             updateMoney() {
@@ -64,7 +68,7 @@ module SimpleQuest {
                 this.find('.description').innerHTML = desc;
             }
 
-            resume() { RPG.Menu.pop(); }
+            resume() { RPG.Menu.pop().remove(); }
         }
 
         class BuyMenu extends RPG.Menu {
@@ -126,6 +130,11 @@ module SimpleQuest {
                 this.updateEnabled();
                 this.parent.updateMoney();
             }
+
+            stop() {
+                super.stop();
+                this.remove();
+            }
         }
 
         class SellMenu extends RPG.Menu {
@@ -181,7 +190,7 @@ module SimpleQuest {
                 this.parent.updateMoney();
 
                 if (RPG.Party.inventory.count() < 1) {
-                    RPG.Menu.pop();
+                    RPG.Menu.pop().remove();
                     return;
                 }
 
@@ -192,7 +201,8 @@ module SimpleQuest {
                 var m = new ConfirmSellMenu({
                     stack: this.items[this.selectionIndex]
                 });
-                RPG.Menu.push(m, this, <HTMLElement>this.element.parentNode);
+                this.addChild(m, <HTMLElement>this.element.parentNode);
+                RPG.Menu.push(m);
             }
         }
 
@@ -281,6 +291,11 @@ module SimpleQuest {
                 var d = delta;
                 if (direction === RPG.MenuDirection.VERTICAL) d *= -10;
                 this.count = Math.max(0, Math.min(this.owned - this.equipped, this.count + d));
+            }
+
+            stop() {
+                super.stop();
+                this.remove();
             }
 
             confirm() {

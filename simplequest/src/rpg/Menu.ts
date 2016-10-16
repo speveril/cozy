@@ -12,104 +12,75 @@ module RPG {
         }
 
         static init() {
-            var cb;
-
-            cb = () => {
+            Egg.Input.on('menu.down cancel.down', (info) => {
                 if (!Menu.currentMenu || !Menu.currentMenu.cancelable || Menu.currentMenu.paused) return;
-
-                Egg.Input.debounce('menu');
-                Egg.Input.debounce('cancel');
+                Egg.Input.debounce(info.button);
                 Menu.pop();
-            };
-            Egg.Input.on('menu.down', cb, this);
-            Egg.Input.on('cancel.down', cb, this);
+            }, this);
 
-            cb = () => {
+            Egg.Input.on('up.down vertical-.down', (info) => {
                 if (!Menu.currentMenu || Menu.currentMenu.paused || Menu.currentMenu.direction === MenuDirection.HORIZONTAL) return;
-
-                Egg.Input.debounce('up', 0.2);
-                Egg.Input.debounce('vertical-', 0.2);
+                Egg.Input.debounce(info.button, 0.2);
                 Menu.currentMenu.moveSelection(-1, MenuDirection.VERTICAL);
-                if (Menu.blip) {
-                    Menu.blip.play();
-                }
-            };
-            Egg.Input.on('up.down', cb, this);
-            Egg.Input.on('vertical-.down', cb, this);
+                if (Menu.blip) Menu.blip.play();
+            }, this);
 
-            cb = () => {
+            Egg.Input.on('down.down vertical+.down', (info) => {
                 if (!Menu.currentMenu || Menu.currentMenu.paused || Menu.currentMenu.direction === MenuDirection.HORIZONTAL) return;
-
-                Egg.Input.debounce('down', 0.2);
-                Egg.Input.debounce('vertical+', 0.2);
+                Egg.Input.debounce(info.button, 0.2);
                 Menu.currentMenu.moveSelection(+1, MenuDirection.VERTICAL);
-                if (Menu.blip) {
-                    Menu.blip.play();
-                }
-            };
-            Egg.Input.on('down.down', cb, this);
-            Egg.Input.on('vertical+.down', cb, this);
+                if (Menu.blip) Menu.blip.play();
+            }, this);
 
-            cb = () => {
+            Egg.Input.on('left.down horizontal-.down', (info) => {
                 if (!Menu.currentMenu || Menu.currentMenu.paused || Menu.currentMenu.direction === MenuDirection.VERTICAL) return;
-
-                Egg.Input.debounce('left', 0.2);
-                Egg.Input.debounce('horizontal-', 0.2);
+                Egg.Input.debounce(info.button, 0.2);
                 Menu.currentMenu.moveSelection(-1, MenuDirection.HORIZONTAL);
-                if (Menu.blip) {
-                    Menu.blip.play();
-                }
-            };
-            Egg.Input.on('left.down', cb, this);
-            Egg.Input.on('horizontal-.down', cb, this);
+                if (Menu.blip) Menu.blip.play();
+            }, this);
 
-            cb = () => {
+            Egg.Input.on('right.down horizontal+.down', (info) => {
                 if (!Menu.currentMenu || Menu.currentMenu.paused || Menu.currentMenu.direction === MenuDirection.VERTICAL) return;
-
-                Egg.Input.debounce('right', 0.2);
-                Egg.Input.debounce('horizontal+', 0.2);
+                Egg.Input.debounce(info.button, 0.2);
                 Menu.currentMenu.moveSelection(+1, MenuDirection.HORIZONTAL);
-                if (Menu.blip) {
-                    Menu.blip.play();
-                }
-            };
-            Egg.Input.on('right.down', cb, this);
-            Egg.Input.on('horizontal+.down', cb, this);
+                if (Menu.blip) Menu.blip.play();
+            }, this);
 
-            cb = () => {
+            Egg.Input.on('confirm.down', (info) => {
                 if (!Menu.currentMenu || Menu.currentMenu.paused) return;
-
-                Egg.Input.debounce('confirm');
+                Egg.Input.debounce(info.button);
                 Menu.currentMenu.confirmSelection();
-            };
-            Egg.Input.on('confirm.down', cb, this);
+            }, this);
         }
 
-        static push(m:Menu, parentComponent?:Egg.UiComponent, parentElement?:HTMLElement|string):void {
+        static push(m:Menu, parentComponent?:Egg.UiComponent, parentElement?:HTMLElement|string):Menu {
             if (Menu.menuStack.length > 0) {
                 Menu.currentMenu.pause();
             }
             RPG.controlStack.push(RPG.ControlMode.Menu);
             Menu.menuStack.push(m);
 
-            if (parentComponent) {
-                parentComponent.addChild(m, parentElement);
-            } else {
-                RPG.uiPlane.addChild(m);
-            }
-
+            // if (parentComponent) {
+            //     parentComponent.addChild(m, parentElement);
+            // } else {
+            //     RPG.uiPlane.addChild(m);
+            // }
+            //
             m.start();
+            return m;
         }
 
-        static pop():void {
+        static pop():Menu {
             if (Menu.menuStack.length < 1) {
                 throw new Error("Tried to pop with nothing in the menu stack.");
             }
-            Menu.menuStack.pop().stop();
+            var m = Menu.menuStack.pop();
+            m.stop();
             if (Menu.menuStack.length > 0) {
                 Menu.currentMenu.unpause();
             }
             RPG.controlStack.pop();
+            return m;
         }
 
         static replace(m:Menu):void {
@@ -124,13 +95,14 @@ module RPG {
             Menu.currentMenu.update(dt);
         }
 
+        cancelable:boolean             = false;
+        done:boolean                   = false;
+        paused:boolean                 = true;
         direction:MenuDirection;
         selectionIndex:number;
         selectionContainer:HTMLElement;
         selections:HTMLElement[];
-        cancelable:boolean;
-        done:boolean = false;
-        paused:boolean = true;
+
         private firstScrollFix:boolean = false;
 
         constructor(args) {
@@ -191,7 +163,7 @@ module RPG {
         stop() {
             this.pause();
             this.done = true;
-            this.remove();
+            // this.remove();
         }
 
         update(dt) {

@@ -22,6 +22,11 @@ module SimpleQuest {
                 this.rerenderItemList();
             }
 
+            stop() {
+                super.stop();
+                this.remove();
+            }
+
             rerenderItemList() {
                 var resetSelection = this.selectionIndex || 0;
                 var listContainer = this.find('ul.items');

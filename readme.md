@@ -34,6 +34,8 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
 - Bugs/Unsorted
     - Lock gamepad input to active window
     - In-game input config
+    - Make browser NOT close the currently active game
+        - or just revisit the whole browser interface in general
 - RPGKit
     - Add dialog box options -- yes/no, more complicated things
     - Finish up battle system.

@@ -61,6 +61,11 @@ module SimpleQuest {
                 this.setupSelections(this.find('.slots'));
             }
 
+            stop() {
+                super.stop();
+                this.remove();
+            }
+
             updateEquipInfo() {
                 _.each(RPG.equipSlots, (slot:string) => {
                     this.slotChildren[slot].rerender();
@@ -120,7 +125,8 @@ module SimpleQuest {
                         RPG.Menu.pop();
                     });
 
-                    RPG.Menu.push(this.itemMenu, this, '.items-row');
+                    this.addChild(this.itemMenu, '.items-row');
+                    RPG.Menu.push(this.itemMenu);
 
                     this.itemMenu.selectItem(this.character.equipped[this.selectedSlot]);
                 } else {
