@@ -122,12 +122,12 @@ module Egg {
     export class Input {
         public static deadzone:number = 0.25;
         private static buttonMap: { [key:number]:string[] };
-        private static button: { [name:string]:ButtonState };
-        private static axes: { [name:string]:number };
-        private static buttonTimeouts: { [name:string]:number };
-        private static callbacks: { [name:string]:any[] };
+        private static button:Dict<ButtonState>;
+        private static axes:Dict<number>;
+        private static buttonTimeouts:Dict<number>;
+        private static callbacks:Dict<Array<any>>;
         private static devices:Array<Device>;
-        private static controlConfig:{ [name:string]: any };
+        private static controlConfig:Dict<any>;
 
         static init(controls?:{ [name:string]: any }) {
             this.axes = {};
@@ -197,10 +197,11 @@ module Egg {
         }
 
         static on(eventName, cb, ctx) {
-            if (!this.callbacks[eventName]) {
-                this.callbacks[eventName] = [];
-            }
-            return this.callbacks[eventName].push({ callback: cb, context: ctx }) - 1;
+            var events:Array<string> = eventName.split(' ');
+            _.each(events, (e) => {
+                if (!this.callbacks[e]) this.callbacks[e] = [];
+                this.callbacks[e].push({ callback: cb, context: ctx }) - 1;
+            })
         }
 
         static off(eventName, cb, ctx) {
@@ -216,7 +217,8 @@ module Egg {
             if (eventName === undefined) {
                 _.each(_.keys(this.callbacks), (n) => clearEvent(n));
             } else {
-                clearEvent(eventName);
+                var events = eventName.split(' ');
+                _.each(events, clearEvent);
             }
         }
 
