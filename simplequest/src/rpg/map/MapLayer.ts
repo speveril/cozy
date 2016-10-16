@@ -3,6 +3,7 @@ module RPG.Map {
         // TODO break this out into child classes, TileLayer and EntityLayer?
         map:Map                            = null;
         displayLayer:Egg.Layer             = null;
+        dirty:boolean                      = false;
         tiles:Array<number>                = [];
         tileLookup:Array<MapTile>          = [];
         obstructions:Array<MapObstruction> = [];
@@ -40,6 +41,7 @@ module RPG.Map {
                         this.tileLookup[i].animation = null;
                     }
                 }
+                this.dirty = true;
             } else {
                 if (this.tileLookup[i]) {
                     this.displayLayer.remove(this.tileLookup[i]);

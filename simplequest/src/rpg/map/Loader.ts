@@ -5,7 +5,6 @@
 ///<reference path="LoaderTSX.ts"/>
 
 
-
 module RPG.Map.Loader {
     /**
     Magic loader. Tries to figure out what kind of map it is an load appropriately.

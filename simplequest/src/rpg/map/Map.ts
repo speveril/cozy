@@ -50,21 +50,17 @@ module RPG.Map {
     }
 
     export class Map {
-        layers:Array<MapLayer>;
-        layerLookup:{ [name:string]: MapLayer };
-        size:PIXI.Point;
-        tileSize:PIXI.Point;
-        tilesets:Array<MapTileset>;
-        filename:string = null;
-        cameraBoxes:Array<PIXI.Rectangle>;
+        size:PIXI.Point                   = null;
+        tileSize:PIXI.Point               = null;
+        filename:string                   = null;
+        layers:Array<MapLayer>            = [];
+        tilesets:Array<MapTileset>        = [];
+        cameraBoxes:Array<PIXI.Rectangle> = [];
+        layerLookup:Dict<MapLayer>        = {};
 
         constructor(args) {
-            this.layers = [];
-            this.tilesets = [];
-            this.layerLookup = {};
-            this.cameraBoxes = [];
-
             if (typeof args === 'string') {
+                // TODO get rid of this, always go through Loader directly
                 RPG.Map.Loader.TMX(args, this);
             } else {
                 this.size = new PIXI.Point(args.width || 0, args.height || 0);
@@ -75,11 +71,10 @@ module RPG.Map {
         open():void {
             RPG.renderPlane.clear();
             _.each(this.layers, (mapLayer:MapLayer, i:number) => {
-                var layer = RPG.renderPlane.addRenderLayer();
-                mapLayer.displayLayer = layer;
-                var x = 0,
-                    y = 0;
+                var x = 0, y = 0,
+                    layer = RPG.renderPlane.addRenderLayer();
 
+                mapLayer.displayLayer = layer;
                 _.each(mapLayer.tiles, (tileIndex) => {
                     mapLayer.setTile(x, y, tileIndex);
 
@@ -89,9 +84,7 @@ module RPG.Map {
                         y++;
                     }
                 });
-
                 _.each(mapLayer.entities, (entity:Entity) => entity.place(entity.spawn.x, entity.spawn.y, mapLayer));
-
                 this.sortSprites(mapLayer);
             });
         }
@@ -106,25 +99,12 @@ module RPG.Map {
         **/
         finish() {}
 
-        private sortSprites(layer?:MapLayer) {
-            if (!layer) {
-                _.each(this.layers, (lyr) => this.sortSprites(lyr));
-            } else {
-                layer.displayLayer.sortSprites((a, b) => {
-                    if (a.position.y === b.position.y) {
-                        return 0;
-                    } else {
-                        return a.position.y < b.position.y ? -1 : 1;
-                    }
-                });
-            }
-        }
-
         update(dt):void {
-            // TODO We don't need to be doing this sort every single frame for tile layers, and we can probably be
-            //      smarter about it for entity layers.
             this.layers.forEach((layer) => {
-                this.sortSprites(layer);
+                if (layer.dirty || layer.entities.length > 0) {
+                    layer.dirty = false;
+                    this.sortSprites(layer);
+                }
                 layer.entities.forEach((e) => e.update(dt));
             });
         }
@@ -175,5 +155,18 @@ module RPG.Map {
             return _.flatten(_.map(this.layers, (lyr) => lyr.getEntitiesByName(name)));
         }
 
+        private sortSprites(layer?:MapLayer) {
+            if (!layer) {
+                _.each(this.layers, (lyr) => this.sortSprites(lyr));
+            } else {
+                layer.displayLayer.sortSprites((a, b) => {
+                    if (a.position.y === b.position.y) {
+                        return 0;
+                    } else {
+                        return a.position.y < b.position.y ? -1 : 1;
+                    }
+                });
+            }
+        }
     }
 }

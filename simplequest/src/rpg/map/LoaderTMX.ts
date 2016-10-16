@@ -1,16 +1,13 @@
 module RPG.Map.Loader {
     export function TMX(path:string, existingMap?:Map) {
-        console.log("Loader.TMX", path, existingMap);
-
         var map = existingMap || new RPG.Map.Map({});
 
-        map.filename = path;
         var parser = new DOMParser();
         var dataDirectory = path.substr(0, path.lastIndexOf('/') + 1);
-
         var data = parser.parseFromString(Egg.File.read(path), "text/xml");
         var mapEl = data.getElementsByTagName('map')[0];
 
+        map.filename = path;
         map.size = new PIXI.Point(parseInt(mapEl.getAttribute('width'), 10), parseInt(mapEl.getAttribute('height'), 10));
         map.tileSize = new PIXI.Point(parseInt(mapEl.getAttribute('tilewidth'), 10), parseInt(mapEl.getAttribute('tileheight'), 10));
 
