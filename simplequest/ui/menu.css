@@ -2,23 +2,29 @@
     color: #deeed6;
 }
 
+.menu.selections,
 .menu .selections {
     list-style: none;
 }
 
+.menu.selections >  li,
 .menu .selections >  li {
     position: relative;
 }
 
+.menu.selections > li[data-menu="@disabled"],
+.menu.selections > li.active[data-menu="@disabled"],
 .menu .selections > li[data-menu="@disabled"],
 .menu .selections > li.active[data-menu="@disabled"] {
     color: #8595a1;
 }
 
+.menu.selections > li.active,
 .menu .selections > li.active {
     color: #dad45e;
 }
 
+.menu.selections.active > li.active::before,
 .menu .selections.active > li.active::before {
     display: block;
     content: "";

@@ -49,6 +49,13 @@ body {
   margin: auto;
 }
 
+.inner-text .rpg-menu {
+    position: relative;
+}
+.inner-text .rpg-menu li {
+    margin-left: 16px;
+}
+
 .item-name {
     white-space: pre;
 }

@@ -36,8 +36,6 @@ module RPG {
     export var moneyName:string = "G";
 
     export function start():Promise<any> {
-        Egg.addStyleSheet("src/rpg/rpg.css");
-
         RPG.renderPlane = <Egg.RenderPlane>Egg.addPlane(Egg.RenderPlane, { className: 'render-plane' });
         RPG.battleRenderPlane = <Egg.RenderPlane>Egg.addPlane(Egg.RenderPlane, { className: 'battle-render' });
         RPG.battleUiPlane = <Egg.UiPlane>Egg.addPlane(Egg.UiPlane, { className: 'battle-ui' });

@@ -301,19 +301,22 @@ module Egg {
             return this.axes[name];
         }
 
-        static debounce(name, duration?:number) {
-            if (this.button[name] === ButtonState.DOWN) {
-                this.button[name] = ButtonState.IGNORED;
-                if (duration !== undefined) {
-                    this.buttonTimeouts[name] = setTimeout(function() {
-                        this.button[name] = ButtonState.DOWN;
+        static debounce(names:string, duration?:number) {
+            var nameList:Array<string> = names.split(" ");
+            _.each(nameList, (name) => {
+                if (this.button[name] === ButtonState.DOWN) {
+                    this.button[name] = ButtonState.IGNORED;
+                    if (duration !== undefined) {
+                        this.buttonTimeouts[name] = setTimeout(function() {
+                            this.button[name] = ButtonState.DOWN;
 
-                        var eventInfo = { button: name, pressed: true };
-                        this.triggerCallbacks(name, eventInfo);
-                        this.triggerCallbacks(name + ".down", eventInfo);
-                    }.bind(this), duration * 1000);
+                            var eventInfo = { button: name, pressed: true };
+                            this.triggerCallbacks(name, eventInfo);
+                            this.triggerCallbacks(name + ".down", eventInfo);
+                        }.bind(this), duration * 1000);
+                    }
                 }
-            }
+            });
         }
 
 

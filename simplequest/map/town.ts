@@ -15,12 +15,11 @@ module SimpleQuest {
 
         goto_debug(args) {
             RPG.Scene.do(function*() {
-                var go = yield* this.waitChoice("Go to the debug map?", [
-                    "What, no.",
-                    "Yeah okay."
-                ]);
-                console.log(go);
-                // RPG.startMap(new Map_Debug(), 9, 7);
+                var choices = ["Yeah okay.", "What, no"];
+                var choice = yield* this.waitChoice("Go to the debug map?", choices);
+                if (choice === choices[0]) {
+                    RPG.startMap(new Map_Debug(), 9, 7);
+                }
             }.bind(this));
         }
 

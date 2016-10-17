@@ -54,6 +54,8 @@ module RPG {
         }
 
         static push(m:Menu, parentComponent?:Egg.UiComponent, parentElement?:HTMLElement|string):Menu {
+            Egg.Input.debounce("menu cancel up vertical- down vertical+ left horizontal- right horizontal confirm");
+
             if (Menu.menuStack.length > 0) {
                 Menu.currentMenu.pause();
             }
@@ -102,6 +104,7 @@ module RPG {
         selectionIndex:number;
         selectionContainer:HTMLElement;
         selections:HTMLElement[];
+        confirmCallback:any; // TODO this is a function, set the right type for it
 
         private firstScrollFix:boolean = false;
 
@@ -110,8 +113,8 @@ module RPG {
 
             this.direction = args.direction === undefined ? MenuDirection.VERTICAL : args.direction;
             this.cancelable = !!args.cancelable;
-            this.element.classList.add("rpg-menu");
-            this.setupSelections(this.find(args.selectionContainer) || this.element);
+            this.element.classList.add("rpg-menu"); // TODO should actually be 'menu'
+            this.setupSelections(args.selectionContainer ? this.find(args.selectionContainer) : this.element);
         }
 
         setupSelections(parent) {

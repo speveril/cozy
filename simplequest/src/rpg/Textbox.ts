@@ -29,18 +29,13 @@ module RPG {
 
         constructor(args?:any) {
             super(_.extend(args || {}, {
+                className: 'textbox',
                 html: `
-                    <div class="textbox">
-                        <div class="inner-text"></div>
-                    </div>
+                    <div class="inner-text"></div>
                 `
             }));
             this.inner = this.find('.inner-text');
             this.cursors = [];
-        }
-
-        setParent(parent:Egg.UiComponent, parentElement?:HTMLElement|string):void {
-            super.setParent(parent, parentElement);
         }
 
         setText(text:string) {
