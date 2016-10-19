@@ -155,6 +155,8 @@ module Egg {
         }
 
         static update(dt) {
+            if (!document.hasFocus()) return;
+
             var buttonState = {};
             var axisState = {};
 
