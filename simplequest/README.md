@@ -43,7 +43,8 @@ Some sound effects from Michael Koenig
 
 Some music by Otto Halmén - https://ottohalmen.bandcamp.com
 
-- Otto Halmén - Death Is Just Another Path
+- https://ottohalmen.bandcamp.com/album/ottos-creative-commons-tracks
+    - Otto Halmén - Death Is Just Another Path
 
 Some music from the RMN Music Pack - https://rpgmaker.net/musicpack/
 

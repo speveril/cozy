@@ -32,18 +32,17 @@ Just run the Egg shortcut (or .engine/egg.exe). This will open the launcher/proj
 This is stuff I intend to do, and/or am actively working on. I'm trying to keep this up to date with my commits.
 
 - Bugs/Unsorted
-    - Lock gamepad input to active window
     - In-game input config
     - Make browser NOT close the currently active game
         - or just revisit the whole browser interface in general
 - RPGKit
-    - Add dialog box options -- yes/no, more complicated things
     - Finish up battle system.
     - Add saving/loading games
     - It'd be nice if the persistent stuff in map was easier to use in general
     - Add scripted movement for entities on the map
     - Add scripted movement for entities in Scenes
     - Can I just slurp in all of the map .ts files automatically instead of having to reference each one?
+    - More choice options - support scrolling
 - Data Editor
     - Manager .json files; top level is an object with a ".schemas" key plus "tables" of typed objects
 - Reconcile File stuff
@@ -62,8 +61,7 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
     - Investigate this
 - Release stuff
     - Check for existence of .engine/src and do not do core watch or compiles if it doesn't
-- ENGINE RELEASE 1.0
-
+- === ENGINE RELEASE 1.0 ===
 
 ## Wish list/Ideas (some day maybe):
 
