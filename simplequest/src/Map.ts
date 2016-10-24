@@ -21,8 +21,6 @@ module SimpleQuest {
     };
 
     export class Map extends RPG.Map.Map {
-        static persistent:any = {};
-
         private threatGroup:string;
         private nextBattle:number;
         private lastPlayerPosition:PIXI.Point;
@@ -113,7 +111,7 @@ module SimpleQuest {
 
                 for (y = 0; y < door.th; y++) {
                     for (x = 0; x < door.tw; x++) {
-                        sfx['thud'].play();
+                        RPG.sfx['thud'].play();
                         this.layers[1].setTile(tx + x, ty + y, this.layers[1].getTile(tx + x, ty + y) + 1);
                     }
                 }
@@ -244,13 +242,13 @@ module SimpleQuest {
             _.each(tiles, (tile) => {
                 this.layers[1].setTile(tile[0], tile[1], this.layers[1].getTile(tile[0], tile[1]) + 1);
             });
-            sfx['chnk'].play();
+            RPG.sfx['chnk'].play();
             yield* RPG.Scene.waitTime(0.5);
 
             _.each(tiles, (tile) => {
                 this.layers[1].setTile(tile[0], tile[1], this.layers[1].getTile(tile[0], tile[1]) + 1);
             });
-            sfx['chnk'].play();
+            RPG.sfx['chnk'].play();
             yield* RPG.Scene.waitTime(0.5);
         }
 
@@ -313,7 +311,7 @@ module SimpleQuest {
         open_door(args) {
             var t = this.layers[1].getTile(args.tx, args.ty);
             if (t == 5) {
-                SimpleQuest.sfx['thud'].play();
+                RPG.sfx['thud'].play();
                 this.layers[1].setTile(args.tx, args.ty, 6);
             }
         }
@@ -344,7 +342,7 @@ module SimpleQuest {
                 smashed.push([args.tx, args.ty]);
                 args.trigger.solid = false;
                 args.trigger.active = false;
-                sfx['hit'].play();
+                RPG.sfx['hit'].play();
 
                 if (smashed.length === Map.persistent[this.filename].potCount) {
                     RPG.Scene.do(function*() {
@@ -378,7 +376,7 @@ module SimpleQuest {
 
         trigger_well(args) {
             RPG.Scene.do(function*() {
-                SimpleQuest.sfx['restore'].play();
+                RPG.sfx['restore'].play();
                 RPG.Party.each(function(ch:RPG.Character) {
                     ch.hp = ch.maxhp;
                 });

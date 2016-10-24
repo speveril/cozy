@@ -50,6 +50,8 @@ module RPG.Map {
     }
 
     export class Map {
+        static persistent = { global: {} };
+        
         size:PIXI.Point                   = null;
         tileSize:PIXI.Point               = null;
         filename:string                   = null;

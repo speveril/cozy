@@ -2,7 +2,7 @@ module SimpleQuest {
     export class Map_Debug extends SimpleQuest.Map {
         constructor() {
             super('map/debugmap.tmx');
-            this.music = SimpleQuest.music['village'];
+            this.music = RPG.music['village'];
         }
 
         open() {

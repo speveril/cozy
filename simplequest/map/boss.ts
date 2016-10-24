@@ -11,7 +11,7 @@ module SimpleQuest {
 
         constructor() {
             super('map/boss.tmx');
-            this.music = SimpleQuest.music['boss'];
+            this.music = RPG.music['boss'];
 
             this.torchTiles = {
                 none: 205,
@@ -81,7 +81,7 @@ module SimpleQuest {
                         this.lowerPlatform();
                     }
                 } else {
-                    sfx['negative'].play();
+                    RPG.sfx['negative'].play();
                     this.resetSwitches();
                     this.newSequence();
                 }
@@ -90,7 +90,7 @@ module SimpleQuest {
 
         lowerPlatform() {
             RPG.Scene.do(function*() {
-                sfx['chnk'].play();
+                RPG.sfx['chnk'].play();
 
                 this.platformHeight--;
 
@@ -139,12 +139,12 @@ module SimpleQuest {
                         }
                     }
 
-                    sfx['dragon_roar'].play();
+                    RPG.sfx['dragon_roar'].play();
                     this.dragon.sprite.animation = 'roar';
                     yield *RPG.Scene.waitTime(2.0);
 
-                    sfx['dragon_roar'].play();
-                    music['victory'].start();
+                    RPG.sfx['dragon_roar'].play();
+                    RPG.music['victory'].start();
 
                     var i, q = 0;
                     for (i = 0; i < 2.0; i += 1/16) {
@@ -174,7 +174,7 @@ module SimpleQuest {
         }
 
         resetSwitches() {
-            sfx['chnk'].play();
+            RPG.sfx['chnk'].play();
             _.each(this.switches, (sw, color) => {
                 this.layers[1].setTile(sw['tx'], sw['ty'], this.switchTiles[color]);
             });
@@ -187,7 +187,7 @@ module SimpleQuest {
             RPG.Scene.do(function*() {
                 var letters = ['a','b','c'];
 
-                sfx['dragon_roar'].play();
+                RPG.sfx['dragon_roar'].play();
                 this.dragon.sprite.animation = 'roar';
                 yield *RPG.Scene.waitTime(1.0);
                 for (var i = 0; i < letters.length; i++) {
@@ -202,14 +202,14 @@ module SimpleQuest {
                 for (var i = 0; i < letters.length; i++) {
                     var letter = letters[i];
 
-                    sfx['chnk'].play();
+                    RPG.sfx['chnk'].play();
                     this.layers[1].setTile(this.torches[letter].tx, this.torches[letter].ty, this.torchTiles[this.sequence[i]]);
                     yield* RPG.Scene.waitTime(0.5);
 
                     this.layers[1].setTile(this.torches[letter].tx, this.torches[letter].ty, this.torchTiles.none);
                 }
 
-                sfx['chnk'].play();
+                RPG.sfx['chnk'].play();
             }.bind(this))
         }
     }

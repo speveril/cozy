@@ -19,7 +19,7 @@ module SimpleQuest {
             newGame() {
                 this.pause();
                 RPG.Scene.do(function*() {
-                    sfx['menu_newgame'].play();
+                    RPG.sfx['menu_newgame'].play();
                     yield* RPG.Scene.waitFadeTo("black", 1.0);
                     RPG.Menu.pop();
                     this.remove();

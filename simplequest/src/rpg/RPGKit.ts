@@ -16,30 +16,47 @@
 module RPG {
     export enum ControlMode { None, Scene, Menu, Map, Battle };
 
-    export var player:Entity;
-    export var map:Map.Map;
-    export var UILayer:Egg.Layer;
-    export var loadSkip:Array<string> = [];
+    export var characters:{[key:string]:Character} = {};
+    export var items:{[key:string]:Item}           = {};
+    export var loadSkip:Array<string>              = [];
+    export var controlStack:Array<ControlMode>     = [];
+    export var player:Entity                       = null;
+    export var map:Map.Map                         = null;
+
+    export var cameraSpeed:number                  = 750;
     export var cameraHalf:PIXI.Point;
     export var cameraFocus:PIXI.Point;
-    export var cameraSpeed:number = 750;
-    export var controlStack:Array<ControlMode> = [];
+
     export var renderPlane:Egg.RenderPlane;
     export var battleRenderPlane:Egg.RenderPlane;
     export var battleUiPlane:Egg.UiPlane;
     export var uiPlane:Egg.UiPlane;
+    export var battleSystem:RPG.IBattleSystem;
     export var mainMenuClass:any;
-    export var characters:{[key:string]:Character} = {};
-    export var items:{[key:string]:Item} = {};
 
-    export var equipSlots = ["weapon", "shield", "armor", "accessory"];
-    export var moneyName:string = "G";
+    export var equipSlots                          = ["weapon", "shield", "armor", "accessory"];
+    export var moneyName:string                    = "G";
+    export var sfx:{ [name:string]: Egg.Sound }    = {};
+    export var music:{ [name:string]: Egg.Music }  = {};
 
-    export function start():Promise<any> {
+    export function start(config:any):Promise<any> {
         RPG.renderPlane = <Egg.RenderPlane>Egg.addPlane(Egg.RenderPlane, { className: 'render-plane' });
         RPG.battleRenderPlane = <Egg.RenderPlane>Egg.addPlane(Egg.RenderPlane, { className: 'battle-render' });
         RPG.battleUiPlane = <Egg.UiPlane>Egg.addPlane(Egg.UiPlane, { className: 'battle-ui' });
         RPG.uiPlane = <Egg.UiPlane>Egg.addPlane(Egg.UiPlane, { className: 'overlay' });
+
+        if (config.battleSystem) {
+            this.battleSystem = new config.battleSystem(config.battleSystemConfig || {});
+        }
+        if (config.sfx) {
+            _.each(config.sfx, (args:string, name:string) => this.sfx[name] = new Egg.Sound(args));
+        }
+        if (config.music) {
+            _.each(config.music, (args:any, name:string) => this.music[name] = new Egg.Music(args));
+        }
+        this.loadSkip             = config.loadSkip || [];
+        this.mainMenuClass        = config.mainMenuClass || null;
+
 
         RPG.battleRenderPlane.hide();
         RPG.battleUiPlane.hide();
@@ -73,7 +90,10 @@ module RPG {
 
         RPG.Menu.init();
 
-        return Egg.loadTextures(textures);
+        var promises = [ Egg.loadTextures(textures) ];
+        _.each(sfx, function(s) { promises.push(s.loaded()); })
+        _.each(music, function(m) { promises.push(m.loaded()); })
+        return Promise.all(promises);
     }
 
     export function frame(dt) {
@@ -173,8 +193,6 @@ module RPG {
             }
 
             map.open();
-
-            UILayer = renderPlane.addRenderLayer();
 
             player.place((x + 0.5) * map.tileSize.x, (y + 0.5) * map.tileSize.y, map.getLayerByName(layerName || '#spritelayer'));
             RPG.centerCameraOn(player.position, true);

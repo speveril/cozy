@@ -2,7 +2,7 @@ module SimpleQuest {
     export class Map_Overworld extends SimpleQuest.Map {
         constructor() {
             super('map/overworld.tmx');
-            this.music = SimpleQuest.music['overworld'];
+            this.music = RPG.music['overworld'];
         }
 
         start() {

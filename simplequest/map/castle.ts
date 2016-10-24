@@ -2,7 +2,7 @@ module SimpleQuest {
     export class Map_Castle extends SimpleQuest.Map {
         constructor() {
             super('map/castle.tmx');
-            this.music = SimpleQuest.music['castle'];
+            this.music = RPG.music['castle'];
         }
 
         open() {

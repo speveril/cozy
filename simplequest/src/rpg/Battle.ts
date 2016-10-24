@@ -1,3 +1,5 @@
+///<reference path="battle/SoloFrontview.ts"/>
+
 var battleHTML = `
     <div class="left-sidebar">
         <div><span class="name"></span></div>
@@ -11,6 +13,10 @@ var battleHTML = `
 `;
 
 module RPG {
+    export interface IBattleSystem {
+
+    }
+
     export enum AttackResult { Miss, Weak, Normal, Critical  };
     export class Battle {
         static active:boolean = false;
@@ -131,7 +137,7 @@ module RPG {
 
                         result = this.resolveAttack(this.player, this.enemy);
                         if (result !== AttackResult.Miss) {
-                            SimpleQuest.sfx['hit'].play(); // TODO don't use SimpleQuest, get this somewhere
+                            RPG.sfx['hit'].play();
                             this.monsterSprite.quake(0.25, { x: 10, y: 3 }, { x: 40, y: 12 });
                         }
                         yield* RPG.Scene.waitTime(0.75);

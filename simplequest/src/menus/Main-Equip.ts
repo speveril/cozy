@@ -130,7 +130,7 @@ module SimpleQuest {
 
                     this.itemMenu.selectItem(this.character.equipped[this.selectedSlot]);
                 } else {
-                    SimpleQuest.sfx['menu_bad'].play();
+                    RPG.sfx['menu_bad'].play();
                     return false;
                 }
             }

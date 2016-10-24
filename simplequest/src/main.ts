@@ -16,93 +16,62 @@
 window['RPG'] = RPG;
 
 module SimpleQuest {
-    export var sfx:{ [name:string]: Egg.Sound } = {};
-    export var music:{ [name:string]: Egg.Music } = {};
-
-    var bootMenu:RPG.Menu;
-
+    export var frame = RPG.frame;
     export function start() {
-        Map.persistent['global'] = {};
-
-        sfx = {
-            'hit': new Egg.Sound("audio/sfx/smash.wav"),
-            'restore': new Egg.Sound("audio/sfx/Healing Full.wav"),
-            'thud': new Egg.Sound("audio/sfx/thud.wav"),
-            'chnk': new Egg.Sound("audio/sfx/chnk.ogg"),
-            'negative': new Egg.Sound("audio/sfx/ALERT_Error.wav"),
-
-            'menu_move': new Egg.Sound('audio/sfx/MENU_Pick.wav'),
-            'menu_choose': new Egg.Sound('audio/sfx/MENU B_Select.wav'),
-            'menu_bad': new Egg.Sound('audio/sfx/MENU B_Back.wav'),
-            'menu_newgame': new Egg.Sound('audio/sfx/MENU A_Select.wav'),
-
-            'dragon_roar': new Egg.Sound('audio/sfx/dinosaur_roar.wav'),
-        };
-        music = {
-            'village':    new Egg.Music({ tracks: ["audio/music/1-01 Town of Wishes.ogg"] }),
-            'overworld':  new Egg.Music({ tracks: ["audio/music/Death Is Just Another Path.ogg"] }),
-            'forest':     new Egg.Music({ tracks: ["audio/music/2-05 Mellow Darkness.ogg"] }),
-            'castle':     new Egg.Music({ tracks: ["audio/music/1-12 The Ritual.ogg" ]}),
-            'cave':       new Egg.Music({ tracks: ["audio/music/1-10 Brazen.ogg" ]}),
-            'boss':       new Egg.Music({ tracks: ["audio/music/3-11 Royalty of Sin.ogg"] }),
-            'battle':     new Egg.Music({ tracks: ["audio/music/1-02 Resonant Hopes Ignited Wills.ogg"] }),
-            'victory':    new Egg.Music({ tracks: ["audio/music/2-12 Victory Theme.ogg"] })
-        };
-
-        RPG.mainMenuClass = Menu.Main;
-        RPG.loadSkip = ["./src_image"];
-        RPG.Menu.blip = sfx['menu_move'];
-        RPG.Menu.choose = sfx['menu_choose'];
-        RPG.Menu.sfxBad = sfx['menu_bad'];
-
-        RPG.Battle.setFightMusic(music['battle']);
-        RPG.Battle.setVictoryMusic(music['victory']);
-        RPG.Battle.setMonsters({
-            skellington: { name: "Skellington", xp: 20,
-                hp: 5, attributes: { attack: 6, defense: 2, critical: 3, evade: 0 },
-                image: 'ui/battle/monster_skellington.png',
-                treasure: { money: '1d4 + 2' }
+        RPG.start({
+            mainMenuClass:        Menu.Main,
+            battleSystem:         RPG.BattleSystem.SoloFrontview,
+            battleSystemConfig: {
+                fightMusic:       'battle',
+                victoryMusic:     'victory',
+                monsters:         JSON.parse(Egg.File.read("src/monsters.json"))
             },
-            slime: { name: "Slime", xp: 15,
-                hp: 7, attributes: { attack: 2, defense: 2, critical: 0, evade: 2 },
-                image: 'ui/battle/monster_slime.png',
-                treasure: { money: '1d2' }
+            loadSkip:             [ "./src_image" ],
+            items:                JSON.parse(Egg.File.read("src/items.json")),
+            sfx: {
+                'hit':            "audio/sfx/smash.wav",
+                'restore':        "audio/sfx/Healing Full.wav",
+                'thud':           "audio/sfx/thud.wav",
+                'chnk':           "audio/sfx/chnk.ogg",
+                'negative':       "audio/sfx/ALERT_Error.wav",
+
+                'menu_move':      'audio/sfx/MENU_Pick.wav',
+                'menu_choose':    'audio/sfx/MENU B_Select.wav',
+                'menu_bad':       'audio/sfx/MENU B_Back.wav',
+                'menu_newgame':   'audio/sfx/MENU A_Select.wav',
+
+                'dragon_roar':    'audio/sfx/dinosaur_roar.wav',
             },
-            blueslime: { name: "Blue Slime", xp: 15,
-                hp: 7, attributes: { attack: 3, defense: 4, critical: 1, evade: 3 },
-                image: 'ui/battle/monster_blueslime.png',
-                treasure: { money: '1d3' }
-            },
-            stabber: { name: "Stabber", xp: 35,
-                hp: 10, attributes: { attack: 3, defense: 3, critical: 10, evade: 10 },
-                image: 'ui/battle/monster_stabber.png',
-                treasure: { money: '2d6' }
+            music: {
+                'village':        { tracks: ["audio/music/1-01 Town of Wishes.ogg"] },
+                'overworld':      { tracks: ["audio/music/Death Is Just Another Path.ogg"] },
+                'forest':         { tracks: ["audio/music/2-05 Mellow Darkness.ogg"] },
+                'castle':         { tracks: ["audio/music/1-12 The Ritual.ogg"] },
+                'cave':           { tracks: ["audio/music/1-10 Brazen.ogg"] },
+                'boss':           { tracks: ["audio/music/3-11 Royalty of Sin.ogg"] },
+                'battle':         { tracks: ["audio/music/1-02 Resonant Hopes Ignited Wills.ogg"] },
+                'victory':        { tracks: ["audio/music/2-12 Victory Theme.ogg"] }
             }
-        });
+        }).then(function() {
+            // TODO this stuff could go into a menuConfig key?
+            RPG.Menu.blip   = RPG.sfx['menu_move'];
+            RPG.Menu.choose = RPG.sfx['menu_choose'];
+            RPG.Menu.sfxBad = RPG.sfx['menu_bad'];
 
-        RPG.Item.load(JSON.parse(Egg.File.read("src/items.json")));
+            Egg.unpause();
 
-        var promises = [];
-        promises.push(RPG.start());
-        _.each(sfx, function(s) { promises.push(s.loaded()); })
-        _.each(music, function(m) { promises.push(m.loaded()); })
-
-        Promise.all(promises)
-            .then(function() {
-                Egg.unpause();
-                SimpleQuest.bootSequence();
-                // SimpleQuest.newGame();
-            }.bind(this));
+            SimpleQuest.bootSequence();
+        }.bind(this));
     }
 
     export function bootSequence() {
-        music['overworld'].start();
+        RPG.music['overworld'].start();
         RPG.controlStack.push(RPG.ControlMode.Map);
 
-        bootMenu = new Menu.Boot();
+        var bootMenu = new Menu.Boot();
         RPG.uiPlane.addChild(bootMenu);
-
         RPG.Menu.push(bootMenu);
+
         Egg.unpause();
     }
 
@@ -124,16 +93,10 @@ module SimpleQuest {
 
         RPG.player = RPG.Party.members[0].makeEntity();
 
-        // music['village'].start();
         RPG.startMap(new Map_Town(), 10, 7);
-        // music['forest'].start();
-        // RPG.startMap(new Map_Forest(), 7, 43);
-        // RPG.startMap(new Map_Debug(), 11, 20, undefined, { noFadeOut: true });
 
         Egg.unpause();
     }
-
-    export var frame = RPG.frame;
 }
 
 module.exports = SimpleQuest;
