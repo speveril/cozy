@@ -5,17 +5,6 @@ module RPG {
     var dbg = function(...args) {}; // uncomment to turn OFF debugging
 
     var tokenRegexp = '\\(|\\)|d|\\*|\\/|\\+|\\-|\\$\\w+|\\w+|\\d+|,';
-    // var tokenDefs = {
-    //     LPAREN: '(',
-    //     RPAREN: ')',
-    //     D: /d/i,
-    //     MUL: '*',
-    //     DIV: '/',
-    //     ADD: '+',
-    //     SUB: '-',
-    //     VAR: /$\w+/,
-    //     NUM: /\d+/
-    // };
 
     var rollDie = (dieSize) => Math.floor(Math.random() * dieSize) + 1;
     var rollDice = (numDice, dieSize) => {
