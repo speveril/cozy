@@ -1,5 +1,3 @@
-// (best 4 of 4d8)
-
 module RPG {
     // var dbg = console.log.bind(console); // uncomment to turn ON debugging
     var dbg = function(...args) {}; // uncomment to turn OFF debugging
