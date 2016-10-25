@@ -28,10 +28,8 @@ module RPG {
     export var cameraFocus:PIXI.Point;
 
     export var renderPlane:Egg.RenderPlane;
-    export var battleRenderPlane:Egg.RenderPlane;
-    export var battleUiPlane:Egg.UiPlane;
     export var uiPlane:Egg.UiPlane;
-    export var battleSystem:RPG.IBattleSystem;
+    export var battleSystem:any;
     export var mainMenuClass:any;
 
     export var equipSlots                          = ["weapon", "shield", "armor", "accessory"];
@@ -41,8 +39,6 @@ module RPG {
 
     export function start(config:any):Promise<any> {
         RPG.renderPlane = <Egg.RenderPlane>Egg.addPlane(Egg.RenderPlane, { className: 'render-plane' });
-        RPG.battleRenderPlane = <Egg.RenderPlane>Egg.addPlane(Egg.RenderPlane, { className: 'battle-render' });
-        RPG.battleUiPlane = <Egg.UiPlane>Egg.addPlane(Egg.UiPlane, { className: 'battle-ui' });
         RPG.uiPlane = <Egg.UiPlane>Egg.addPlane(Egg.UiPlane, { className: 'overlay' });
 
         if (config.battleSystem) {
@@ -57,9 +53,7 @@ module RPG {
         this.loadSkip             = config.loadSkip || [];
         this.mainMenuClass        = config.mainMenuClass || null;
 
-
-        RPG.battleRenderPlane.hide();
-        RPG.battleUiPlane.hide();
+        RPG.Item.load(config.items || {});
 
         var textures = {};
         var fonts = [];
@@ -112,8 +106,8 @@ module RPG {
             Scene.update(dt);
         } else if (controls === ControlMode.Menu && Menu.currentMenu) {
             Menu.update(dt);
-        } else if (controls === ControlMode.Battle && Battle.active) {
-            Battle.update(dt);
+        // } else if (controls === ControlMode.Battle && Battle.currentBattle) {
+        //     Battle.update(dt);
         } else {
             switch(controls) {
                 case ControlMode.Map:
@@ -122,8 +116,8 @@ module RPG {
                     console.log("bad controls [scene]: >>",Scene.currentScene); break;
                 case ControlMode.Menu:
                     console.log("bad controls [menu]: >>",Menu.currentMenu); break;
-                case ControlMode.Battle:
-                    console.log("bad controls [battle]: >>",Battle.active); break;
+                // case ControlMode.Battle:
+                //     console.log("bad controls [battle]: >>",Battle.active); break;
             }
         }
 

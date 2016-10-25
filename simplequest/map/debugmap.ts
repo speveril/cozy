@@ -84,5 +84,27 @@ module SimpleQuest {
         fight_blueslime(args)          { this.test_fight("blueslime"); }
         fight_stabber(args)            { this.test_fight("stabber"); }
         fight_skeleton(args)           { this.test_fight("skellington"); }
+
+        fight_special(args) {
+            RPG.Scene.do(function*() {
+                yield *this.waitTextbox('Skeleton', [
+                    "Knave! You stand before Dr. Skull Van Skellington, Esq."
+                ]);
+                var fight = yield *this.waitChoice("Fight Dr. Whatever?", ["Yes","No"]);
+                if (fight === 'Yes') {
+                    yield *RPG.Battle.waitBattle({
+                        enemy: 'skellington',
+                        scene: 'ui/battle/scene_test.png'
+                    });
+                    yield *this.waitTextbox('Skeleton', [
+                        "Capital! Good show."
+                    ]);
+                } else {
+                    yield *this.waitTextbox('Skeleton', [
+                        "Yes! Cower before my skeletal might!"
+                    ]);
+                }
+            }.bind(this));
+        }
     }
 }
