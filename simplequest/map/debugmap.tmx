@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="15" tilewidth="16" tileheight="16" nextobjectid="79">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="15" tilewidth="16" tileheight="16" nextobjectid="83">
  <tileset firstgid="1" source="tileset.tsx"/>
  <layer name="background" width="40" height="15">
   <data encoding="csv">
@@ -28,7 +28,7 @@
 0,0,17,0,0,37,0,138,0,0,0,0,138,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,138,0,53,53,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,138,0,0,90,0,0,37,0,0,138,0,0,0,0,53,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,203,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,53,0,0,0,0,
+0,0,33,90,35,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,53,0,0,0,0,
 0,0,0,0,0,0,0,0,0,233,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,53,0,0,0,0,141,0,0,0,0,0,163,165,164,0,0,0,0,0,0,0,0,0,0,0,187,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,53,0,0,0,0,0,0,0,0,0,179,194,180,0,84,86,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,138,
@@ -172,5 +172,8 @@
     <property name="sprite" value="sprites/monster_skeleton.sprite"/>
    </properties>
   </object>
+  <object id="79" name="music_prev" type="trigger" x="32" y="96" width="16" height="16"/>
+  <object id="80" name="music_check" type="trigger" x="48" y="96" width="16" height="16"/>
+  <object id="81" name="music_next" type="trigger" x="64" y="96" width="16" height="16"/>
  </objectgroup>
 </map>

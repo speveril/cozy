@@ -1,8 +1,11 @@
 module SimpleQuest {
     export class Map_Debug extends SimpleQuest.Map {
+        private musicKey:string;
+
         constructor() {
             super('map/debugmap.tmx');
-            this.music = RPG.music['village'];
+            this.musicKey = 'overworld';
+            this.music = RPG.music[this.musicKey];
         }
 
         open() {
@@ -72,6 +75,39 @@ module SimpleQuest {
                 });
             }.bind(this));
         }
+
+        music_check(args) {
+            RPG.Scene.do(function*() {
+                yield* this.waitTextbox(null, [
+                    `<center>Now playing:\n${this.musicKey}</center>`
+                ]);
+            }.bind(this));
+        }
+
+        music_prev(args) {
+            RPG.Scene.do(function*() {
+                var musicKeys = _.keys(RPG.music);
+                var index = Egg.wrap(musicKeys.indexOf(this.musicKey) - 1, musicKeys.length);
+                this.musicKey = musicKeys[index];
+                RPG.music[this.musicKey].start();
+                yield* this.waitTextbox(null, [
+                    `<center>Now playing:\n${this.musicKey}</center>`
+                ]);
+            }.bind(this));
+        }
+
+        music_next(args) {
+            RPG.Scene.do(function*() {
+                var musicKeys = _.keys(RPG.music);
+                var index = Egg.wrap(musicKeys.indexOf(this.musicKey) + 1, musicKeys.length);
+                this.musicKey = musicKeys[index];
+                RPG.music[this.musicKey].start();
+                yield* this.waitTextbox(null, [
+                    `<center>Now playing:\n${this.musicKey}</center>`
+                ]);
+            }.bind(this));
+        }
+
 
         test_fight(enemy) {
             RPG.Battle.start({
