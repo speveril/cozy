@@ -1,18 +1,8 @@
-///<reference path="battle/SoloFrontview.ts"/>
-
-var battleHTML = `
-    <div class="left-sidebar">
-        <div><span class="name"></span></div>
-        <div>HP <span class="hp"></span></div>
-        <div class="right-align">/<span class="maxhp"></span></div>
-    </div>
-
-    <div class="right-sidebar menu">
-        <ul class="selections"></ul>
-    </div>
-`;
+///<reference path="SoloFrontView/System.ts"/>
 
 module RPG {
+    export module BattleSystem {};
+
     export enum AttackResult { Miss, Weak, Normal, Critical  };
     export class Battle {
         static currentBattle:any    = null;

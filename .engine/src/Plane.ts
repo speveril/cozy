@@ -16,6 +16,10 @@ module Egg {
             this.container.style.display = 'none';
         }
 
+        bringToFront() {
+            document.body.appendChild(this.container);
+        }
+
         update(dt):void {}
         render():void {}
         clear():void {}

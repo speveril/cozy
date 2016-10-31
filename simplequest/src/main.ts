@@ -20,7 +20,7 @@ module SimpleQuest {
     export function start() {
         RPG.start({
             mainMenuClass:        Menu.Main,
-            battleSystem:         RPG.BattleSystem.SoloFrontview,
+            battleSystem:         RPG.BattleSystem.SoloFrontView,
             battleSystemConfig: {
                 fightMusic:       'battle',
                 victoryMusic:     'victory',

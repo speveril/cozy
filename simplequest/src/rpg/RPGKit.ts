@@ -1,4 +1,3 @@
-///<reference path="Battle.ts"/>
 ///<reference path="Behavior.ts"/>
 ///<reference path="Character.ts"/>
 ///<reference path="Dice.ts"/>
@@ -12,6 +11,8 @@
 ///<reference path="Party.ts"/>
 ///<reference path="Scene.ts"/>
 ///<reference path="Textbox.ts"/>
+
+///<reference path="battle/Battle.ts"/>
 
 module RPG {
     export enum ControlMode { None, Scene, Menu, Map, Battle };
@@ -41,14 +42,14 @@ module RPG {
         RPG.renderPlane = <Egg.RenderPlane>Egg.addPlane(Egg.RenderPlane, { className: 'render-plane' });
         RPG.uiPlane = <Egg.UiPlane>Egg.addPlane(Egg.UiPlane, { className: 'overlay' });
 
-        if (config.battleSystem) {
-            this.battleSystem = new config.battleSystem(config.battleSystemConfig || {});
-        }
         if (config.sfx) {
             _.each(config.sfx, (args:string, name:string) => this.sfx[name] = new Egg.Sound(args));
         }
         if (config.music) {
             _.each(config.music, (args:any, name:string) => this.music[name] = new Egg.Music(args));
+        }
+        if (config.battleSystem) {
+            this.battleSystem = new config.battleSystem['System'](config.battleSystemConfig || {});
         }
         this.loadSkip             = config.loadSkip || [];
         this.mainMenuClass        = config.mainMenuClass || null;

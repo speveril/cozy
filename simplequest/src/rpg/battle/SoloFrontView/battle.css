@@ -1,7 +1,7 @@
-.battle-ui .right-align { text-align: right; }
+.battle-screen .right-align { text-align: right; }
 
-.battle-ui .left-sidebar {
-    width: 66px;
+.battle-screen .left-sidebar {
+    width: 70px;
     height: 128px;
     position: absolute;
     top: 29px;
@@ -10,13 +10,12 @@
     box-sizing: border-box;
 }
 
-.battle-ui .right-sidebar {
-    width: 66px;
+.battle-screen .right-sidebar {
+    width: 70px;
     height: 128px;
     position: absolute;
     top: 29px;
     right: 16px;
-    left: initial;
     padding: 4px;
     box-sizing: border-box;
 }

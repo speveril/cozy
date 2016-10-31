@@ -53,7 +53,7 @@ module RPG {
             }, this);
         }
 
-        static push(m:Menu, parentComponent?:Egg.UiComponent, parentElement?:HTMLElement|string):Menu {
+        static push(m:Menu):Menu {
             Egg.Input.debounce("menu cancel up vertical- down vertical+ left horizontal- right horizontal confirm");
 
             if (Menu.menuStack.length > 0) {
@@ -144,6 +144,9 @@ module RPG {
             this.done = false;
             this.paused = false;
             this.setSelection(0);
+            if (this.selectionContainer) {
+                this.selectionContainer.classList.add('active');
+            }
         }
         unpause() {
             if (this.paused) {
