@@ -21,6 +21,10 @@ module SimpleQuest {
                                     <span class="label">ATK</span>
                                     <span class="value">0</span>
                                 </section>
+                                <section class="layout-row" data-stat="damage">
+                                    <span class="label">DMG</span>
+                                    <span class="value">0</span>
+                                </section>
                                 <section class="layout-row" data-stat="defense">
                                     <span class="label">DEF</span>
                                     <span class="value">0</span>

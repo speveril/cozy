@@ -21,6 +21,9 @@ module SimpleQuest {
                                 <div>ATK</div><div class="right-align"><span data-field="attack"></span></div>
                             </section>
                             <section class="layout-row">
+                                <div>DMG</div><div class="right-align"><span data-field="damage"></span></div>
+                            </section>
+                            <section class="layout-row">
                                 <div>DEF</div><div class="right-align"><span data-field="defense"></span></div>
                             </section>
                             <section class="layout-row">

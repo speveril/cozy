@@ -24,6 +24,7 @@ module RPG.BattleSystem.SoloFrontView {
         }
 
         *start(args:any) {
+            var music = Egg.Audio.currentMusic;
             if (this.fightMusic) this.fightMusic.start();
 
             var player = RPG.Party.members[0].character;
@@ -46,12 +47,12 @@ module RPG.BattleSystem.SoloFrontView {
             RPG.Textbox.show("Encountered " + monster.name + "!");
             battleScreen.updateFields(player);
 
+            this.uiPlane.show();
+            this.renderPlane.show();
+
             this.renderPlane.bringToFront();
             RPG.uiPlane.bringToFront();
             this.uiPlane.bringToFront();
-
-            this.uiPlane.show();
-            this.renderPlane.show();
 
             Egg.Input.debounce('confirm');
 
@@ -78,6 +79,9 @@ module RPG.BattleSystem.SoloFrontView {
                             case 'hit':
                                 this.output(`\nYou hit the ${monster.name}! It takes ${attack.damage} damage.`);
                                 break;
+                            case 'weak':
+                                this.output(`\nYou hit the ${monster.name}, but it's a weak hit. It takes ${attack.damage} damage.`);
+                                break;
                             case 'miss':
                                 this.output(`\nYou miss the ${monster.name}.`);
                                 break;
@@ -102,14 +106,17 @@ module RPG.BattleSystem.SoloFrontView {
 
                     switch (attack.type) {
                         case 'crit':
-                        this.output(`\nThe ${monster.name} scores a critical hit on you! You take ${attack.damage} damage.`);
-                        break;
+                            this.output(`\nThe ${monster.name} scores a critical hit on you! You take ${attack.damage} damage.`);
+                            break;
                         case 'hit':
-                        this.output(`\nThe ${monster.name} hits you! You take ${attack.damage} damage.`);
-                        break;
+                            this.output(`\nThe ${monster.name} hits you! You take ${attack.damage} damage.`);
+                            break;
+                        case 'weak':
+                            this.output(`\nThe ${monster.name} hits you, but it's a weak hit. You take ${attack.damage} damage.`);
+                            break;
                         case 'miss':
-                        this.output(`\nThe ${monster.name} attacks, but misses you.`);
-                        break;
+                            this.output(`\nThe ${monster.name} attacks, but misses you.`);
+                            break;
                     }
 
                     player.hp -= attack.damage;
@@ -144,6 +151,7 @@ module RPG.BattleSystem.SoloFrontView {
                 Party.money += money;
 
                 yield* RPG.Scene.waitButton('confirm');
+                if (music) music.start();
             }
 
             Egg.Input.debounce('confirm');
@@ -152,7 +160,6 @@ module RPG.BattleSystem.SoloFrontView {
             this.uiPlane.hide();
 
             this.renderPlane.clear();
-            this.uiPlane.clear();
 
             RPG.Textbox.hide();
         }
@@ -168,31 +175,27 @@ module RPG.BattleSystem.SoloFrontView {
         resolveAttack(attacker:Character, defender:Character):any {
             var result:any = {};
 
-            // TODO actual combat
-            switch (Dice.roll(attacker, "1d4")) {
-                case 4:
-                    result.type = 'crit';
-                    result.damage = 5;
-                    break;
-                case 3:
-                case 2:
-                    result.type = 'hit';
-                    result.damage = 2;
-                    break;
-                case 1:
-                    result.type = 'miss';
-                    result.damage = 0;
-                    break;
-            }
+            var attackRange:number = attacker.get('attack') + defender.get('evade');
+            var attackRoll:number = (Math.random() * attackRange) | 0;
 
-            // var defense = 10 + Math.floor((defender.get('defense') - 10) / 2);
-            // var attackRoll = Dice.roll("3d8 - 3");
-            //
-            // if (attackRoll >= 20) { // crit
-            //
-            // } else {
-            //     attackRoll += Math.floor((attacker.get('attack') - 10) / 2);
-            // }
+            if (attackRoll >= defender.get('evade')) {
+                var damageRange:number = attacker.get('critical') + attacker.get('damage') + defender.get('defense');
+                var damageRoll:number = (Math.random() * damageRange) | 0;
+
+                if (damageRoll >= defender.get('defense') + attacker.get('damage')) {
+                    result.type = 'crit';
+                    result.damage = Math.max(1, (attacker.get('damage') * (2.0 + Math.random())) | 0);
+                } else if (damageRoll >= defender.get('defense')) {
+                    result.type = 'hit';
+                    result.damage = Math.max(1, (attacker.get('damage') * (1.0 + Math.random() - 0.5)) | 0);
+                } else {
+                    result.type = 'weak';
+                    result.damage = (attacker.get('damage') * (Math.random() / 2)) | 0;
+                }
+            } else {
+                result.type = 'miss';
+                result.damage = 0;
+            }
 
             return result;
         }

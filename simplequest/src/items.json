@@ -14,19 +14,19 @@
 
     "oak_sword": {
         "name": "Oak Sword", "price": 5, "icon": "ui/item_icons.png", "icon_frame": [0,0], "description": "Made of wood. Might still hurt.", "sort": 10.00,
-        "slot": "weapon", "equip": { "attributes": { "attack": 0 } }
+        "slot": "weapon", "equip": { "attributes": { "attack": 0, "damage": 2 } }
     },
     "short_sword": {
         "name": "Short Sword", "price": 100, "icon": "ui/item_icons.png", "icon_frame": [14,0], "description": "A small sword for stabbing. Easy on the budget.", "sort": 10.01,
-        "slot": "weapon", "equip": { "attributes": { "attack": 1 } }
+        "slot": "weapon", "equip": { "attributes": { "attack": 1, "damage": 4 } }
     },
     "arming_sword": {
         "name": "Arming Sword", "price": 300, "icon": "ui/item_icons.png", "icon_frame": [28,0], "description": "A steel sword. Popular in fights the world over.", "sort": 10.02,
-        "slot": "weapon", "equip": { "attributes": { "attack": 2 } }
+        "slot": "weapon", "equip": { "attributes": { "attack": 2, "damage": 10 } }
     },
     "great_sword": {
         "name": "Great Sword", "price": 1500, "icon": "ui/item_icons.png", "icon_frame": [42,0], "description": "Probably the best sword you've ever seen.", "sort": 10.02,
-        "slot": "weapon", "equip": { "attributes": { "attack": 5 } }
+        "slot": "weapon", "equip": { "attributes": { "attack": 5, "damage": 20 } }
     },
 
     "quilt_armor": {

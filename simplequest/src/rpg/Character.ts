@@ -1,7 +1,7 @@
 module RPG {
     export class Character {
-        static attributes:string[] = ["attack","defense","critical","evade"];
-        static attributeAbbr:string[] = ["ATK","DEF","CRT","EVD"];
+        static attributes:string[] = ["attack","damage","critical","evade","defense"];
+        static attributeAbbr:string[] = ["ATK","DMG","CRT","EVD","DEF"];
 
         name:string = '';
 
