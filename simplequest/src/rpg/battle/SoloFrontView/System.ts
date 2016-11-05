@@ -56,88 +56,82 @@ module RPG.BattleSystem.SoloFrontView {
 
             Egg.Input.debounce('confirm');
 
-            var defeat = false;
-            var victory = false;
-            var attack = null;
+            var result = null;
+            var battleOutcome:any = null;
             var dt:any = 0;
 
-            while (!victory && !defeat) {
-                RPG.Menu.push(battleScreen.menu);
+            while (!battleOutcome) {
+                //// PLAYER ACTION STAGE
 
+                RPG.Menu.push(battleScreen.menu);
                 while(!battleScreen.menu.done) {
-                    var dt = yield;
+                    dt = yield;
                     battleScreen.menu.update(dt);
                 }
 
                 switch(battleScreen.menu.result) {
                     case 'fight':
-                        attack = this.resolveAttack(player, monster);
-                        switch (attack.type) {
-                            case 'crit':
-                                this.output(`\nYou score a critical hit on the ${monster.name}! It takes ${attack.damage} damage.`);
-                                break;
-                            case 'hit':
-                                this.output(`\nYou hit the ${monster.name}! It takes ${attack.damage} damage.`);
-                                break;
-                            case 'weak':
-                                this.output(`\nYou hit the ${monster.name}, but it's a weak hit. It takes ${attack.damage} damage.`);
-                                break;
-                            case 'miss':
-                                this.output(`\nYou miss the ${monster.name}.`);
-                                break;
+                        result = this.resolveAttack(player, monster);
+                        switch (result.type) {
+                            case 'crit': this.output(`\nYou score a critical hit on the ${monster.name}! It takes ${result.damage} damage.`); break;
+                            case 'hit': this.output(`\nYou hit the ${monster.name}! It takes ${result.damage} damage.`); break;
+                            case 'weak': this.output(`\nYou hit the ${monster.name}, but it's a weak hit. It takes ${result.damage} damage.`); break;
+                            case 'miss': this.output(`\nYou miss the ${monster.name}.`); break;
                         }
-
-                        monster.hp -= attack.damage;
-
-                        if (monster.hp <= 0) {
-                            victory = true;
-                        }
+                        monster.hp -= result.damage;
+                        break;
+                    case 'item':
+                        // TODO use the item
+                        break;
+                    case 'flee':
+                        this.output(`\nYou attempt to escape.`);
+                        result = this.resolveFlee(player, monster);
+                        if (result.success) battleOutcome = { playerEscaped: true };
+                        else this.output(`\nYou can't get away!`);
                         break;
                 }
+
                 battleScreen.updateFields(player);
                 yield* RPG.Scene.waitTime(0.75);
 
-                if (victory) break;
+                if (monster.hp <= 0) battleOutcome = { victory: true };
+                if (battleOutcome) break;
+
+                //// MONSTER ACTION STAGE
 
                 var monsterAction = this.monsterThink();
                 switch(monsterAction) {
                     case 'fight':
-                    attack = this.resolveAttack(monster, player);
-
-                    switch (attack.type) {
-                        case 'crit':
-                            this.output(`\nThe ${monster.name} scores a critical hit on you! You take ${attack.damage} damage.`);
-                            break;
-                        case 'hit':
-                            this.output(`\nThe ${monster.name} hits you! You take ${attack.damage} damage.`);
-                            break;
-                        case 'weak':
-                            this.output(`\nThe ${monster.name} hits you, but it's a weak hit. You take ${attack.damage} damage.`);
-                            break;
-                        case 'miss':
-                            this.output(`\nThe ${monster.name} attacks, but misses you.`);
-                            break;
-                    }
-
-                    player.hp -= attack.damage;
-
-                    if (player.hp < 1) {
-                        defeat = true;
-                    }
-                    break;
+                        result = this.resolveAttack(monster, player);
+                        switch (result.type) {
+                            case 'crit': this.output(`\nThe ${monster.name} scores a critical hit on you! You take ${result.damage} damage.`); break;
+                            case 'hit': this.output(`\nThe ${monster.name} hits you! You take ${result.damage} damage.`); break;
+                            case 'weak': this.output(`\nThe ${monster.name} hits you, but it's a weak hit. You take ${result.damage} damage.`); break;
+                            case 'miss': this.output(`\nThe ${monster.name} attacks, but misses you.`); break;
+                        }
+                        player.hp -= result.damage;
+                        break;
+                    case 'flee':
+                        this.output(`\nThe ${monster.name} tries to run away.`);
+                        result = this.resolveFlee(monster, player);
+                        if (result.success) battleOutcome = { monsterEscaped: true };
+                        else this.output(`\nIt doesn't get away!`);
+                        break;
                 }
+
                 battleScreen.updateFields(player);
                 yield* RPG.Scene.waitTime(0.75);
 
-                if (defeat) break;
+                if (player.hp < 1) battleOutcome = { defeat: true };
+                if (battleOutcome) break;
             }
 
-            if (defeat) {
+            if (battleOutcome.defeat) {
                 this.output("\nYou have died!");
                 yield* RPG.Scene.waitFadeTo("black", 2.0);
 
                 Egg.quit(); // TODO this should actually be a gameover handler
-            } else if (victory) {
+            } else if (battleOutcome.victory) {
                 if (this.victoryMusic) this.victoryMusic.start();
 
                 this.output(`\nThe ${monster.name} is defeated!`);
@@ -150,9 +144,18 @@ module RPG.BattleSystem.SoloFrontView {
                 this.output(`\nYou found ${money} ${RPG.moneyName}!`);
                 Party.money += money;
 
-                yield* RPG.Scene.waitButton('confirm');
-                if (music) music.start();
+                // TODO non-monetary treasure
+            } else if (battleOutcome.playerEscaped) {
+                // TODO sound
+                this.output(`\nYou escaped!`);
+            } else if (battleOutcome.monsterEscaped) {
+                // TODO sound
+                this.output(`\nThe ${monster.name} escaped!`);
             }
+
+            yield* RPG.Scene.waitButton('confirm');
+
+            if (music) music.start();
 
             Egg.Input.debounce('confirm');
 
@@ -195,6 +198,21 @@ module RPG.BattleSystem.SoloFrontView {
             } else {
                 result.type = 'miss';
                 result.damage = 0;
+            }
+
+            return result;
+        }
+
+        resolveFlee(runner:Character, chaser:Character):any {
+            var result:any = {};
+
+            var fleeRange:number = runner.get('evade') + chaser.get('evade') + 2;
+            var fleeRoll:number = (Math.random() * fleeRange) | 0;
+
+            if (fleeRoll >= chaser.get('evade') + 1) {
+                result.success = true;
+            } else {
+                result.success = false;
             }
 
             return result;

@@ -61,7 +61,7 @@ module RPG.BattleSystem.SoloFrontView {
         }
 
         flee() {
-            RPG.Textbox.box.appendText("\nYou can't flee yet!");
+            RPG.Menu.pop();
         }
     }
 }
