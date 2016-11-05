@@ -41,7 +41,7 @@ module SimpleQuest {
                         count: row.length
                     }), listContainer);
 
-                    if (row[0].canUse(RPG.Party.members[0].character, RPG.Party.members[0].character)) {
+                    if (row[0].canUse(RPG.Party.members[0].character, RPG.Party.characters())) {
                         el.element.setAttribute('data-menu', 'choose');
                         el.element.setAttribute('data-item', row[0].key);
                     } else {
@@ -60,23 +60,6 @@ module SimpleQuest {
                 if (this.selections.length < 1) return;
                 this.find('.description-row').innerHTML = this.itemList[this.selectionIndex][0].description;
             }
-
-            // fixScroll() {
-            //     super.fixScroll();
-            //
-            //     if (document.contains(this.element)) {
-            //         this.firstFixScroll = true;
-            //         var itemsRow = this.find('.items-row');
-            //         var st = this.selectionContainer.scrollTop;
-            //         var sh = this.selectionContainer.scrollHeight;
-            //         var ch = this.selectionContainer.clientHeight;
-            //
-            //         if (ch < sh) {
-            //             st > 0 ? itemsRow.classList.add('can-scroll-up') : itemsRow.classList.remove('can-scroll-up');
-            //             st < sh - ch ? itemsRow.classList.add('can-scroll-down') : itemsRow.classList.remove('can-scroll-down');
-            //         }
-            //     }
-            // }
 
             choose(element:HTMLElement) {
                 // TODO target selection

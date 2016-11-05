@@ -99,12 +99,15 @@ namespace RPG {
             }
         }
 
-        canUse(character:RPG.Character, target:RPG.Character) {
+        canUse(character:RPG.Character, targets:Array<RPG.Character>) {
             if (!this.def.useEffect) return false;
-            switch (this.def.useEffect._target) {
-                case 'self':
-                    return true;
-                // TODO
+
+            for (var i = 0; i < targets.length; i++) {
+                switch (this.def.useEffect._target) {
+                    case 'self':
+                        return true;
+                    // TODO
+                }
             }
 
             return false;

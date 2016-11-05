@@ -94,7 +94,8 @@ module RPG {
         }
 
         static update(dt:number):void {
-            Menu.currentMenu.update(dt);
+            if (Menu.currentMenu)
+                Menu.currentMenu.update(dt);
         }
 
         cancelable:boolean             = false;

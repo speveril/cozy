@@ -33,5 +33,9 @@ module RPG {
                 f(this.members[i].character);
             }
         }
+
+        static characters():Array<Character> {
+            return _.pluck(this.members, "character");
+        }
     }
 }

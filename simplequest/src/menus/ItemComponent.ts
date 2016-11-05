@@ -17,8 +17,6 @@ module SimpleQuest {
                 if (!args.price) this.find('.price').remove();
             }
 
-            price
-
             setPrice(n:number):void {
                 this.find('.price').innerText = n.toString() + RPG.moneyName;
             }

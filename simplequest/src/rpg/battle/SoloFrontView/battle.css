@@ -19,3 +19,28 @@
     padding: 4px;
     box-sizing: border-box;
 }
+
+.battle-screen .item-menu {
+    position: absolute;
+    right: 30%;
+    top: 30px;
+    width: 200px;
+    height: 100px;
+}
+
+.battle-screen .item-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.battle-screen .item-row .item-icon {
+    flex: 0 0 auto;
+}
+
+.battle-screen .item-row .item-icon {
+    flex: 1 0;
+}
+
+.battle-screen .item-row .item-icon {
+    flex: 0 0 auto;
+}
