@@ -11,6 +11,8 @@ module RPG.BattleSystem.SoloFrontView {
         monsterLayer:Egg.Layer          = null;
         monsterSprite:Egg.Sprite        = null;
 
+        combatants:Array<Character>     = null;
+
         constructor(args:any) {
             this.fightMusic = RPG.music[args.fightMusic] || null;
             this.victoryMusic = RPG.music[args.victoryMusic] || null;
@@ -31,6 +33,7 @@ module RPG.BattleSystem.SoloFrontView {
 
             var player = RPG.Party.members[0].character;
             var monster = new RPG.Character(this.monsters[args.enemy]);
+            this.combatants = [player, monster];
 
             var battleScreen = new uiBattleScreen(player, monster);
             this.uiPlane.addChild(battleScreen);
@@ -87,10 +90,17 @@ module RPG.BattleSystem.SoloFrontView {
                     case 'item':
                         var item = battleScreen.menu.result.item;
                         this.output(`\nYou use ${item.iconHTML}${item.name}.`);
-                        item.activate(RPG.Party.members[0].character);
-                        // TODO figure out if there are results that need to be displayed;
-                        //      Item effects should have a result object similar to the battle
-                        //      resolve functions
+                        if (!item.def.useEffect) {
+                            this.output(`\nYou can't use that!`);
+                        } else {
+                            var target = item.def.useEffect._target === 'enemy' ? monster : player;
+                            result = item.activate(target)
+                            if (result.success) {
+                                this.outputItemResult(target, result);
+                            } else {
+                                this.output(`\nIt doesn't seem to work.`);
+                            }
+                        }
                         break;
                     case 'flee':
                         this.output(`\nYou attempt to escape.`);
@@ -165,6 +175,7 @@ module RPG.BattleSystem.SoloFrontView {
             //// CLEAN UP
 
             yield* RPG.Scene.waitButton('confirm');
+            this.combatants = [];
 
             if (music) music.start();
 
@@ -214,6 +225,20 @@ module RPG.BattleSystem.SoloFrontView {
             return result;
         }
 
+        outputItemResult(target:Character, result:any) {
+            if (Party.isInParty(target)) {
+                if (_.has(result, 'hpChange')) {
+                    if (result.hpChange > 0) this.output(`\nYou gain ${result.hpChange} health!`);
+                    if (result.hpChange < 0) this.output(`\nYou take ${-result.hpChange} damage!`);
+                }
+            } else {
+                if (_.has(result, 'hpChange')) {
+                    if (result.hpChange > 0) this.output(`\nThe ${target.name} gains ${result.hpChange} health!`);
+                    if (result.hpChange < 0) this.output(`\nThe ${target.name} takes ${-result.hpChange} damage!`);
+                }
+            }
+        }
+
         resolveFlee(runner:Character, chaser:Character):any {
             var result:any = {};
 
@@ -227,6 +252,10 @@ module RPG.BattleSystem.SoloFrontView {
             }
 
             return result;
+        }
+
+        isCombatant(ch:Character):boolean {
+            return this.combatants.indexOf(ch) !== -1;
         }
     }
 }

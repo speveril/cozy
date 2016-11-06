@@ -102,11 +102,24 @@ namespace RPG {
         canUse(character:RPG.Character, targets:Array<RPG.Character>) {
             if (!this.def.useEffect) return false;
 
+            var context = _.has(this.def.useEffect, '_context') ? this.def.useEffect._context : 'any';
+
+            if (context === 'combat' && !Battle.active) return false;
+            if (context === 'menu' && Battle.active) return false;
+
             for (var i = 0; i < targets.length; i++) {
+                var target = targets[i];
                 switch (this.def.useEffect._target) {
                     case 'self':
                         return true;
-                    // TODO
+                    case 'ally':
+                        if (Party.isInParty(target)) return true;
+                        break;
+                    case 'enemy':
+                        if (Battle.isCombatant(target) && !Party.isInParty(target)) return true;
+                        break;
+                    default:
+                        // nothing
                 }
             }
 
@@ -121,21 +134,22 @@ namespace RPG {
 
         activate(character:RPG.Character) {
             if (!this.def.useEffect) return;
+
+            var result:any = {};
             _.each(this.def.useEffect, (params:any, effect:string) => {
-                if (effect === '_target') return;
+                if (effect[0] === '_') return;
+                var r = RPG.Effect.do(effect, this, character, params);
+                _.each(r, (v, k:string) => {
+                    if (k === 'success') result[k] = result[k] || v;
+                    else result[k] = result[k] ? result[k] + v : v;
+                });
+            });
 
-                if (RPG.Effect[effect]) {
-                    var args = params.slice(0);
-                    args.unshift(character);
-                    args.unshift(this);
+            if (result.success) {
+                Party.inventory.remove(this);
+            }
 
-                    if (RPG.Effect[effect].apply(this, args)) {
-                        Party.inventory.remove(this);
-                    }
-                } else {
-                    console.warn("! Bad effect", effect, "triggered from", this.def.key);
-                }
-            })
+            return result;
         }
     }
 }

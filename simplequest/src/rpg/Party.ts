@@ -37,5 +37,9 @@ module RPG {
         static characters():Array<Character> {
             return _.pluck(this.members, "character");
         }
+
+        static isInParty(ch:Character):boolean {
+            return Party.characters().indexOf(ch) !== -1;
+        }
     }
 }

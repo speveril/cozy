@@ -88,8 +88,6 @@ module RPG.BattleSystem.SoloFrontView {
     }
 
     class uiItemMenu extends RPG.Menu {
-        private player:Character;
-        private monster:Character;
         private itemList:Array<Array<Item>>;
         private completion:any;
 
@@ -109,7 +107,7 @@ module RPG.BattleSystem.SoloFrontView {
 
             this.itemList = RPG.Party.inventory.stacked();
             this.itemList.forEach((row:Array<RPG.Item>) => {
-                if (row[0].canUse(this.player, [this.player,this.monster])) {
+                if (row[0].canUse(player, [player, monster])) {
                     var el = this.addChild(new uiItemRow({
                         icon: row[0].iconHTML,
                         name: row[0].name,
