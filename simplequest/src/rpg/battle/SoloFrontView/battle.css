@@ -1,31 +1,76 @@
-.battle-screen .right-align { text-align: right; }
+.battle-screen {
+    color: #deeed6;
+}
 
 .battle-screen .left-sidebar {
     width: 70px;
-    height: 128px;
     position: absolute;
     top: 29px;
     left: 16px;
-    padding: 4px;
+    padding: 5px;
     box-sizing: border-box;
+}
+
+.battle-screen .left-sidebar meter {
+    width: 100%;
+    height: 6px;
+}
+
+.battle-screen .left-sidebar meter.hp::-webkit-meter-bar {
+    background: #442434;
+}
+
+.battle-screen .left-sidebar meter.hp::-webkit-meter-optimum-value {
+    background: #6daa2c;
+}
+
+.battle-screen .left-sidebar .hp-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.battle-screen .left-sidebar .hp-row > span {
+    flex: 0 0 auto;
+}
+
+.battle-screen .left-sidebar .hp-row > span:first-child {
+    flex: 1 0;
 }
 
 .battle-screen .right-sidebar {
     width: 70px;
-    height: 128px;
     position: absolute;
     top: 29px;
     right: 16px;
-    padding: 4px;
+    padding: 5px;
     box-sizing: border-box;
+}
+
+.battle-screen .action-menu {
+    position: relative;
 }
 
 .battle-screen .item-menu {
     position: absolute;
+    left: auto;
     right: 30%;
-    top: 30px;
+    top: -5px;
     width: 200px;
-    height: 100px;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+}
+
+.battle-screen .item-menu .selections {
+    flex: 1 0;
+}
+
+.battle-screen .item-menu .description {
+    width: 100%;
+    flex: 0 0 41px;
+    padding: 3px 0;
+    text-align: left;
 }
 
 .battle-screen .item-row {
@@ -37,10 +82,10 @@
     flex: 0 0 auto;
 }
 
-.battle-screen .item-row .item-icon {
+.battle-screen .item-row .name {
     flex: 1 0;
 }
 
-.battle-screen .item-row .item-icon {
+.battle-screen .item-row .count {
     flex: 0 0 auto;
 }

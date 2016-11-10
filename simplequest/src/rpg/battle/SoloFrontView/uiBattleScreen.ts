@@ -3,15 +3,16 @@ module RPG.BattleSystem.SoloFrontView {
         private actionMenu:uiActionMenu;
         private player:Character;
         private monster:Character;
+        private prevAttributes:any;
 
         constructor(player, monster) {
             super({
                 className: 'battle-screen',
                 html: `
                     <div class="box left-sidebar">
-                        <div><span class="name"></span></div>
-                        <div>HP <span class="hp"></span></div>
-                        <div class="right-align">/<span class="maxhp"></span></div>
+                        <div><span class="name">${player.name}</span></div>
+                        <div class="hp-row"><span>HP</span><span class="hp"></span></div>
+                        <div><meter class="hp"></meter></div>
                     </div>
 
                     <div class="box right-sidebar"></div>
@@ -22,15 +23,19 @@ module RPG.BattleSystem.SoloFrontView {
             this.monster = monster;
             this.actionMenu = new uiActionMenu(player, monster);
             this.addChild(this.actionMenu, '.right-sidebar');
+            this.prevAttributes = {};
         }
 
         update(dt:number):void {
             super.update(dt);
 
-            var fields = ['name', 'hp', 'maxhp'];
-            for (var i = 0; i < fields.length; i++) {
-                this.find('.left-sidebar .' + fields[i]).innerHTML = this.player[fields[i]];
+            if (this.player['hp'] !== this.prevAttributes['hp']) {
+                this.prevAttributes['hp'] = this.player['hp'];
+
+                this.find('.left-sidebar meter.hp').setAttribute('value', (this.player['hp'] / this.player['maxhp']).toString());
+                this.find('.left-sidebar span.hp').innerHTML = this.player['hp'].toString();
             }
+
         }
 
         get menu():uiActionMenu { return this.actionMenu; }
@@ -97,7 +102,9 @@ module RPG.BattleSystem.SoloFrontView {
                 tagName: 'div',
                 cancelable: true,
                 html: `
+                    <div class="title">Choose an item...</div>
                     <ul class="selections"></ul>
+                    <div class="description"></div>
                 `
             });
 
@@ -129,6 +136,13 @@ module RPG.BattleSystem.SoloFrontView {
         stop() {
             super.stop();
             this.remove();
+        }
+
+        setSelection(index:number) {
+            super.setSelection(index);
+
+            if (this.selections.length < 1) return;
+            this.find('.description').innerHTML = this.itemList[this.selectionIndex][0].description;
         }
     }
 

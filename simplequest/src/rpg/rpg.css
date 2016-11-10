@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     font-family: Omelet;
     font-size: 16px;
@@ -12,6 +16,13 @@ body {
     border-image: url(../../ui/box.png) 2 2 fill repeat;
     border-width: 2px;
     padding: 1px;
+}
+
+meter {
+    box-sizing: border-box;
+    border-style: solid;
+    border-image: url(../../ui/box.png) 2 2 fill repeat;
+    border-width: 2px;
 }
 
 .textbox {
