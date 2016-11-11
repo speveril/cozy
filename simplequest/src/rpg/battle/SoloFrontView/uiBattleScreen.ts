@@ -52,7 +52,6 @@ module RPG.BattleSystem.SoloFrontView {
                 tagName: 'ul',
                 html: `
                     <li data-menu="fight">Fight</li>
-                    <li data-menu="skill">Skill</li>
                     <li data-menu="item">Item</li>
                     <li data-menu="flee">Flee</li>
                 `
@@ -70,10 +69,6 @@ module RPG.BattleSystem.SoloFrontView {
         fight() {
             this._result.action = this.selections[this.selectionIndex].getAttribute('data-menu');
             RPG.Menu.pop();
-        }
-
-        skill() {
-            RPG.Textbox.box.appendText("\nYou can't use skills yet!");
         }
 
         item() {
