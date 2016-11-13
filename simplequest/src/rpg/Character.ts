@@ -36,6 +36,24 @@ module RPG {
             this.hp = this.maxhp;
         }
 
+        serialize():any {
+            var data = {};
+            _.each(_.keys(this), (k) => {
+                if (typeof this[k] === 'function') return;
+
+                var data_k = k.replace(/^_/,'');
+
+                switch (k) {
+                    case "equipped":
+                        data[data_k] = _.map(this[k], (vv:Item, kk:string) => vv.key);
+                        break;
+                    default:
+                        data[data_k] = this[k];
+                }
+            });
+            return data;
+        }
+
         adjust(stats:{ [attribute:string]:number }):void {
             _.each(stats, (v:number, k:string) => {
                 if (Character.attributes.indexOf(k) !== -1) {

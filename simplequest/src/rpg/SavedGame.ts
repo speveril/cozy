@@ -34,12 +34,16 @@ module RPG {
         }
 
         static fromState() {
+            // TODO better way of naming the files; what if one gets deleted?
             var file = SavedGame.directory.file("save-" + (SavedGame.count() + 1) + ".json");
             var data = {
-                name:       "Saved Game",
-                map:        RPG.map.filename,
-
+                name:           "Saved Game",
+                map:            RPG.map.filename,
+                mapPersistent:  RPG.Map.Map.persistent,
+                party:          RPG.Party.serialize(),
+                characters:     _.map(RPG.characters, (ch) => ch.serialize())
             };
+            console.log(data);
             return new SavedGame(file, data);
         }
 

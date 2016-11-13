@@ -41,5 +41,12 @@ module RPG {
         static isInParty(ch:Character):boolean {
             return Party.characters().indexOf(ch) !== -1;
         }
+
+        static serialize():any {
+            return {
+                members:        _.map(this.members, (m:PartyMember) => _.find(_.keys(RPG.characters), (k) => RPG.characters[k] === m.character)),
+                inventory:      _.map(this.inventory.get(), (i:Item) => i.key)
+            };
+        }
     }
 }
