@@ -28,26 +28,21 @@ module Egg {
         }
 
         find(p:string):Directory|File {
-            console.log("find >", p);
             var stats = fs.statSync(path.join(this.root, p));
             if (stats.isDirectory()) return new Directory(path.join(this.root, p));
             return new File(path.join(this.root, p));
         }
 
         file(p:string):File {
-            console.log("file >", p);
             return new File(path.join(this.root, p));
         }
 
         subdir(p:string):Directory {
-            console.log("subdir >", p);
             return new Directory(path.join(this.root, p));
         }
 
         glob(pattern:string, opts?:any):Array<Directory|File> {
-            console.log("globbing in", this.path, "with", pattern);
             var found = [];
-            console.log(window['glob'].sync(pattern, opts));
             _.each(window['glob'].sync(pattern, opts), (f:string) => {
                 var stats = fs.statSync(f);
                 if (stats.isDirectory()) {
@@ -85,13 +80,13 @@ module Egg {
             return new Promise((resolve, reject) => {
                 switch(format) {
                     case 'json':
-                        fs.readFile(this.filepath, {}, (err, data) => { if (err) reject(err); else resolve(JSON.parse(data)); });
+                        fs.readFile(this.filepath, {}, (err, data) => err ? reject(err) : resolve(JSON.parse(data)));
                         break;
                     case 'binary':
-                        fs.readFile(this.filepath, {}, (err, data) => { console.log("async binary load complete",this.filepath); if (err) reject(err); else resolve(data.buffer); });
+                        fs.readFile(this.filepath, {}, (err, data) => err ? reject(err) : resolve(data.buffer));
                         break;
                     default:
-                        fs.readFile(this.filepath, { encoding: 'UTF-8' }, (err, data) => { if (err) reject(err); else resolve(data); });
+                        fs.readFile(this.filepath, { encoding: 'UTF-8' }, (err, data) => err ? reject(err) : resolve(data));
                         break;
                 }
             });
