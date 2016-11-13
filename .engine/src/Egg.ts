@@ -252,19 +252,15 @@ module Egg {
         document.head.appendChild(el);
     }
 
-    export function captureScreenshot(width:number, height:number):Promise<any> {
+    export function captureScreenshot(width?:number, height?:number):Promise<any> {
         return new Promise((resolve, reject) => {
             this.browserWindow.capturePage((image) => {
-                var canvas = document.createElement('canvas');
-                canvas.setAttribute('width', width.toString());
-                canvas.setAttribute('height', height.toString());
-                var context = canvas.getContext('2d');
-                context['imageSmoothingEnabled'] = true;
-
-                console.log(image);
-                context.drawImage(image, 0, 0, image.getSize().width, image.getSize().height, 0, 0, width, height);
-
-                resolve(context.getImageData(0, 0, width, height));
+                var opts = {
+                    quality: "best"
+                };
+                if (width !== undefined) opts['width'] = width;
+                if (height !== undefined) opts['height'] = height;
+                resolve(image.resize(opts));
             });
         });
     }
