@@ -75,7 +75,8 @@ module SimpleQuest {
             resume() { RPG.Menu.pop(); }
             items() { this.showSubmenu('items'); }
             equip() { this.showSubmenu('equip'); }
-            save() { this.showSubmenu('save'); }
+            // save() { this.showSubmenu('save'); }
+            save() { RPG.SavedGame.fromState().writeToDisk(); }
             exit() { SimpleQuest.Menu.quitGame(); } // TODO confirmation
         }
     }

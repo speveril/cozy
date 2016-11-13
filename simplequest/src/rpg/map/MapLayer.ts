@@ -19,7 +19,7 @@ module RPG.Map {
             var i = x + (this.map.size.x * y);
             var tileInfo = this.map.lookupTileInfo(t);
 
-            if (tileInfo && Egg.textures[tileInfo.texture]) {
+            if (tileInfo && Egg.getTexture(tileInfo.texture)) {
                 if (!this.tileLookup[i]) {
                     var spr = new MapTile({
                         texture: tileInfo['texture'],

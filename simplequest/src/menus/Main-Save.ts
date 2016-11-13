@@ -7,7 +7,6 @@ module SimpleQuest {
                 super({
                     className: 'panel save'
                 });
-
             }
         }
     }

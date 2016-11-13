@@ -76,7 +76,7 @@ module Egg {
         read(format?:string):any {
             switch(format) {
                 case 'json':
-                    return JSON.stringify(fs.readFileSync(this.filepath, { encoding: 'UTF-8'}));
+                    return JSON.parse(fs.readFileSync(this.filepath, { encoding: 'UTF-8'}));
                 case 'binary':
                     return fs.readFileSync(this.filepath).buffer;
                 default:

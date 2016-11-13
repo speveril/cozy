@@ -100,12 +100,8 @@ module SimpleQuest {
         Egg.unpause();
     }
 
-    export function loadGame() {
-
-    }
-
-    export function saveGame() {
-
+    export function loadGame(game:RPG.SavedGame) {
+        console.log("Load a game:", game);
     }
 }
 

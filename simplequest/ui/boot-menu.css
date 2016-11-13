@@ -23,3 +23,7 @@
     width: 70px;
     transform: translateX(-50%);
 }
+
+.boot-menu .selections li:first-child {
+    margin-bottom: 0.5em;
+}

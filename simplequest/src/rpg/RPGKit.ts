@@ -65,8 +65,10 @@ module RPG {
         // scrape all images under the project
         var textures = {};
         _.each(Egg.gameDir.glob("**/*.{png,jpg,gif}"), (f) => {
-            if (_.reduce(loadSkip, (memo, ignore:string) => memo || f.path.indexOf(ignore) === 0, false)) return;
-            textures[f.path] = f;
+            if (f instanceof Egg.File) {
+                if (_.reduce(loadSkip, (memo, ignore:string) => memo || f.path.indexOf(ignore) === 0, false)) return;
+                textures[(<Egg.File>f).relativePath(Egg.gameDir)] = f;
+            }
         });
 
         RPG.Menu.init();

@@ -34,11 +34,8 @@ module Egg {
         **/
 
         constructor(args) {
-            var params;
             if (typeof args === "string") {
-                params = (<File>Egg.gameDir.find(args)).read('json');
-            } else {
-                params = args;
+                args = Egg.gameDir.file(args).read('json');
             }
 
             if (!args.texture) throw new Error("Sprite must be instantiated with a 'texture'");
@@ -48,7 +45,7 @@ module Egg {
             args.frameSize = args.frameSize || {};
 
             if (typeof args.texture === 'string') {
-                args.texture = Egg.textures[args.texture];
+                args.texture = Egg.getTexture(args.texture);
             }
             this.texture = new PIXI.Texture(args.texture.innerTexture);
             this.innerSprite = new PIXI.Sprite(this.texture);
