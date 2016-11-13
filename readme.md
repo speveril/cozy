@@ -32,6 +32,7 @@ Just run the Egg shortcut (or .engine/egg.exe). This will open the launcher/proj
 This is stuff I intend to do, and/or am actively working on. I'm trying to keep this up to date with my commits.
 
 - Bugs/Unsorted
+    - If a project has a build.js/build.ts, run it after TS compilation
     - What is with the 2.5s delay on decoding audio?
     - In-game input config
     - Make browser NOT close the currently active game

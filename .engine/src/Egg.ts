@@ -59,15 +59,14 @@ module Egg {
             });
         }
 
+        // see
+        //    http://stackoverflow.com/a/26227660
+        //    https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html
         var userdataStem = process.env.APPDATA + '\\' || (process.platform == 'darwin' ? process.env.HOME + 'Library/Application Support/' : process.env.HOME + "/.");
-        console.log("Setting up dirs...", opts.enginePath, this.gameName, userdataStem + this.gameName);
 
         this.engineDir = new Egg.Directory(path.join(process.cwd(), opts.enginePath, "resources", "app"));
         this.gameDir = new Egg.Directory(path.join(process.cwd(), this.gameName));
         this.userdataDir = new Egg.Directory(userdataStem + this.gameName);
-        // see
-        //    http://stackoverflow.com/a/26227660
-        //    https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html
 
         this.textures = {};
         this.paused = true;
@@ -114,7 +113,7 @@ module Egg {
         var styles = [];
         _.each(this.config['css'], (path:string) => {
             _.each(this.gameDir.glob(path), (f:File) => {
-                Egg.addStyleSheet(f.path);
+                Egg.addStyleSheet(f);
             })
         });
 
@@ -231,8 +230,8 @@ module Egg {
                 resolve();
             }
 
-            _.each(assets, (path, name) => {
-                PIXI.loader.add(name, this.gameDir.file(path).path);
+            _.each(assets, (file:File, name:string) => {
+                PIXI.loader.add(name, file.path);
             });
 
             PIXI.loader.load((loader, resources) => {
@@ -245,11 +244,11 @@ module Egg {
         });
     }
 
-    export function addStyleSheet(path:string):void {
+    export function addStyleSheet(file:File):void {
         var el = document.createElement('link');
         el.rel = "stylesheet";
         el.type = "text/css";
-        el.href = this.gameDir.file(path).url;
+        el.href = file.url;
         document.head.appendChild(el);
     }
 

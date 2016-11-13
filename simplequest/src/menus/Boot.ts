@@ -8,7 +8,7 @@ module SimpleQuest {
                         <h1>Simple Quest</h1>
                         <ul class="selections">
                             <li class="new"  data-menu="newGame">New Game</li>
-                            <li class="load" data-menu="${RPG.SavedGame.count() < 1 ? 'loadGame' : '@disabled'}">Load Game</li>
+                            <li class="load" data-menu="${RPG.SavedGame.count() < 1 ? '@disabled' : 'loadGame'}">Load Game</li>
                             <li class="exit" data-menu="exit">Exit</li>
                         </ul>
                     `

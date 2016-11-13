@@ -66,7 +66,7 @@ module RPG {
         var textures = {};
         _.each(Egg.gameDir.glob("**/*.{png,jpg,gif}"), (f) => {
             if (_.reduce(loadSkip, (memo, ignore:string) => memo || f.path.indexOf(ignore) === 0, false)) return;
-            textures[f.path] = f.path;
+            textures[f.path] = f;
         });
 
         RPG.Menu.init();

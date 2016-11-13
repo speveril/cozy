@@ -7,24 +7,29 @@ module Egg {
 
         constructor(f:string) {
             if (!fs.existsSync(f)) throw new Error("Couldn't open path, " + f + ".");
-            this.root = f;
+            this.root = path.resolve(f);
         }
 
         get path():string {
             return this.root;
         }
 
-        read():Array<Directory|File> {
-            var children = []
-            _.each(fs.readdirSync(this.root), (f:string) => {
-                var stats = fs.statSync(f);
+        buildList(list:Array<string>):Array<Directory|File> {
+            var found = [];
+            _.each(list, (f:string) => {
+                var fullpath = path.join(this.root, f);
+                var stats = fs.statSync(fullpath);
                 if (stats.isDirectory()) {
-                    children.push(new Directory(f));
+                    found.push(new Directory(fullpath));
                 } else {
-                    children.push(new File(f));
+                    found.push(new File(fullpath));
                 }
             });
-            return children;
+            return found;
+        }
+
+        read():Array<Directory|File> {
+            return this.buildList(fs.readdirSync(this.root));
         }
 
         find(p:string):Directory|File {
@@ -37,21 +42,14 @@ module Egg {
             return new File(path.join(this.root, p));
         }
 
-        subdir(p:string):Directory {
+        subdir(p:string, createIfDoesNotExist?:boolean):Directory {
+            var fullpath = path.join(this.root, p);
+            if (createIfDoesNotExist && !fs.existsSync(fullpath)) fs.mkdirSync(fullpath);
             return new Directory(path.join(this.root, p));
         }
 
         glob(pattern:string, opts?:any):Array<Directory|File> {
-            var found = [];
-            _.each(window['glob'].sync(pattern, opts), (f:string) => {
-                var stats = fs.statSync(f);
-                if (stats.isDirectory()) {
-                    found.push(new Directory(f));
-                } else {
-                    found.push(new File(f));
-                }
-            });
-            return found;
+            return this.buildList(window['glob'].sync(pattern, opts));
         }
     }
 
@@ -60,12 +58,20 @@ module Egg {
 
         constructor(f:string) {
             if (!fs.existsSync(f)) throw new Error("Couldn't open path, " + f + ".");
-            this.filepath = f;
+            this.filepath = path.resolve(f);
         }
 
         get extension():string                  { return path.extname(this.filepath); }
         get path():string                       { return this.filepath; }
-        get url():string                        { return path.relative(Egg.engineDir.path, this.filepath); }
+        get url():string                        { return this.relativePath(Egg.engineDir); }
+
+        stat():any {
+            return fs.statSync(this.filepath);
+        }
+
+        relativePath(dir:Directory):string {
+            return path.relative(dir.path, this.path);
+        }
 
         read(format?:string) {
             switch(format) {
