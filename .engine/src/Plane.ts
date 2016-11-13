@@ -95,7 +95,7 @@ module Egg {
 
         addHTML(file) {
             var container = document.createElement('div');
-            container.innerHTML = Egg.File.read(Egg.File.projectFile(file));
+            container.innerHTML = Egg.gameDir.find(file).read();
             this.container.appendChild(container);
             return container;
         }

@@ -6,7 +6,7 @@ module Egg {
 
         constructor(fileName:string) {
             this.loadedPromise = new Promise(function(resolve, reject) {
-                Egg.File.readBinaryAsync(File.projectFile(fileName))
+                (<File>Egg.gameDir.file(fileName)).readAsync('binary')
                     .then(function(fileContents:ArrayBuffer) {
                         var decode = function() {
                             Audio.context.decodeAudioData(fileContents, function(decoded) {
@@ -55,7 +55,7 @@ module Egg {
                 var trackResolve = _.after(def.tracks.length - 1, resolve);
 
                 _.each(def.tracks, function(fileName:string):void {
-                    Egg.File.readBinaryAsync(File.projectFile(fileName))
+                    (<File>Egg.gameDir.file(fileName)).readAsync('binary')
                         .then(function(fileContents:ArrayBuffer) {
                             Audio.context.decodeAudioData(fileContents, function(decoded) {
                                 this.buffers[fileName] = decoded;

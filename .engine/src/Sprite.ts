@@ -34,8 +34,11 @@ module Egg {
         **/
 
         constructor(args) {
+            var params;
             if (typeof args === "string") {
-                args = JSON.parse(File.read(args));
+                params = (<File>Egg.gameDir.find(args)).read('json');
+            } else {
+                params = args;
             }
 
             if (!args.texture) throw new Error("Sprite must be instantiated with a 'texture'");

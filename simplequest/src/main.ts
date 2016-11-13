@@ -24,10 +24,10 @@ module SimpleQuest {
             battleSystemConfig: {
                 fightMusic:       'battle',
                 victoryMusic:     'victory',
-                monsters:         JSON.parse(Egg.File.read("src/monsters.json"))
+                monsters:         Egg.gameDir.file('src/monsters.json').read('json'),
             },
-            loadSkip:             [ "./src_image" ],
-            items:                JSON.parse(Egg.File.read("src/items.json")),
+            loadSkip:             [ "src_image/" ],
+            items:                Egg.gameDir.file('src/items.json').read('json'),
             sfx: {
                 'hit':            "audio/sfx/smash.wav",
                 'restore':        "audio/sfx/Healing Full.wav",
@@ -80,7 +80,9 @@ module SimpleQuest {
 
         Egg.pause();
 
-        RPG.characters['hero'] = new Characters.Hero();
+        RPG.characters = {
+            hero: new Characters.Hero()
+        };
         RPG.Party.add(RPG.characters['hero']);
 
         RPG.Party.inventory.add('tonic', 2);
@@ -96,6 +98,14 @@ module SimpleQuest {
         RPG.startMap(new Map_Town(), 10, 7);
 
         Egg.unpause();
+    }
+
+    export function loadGame() {
+
+    }
+
+    export function saveGame() {
+
     }
 }
 

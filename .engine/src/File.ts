@@ -2,7 +2,186 @@ var fs = require('fs');
 var path = require('path');
 
 module Egg {
+    export class Directory {
+        root:string;
+
+        constructor(f:string) {
+            if (!fs.existsSync(f)) throw new Error("Couldn't open path, " + f + ".");
+            this.root = f;
+        }
+
+        get path():string {
+            return this.root;
+        }
+
+        read():Array<Directory|File> {
+            var children = []
+            _.each(fs.readdirSync(this.root), (f:string) => {
+                var stats = fs.statSync(f);
+                if (stats.isDirectory()) {
+                    children.push(new Directory(f));
+                } else {
+                    children.push(new File(f));
+                }
+            });
+            return children;
+        }
+
+        find(p:string):Directory|File {
+            console.log("find >", p);
+            var stats = fs.statSync(path.join(this.root, p));
+            if (stats.isDirectory()) return new Directory(path.join(this.root, p));
+            return new File(path.join(this.root, p));
+        }
+
+        file(p:string):File {
+            console.log("file >", p);
+            return new File(path.join(this.root, p));
+        }
+
+        subdir(p:string):Directory {
+            console.log("subdir >", p);
+            return new Directory(path.join(this.root, p));
+        }
+
+        glob(pattern:string, opts?:any):Array<Directory|File> {
+            console.log("globbing in", this.path, "with", pattern);
+            var found = [];
+            console.log(window['glob'].sync(pattern, opts));
+            _.each(window['glob'].sync(pattern, opts), (f:string) => {
+                var stats = fs.statSync(f);
+                if (stats.isDirectory()) {
+                    found.push(new Directory(f));
+                } else {
+                    found.push(new File(f));
+                }
+            });
+            return found;
+        }
+    }
+
     export class File {
+        filepath:string;
+
+        constructor(f:string) {
+            if (!fs.existsSync(f)) throw new Error("Couldn't open path, " + f + ".");
+            this.filepath = f;
+        }
+
+        get extension():string                  { return path.extname(this.filepath); }
+        get path():string                       { return this.filepath; }
+        get url():string                        { return path.relative(Egg.engineDir.path, this.filepath); }
+
+        read(format?:string) {
+            switch(format) {
+                case 'json':
+                    return JSON.stringify(fs.readFileSync(this.filepath, { encoding: 'UTF-8'}));
+                default:
+                    return fs.readFileSync(this.filepath, { encoding: 'UTF-8'});
+            }
+        }
+
+        readAsync(format?:string):Promise<any> {
+            return new Promise((resolve, reject) => {
+                switch(format) {
+                    case 'json':
+                        fs.readFile(this.filepath, {}, (err, data) => { if (err) reject(err); else resolve(JSON.parse(data)); });
+                        break;
+                    case 'binary':
+                        fs.readFile(this.filepath, {}, (err, data) => { console.log("async binary load complete",this.filepath); if (err) reject(err); else resolve(data.buffer); });
+                        break;
+                    default:
+                        fs.readFile(this.filepath, { encoding: 'UTF-8' }, (err, data) => { if (err) reject(err); else resolve(data); });
+                        break;
+                }
+            });
+        }
+    }
+
+/*
+    export class Directory_ {
+        static appDataPath(appName?:string):string {
+            var identifier = appName || Egg.gameName;
+
+            // see
+            //    http://stackoverflow.com/a/26227660
+            //    https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html
+            var stem = process.env.APPDATA + '\\' || (process.platform == 'darwin' ? process.env.HOME + 'Library/Application Support/' : process.env.HOME + "/.");
+            return stem + identifier;
+        }
+
+        static read(f) { return fs.readdirSync(f); }
+        static exists(f) { return fs.existsSync(f); }
+        static ensureExists(path) {
+            if (!Directory.exists(path)) fs.mkdirSync(path);
+        }
+
+        static get(f:string):Directory {
+            return new Directory(f);
+        }
+        static makeAndGet(f:string):Directory {
+            if (!fs.existsSync(f)) fs.mkdirSync(f);
+            return Directory.get(f);
+        }
+
+        // ---
+
+        root:string;
+
+        constructor(f:string) {
+            if (!fs.existsSync(path)) throw new Error("Couldn't open path, " + f + ".");
+            this.root = f;
+        }
+
+        relativePath(f:string):string               { return path.join(this.root, f); }
+
+        read(f:string)                              { return fs.readdirSync(this.relativePath(f)); }
+        each(f:string, cb:any)                      { return _.each(this.read(f), cb); }
+        glob(f:string, opts?:any):Array<string>     { return window['glob'].sync(this.relativePath(f), opts); }
+
+        readFile(f:string):string                   { return fs.readFileSync(this.relativePath(f), { encoding: 'UTF-8'}); }
+        readBinary(f:string):ArrayBuffer            { return fs.readFileSync(this.relativePath(f)).buffer; }
+        readHTML(f):string                          { return this.fixHTML(this.readFile(f)); }
+        readJSON(f):any                             { return JSON.parse(this.readFile(f)); }
+
+        writeFile(f:string, contents:string):void   { return fs.writeFileSync(this.relativePath(f), contents); }
+        // TODO writeBinary(f:string, contents:ArrayBuffer):void {}
+        //  etc.
+
+        stat(f:string)                              { return fs.statSync(this.relativePath(f)); }
+        extension(f):string                         { return path.extname(this.relativePath(f)); }
+        filename(f):string                          { return path.basename(this.relativePath(f)); }
+        pathname(f):string                          { return path.dirname(this.relativePath(f)); }
+
+        fixHTML(html):string {
+            var el = document.createElement('div');
+            el.innerHTML = html;
+
+            var fixElements = [].concat(
+                Array.prototype.slice.call(el.getElementsByTagName('link')),
+                Array.prototype.slice.call(el.getElementsByTagName('img')),
+                Array.prototype.slice.call(el.getElementsByTagName('a'))
+            );
+
+            _.each(fixElements, function(element) {
+                if (element.getAttribute('src')) {
+                    element.src = path + "/" + element.getAttribute('src');
+                }
+                if (element.getAttribute('href')) {
+                    element.href = path + "/" + element.getAttribute('href');
+                }
+            }.bind(this));
+
+            return el.innerHTML;
+        }
+
+        static urlPath(f):string {
+            var basePath = File.relative(File.eggPath, File.gamePath);
+            return path.join(basePath, f).replace(/\\/g, "/");
+        }
+    }
+
+    export class File_ {
         static eggPath:string;
         static gamePath:string;
 
@@ -74,21 +253,17 @@ module Egg {
             var basePath = File.relative(File.eggPath, File.gamePath);
             return path.join(basePath, f).replace(/\\/g, "/");
         }
-
+*/
         /**
         Set up the File handler's two necessary internal paths. Called as part of setup; there
         shouldn't be any reason to call it again.
         @param eggPath      Path containing the Egg executable.
         @param gamePath     Path containing the game's config.json.
         **/
-        static setPaths(eggPath, gamePath) {
-            File.eggPath = eggPath;
-            File.gamePath = gamePath;
-            console.log("Paths:", eggPath, gamePath);
-        }
-    }
-
-    export class Directory {
-        static read(f) { return fs.readdirSync(f); }
-    }
+        // static setPaths(eggPath, gamePath) {
+        //     File.eggPath = eggPath;
+        //     File.gamePath = gamePath;
+        //     console.log("Paths:", eggPath, gamePath);
+        // }
+    // }
 }

@@ -32,11 +32,14 @@ module Egg {
     export var planes:Plane[];
     export var browserWindow:GitHubElectron.BrowserWindow;
     export var scene:Entity;
+    export var gameName:string; // TODO unnecessary?
+    export var engineDir:Egg.Directory;
+    export var gameDir:Egg.Directory;
+    export var userdataDir:Egg.Directory;
 
-    var gameName: string;
     var enginePath:string;
-    var paused: Boolean;
-    var sizeMultiplier: Number;
+    var paused:Boolean;
+    var sizeMultiplier:Number;
     var lastTime: number;
 
     export function setup(opts:any) {
@@ -56,20 +59,22 @@ module Egg {
             });
         }
 
-        this.enginePath = opts.enginePath;
+        var userdataStem = process.env.APPDATA + '\\' || (process.platform == 'darwin' ? process.env.HOME + 'Library/Application Support/' : process.env.HOME + "/.");
+        console.log("Setting up dirs...", opts.enginePath, this.gameName, userdataStem + this.gameName);
+
+        this.engineDir = new Egg.Directory(path.join(process.cwd(), opts.enginePath, "resources", "app"));
+        this.gameDir = new Egg.Directory(path.join(process.cwd(), this.gameName));
+        this.userdataDir = new Egg.Directory(userdataStem + this.gameName);
+        // see
+        //    http://stackoverflow.com/a/26227660
+        //    https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html
 
         this.textures = {};
         this.paused = true;
     }
 
     export function run() {
-        var eggPath = path.join(process.cwd(), this.enginePath, "resources", "app"); // TODO this isn't necessarily true
-        var gamePath = path.join(process.cwd(), this.gameName);
-
-        console.log("paths->", eggPath, gamePath);
-
-        process.chdir(gamePath);
-        File.setPaths(eggPath, gamePath);
+        process.chdir(this.gameDir.path);
         Egg.Input.init(this.config['controls']);
 
         // set up window
@@ -107,16 +112,16 @@ module Egg {
         }
 
         var styles = [];
-        _.each(this.config['css'], function(path:string) {
-            _.each(File.glob(path), (f:string) => {
-                Egg.addStyleSheet(f);
+        _.each(this.config['css'], (path:string) => {
+            _.each(this.gameDir.glob(path), (f:File) => {
+                Egg.addStyleSheet(f.path);
             })
         });
 
         document['fonts'].ready
             .then(function() {
                 // start the game
-                this.Game = require(File.projectFile("main.js"));
+                this.Game = require(this.gameDir.file("main.js").path);
                 this.Game.start();
 
                 this.onResize();
@@ -226,8 +231,8 @@ module Egg {
                 resolve();
             }
 
-            _.each(assets, function(path, name) {
-                PIXI.loader.add(name, File.projectFile(path));
+            _.each(assets, (path, name) => {
+                PIXI.loader.add(name, this.gameDir.file(path).path);
             });
 
             PIXI.loader.load((loader, resources) => {
@@ -244,8 +249,32 @@ module Egg {
         var el = document.createElement('link');
         el.rel = "stylesheet";
         el.type = "text/css";
-        el.href = File.urlPath(path);
+        el.href = this.gameDir.file(path).url;
         document.head.appendChild(el);
+    }
+
+    /**
+    Convert some HTML to use URLs appropriate for displaying. Since the engine considers the engine root directory
+    to be the root of the HTML document, any references to images, stylesheets, etc must be rewritten.
+    @param html     The html to fix.
+    **/
+
+    export function fixHTML(html:string):string {
+        var el = document.createElement('div');
+        el.innerHTML = html;
+
+        var fixElements = [].concat(
+            Array.prototype.slice.call(el.getElementsByTagName('link')),
+            Array.prototype.slice.call(el.getElementsByTagName('img')),
+            Array.prototype.slice.call(el.getElementsByTagName('a'))
+        );
+
+        _.each(fixElements, (element) => {
+            if (element.getAttribute('src')) element.src = this.gameDir.file(element.getAttribute('src')).url;
+            if (element.getAttribute('href')) element.href = this.gameDir.file(element.getAttribute('href')).url;
+        });
+
+        return el.innerHTML;
     }
 
     /**

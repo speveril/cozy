@@ -3,7 +3,6 @@
 module SimpleQuest {
     export module Menu {
         export class Main_ItemsSubmenu extends RPG.Menu {
-            // firstFixScroll:boolean = false;
             itemList:Array<Array<RPG.Item>>;
 
             constructor() {

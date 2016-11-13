@@ -2,9 +2,9 @@ module RPG.Map.Loader {
     export function TMX(path:string, existingMap?:Map) {
         var map = existingMap || new RPG.Map.Map({});
 
-        var parser = new DOMParser();
+        var parser = new DOMParser(); // TODO XML type for File.read()?
         var dataDirectory = path.substr(0, path.lastIndexOf('/') + 1);
-        var data = parser.parseFromString(Egg.File.read(path), "text/xml");
+        var data = parser.parseFromString(Egg.gameDir.file(path).read(), "text/xml");
         var mapEl = data.getElementsByTagName('map')[0];
 
         map.filename = path;

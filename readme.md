@@ -32,6 +32,7 @@ Just run the Egg shortcut (or .engine/egg.exe). This will open the launcher/proj
 This is stuff I intend to do, and/or am actively working on. I'm trying to keep this up to date with my commits.
 
 - Bugs/Unsorted
+    - What is with the 2.5s delay on decoding audio?
     - In-game input config
     - Make browser NOT close the currently active game
         - or just revisit the whole browser interface in general
@@ -55,7 +56,7 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
 - Exporting
     - Make glob.js easier to recreate
     - Ship minified pixi/underscore
-    - Split config.json into necessary game setup vs. player configuration (bake non-player config into game setup on export, leave config as only player config)
+    - Split config.json into necessary game setup vs. player configuration (bake non-player config into game setup on export, leave config as only player config, or play config should be in userdataDir)
 - Testing
     - Investigate this
 - Release stuff

@@ -7,12 +7,13 @@ module SimpleQuest {
                     html: `
                         <h1>Simple Quest</h1>
                         <ul class="selections">
-                            <li data-menu="newGame">New Game</li>
-                            <li data-menu="@disabled">Load Game</li>
-                            <li data-menu="exit">Exit</li>
+                            <li class="new"  data-menu="newGame">New Game</li>
+                            <li class="load" data-menu="${RPG.SavedGame.count() < 1 ? 'loadGame' : '@disabled'}">Load Game</li>
+                            <li class="exit" data-menu="exit">Exit</li>
                         </ul>
                     `
                 });
+
                 this.setupSelections(this.find('.selections'));
             }
 
@@ -27,7 +28,9 @@ module SimpleQuest {
                 }.bind(this))
             }
 
-            loadGame() { console.log("not yet"); }
+            loadGame() {
+                console.log("k");
+            }
 
             exit() {
                 SimpleQuest.Menu.quitGame();

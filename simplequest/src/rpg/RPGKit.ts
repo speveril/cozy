@@ -9,6 +9,7 @@
 ///<reference path="MapMode.ts"/>
 ///<reference path="Menu.ts"/>
 ///<reference path="Party.ts"/>
+///<reference path="SavedGame.ts"/>
 ///<reference path="Scene.ts"/>
 ///<reference path="Textbox.ts"/>
 
@@ -39,6 +40,8 @@ module RPG {
     export var music:{ [name:string]: Egg.Music }  = {};
 
     export function start(config:any):Promise<any> {
+        console.log("RPGKit start");
+
         RPG.renderPlane = <Egg.RenderPlane>Egg.addPlane(Egg.RenderPlane, { className: 'render-plane' });
         RPG.uiPlane = <Egg.UiPlane>Egg.addPlane(Egg.UiPlane, { className: 'overlay' });
 
@@ -56,32 +59,37 @@ module RPG {
 
         RPG.Item.load(config.items || {});
 
-        var textures = {};
-        var fonts = [];
-        var directories = ['.'];
         cameraHalf = new PIXI.Point(Egg.config['width'] / 2, Egg.config['height'] / 2);
         cameraFocus = new PIXI.Point(0, 0);
 
+        var textures = {};
+        // var directories = ['.'];
+
         // scrape all images under the project
-        while (directories.length > 0) {
-            var dir = directories.shift();
-            var files = Egg.Directory.read(dir);
-            _.each(files, function(f) {
-                var fullPath = dir + "/" + f;
-                if (_.contains(loadSkip, fullPath)) return;
-
-                var stats = Egg.File.stat(fullPath);
-                if (stats.isDirectory()) {
-                    directories.push(fullPath);
-                    return;
-                }
-
-                var ext = Egg.File.extension(fullPath).toLowerCase();
-                if (ext == '.png' || ext == '.jpg' || ext == '.gif') {
-                    textures[fullPath.substr(2)] = fullPath;
-                }
-            }.bind(this));
-        }
+        _.each(Egg.gameDir.glob("**/*.{png,jpg,gif}"), (f) => {
+            if (_.reduce(loadSkip, (memo, ignore:string) => memo || f.path.indexOf(ignore) === 0, false)) return;
+            textures[f.path] = f.path;
+        });
+        console.log(":: ", textures);
+        // while (directories.length > 0) {
+        //     var dir = directories.shift();
+        //     var files = Egg.Directory.read(dir);
+        //     _.each(files, function(f) {
+        //         var fullPath = dir + "/" + f;
+        //         if (_.contains(loadSkip, fullPath)) return;
+        //
+        //         var stats = Egg.File.stat(fullPath);
+        //         if (stats.isDirectory()) {
+        //             directories.push(fullPath);
+        //             return;
+        //         }
+        //
+        //         var ext = Egg.File.extension(fullPath).toLowerCase();
+        //         if (ext == '.png' || ext == '.jpg' || ext == '.gif') {
+        //             textures[fullPath.substr(2)] = fullPath;
+        //         }
+        //     }.bind(this));
+        // }
 
         RPG.Menu.init();
 
