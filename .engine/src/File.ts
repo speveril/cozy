@@ -57,7 +57,7 @@ module Egg {
         filepath:string;
 
         constructor(f:string) {
-            if (!fs.existsSync(f)) throw new Error("Couldn't open path, " + f + ".");
+            // if (!fs.existsSync(f)) throw new Error("Couldn't open path, " + f + ".");
             this.filepath = path.resolve(f);
         }
 
@@ -73,10 +73,12 @@ module Egg {
             return path.relative(dir.path, this.path);
         }
 
-        read(format?:string) {
+        read(format?:string):any {
             switch(format) {
                 case 'json':
                     return JSON.stringify(fs.readFileSync(this.filepath, { encoding: 'UTF-8'}));
+                case 'binary':
+                    return fs.readFileSync(this.filepath).buffer;
                 default:
                     return fs.readFileSync(this.filepath, { encoding: 'UTF-8'});
             }
@@ -96,6 +98,17 @@ module Egg {
                         break;
                 }
             });
+        }
+
+        write(data:any, format?:string) {
+            switch(format) {
+                case 'json':
+                    return fs.writeFileSync(this.filepath, JSON.stringify(data), { encoding: 'UTF-8' });
+                case 'binary':
+                    return fs.writeFileSync(this.filepath, data);
+                default:
+                    return fs.writeFileSync(this.filepath, data, { encoding: 'UTF-8' });
+            }
         }
     }
 

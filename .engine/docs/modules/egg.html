@@ -140,6 +140,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="egg.html#addplane" class="tsd-kind-icon">add<wbr>Plane</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="egg.html#addstylesheet" class="tsd-kind-icon">add<wbr>Style<wbr>Sheet</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="egg.html#capturescreenshot" class="tsd-kind-icon">capture<wbr>Screenshot</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="egg.html#fixhtml" class="tsd-kind-icon">fixHTML</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="egg.html#frame" class="tsd-kind-icon">frame</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="egg.html#getcurrentzoom" class="tsd-kind-icon">get<wbr>Current<wbr>Zoom</a></li>
@@ -148,6 +149,7 @@
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="egg.html#pause" class="tsd-kind-icon">pause</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="egg.html#quit" class="tsd-kind-icon">quit</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="egg.html#run" class="tsd-kind-icon">run</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="egg.html#saveimagetofile" class="tsd-kind-icon">save<wbr>Image<wbr>ToFile</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="egg.html#setscene" class="tsd-kind-icon">set<wbr>Scene</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="egg.html#settitle" class="tsd-kind-icon">set<wbr>Title</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="egg.html#setup" class="tsd-kind-icon">setup</a></li>
@@ -247,7 +249,7 @@
 					<div class="tsd-signature tsd-kind-icon">lastID<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;-1</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Egg.ts:291</li>
+							<li>Defined in Egg.ts:315</li>
 						</ul>
 					</aside>
 				</section>
@@ -379,6 +381,32 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="capturescreenshot" class="tsd-anchor"></a>
+					<h3>capture<wbr>Screenshot</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">capture<wbr>Screenshot<span class="tsd-signature-symbol">(</span>width<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, height<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in Egg.ts:255</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>width: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>height: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
 					<a name="fixhtml" class="tsd-anchor"></a>
 					<h3>fixHTML</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
@@ -388,7 +416,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Egg.ts:261</li>
+									<li>Defined in Egg.ts:285</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -542,6 +570,29 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="saveimagetofile" class="tsd-anchor"></a>
+					<h3>save<wbr>Image<wbr>ToFile</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">save<wbr>Image<wbr>ToFile<span class="tsd-signature-symbol">(</span>image<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/egg.file.html" class="tsd-signature-type">File</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in Egg.ts:272</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>image: <span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../classes/egg.file.html" class="tsd-signature-type">File</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
 					<a name="setscene" class="tsd-anchor"></a>
 					<h3>set<wbr>Scene</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
@@ -620,7 +671,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Egg.ts:292</li>
+									<li>Defined in Egg.ts:316</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -654,7 +705,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Egg.ts:285</li>
+									<li>Defined in Egg.ts:309</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -821,6 +872,9 @@
 						<a href="egg.html#addstylesheet" class="tsd-kind-icon">add<wbr>Style<wbr>Sheet</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="egg.html#capturescreenshot" class="tsd-kind-icon">capture<wbr>Screenshot</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
 						<a href="egg.html#fixhtml" class="tsd-kind-icon">fixHTML</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
@@ -843,6 +897,9 @@
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
 						<a href="egg.html#run" class="tsd-kind-icon">run</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="egg.html#saveimagetofile" class="tsd-kind-icon">save<wbr>Image<wbr>ToFile</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
 						<a href="egg.html#setscene" class="tsd-kind-icon">set<wbr>Scene</a>

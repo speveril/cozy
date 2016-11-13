@@ -66,7 +66,7 @@ module Egg {
 
         this.engineDir = new Egg.Directory(path.join(process.cwd(), opts.enginePath, "resources", "app"));
         this.gameDir = new Egg.Directory(path.join(process.cwd(), this.gameName));
-        this.userdataDir = new Egg.Directory(userdataStem + this.gameName);
+        this.userdataDir = new Egg.Directory(userdataStem).subdir(this.gameName, true);
 
         this.textures = {};
         this.paused = true;
@@ -250,6 +250,30 @@ module Egg {
         el.type = "text/css";
         el.href = file.url;
         document.head.appendChild(el);
+    }
+
+    export function captureScreenshot(width:number, height:number):Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.browserWindow.capturePage((image) => {
+                var canvas = document.createElement('canvas');
+                canvas.setAttribute('width', width.toString());
+                canvas.setAttribute('height', height.toString());
+                var context = canvas.getContext('2d');
+                context['imageSmoothingEnabled'] = true;
+
+                console.log(image);
+                context.drawImage(image, 0, 0, image.getSize().width, image.getSize().height, 0, 0, width, height);
+
+                resolve(context.getImageData(0, 0, width, height));
+            });
+        });
+    }
+
+    export function saveImageToFile(image:any):File {
+        var filename = `${(new Date()).toISOString().replace(/[-T:Z\.]/g,"")}.png`;
+        var file = Egg.userdataDir.subdir('screenshots', true).file(filename);
+        file.write(image.toPng(), 'binary');
+        return file;
     }
 
     /**
