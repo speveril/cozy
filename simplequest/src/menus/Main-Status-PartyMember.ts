@@ -68,7 +68,7 @@ module SimpleQuest {
 
                 var portraitField = this.find('img.portrait');
                 if (this.member.character['portrait']) {
-                    portraitField.setAttribute('src', Egg.gameDir.file("ui/" + this.member.character['portrait']).url);
+                    portraitField.setAttribute('src', Egg.gameDir.file(this.member.character['portrait']).url);
                 }
             }
         }

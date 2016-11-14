@@ -57,13 +57,13 @@ module Egg {
         filepath:string;
 
         constructor(f:string) {
-            // if (!fs.existsSync(f)) throw new Error("Couldn't open path, " + f + ".");
             this.filepath = path.resolve(f);
         }
 
         get extension():string                  { return path.extname(this.filepath); }
         get path():string                       { return this.filepath; }
         get url():string                        { return this.relativePath(Egg.engineDir).replace(/\\/g, "/"); }
+        get exists():boolean                    { return fs.existsSync(this.filepath); }
 
         stat():any {
             return fs.statSync(this.filepath);

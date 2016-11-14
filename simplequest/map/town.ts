@@ -10,7 +10,7 @@ module SimpleQuest {
         }
 
         exit_town(args) {
-            RPG.startMap(new Map_Overworld, 14, 12);
+            RPG.startMap('overworld', 14, 12);
         }
 
         goto_debug(args) {
@@ -18,7 +18,7 @@ module SimpleQuest {
                 var choices = ["Yeah okay.", "What, no"];
                 var choice = yield* this.waitChoice("Go to the debug map?", choices);
                 if (choice === choices[0]) {
-                    RPG.startMap(new Map_Debug(), 9, 7);
+                    RPG.startMap('debug', 9, 7);
                 }
             }.bind(this));
         }

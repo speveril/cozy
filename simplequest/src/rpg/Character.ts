@@ -11,6 +11,8 @@ module RPG {
         maxhp:number;
         sprite:string;
         treasure:any;
+        portrait:string;
+        title:string;
 
         private baseAttribute:{ [key:string]:number } = {};
         private effectiveAttribute:{ [key:string]:number } = {};
@@ -25,6 +27,15 @@ module RPG {
             this.treasure = _.clone(args.treasure);
             this.xp       = args.xp || 0;
             this.levels   = args.levels;
+            this.portrait = args.portrait || '';
+            this.title    = args.title || '';
+
+            if (args.equipped) {
+                _.each(args.equipped, (itemKey:string, slotKey:string) => {
+                    var itm = RPG.Party.inventory.has(itemKey);
+                    this.equipItem(itm, slotKey);
+                });
+            }
 
             if (this.treasure && this.treasure['money']) {
                 this.treasure['money'] = new RPG.Dice(this.treasure['money']);

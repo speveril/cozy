@@ -14,7 +14,7 @@ module SimpleQuest {
         }
 
         exit_overworld(args) {
-            RPG.startMap(new Map_Overworld(), 16, 2);
+            RPG.startMap('overworld', 16, 2);
         }
 
         trigger_go_away_sign(args) {
@@ -44,7 +44,7 @@ module SimpleQuest {
         }
 
         exit_boss(args) {
-            RPG.startMap(new Map_Boss(), 11, 13);
+            RPG.startMap('boss', 11, 13);
         }
     }
 }

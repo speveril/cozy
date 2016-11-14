@@ -17,23 +17,23 @@ module SimpleQuest {
         }
 
         goto_village(args) {
-            RPG.startMap(new Map_Town(), 8, 1);
+            RPG.startMap('town', 8, 1);
         }
 
         goto_forest(args) {
-            RPG.startMap(new Map_Forest(), 7, 43);
+            RPG.startMap('forest', 7, 43);
         }
 
         goto_castle(args) {
-            RPG.startMap(new Map_Castle(), 25, 43);
+            RPG.startMap('castle', 25, 43);
         }
 
         goto_cave(args) {
-            RPG.startMap(new Map_Cave(), 9, 43);
+            RPG.startMap('cave', 9, 43);
         }
 
         goto_boss(args) {
-            RPG.startMap(new Map_Boss(), 11, 13);
+            RPG.startMap('boss', 11, 13);
         }
 
         read_sign(args) {
@@ -47,7 +47,7 @@ module SimpleQuest {
         }
 
         trigger_restartmap(args) {
-            RPG.startMap(new Map_Debug(), 9, 7);
+            RPG.startMap('debug', 9, 7);
         }
 
         trigger_switchdoor(args) {

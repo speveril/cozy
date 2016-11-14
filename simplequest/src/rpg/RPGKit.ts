@@ -23,6 +23,8 @@ module RPG {
     export var controlStack:Array<ControlMode>     = [];
     export var player:Entity                       = null;
     export var map:Map.Map                         = null;
+    export var mapkey:string                       = '';
+    export var mapLookup:{ [name:string]: Array<any> } = {};
 
     export var cameraSpeed:number                  = 750;
     export var cameraHalf:PIXI.Point;
@@ -55,6 +57,7 @@ module RPG {
         }
         this.loadSkip             = config.loadSkip || [];
         this.mainMenuClass        = config.mainMenuClass || null;
+        this.mapLookup            = config.maps || {};
 
         RPG.Item.load(config.items || {});
 
@@ -158,7 +161,7 @@ module RPG {
         }
     }
 
-    export function startMap(newMap:Map.Map|string, x?:number, y?:number, layerName?:string, options?:any) {
+    export function startMap(newMap:string, x?:number, y?:number, layerName?:string, options?:any) {
         var opts = options || {};
         Scene.do(function*() {
             if (!opts.noFadeOut)
@@ -168,12 +171,11 @@ module RPG {
                 map.finish();
             }
 
-            if (typeof newMap === 'string') {
-                map = Map.Loader.load(newMap);
-            } else {
-                map = newMap;
-            }
+            mapkey = newMap;
 
+            var mapArgs = mapLookup[mapkey];
+            var mapType = mapArgs.shift();
+            map = new mapType(mapArgs);
             map.open();
 
             player.place((x + 0.5) * map.tileSize.x, (y + 0.5) * map.tileSize.y, map.getLayerByName(layerName || '#spritelayer'));

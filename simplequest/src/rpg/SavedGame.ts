@@ -38,10 +38,14 @@ module RPG {
             var file = SavedGame.directory.file("save-" + (SavedGame.count() + 1) + ".json");
             var data = {
                 name:           "Saved Game",
-                map:            RPG.map.filename,
+                map:            RPG.mapkey,
                 mapPersistent:  RPG.Map.Map.persistent,
                 party:          RPG.Party.serialize(),
-                characters:     _.mapObject(RPG.characters, (ch) => ch.serialize())
+                characters:     _.mapObject(RPG.characters, (ch) => ch.serialize()),
+                playerLocation: {
+                    x: (RPG.player.position.x / RPG.map.tileSize.x) | 0,
+                    y: (RPG.player.position.y / RPG.map.tileSize.y) | 0
+                }
             };
             console.log(data);
             return new SavedGame(file, data);
@@ -58,7 +62,16 @@ module RPG {
         }
 
         applyToState() {
+            // TODO there may be implications here of not doing deep-clones
 
+            _.each(this.data.party.inventory, (k:string) => RPG.Party.inventory.add(k));
+            RPG.characters = _.mapObject(this.data.characters, (def) => new Character(def));
+            _.each(this.data.party.members, (k:string) => RPG.Party.add(RPG.characters[k]));
+
+            RPG.player = RPG.Party.members[0].makeEntity();
+
+            if (this.data.mapPersistent) RPG.Map.Map.persistent = this.data.mapPersistent;
+            RPG.startMap(this.data.map, this.data.playerLocation.x, this.data.playerLocation.y);
         }
 
         writeToDisk() {

@@ -24,19 +24,23 @@ module SimpleQuest {
                 this.setupSelections(this.find('.selections'));
             }
 
-            newGame() {
+            beginGame(gameData:RPG.SavedGame) {
                 this.pause();
                 RPG.Scene.do(function*() {
                     RPG.sfx['menu_newgame'].play();
                     yield* RPG.Scene.waitFadeTo("black", 1.0);
                     RPG.Menu.pop();
                     this.remove();
-                    SimpleQuest.newGame();
+                    SimpleQuest.startGame(gameData);
                 }.bind(this))
             }
 
+            newGame() {
+                this.beginGame(SimpleQuest.newGameData());
+            }
+
             loadlast() {
-                SimpleQuest.loadGame(RPG.SavedGame.getList()[0]);
+                this.beginGame(RPG.SavedGame.getList()[0]);
             }
 
             loadGame() {
