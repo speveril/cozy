@@ -17,7 +17,7 @@ module SimpleQuest {
         }
 
         goto_village(args) {
-            RPG.startMap('town', 8, 1);
+            RPG.startMap('village', 8, 1);
         }
 
         goto_forest(args) {

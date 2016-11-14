@@ -173,7 +173,7 @@ module RPG {
 
             mapkey = newMap;
 
-            var mapArgs = mapLookup[mapkey];
+            var mapArgs = _.clone(mapLookup[mapkey]);
             var mapType = mapArgs.shift();
             map = new mapType(mapArgs);
             map.open();
