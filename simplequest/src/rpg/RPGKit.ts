@@ -19,7 +19,6 @@ module RPG {
     export enum ControlMode { None, Scene, Menu, Map, Battle };
 
     export var characters:{[key:string]:Character} = {};
-    export var items:{[key:string]:Item}           = {};
     export var loadSkip:Array<string>              = [];
     export var controlStack:Array<ControlMode>     = [];
     export var player:Entity                       = null;

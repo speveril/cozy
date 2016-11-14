@@ -63,7 +63,7 @@ module Egg {
 
         get extension():string                  { return path.extname(this.filepath); }
         get path():string                       { return this.filepath; }
-        get url():string                        { return this.relativePath(Egg.engineDir); }
+        get url():string                        { return this.relativePath(Egg.engineDir).replace(/\\/g, "/"); }
 
         stat():any {
             return fs.statSync(this.filepath);
