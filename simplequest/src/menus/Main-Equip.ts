@@ -84,7 +84,7 @@ module SimpleQuest {
             setSelection(index:number) {
                 super.setSelection(index);
 
-                if (this.selections.length < 1) return;
+                if (this.selections.length < 1) return false;
                 var listItem = this.selections[this.selectionIndex];
                 var selectedSlot = listItem.getAttribute('data-value');
                 if (this.character.equipped[selectedSlot]) {
@@ -93,6 +93,7 @@ module SimpleQuest {
                     this.find('.description-row').innerHTML = '';
                 }
                 this.itemMenu.setFilter((item) => item.equipSlot === selectedSlot);
+                return true;
             }
 
             clearPreview() {

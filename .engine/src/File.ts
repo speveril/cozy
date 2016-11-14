@@ -61,9 +61,10 @@ module Egg {
         }
 
         get extension():string                  { return path.extname(this.filepath); }
+        get name():string                       { return path.basename(this.filepath); }
         get path():string                       { return this.filepath; }
-        get url():string                        { return this.relativePath(Egg.engineDir).replace(/\\/g, "/"); }
         get exists():boolean                    { return fs.existsSync(this.filepath); }
+        get url():string                        { return this.relativePath(Egg.engineDir).replace(/\\/g, "/"); }
 
         stat():any {
             return fs.statSync(this.filepath);

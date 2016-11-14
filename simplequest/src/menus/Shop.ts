@@ -114,8 +114,9 @@ module SimpleQuest {
             setSelection(index:number) {
                 super.setSelection(index);
 
-                if (this.selections.length < 1) return;
+                if (this.selections.length < 1) return false;
                 this.parent.updateDescription(this.products[this.selectionIndex].description);
+                return true;
             }
 
             choose(el) {
@@ -175,8 +176,9 @@ module SimpleQuest {
             setSelection(index:number) {
                 super.setSelection(index);
 
-                if (this.selections.length < 1) return;
+                if (this.selections.length < 1) return false;
                 this.parent.updateDescription(this.items[this.selectionIndex][0].description);
+                return true;
             }
 
             pause() {
@@ -291,6 +293,7 @@ module SimpleQuest {
                 var d = delta;
                 if (direction === RPG.MenuDirection.VERTICAL) d *= -10;
                 this.count = Math.max(0, Math.min(this.owned - this.equipped, this.count + d));
+                return true;
             }
 
             stop() {

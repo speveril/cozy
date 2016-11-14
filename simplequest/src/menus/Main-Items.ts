@@ -56,8 +56,9 @@ module SimpleQuest {
             setSelection(index:number) {
                 super.setSelection(index);
 
-                if (this.selections.length < 1) return;
+                if (this.selections.length < 1) return false;
                 this.find('.description-row').innerHTML = this.itemList[this.selectionIndex][0].description;
+                return true;
             }
 
             choose(element:HTMLElement) {

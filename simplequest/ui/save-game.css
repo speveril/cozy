@@ -1,0 +1,53 @@
+.saved-game {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+}
+
+.save.menu.selections.active > li.saved-game.active::before {
+    left: 51px;
+    top: 3px;
+    z-index: 1;
+}
+
+.saved-game .confirmation {
+    display: none;
+    padding-left: 16px;
+}
+
+.saved-game.confirm .confirmation {
+    display: block;
+}
+.saved-game.confirm .game-time {
+    display: none;
+}
+
+.saved-game input {
+    font-family: inherit;
+    text-shadow: inherit;
+    color: inherit;
+    font-size: inherit;
+    border: none;
+    background: none;
+    outline: none;
+}
+
+.saved-game .image, .saved-game .info {
+    padding: 1px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.saved-game .image, .info > * {
+    flex: 0 0 auto !important;
+}
+
+.saved-game .info {
+    padding-left: 3px;
+}
+
+.saved-game img {
+    width: 64px;
+    height: 36px;
+}

@@ -293,8 +293,12 @@ module Egg {
         );
 
         _.each(fixElements, (element) => {
-            if (element.getAttribute('src')) element.src = this.gameDir.file(element.getAttribute('src')).url;
-            if (element.getAttribute('href')) element.href = this.gameDir.file(element.getAttribute('href')).url;
+            _.each(['src','href'], (attr) => {
+                if (element.getAttribute(attr)) {
+                    if (element.getAttribute(attr).indexOf('data') === 0) return;
+                    element[attr] = this.gameDir.file(element.getAttribute(attr)).url;
+                }
+            });
         });
 
         return el.innerHTML;

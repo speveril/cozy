@@ -59,6 +59,7 @@ module RPG.Map {
         tilesets:Array<MapTileset>        = [];
         cameraBoxes:Array<PIXI.Rectangle> = [];
         layerLookup:Dict<MapLayer>        = {};
+        displayName:string                = '';
 
         constructor(args) {
             if (typeof args === 'string') {

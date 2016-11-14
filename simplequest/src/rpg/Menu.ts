@@ -15,35 +15,31 @@ module RPG {
             Egg.Input.on('menu.down cancel.down', (info) => {
                 if (!Menu.currentMenu || !Menu.currentMenu.cancelable || Menu.currentMenu.paused) return;
                 Egg.Input.debounce(info.button);
-                Menu.pop();
+                Menu.currentMenu.cancel();
             }, this);
 
             Egg.Input.on('up.down vertical-.down', (info) => {
                 if (!Menu.currentMenu || Menu.currentMenu.paused || Menu.currentMenu.direction === MenuDirection.HORIZONTAL) return;
                 Egg.Input.debounce(info.button, 0.2);
-                Menu.currentMenu.moveSelection(-1, MenuDirection.VERTICAL);
-                if (Menu.blip) Menu.blip.play();
+                if (Menu.currentMenu.moveSelection(-1, MenuDirection.VERTICAL) && Menu.blip) Menu.blip.play();
             }, this);
 
             Egg.Input.on('down.down vertical+.down', (info) => {
                 if (!Menu.currentMenu || Menu.currentMenu.paused || Menu.currentMenu.direction === MenuDirection.HORIZONTAL) return;
                 Egg.Input.debounce(info.button, 0.2);
-                Menu.currentMenu.moveSelection(+1, MenuDirection.VERTICAL);
-                if (Menu.blip) Menu.blip.play();
+                if (Menu.currentMenu.moveSelection(+1, MenuDirection.VERTICAL) && Menu.blip) Menu.blip.play();
             }, this);
 
             Egg.Input.on('left.down horizontal-.down', (info) => {
                 if (!Menu.currentMenu || Menu.currentMenu.paused || Menu.currentMenu.direction === MenuDirection.VERTICAL) return;
                 Egg.Input.debounce(info.button, 0.2);
-                Menu.currentMenu.moveSelection(-1, MenuDirection.HORIZONTAL);
-                if (Menu.blip) Menu.blip.play();
+                if (Menu.currentMenu.moveSelection(-1, MenuDirection.HORIZONTAL) && Menu.blip) Menu.blip.play();
             }, this);
 
             Egg.Input.on('right.down horizontal+.down', (info) => {
                 if (!Menu.currentMenu || Menu.currentMenu.paused || Menu.currentMenu.direction === MenuDirection.VERTICAL) return;
                 Egg.Input.debounce(info.button, 0.2);
-                Menu.currentMenu.moveSelection(+1, MenuDirection.HORIZONTAL);
-                if (Menu.blip) Menu.blip.play();
+                if (Menu.currentMenu.moveSelection(+1, MenuDirection.HORIZONTAL) && Menu.blip) Menu.blip.play();
             }, this);
 
             Egg.Input.on('confirm.down', (info) => {
@@ -204,10 +200,15 @@ module RPG {
             this.selectionIndex = Egg.wrap(index, this.selections.length);
             this.selections[this.selectionIndex].classList.add('active');
             this.fixScroll();
+            return true;
         }
 
         moveSelection(delta:number, direction:MenuDirection) {
-            this.setSelection(this.selectionIndex + delta);
+            return this.setSelection(this.selectionIndex + delta);
+        }
+
+        cancel() {
+            Menu.pop();
         }
 
         fixScroll() {

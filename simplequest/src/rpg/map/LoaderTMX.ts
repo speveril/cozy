@@ -11,8 +11,23 @@ module RPG.Map.Loader {
         map.size = new PIXI.Point(parseInt(mapEl.getAttribute('width'), 10), parseInt(mapEl.getAttribute('height'), 10));
         map.tileSize = new PIXI.Point(parseInt(mapEl.getAttribute('tilewidth'), 10), parseInt(mapEl.getAttribute('tileheight'), 10));
 
+        // TODO ??
+        var propertyMap = {
+            'Name': 'displayName'
+        };
+
         _.each(mapEl.children, (el:HTMLElement) => {
             switch (el.tagName) {
+                case "properties":
+                    _.each(el.children, (propEl:HTMLElement) => {
+                        var key = propEl.getAttribute('name');
+                        if (propertyMap[key]) {
+                            map[propertyMap[key]] = propEl.getAttribute('value');
+                        } else {
+                            console.log(`Ignoring unrecognized property called '${key}'.`);
+                        }
+                    });
+                    break;
                 case "tileset":
                     if (el.getAttribute('source')) {
                         var ts = TSX(dataDirectory, el.getAttribute('source'));

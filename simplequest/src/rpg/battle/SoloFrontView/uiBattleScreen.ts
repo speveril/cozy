@@ -136,8 +136,9 @@ module RPG.BattleSystem.SoloFrontView {
         setSelection(index:number) {
             super.setSelection(index);
 
-            if (this.selections.length < 1) return;
+            if (this.selections.length < 1) return false;
             this.find('.description').innerHTML = this.itemList[this.selectionIndex][0].description;
+            return true;
         }
     }
 

@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="23" height="17" tilewidth="16" tileheight="16" nextobjectid="39">
+ <properties>
+  <property name="Name" value="The Dragon's Lair"/>
+ </properties>
  <tileset firstgid="1" source="tileset.tsx"/>
  <layer name="background" width="23" height="17">
   <data encoding="csv">

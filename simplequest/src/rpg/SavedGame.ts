@@ -33,22 +33,35 @@ module RPG {
             return new SavedGame(f, f.read('json'));
         }
 
-        static fromState() {
-            // TODO better way of naming the files; what if one gets deleted?
-            var file = SavedGame.directory.file("save-" + (SavedGame.count() + 1) + ".json");
-            var data = {
-                name:           "Saved Game",
-                map:            RPG.mapkey,
-                mapPersistent:  RPG.Map.Map.persistent,
-                party:          RPG.Party.serialize(),
-                characters:     _.mapObject(RPG.characters, (ch) => ch.serialize()),
-                playerLocation: {
-                    x: (RPG.player.position.x / RPG.map.tileSize.x) | 0,
-                    y: (RPG.player.position.y / RPG.map.tileSize.y) | 0
-                }
-            };
-            console.log(data);
-            return new SavedGame(file, data);
+        static fromState():Promise<SavedGame> {
+            RPG.uiPlane.hide();
+            return Egg.captureScreenshot(75)
+                .then((image) => {
+                    RPG.uiPlane.show();
+
+                    var next = 1;
+                    _.each(SavedGame.directory.read(), (f:Egg.File) => {
+                        var m = f.name.match(/save-(\d+)/);
+                        var i = parseInt(m[1], 10);
+                        if (i >= next) next = i + 1;
+                    });
+
+                    var file = SavedGame.directory.file("save-" + next.toString() + ".json");
+                    var data = {
+                        image:          image.toDataURL(),
+                        name:           RPG.map.displayName,
+                        map:            RPG.mapkey,
+                        mapPersistent:  RPG.Map.Map.persistent,
+                        party:          RPG.Party.serialize(),
+                        characters:     _.mapObject(RPG.characters, (ch) => ch.serialize()),
+                        playerLocation: {
+                            x: (RPG.player.position.x / RPG.map.tileSize.x) | 0,
+                            y: (RPG.player.position.y / RPG.map.tileSize.y) | 0
+                        }
+                    };
+                    console.log(data);
+                    return new SavedGame(file, data);
+                });
         }
 
         // ---

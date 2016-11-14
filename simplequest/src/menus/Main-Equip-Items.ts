@@ -69,10 +69,12 @@ module SimpleQuest {
             setSelection(index:number) {
                 super.setSelection(index);
 
-                if (this.selections.length < 1) return;
+                if (this.selections.length < 1) return false;
                 if (!this.firstFixScroll) this.fixScroll();
 
                 (<Main_EquipSubmenu>this.parent).updatePreview(this.items[this.selectionIndex][0]);
+                
+                return true;
             }
 
             fixScroll() {

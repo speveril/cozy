@@ -6,10 +6,18 @@ module SimpleQuest {
                     tag: 'li',
                     className: 'saved-game',
                     html: `
-                        <span class="game-name">${args.name}</span>
-                        <span class="game-time">${args.time}</span>
+                        <div class="image">
+                            <img src="${args.img || ''}">
+                        </div>
+                        <div class="info">
+                            <div class="game-name">${args.name}</div>
+                            <div class="game-time">${args.time}</div>
+                            <div class="confirmation">Save over this slot?</div>
+                        </div>
                     `
                 });
+                this.element.setAttribute('data-id', args.id);
+                this.element.setAttribute('data-menu', 'choose');
             }
         }
     }
