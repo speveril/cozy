@@ -74,10 +74,10 @@ module RPG {
             }
             var m = Menu.menuStack.pop();
             m.stop();
+            RPG.controlStack.pop();
             if (Menu.menuStack.length > 0) {
                 Menu.currentMenu.unpause();
             }
-            RPG.controlStack.pop();
             return m;
         }
 

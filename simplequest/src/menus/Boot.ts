@@ -1,23 +1,27 @@
+///<reference path="Boot-Load.ts"/>
+
 module SimpleQuest {
     export module Menu {
         export class Boot extends RPG.Menu {
+            submenu:any;
+
             constructor() {
                 super({
                     className: 'menu boot-menu',
                     html: `
                         <h1>Simple Quest</h1>
-                        <ul class="selections">
-                            <li class="loadlast"  data-menu="loadlast">Continue</li>
+                        <ul class="main selections">
+                            <li class="loadLast"  data-menu="loadLast">Continue</li>
                             <li class="new"       data-menu="newGame">New Game</li>
                             <li class="load"      data-menu="loadGame">Load Game</li>
-                            <li class="options"   data-menu="options">Options</li>
+                            <li class="options"   data-menu="@disabled">Options</li>
                             <li class="exit"      data-menu="exit">Exit</li>
                         </ul>
                     `
                 });
 
                 if (RPG.SavedGame.count() < 1) {
-                    this.find('li.loadlast').remove();
+                    this.find('li.loadLast').remove();
                     this.find('li.load').remove();
                 }
 
@@ -35,20 +39,30 @@ module SimpleQuest {
                 }.bind(this))
             }
 
+            unpause() {
+                super.unpause();
+                console.log(this.submenu, this.submenu.choice);
+                if (this.submenu && this.submenu.choice) {
+                    this.beginGame(this.submenu.choice);
+                }
+            }
+
             newGame() {
                 this.beginGame(SimpleQuest.newGameData());
             }
 
-            loadlast() {
+            loadLast() {
                 this.beginGame(RPG.SavedGame.getList()[0]);
             }
 
             loadGame() {
-                console.log("TODO open load game menu");
+                this.submenu = new Boot_Load();
+                this.addChild(this.submenu);
+                RPG.Menu.push(this.submenu);
             }
 
             options() {
-                console.log("TODO open options menu");
+                alert("TODO open options menu");
             }
 
             exit() {

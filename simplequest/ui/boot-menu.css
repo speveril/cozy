@@ -16,7 +16,7 @@
     text-align: center;
 }
 
-.boot-menu .selections {
+.boot-menu .main.selections {
     position: absolute;
     bottom: 15px;
     left: 50%;
@@ -24,6 +24,15 @@
     transform: translateX(-50%);
 }
 
-.boot-menu .selections li:first-child {
+.boot-menu .main.selections li:first-child {
     margin-bottom: 0.25em;
+}
+
+.boot-load-menu {
+    width: 255px;
+    height: 210;
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
 }

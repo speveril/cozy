@@ -7,7 +7,10 @@ module SimpleQuest {
                 super({
                     cancelable: true,
                     className: 'menu panel save selections',
-                    tag: 'ul'
+                    tag: 'ul',
+                    html: `
+                        <li>Load Game</li>
+                    `
                 });
 
                 var savedGames = RPG.SavedGame.getList();

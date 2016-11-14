@@ -4,6 +4,7 @@
     flex-direction: row;
 }
 
+.boot-load-menu.menu.selections.active > li.saved-game.active::before,
 .save.menu.selections.active > li.saved-game.active::before {
     left: 51px;
     top: 3px;
