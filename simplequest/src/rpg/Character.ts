@@ -45,7 +45,7 @@ module RPG {
 
                 switch (k) {
                     case "equipped":
-                        data[data_k] = _.map(this[k], (vv:Item, kk:string) => vv.key);
+                        data[data_k] = _.mapObject(this[k], (vv:Item, kk:string) => vv.key);
                         break;
                     default:
                         data[data_k] = this[k];

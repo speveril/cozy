@@ -41,7 +41,7 @@ module RPG {
                 map:            RPG.map.filename,
                 mapPersistent:  RPG.Map.Map.persistent,
                 party:          RPG.Party.serialize(),
-                characters:     _.map(RPG.characters, (ch) => ch.serialize())
+                characters:     _.mapObject(RPG.characters, (ch) => ch.serialize())
             };
             console.log(data);
             return new SavedGame(file, data);
