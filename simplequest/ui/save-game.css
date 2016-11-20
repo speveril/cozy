@@ -4,8 +4,8 @@
     flex-direction: row;
 }
 
-.boot-load-menu.menu.selections.active > li.saved-game.active::before,
-.save.menu.selections.active > li.saved-game.active::before {
+.boot-load-menu.menu ul.selections.active > li.saved-game.active::before,
+.save.menu.selections.active ul > li.saved-game.active::before {
     left: 51px;
     top: 3px;
     z-index: 1;
@@ -40,7 +40,8 @@
     justify-content: center;
 }
 
-.saved-game .image, .info > * {
+.saved-game .image,
+.saved-game.info > * {
     flex: 0 0 auto !important;
 }
 

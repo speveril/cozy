@@ -78,7 +78,7 @@ module SimpleQuest {
 
             constructor(args) {
                 super({
-                    className: 'menu buy-menu items selections',
+                    className: 'menu buy-menu items selections scrollable',
                     cancelable: true
                 });
 
@@ -144,7 +144,7 @@ module SimpleQuest {
 
             constructor(args) {
                 super({
-                    className: 'menu sell-menu items selections',
+                    className: 'menu sell-menu items selections scrollable',
                     cancelable: true
                 });
 

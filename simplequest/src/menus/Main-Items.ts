@@ -8,11 +8,11 @@ module SimpleQuest {
             constructor() {
                 super({
                     cancelable: true,
-                    className: 'panel items-submenu layout-column',
+                    className: 'panel items-submenu layout-column scrollable',
                     html: `
                         <section class="layout-row title-row">Items</section>
                         <section class="layout-row items-row">
-                            <ul class="items selections">
+                            <ul class="items selections scrollable">
                             </ul>
                         </section>
                         <section class="layout-row description-row"></section>

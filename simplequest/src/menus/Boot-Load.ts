@@ -8,8 +8,12 @@ module SimpleQuest {
             constructor() {
                 super({
                     cancelable: true,
-                    className: 'menu boot-load-menu box selections',
-                    tag: 'ul'
+                    className: 'boot-load-menu box',
+                    tag: 'div',
+                    html: `
+                        <div class="title">Load Game</div>
+                        <ul class="selections scrollable"></ul>
+                    `
                 });
 
                 this.choice = null;
@@ -22,10 +26,10 @@ module SimpleQuest {
                         img: game.data.image,
                         name: game.data.name,
                         time: game.file.stat().mtime.toLocaleString('en-GB')
-                    }));
+                    }), 'ul.selections');
                 });
 
-                this.setupSelections(this.element);
+                this.setupSelections(this.find('ul.selections'));
             }
 
             stop() {

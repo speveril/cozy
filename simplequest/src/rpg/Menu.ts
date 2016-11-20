@@ -94,9 +94,11 @@ module RPG {
                 Menu.currentMenu.update(dt);
         }
 
-        cancelable:boolean             = false;
-        done:boolean                   = false;
-        paused:boolean                 = true;
+        cancelable:boolean                          = false;
+        done:boolean                                = false;
+        paused:boolean                              = true;
+        scrollable:boolean                          = false;
+        indicators:{[key:string]: HTMLElement}      = {};
         direction:MenuDirection;
         selectionIndex:number;
         selectionContainer:HTMLElement;
@@ -110,23 +112,38 @@ module RPG {
 
             this.direction = args.direction === undefined ? MenuDirection.VERTICAL : args.direction;
             this.cancelable = !!args.cancelable;
-            this.element.classList.add("rpg-menu"); // TODO should actually be 'menu'
+            this.element.classList.add("menu"); // TODO should actually be 'menu'
             this.setupSelections(args.selectionContainer ? this.find(args.selectionContainer) : this.element);
         }
 
         setupSelections(parent) {
             if (this.selectionContainer) {
                 this.selectionContainer.classList.remove('active');
+                _.each(this.indicators, (e) => this.selectionContainer.removeChild(e));
+                this.indicators = {};
             }
 
             this.selectionContainer = parent;
             this.selectionContainer.classList.add('active');
+
             this.selections = [];
             _.each(parent.getElementsByTagName('*'), (element:HTMLElement) => {
                 if (element.getAttribute('data-menu')) {
                     this.selections.push(element);
                 }
             });
+
+            if (this.selectionContainer.classList.contains('scrollable')) {
+                this.scrollable = true;
+
+                this.indicators['up'] = document.createElement('div');
+                this.indicators['up'].className = 'indicator up';
+                this.selectionContainer.appendChild(this.indicators['up']);
+
+                this.indicators['down'] = document.createElement('div');
+                this.indicators['down'].className = 'indicator down';
+                this.selectionContainer.appendChild(this.indicators['down']);
+            }
 
             if (!this.paused) {
                 if (this.selectionIndex >= this.selections.length) {
@@ -212,6 +229,8 @@ module RPG {
         }
 
         fixScroll() {
+            if (!this.scrollable) return;
+
             var selected = this.selections[this.selectionIndex];
             var selectedRects = selected.getClientRects();
             var containerRects = this.selectionContainer.getClientRects();
@@ -238,6 +257,9 @@ module RPG {
                 st > 0 ? this.selectionContainer.classList.add('can-scroll-up') : this.selectionContainer.classList.remove('can-scroll-up');
                 st < sh - ch ? this.selectionContainer.classList.add('can-scroll-down') : this.selectionContainer.classList.remove('can-scroll-down');
             }
+
+            this.indicators['up'].style.top = this.selectionContainer.scrollTop + 'px';
+            this.indicators['down'].style.bottom = -this.selectionContainer.scrollTop + 'px';
         }
     }
 }

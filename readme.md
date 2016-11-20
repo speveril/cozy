@@ -33,7 +33,9 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
 
 - Bugs/Unsorted
     - Manager should only run one game at a time, or at least only one copy of a particular game
-    - Need to provide a better way for menus to return a value to a previous menu -- promises?
+    - Menus needs some polish
+        - Menu should have .menu and .active; selection container should have .selections, and it should just get added by setupSelections
+        - Need to provide a better way for menus to return a value to a previous menu -- promises?
     - If a project has a build.js/build.ts, run it after TS compilation
     - What is with the 2.5s delay on decoding audio?
     - In-game input config

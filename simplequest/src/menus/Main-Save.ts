@@ -6,10 +6,11 @@ module SimpleQuest {
             constructor() {
                 super({
                     cancelable: true,
-                    className: 'menu panel save selections',
-                    tag: 'ul',
+                    className: 'panel save scrollable',
+                    tag: 'div',
                     html: `
-                        <li>Load Game</li>
+                        <div class="title">Load Game</div>
+                        <ul class="menu selections"></ul>
                     `
                 });
 
@@ -28,10 +29,10 @@ module SimpleQuest {
                         img: game.data.image,
                         name: game.data.name,
                         time: game.file.stat().mtime.toLocaleString('en-GB')
-                    }));
+                    }), 'ul.selections');
                 });
 
-                this.setupSelections(this.element);
+                this.setupSelections(this.find('ul.selections'));
             }
 
             stop() {

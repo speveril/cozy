@@ -68,10 +68,10 @@ meter {
   margin: auto;
 }
 
-.inner-text .rpg-menu {
+.inner-text .menu {
     position: relative;
 }
-.inner-text .rpg-menu li {
+.inner-text .menu li {
     margin-left: 16px;
 }
 
@@ -86,7 +86,7 @@ meter {
     margin: -1px 1px -3px 1px;
 }
 
-.rpg-menu {
+.menu {
     position: absolute;
     top: 0;
     left: 0;

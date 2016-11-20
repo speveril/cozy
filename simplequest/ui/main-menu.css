@@ -165,35 +165,6 @@
     position: relative;
 }
 
-.main-menu .main-area .panel .items::before {
-    position: absolute;
-    display: block;
-    top: -2px;
-    right: -2px;
-    width: 14px;
-    height: 14px;
-    content: "";
-    background-image: url("ui_icons.png");
-    background-position: -28px 0px;
-}
-.main-menu .main-area .panel .items.can-scroll-up::before {
-    background-position: 0px 0px;
-}
-.main-menu .main-area .panel .items::after {
-    position: absolute;
-    display: block;
-    bottom: -2px;
-    right: -2px;
-    width: 14px;
-    height: 14px;
-    content: "";
-    background-image: url("ui_icons.png");
-    background-position: -42px 0px;
-}
-.main-menu .main-area .panel .items.can-scroll-down::after {
-    background-position: -14px 0px;
-}
-
 .main-menu .main-area .panel .description-row {
     flex-grow: 0;
     flex-shrink: 0;
@@ -217,4 +188,12 @@
 
 .main-menu .main-area .panel .items .item .name {
     flex-grow: 1;
+}
+
+.main-menu .main-area .panel.save {
+    overflow: hidden;
+}
+
+.main-menu .main-area .panel.save ul {
+    position: relative;
 }

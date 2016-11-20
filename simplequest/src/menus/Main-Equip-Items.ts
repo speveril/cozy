@@ -12,7 +12,7 @@ module SimpleQuest {
             constructor(args:any) {
                 super({
                     cancelable: true,
-                    className: 'items-submenu layout-column',
+                    className: 'scrollable items-submenu layout-column',
                     html: `
                         <ul class="items selections"></ul>
                     `
@@ -73,7 +73,7 @@ module SimpleQuest {
                 if (!this.firstFixScroll) this.fixScroll();
 
                 (<Main_EquipSubmenu>this.parent).updatePreview(this.items[this.selectionIndex][0]);
-                
+
                 return true;
             }
 
