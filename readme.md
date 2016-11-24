@@ -42,7 +42,6 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
     - Make browser NOT close the currently active game
         - or just revisit the whole browser interface in general
 - RPGKit
-    - Add saving/loading games
     - It'd be nice if the persistent stuff in map was easier to use in general
     - Add scripted movement for entities on the map
     - Add scripted movement for entities in Scenes
