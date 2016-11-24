@@ -50,7 +50,7 @@
     width: 14px;
     height: 14px;
     right: 0px;
-    margin: -2px;
+    /* do not use a negative margin here; this will cause issues with the scrolling code */
 }
 
 .menu.selections.scrollable .indicator.up,

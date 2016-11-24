@@ -6,11 +6,11 @@ module SimpleQuest {
             constructor() {
                 super({
                     cancelable: true,
-                    className: 'panel save scrollable',
+                    className: 'panel save',
                     tag: 'div',
                     html: `
-                        <div class="title">Load Game</div>
-                        <ul class="menu selections"></ul>
+                        <div class="title">Save Game</div>
+                        <ul class="selections scrollable"></ul>
                     `
                 });
 

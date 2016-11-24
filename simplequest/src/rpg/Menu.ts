@@ -143,6 +143,8 @@ module RPG {
                 this.indicators['down'] = document.createElement('div');
                 this.indicators['down'].className = 'indicator down';
                 this.selectionContainer.appendChild(this.indicators['down']);
+            } else {
+                this.scrollable = false;
             }
 
             if (!this.paused) {
@@ -232,31 +234,28 @@ module RPG {
             if (!this.scrollable) return;
 
             var selected = this.selections[this.selectionIndex];
-            var selectedRects = selected.getClientRects();
-            var containerRects = this.selectionContainer.getClientRects();
+            var container = this.selectionContainer;
 
-            if (selectedRects.length === 0 || containerRects.length === 0) return;
+            if (!selected || !container) return;
 
-            var adjustedHeight = selectedRects[0].height / Egg.getCurrentZoom();
-            var threshold = selectedRects[0].height * 3;
-            var dtop = ((selectedRects[0].top - containerRects[0].top - threshold) / Egg.getCurrentZoom());
-            var dbot = ((containerRects[0].bottom - threshold - selectedRects[0].bottom) / Egg.getCurrentZoom());
+            var st = container.scrollTop;
+            var threshold = (container.clientHeight / 3) || 0;
 
-            if (dtop < 0) {
-                this.selectionContainer.scrollTop += Math.ceil(dtop / adjustedHeight) * adjustedHeight;
+            var selectedTop = selected.offsetTop;
+            var selectedHeight = selected.clientHeight;
+            var selectedBottom = selectedTop + selected.clientHeight;
+
+            if (selectedTop < st + threshold) st = selectedTop - threshold;
+            if (selectedBottom > st + container.clientHeight - threshold) st = selectedBottom - container.clientHeight + threshold;
+
+            st = Math.min(container.scrollHeight - container.clientHeight, Math.max(0, st));
+
+            if (selected.clientHeight < container.scrollHeight) {
+                st > 0 ? container.classList.add('can-scroll-up') : container.classList.remove('can-scroll-up');
+                st < container.scrollHeight - selected.clientHeight ? container.classList.add('can-scroll-down') : container.classList.remove('can-scroll-down');
             }
-            if (dbot < 0) {
-                this.selectionContainer.scrollTop -=  Math.ceil(dbot / adjustedHeight) * adjustedHeight;
-            }
 
-            var st = this.selectionContainer.scrollTop;
-            var sh = this.selectionContainer.scrollHeight;
-            var ch = this.selectionContainer.clientHeight;
-
-            if (ch < sh) {
-                st > 0 ? this.selectionContainer.classList.add('can-scroll-up') : this.selectionContainer.classList.remove('can-scroll-up');
-                st < sh - ch ? this.selectionContainer.classList.add('can-scroll-down') : this.selectionContainer.classList.remove('can-scroll-down');
-            }
+            this.selectionContainer.scrollTop = st;
 
             this.indicators['up'].style.top = this.selectionContainer.scrollTop + 'px';
             this.indicators['down'].style.bottom = -this.selectionContainer.scrollTop + 'px';
