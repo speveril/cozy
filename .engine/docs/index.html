@@ -85,6 +85,12 @@
 				<p>This is stuff I intend to do, and/or am actively working on. I&#39;m trying to keep this up to date with my commits.</p>
 				<ul>
 					<li>Bugs/Unsorted<ul>
+							<li>Manager should only run one game at a time, or at least only one copy of a particular game</li>
+							<li>Menus needs some polish<ul>
+									<li>Menu should have .menu and .active; selection container should have .selections, and it should just get added by setupSelections</li>
+									<li>Need to provide a better way for menus to return a value to a previous menu -- promises?</li>
+								</ul>
+							</li>
 							<li>If a project has a build.js/build.ts, run it after TS compilation</li>
 							<li>What is with the 2.5s delay on decoding audio?</li>
 							<li>In-game input config</li>
@@ -95,7 +101,6 @@
 						</ul>
 					</li>
 					<li>RPGKit<ul>
-							<li>Add saving/loading games</li>
 							<li>It&#39;d be nice if the persistent stuff in map was easier to use in general</li>
 							<li>Add scripted movement for entities on the map</li>
 							<li>Add scripted movement for entities in Scenes</li>

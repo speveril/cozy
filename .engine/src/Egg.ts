@@ -236,7 +236,7 @@ module Egg {
 
             PIXI.loader.load((loader, resources) => {
                 _.each(resources, (resource) => {
-                    this.textures[resource['name'].replace("\\", "/")] = new Texture(resource['texture']);
+                    this.textures[resource['name'].replace(/\\/g, "/")] = new Texture(resource['texture']);
                 });
                 this.textures = _.extend(this.textures, textures);
                 resolve();
@@ -245,7 +245,7 @@ module Egg {
     }
 
     export function getTexture(f) {
-        return Egg.textures[f.replace("\\", "/")];
+        return Egg.textures[f.replace(/\\/g, "/")];
     }
 
     export function addStyleSheet(file:File):void {
