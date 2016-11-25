@@ -32,21 +32,29 @@ Just run the Egg shortcut (or .engine/egg.exe). This will open the launcher/proj
 This is stuff I intend to do, and/or am actively working on. I'm trying to keep this up to date with my commits.
 
 - Bugs/Unsorted
+    - userconfig.json in userdatadir
+        - Defaults in project config.json
+        - In-game input config
     - Manager should only run one game at a time, or at least only one copy of a particular game
-    - Menus needs some polish
+    - Menus need some polish
         - Menu should have .menu and .active; selection container should have .selections, and it should just get added by setupSelections
         - Need to provide a better way for menus to return a value to a previous menu -- promises?
-    - If a project has a build.js/build.ts, run it after TS compilation
     - What is with the 2.5s delay on decoding audio?
-    - In-game input config
-    - Make browser NOT close the currently active game
-        - or just revisit the whole browser interface in general
 - RPGKit
-    - It'd be nice if the persistent stuff in map was easier to use in general
     - Add scripted movement for entities on the map
     - Add scripted movement for entities in Scenes
+- Exporting
+    - Make glob.js easier to recreate
+    - Ship minified pixi/underscore
+    - Split config.json into necessary game setup vs. player configuration (bake non-player config into game setup on export, leave config as only player config, or play config should be in userdataDir)
+- === SIMPLEQUEST RELEASE ===
+- Bugs/Unsorted
+    - Make browser NOT close the currently active game
+        - or just revisit the whole browser interface in general
+    - If a project has a build.js/build.ts, run it after TS compilation
+- RPGKit
     - Can I just slurp in all of the map .ts files automatically instead of having to reference each one?
-    - More choice options - support scrolling
+    - It'd be nice if the persistent stuff in map was easier to use in general
 - Data Editor
     - Manager .json files; top level is an object with a ".schemas" key plus "tables" of typed objects
 - Reconcile File stuff
@@ -57,10 +65,6 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
 - config.json should be able to define an expected version, Egg should be smart enough to do the right thing
     - I think this means "shipping" compiled .js blobs of previous versions along with the engine, and having the player select the right one
     - This is irrelevant for exported games; they'll be packaged with the version they were used to create it
-- Exporting
-    - Make glob.js easier to recreate
-    - Ship minified pixi/underscore
-    - Split config.json into necessary game setup vs. player configuration (bake non-player config into game setup on export, leave config as only player config, or play config should be in userdataDir)
 - Testing
     - Investigate this
 - Release stuff

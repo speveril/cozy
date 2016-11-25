@@ -239,21 +239,30 @@ module RPG {
             if (!selected || !container) return;
 
             var st = container.scrollTop;
-            var threshold = (container.clientHeight / 3) || 0;
 
             var selectedTop = selected.offsetTop;
             var selectedHeight = selected.clientHeight;
-            var selectedBottom = selectedTop + selected.clientHeight;
+            var selectedBottom = selectedTop + selectedHeight;
 
-            if (selectedTop < st + threshold) st = selectedTop - threshold;
-            if (selectedBottom > st + container.clientHeight - threshold) st = selectedBottom - container.clientHeight + threshold;
+            var containerHeight = container.clientHeight;
+            var scrollHeight = container.scrollHeight;
+            var threshold = (containerHeight / 3) || 0;
 
-            st = Math.min(container.scrollHeight - container.clientHeight, Math.max(0, st));
-
-            if (selected.clientHeight < container.scrollHeight) {
-                st > 0 ? container.classList.add('can-scroll-up') : container.classList.remove('can-scroll-up');
-                st < container.scrollHeight - selected.clientHeight ? container.classList.add('can-scroll-down') : container.classList.remove('can-scroll-down');
+            if (selectedTop < st + threshold) {
+                st = selectedTop - threshold;
+                if (selectedBottom > st + containerHeight - threshold) {
+                    st = selectedTop + selectedHeight / 2 - containerHeight / 2;
+                }
+            } else if (selectedBottom > st + containerHeight - threshold) {
+                st = selectedBottom - containerHeight + threshold;
+                if (selectedTop < st + threshold) {
+                    st = selectedTop + selectedHeight / 2 - containerHeight / 2;
+                }
             }
+
+            st = Math.min(scrollHeight - containerHeight, Math.max(0, st));
+            st > 0 ? container.classList.add('can-scroll-up') : container.classList.remove('can-scroll-up');
+            st < scrollHeight - containerHeight ? container.classList.add('can-scroll-down') : container.classList.remove('can-scroll-down');
 
             this.selectionContainer.scrollTop = st;
 

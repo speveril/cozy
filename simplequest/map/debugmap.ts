@@ -78,9 +78,12 @@ module SimpleQuest {
 
         music_check(args) {
             RPG.Scene.do(function*() {
-                yield* this.waitTextbox(null, [
-                    `<center>Now playing:\n${this.musicKey}</center>`
-                ]);
+                var choices = ["Change track...", "Leave it"];
+                var choice = yield* this.waitChoice(`Playing '${this.musicKey}'.`, choices);
+                if (choice === choices[0]) {
+                    this.musicKey = yield* this.waitChoice("Select track...", _.keys(RPG.music));
+                    RPG.music[this.musicKey].start();
+                }
             }.bind(this));
         }
 

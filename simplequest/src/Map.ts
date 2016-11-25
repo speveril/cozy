@@ -216,7 +216,7 @@ module SimpleQuest {
             // TODO support more than two choices by scrolling
             var choicesHTML = _.reduce(choices, (str, ch, index) => str + `<li data-menu="choose" data-index="${index}">${ch}</li>`, '');
             var m = new RPG.Menu({
-                className: '__ch menu selections',
+                className: '__ch inline-choice menu selections scrollable',
                 tagName: 'ul',
                 html: choicesHTML
             });

@@ -7,3 +7,7 @@
     color: #DAD45E;
     text-transform: uppercase;
 }
+
+.inline-choice {
+    max-height: 28px;
+}
