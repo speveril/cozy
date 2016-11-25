@@ -191,9 +191,20 @@
 }
 
 .main-menu .main-area .panel.save {
-    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
-.main-menu .main-area .panel.save ul {
+.main-menu .main-area .panel.save .title {
+    flex: 0 0 20px;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-menu .main-area .panel.save .selections {
+    flex: 1 0;
     position: relative;
+    overflow: hidden;
 }

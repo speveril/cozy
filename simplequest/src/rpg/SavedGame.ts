@@ -35,7 +35,7 @@ module RPG {
 
         static fromState():Promise<SavedGame> {
             RPG.uiPlane.hide();
-            return Egg.captureScreenshot(75)
+            return Egg.captureScreenshot(64)
                 .then((image) => {
                     RPG.uiPlane.show();
 

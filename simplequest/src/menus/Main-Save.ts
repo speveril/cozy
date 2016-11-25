@@ -21,7 +21,7 @@ module SimpleQuest {
                     img: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7', // transparent 1 pixel gif
                     name: 'New Saved Game',
                     time: '-'
-                }))
+                }), 'ul.selections');
 
                 _.each(savedGames, (game:RPG.SavedGame) => {
                     this.addChild(new SavedGameComponent({

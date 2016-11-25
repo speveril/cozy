@@ -5,7 +5,7 @@
 }
 
 .boot-load-menu.menu ul.selections.active > li.saved-game.active::before,
-.save.menu.selections.active ul > li.saved-game.active::before {
+.save.menu ul.selections.active > li.saved-game.active::before {
     left: 51px;
     top: 3px;
     z-index: 1;
