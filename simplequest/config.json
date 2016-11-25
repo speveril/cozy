@@ -12,7 +12,7 @@
             "src_image.*"
         ]
     },
-
+    "userdata": "Simple Quest",
 
     "fullscreen": false,
     "volume": {

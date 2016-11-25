@@ -43,7 +43,7 @@ module Egg {
     var lastTime: number;
 
     export function setup(opts:any) {
-        console.log("Creating Egg Object");
+        console.log("Creating Egg Object...", opts);
 
         this.config = opts;
         this.debug = !!opts.debug;
@@ -66,7 +66,12 @@ module Egg {
 
         this.engineDir = new Egg.Directory(path.join(process.cwd(), opts.enginePath, "resources", "app"));
         this.gameDir = new Egg.Directory(path.join(process.cwd(), this.gameName));
-        this.userdataDir = new Egg.Directory(userdataStem).subdir(this.gameName, true);
+
+        if (!this.config.userdata) {
+            this.config.userdata = this.gameName;
+            console.warn("No 'userdata' key found in config. This will be a problem when you export -- be sure to set it to something.");
+        }
+        this.userdataDir = new Egg.Directory(userdataStem).subdir(this.config.userdata, true);
 
         this.textures = {};
         this.paused = true;

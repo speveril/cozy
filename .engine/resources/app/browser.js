@@ -544,11 +544,11 @@ var Browser = {
             var files = [
                 'Egg.js', 'game.css', 'game.html',
                 Path.join('lib','glob.js'),
-                Path.join('lib','pixi.js'),
-                Path.join('lib','underscore.js')
+                Path.join('lib','pixi.min.js'),
+                Path.join('lib','underscore.min.js')
             ];
 
-            files.forEach((f) => cp(Path.join(appPath, f), Path.join(outAppPath, f)));
+            files.forEach((f) => cp(Path.join(appPath, f), Path.join(outAppPath, f.replace(".min.", "."))));
 
             cp(Path.join(appPath, 'x_launch.js'), Path.join(outAppPath, 'launch.js'));
             cp(Path.join(appPath, 'x_package.json'), Path.join(outAppPath, 'package.json'));

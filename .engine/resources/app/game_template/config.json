@@ -1,5 +1,6 @@
 {
     "title": "$GAMENAME$",
+    "userdata": "$GAMENAME$",
     "width": 640,
     "height": 480,
     "fullscreen": false

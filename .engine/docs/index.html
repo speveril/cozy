@@ -85,27 +85,39 @@
 				<p>This is stuff I intend to do, and/or am actively working on. I&#39;m trying to keep this up to date with my commits.</p>
 				<ul>
 					<li>Bugs/Unsorted<ul>
+							<li>userconfig.json in userdatadir<ul>
+									<li>Defaults in project config.json</li>
+									<li>In-game input config</li>
+								</ul>
+							</li>
 							<li>Manager should only run one game at a time, or at least only one copy of a particular game</li>
-							<li>Menus needs some polish<ul>
+							<li>Menus need some polish<ul>
 									<li>Menu should have .menu and .active; selection container should have .selections, and it should just get added by setupSelections</li>
 									<li>Need to provide a better way for menus to return a value to a previous menu -- promises?</li>
 								</ul>
 							</li>
-							<li>If a project has a build.js/build.ts, run it after TS compilation</li>
 							<li>What is with the 2.5s delay on decoding audio?</li>
-							<li>In-game input config</li>
+						</ul>
+					</li>
+					<li>Exporting<ul>
+							<li>Make glob.js easier to recreate</li>
+							<li>Split config.json into necessary game setup vs. player configuration (bake non-player config into game setup on export, leave config as only player config, or play config should be in userdataDir)</li>
+						</ul>
+					</li>
+					<li>=== SIMPLEQUEST RELEASE ===</li>
+					<li>Bugs/Unsorted<ul>
 							<li>Make browser NOT close the currently active game<ul>
 									<li>or just revisit the whole browser interface in general</li>
 								</ul>
 							</li>
+							<li>If a project has a build.js/build.ts, run it after TS compilation</li>
 						</ul>
 					</li>
 					<li>RPGKit<ul>
-							<li>It&#39;d be nice if the persistent stuff in map was easier to use in general</li>
 							<li>Add scripted movement for entities on the map</li>
 							<li>Add scripted movement for entities in Scenes</li>
 							<li>Can I just slurp in all of the map .ts files automatically instead of having to reference each one?</li>
-							<li>More choice options - support scrolling</li>
+							<li>It&#39;d be nice if the persistent stuff in map was easier to use in general</li>
 						</ul>
 					</li>
 					<li>Data Editor<ul>
@@ -124,12 +136,6 @@
 					<li>config.json should be able to define an expected version, Egg should be smart enough to do the right thing<ul>
 							<li>I think this means &quot;shipping&quot; compiled .js blobs of previous versions along with the engine, and having the player select the right one</li>
 							<li>This is irrelevant for exported games; they&#39;ll be packaged with the version they were used to create it</li>
-						</ul>
-					</li>
-					<li>Exporting<ul>
-							<li>Make glob.js easier to recreate</li>
-							<li>Ship minified pixi/underscore</li>
-							<li>Split config.json into necessary game setup vs. player configuration (bake non-player config into game setup on export, leave config as only player config, or play config should be in userdataDir)</li>
 						</ul>
 					</li>
 					<li>Testing<ul>

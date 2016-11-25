@@ -40,12 +40,8 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
         - Menu should have .menu and .active; selection container should have .selections, and it should just get added by setupSelections
         - Need to provide a better way for menus to return a value to a previous menu -- promises?
     - What is with the 2.5s delay on decoding audio?
-- RPGKit
-    - Add scripted movement for entities on the map
-    - Add scripted movement for entities in Scenes
 - Exporting
     - Make glob.js easier to recreate
-    - Ship minified pixi/underscore
     - Split config.json into necessary game setup vs. player configuration (bake non-player config into game setup on export, leave config as only player config, or play config should be in userdataDir)
 - === SIMPLEQUEST RELEASE ===
 - Bugs/Unsorted
@@ -53,6 +49,8 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
         - or just revisit the whole browser interface in general
     - If a project has a build.js/build.ts, run it after TS compilation
 - RPGKit
+    - Add scripted movement for entities on the map
+    - Add scripted movement for entities in Scenes
     - Can I just slurp in all of the map .ts files automatically instead of having to reference each one?
     - It'd be nice if the persistent stuff in map was easier to use in general
 - Data Editor
