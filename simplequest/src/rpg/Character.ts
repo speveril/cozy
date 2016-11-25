@@ -23,7 +23,7 @@ module RPG {
         constructor(args:any) {
             this.name     = args.name;
             this.sprite   = args.sprite;
-            this.maxhp    = args.hp;
+            this.maxhp    = _.has(args, 'maxhp') ? args.maxhp : args.hp;
             this.treasure = _.clone(args.treasure);
             this.xp       = args.xp || 0;
             this.levels   = args.levels;
@@ -44,7 +44,7 @@ module RPG {
             Character.attributes.forEach((attribute) => this.baseAttribute[attribute] = 0);
             this.adjust(args.attributes);
 
-            this.hp = this.maxhp;
+            this.hp = _.has(args, 'hp') ? args.hp : this.maxhp;
         }
 
         serialize():any {
