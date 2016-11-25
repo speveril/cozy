@@ -5,26 +5,28 @@ module Egg {
         loadedPromise:Promise<any>;
 
         constructor(fileName:string) {
-            this.loadedPromise = new Promise(function(resolve, reject) {
-                (<File>Egg.gameDir.file(fileName)).readAsync('binary')
-                    .then(function(fileContents:ArrayBuffer) {
-                        var decode = function() {
-                            Audio.context.decodeAudioData(fileContents, function(decoded) {
+            this.loadedPromise = new Promise((resolve, reject) => {
+                Egg.gameDir.file(fileName).readAsync('binary')
+                .then(
+                    (fileContents:ArrayBuffer) => {
+                        Audio.context.decodeAudioData(
+                            fileContents,
+                            (decoded) => {
                                 this.buffer = decoded;
-                                clearInterval(interval);
                                 resolve();
-                            }.bind(this), function() {
-                                console.log("Couldn't load sound file '" + fileName + "'.");
-                                clearInterval(interval);
+                            },
+                            () => {
+                                console.warn("Couldn't load sound file '" + fileName + "'.");
                                 reject();
-                            }.bind(this));
-                        }.bind(this);
-                        var interval = setInterval(decode, 2500);
-                        decode();
-                    }.bind(this), function(error) {
-                        console.log("Failed to load '" + fileName + "'. " + error);
-                    }.bind(this));
-            }.bind(this));
+                            }
+                        );
+                    },
+                    (error) => {
+                        console.warn("Failed to load '" + fileName + "'. " + error);
+                        reject();
+                    }
+                );
+            });
         }
 
         loaded():Promise<any> {
@@ -51,23 +53,22 @@ module Egg {
             this.tracks = def.tracks;
             this.buffers = {};
 
-            this.loadedPromise = new Promise(function(resolve, reject) {
+            this.loadedPromise = new Promise((resolve, reject) => {
                 var trackResolve = _.after(def.tracks.length - 1, resolve);
 
-                _.each(def.tracks, function(fileName:string):void {
-                    (<File>Egg.gameDir.file(fileName)).readAsync('binary')
-                        .then(function(fileContents:ArrayBuffer) {
-                            Audio.context.decodeAudioData(fileContents, function(decoded) {
+                _.each(def.tracks, (fileName:string):void => {
+                    Egg.gameDir.file(fileName).readAsync('binary')
+                        .then((fileContents:ArrayBuffer) => {
+                            Audio.context.decodeAudioData(fileContents, (decoded) => {
                                 this.buffers[fileName] = decoded;
                                 trackResolve();
-                            }.bind(this), function() {
+                            }, () => {
                                 console.log("Couldn't load sound file '" + fileName + "' for song.");
                                 reject();
-                            }.bind(this));
-                        }.bind(this));
-
-                }.bind(this));
-            }.bind(this));
+                            });
+                        });
+                });
+            });
         }
 
         loaded():Promise<any> {
