@@ -87,7 +87,7 @@ function play(path, override, debug) {
         var window = new Electron.BrowserWindow({
             'width':              params['width'],
             'height':             params['height'],
-            'title':              params['title'] || 'Egg',
+            'title':              params['title'] || 'Cozy',
             'fullscreen':         params['fullscreen'] || false,
             'icon':               params['icon'] ? Path.join(process.cwd(), path, params['icon']) : undefined,
             'autoHideMenuBar':    true,

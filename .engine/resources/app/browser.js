@@ -45,9 +45,9 @@ var Browser = {
         this.setEngineStatus('ready');
 
         var lastCompilation = 0;
-        var eggJS = Path.join(ENGINEDIR, "resources", "app", "Egg.js")
-        if (FS.existsSync(eggJS)) {
-            lastCompilation = FS.statSync(eggJS).mtime.getTime();
+        var cozyJS = Path.join(ENGINEDIR, "resources", "app", "Cozy.js")
+        if (FS.existsSync(cozyJS)) {
+            lastCompilation = FS.statSync(cozyJS).mtime.getTime();
         }
         var srcFiles = [ Path.join(ENGINEDIR, "src") ];
         var f, stat;
@@ -131,7 +131,7 @@ var Browser = {
 
         this.newGameFooter.onclick = () => this.newGame();
 
-        this.output("Egg project browser loaded.\n");
+        this.output("Cozy project browser loaded.\n");
     },
 
     loadOverrides: function() {
@@ -403,7 +403,7 @@ var Browser = {
         this.output("");
         this.buildEngine()
             .then(() => {
-                return this.doc(Path.join(ENGINEDIR, "src", "Egg.ts"), Path.join(ENGINEDIR, "docs"))
+                return this.doc(Path.join(ENGINEDIR, "src", "Cozy.ts"), Path.join(ENGINEDIR, "docs"))
             }, () => {
                 if (this.recompileInterval) {
                     this.setEngineStatus('dirty');
@@ -448,7 +448,7 @@ var Browser = {
         var displayName = scrub(config.title ? config.title + " (" + buildPath + ")" : buildPath);
 
         var params = [
-            '.engine/resources/app/Egg.d.ts', srcRoot,
+            '.engine/resources/app/Cozy.d.ts', srcRoot,
             '--out', Path.join(buildPath, 'main.js')
         ];
 
@@ -467,7 +467,7 @@ var Browser = {
     buildEngine: function() {
         var params = [
             '--project', Path.join(ENGINEDIR, "src"),
-            '--out', Path.join(ENGINEDIR, 'resources', 'app', 'Egg.js')
+            '--out', Path.join(ENGINEDIR, 'resources', 'app', 'Cozy.js')
         ];
 
         this.output("<hr>\n<span style='color:white'>[ Building core engine ]</span>")
@@ -522,7 +522,7 @@ var Browser = {
 
             FS.readdirSync(ENGINEDIR).forEach((f) => {
                 if (!FS.statSync(Path.join(ENGINEDIR, f)).isDirectory()) {
-                    if (f === 'egg.exe' && exportConfig.executable) {
+                    if (f === 'cozy.exe' && exportConfig.executable) {
                         cp(Path.join(ENGINEDIR, f), Path.join(outPath, exportConfig.executable + '.exe'));
                     } else {
                         cp(Path.join(ENGINEDIR, f), Path.join(outPath, f));
@@ -542,7 +542,7 @@ var Browser = {
             var outAppPath = Path.join(outPath, "resources", "app");
 
             var files = [
-                'Egg.js', 'game.css', 'game.html',
+                'Cozy.js', 'game.css', 'game.html',
                 Path.join('lib','glob.js'),
                 Path.join('lib','pixi.min.js'),
                 Path.join('lib','underscore.min.js')
@@ -574,7 +574,7 @@ var Browser = {
             //  - definable steps
 
             var rceditParams = [
-                Path.join(outPath, exportConfig.executable ? exportConfig.executable + '.exe' : 'egg.exe')
+                Path.join(outPath, exportConfig.executable ? exportConfig.executable + '.exe' : 'cozy.exe')
             ];
 
             if (config.icon) rceditParams.push('--set-icon', Path.join(outAppPath, 'g', config.icon));
@@ -614,7 +614,7 @@ var Browser = {
                     '--out', outputPath,
                     '--mode', 'file',
                     '--target', 'ES6',
-                    '--name', 'Egg Engine',
+                    '--name', 'Cozy Engine',
                     srcPath
                 ]
             ).then(() => {

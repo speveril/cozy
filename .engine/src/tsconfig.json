@@ -4,9 +4,9 @@
         "sourceMap": true,
         "declaration": true,
         "target": "ES5",
-        "out": "../resources/app/Egg.js"
+        "out": "../resources/app/Cozy.js"
     },
     "files": [
-        "Egg.ts"
+        "Cozy.ts"
     ]
 }

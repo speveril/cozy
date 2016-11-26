@@ -1,6 +1,6 @@
 {
-  "name": "egg-exported",
-  "productName": "Egg Engine",
+  "name": "cozy-exported",
+  "productName": "Cozy Engine",
   "version": "0.0.1",
   "main": "launch.js",
   "dependencies": {}

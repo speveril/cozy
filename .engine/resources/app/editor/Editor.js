@@ -48,7 +48,7 @@ class Editor {
     }
 
     static setTitle(extra) {
-        document.title = `Egg Editor - ${this.gameConfig.title || 'untitled'}${extra ? ' - ' + extra : ''}`;
+        document.title = `Cozy Editor - ${this.gameConfig.title || 'untitled'}${extra ? ' - ' + extra : ''}`;
     }
 }
 

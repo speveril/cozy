@@ -1,4 +1,4 @@
-# Egg Engine (to be renamed)
+# Cozy
 
 A generic game engine. For now this is pretty hacked together. Things might get better in the future!
 
@@ -16,7 +16,9 @@ Ultimately the development is driven by what I want out of the engine. I have a 
 
 ## Usage
 
-Just run the Egg shortcut (or .engine/egg.exe). This will open the launcher/project manager.
+Just run the Cozy shortcut (or `.engine/cozy.exe`). This will open the launcher/project manager.
+
+If you want to work on the engine itself, you'll need to have NPM installed; run `npm install` in .engine/resources/app/.
 
 
 ## Current technologies
@@ -31,6 +33,7 @@ Just run the Egg shortcut (or .engine/egg.exe). This will open the launcher/proj
 
 This is stuff I intend to do, and/or am actively working on. I'm trying to keep this up to date with my commits.
 
+- Finish the rename
 - Bugs/Unsorted
     - userconfig.json in userdatadir
         - Defaults in project config.json
@@ -42,31 +45,35 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
 - Exporting
     - Make glob.js easier to recreate
     - Split config.json into necessary game setup vs. player configuration (bake non-player config into game setup on export, leave config as only player config, or play config should be in userdataDir)
-- === SIMPLEQUEST RELEASE ===
+- **=== SIMPLEQUEST RELEASE [ENGINE 0.1]===**
 - Bugs/Unsorted
     - Make browser NOT close the currently active game
         - or just revisit the whole browser interface in general
-    - If a project has a build.js/build.ts, run it after TS compilation
+    - If a project has a `build.js`/`build.ts`, run it after TS compilation
 - RPGKit
     - Add scripted movement for entities on the map
     - Add scripted movement for entities in Scenes
     - Can I just slurp in all of the map .ts files automatically instead of having to reference each one?
     - It'd be nice if the persistent stuff in map was easier to use in general
 - Data Editor
-    - Manager .json files; top level is an object with a ".schemas" key plus "tables" of typed objects
+    - Manages .json files; top level is an object with a ".schemas" key plus "tables" of typed objects
 - Reconcile File stuff
     - Don't make it required that the current working directory is actually the gamepath
 - Other platforms
     - Mac OS
     - Linux
-- config.json should be able to define an expected version, Egg should be smart enough to do the right thing
+- config.json should be able to define an expected version, Cozy should be smart enough to do the right thing
     - I think this means "shipping" compiled .js blobs of previous versions along with the engine, and having the player select the right one
     - This is irrelevant for exported games; they'll be packaged with the version they were used to create it
+- Documentation
+    - Better docs on core functions
+    - Higher level intro, etc
+    - Tutorials
 - Testing
     - Investigate this
 - Release stuff
-    - Check for existence of .engine/src and do not do core watch or compiles if it doesn't
-- === ENGINE RELEASE 1.0 ===
+    - Check if `.engine/src` exists and do not do core watch or compiles if it doesn't
+- **=== ENGINE RELEASE 1.0 ===**
 
 ## Wish list/Ideas (some day maybe):
 

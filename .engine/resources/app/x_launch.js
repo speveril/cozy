@@ -14,7 +14,7 @@ Electron.app.on('ready', () => {
     window = new Electron.BrowserWindow({
         'width':              params['width'],
         'height':             params['height'],
-        'title':              params['title'] || 'Egg',
+        'title':              params['title'] || 'Cozy',
         'fullscreen':         params['fullscreen'] || false,
         'autoHideMenuBar':    true,
         'useContentSize':     true
