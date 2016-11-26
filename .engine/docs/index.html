@@ -64,7 +64,7 @@
 	<div class="row">
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
-				<h1 id="egg-engine-to-be-renamed-">Egg Engine (to be renamed)</h1>
+				<h1 id="cozy">Cozy</h1>
 				<p>A generic game engine. For now this is pretty hacked together. Things might get better in the future!</p>
 				<p>Currently this is only set up to work on Windows. It should be fairly straightforward to get it working on other platforms, but I don&#39;t have ready access to them.</p>
 				<h2 id="plans">Plans</h2>
@@ -72,7 +72,8 @@
 				<p>Really though, the plan is to take my hacked together pile of crap and make small games with them (the example games) to figure out what I actually need in the engine and how I actually want things to look and to work. Over time I will update and replace pieces as necessary. If you&#39;ve somehow gotten access to this repository, hopefully I&#39;ve actually given it to you and you know what&#39;s up.</p>
 				<p>Ultimately the development is driven by what I want out of the engine. I have a lot of games I want to make at some point. I&#39;d like to build myself the tools I need to build those games. If you (the hypothetical reader) have a use-case that I&#39;m not meeting, then maybe in the future it will come up. For the time being though, it&#39;s more than likely you&#39;ll have to address that yourself.</p>
 				<h2 id="usage">Usage</h2>
-				<p>Just run the Egg shortcut (or .engine/egg.exe). This will open the launcher/project manager.</p>
+				<p>Just run the Cozy shortcut (or <code>.engine/cozy.exe</code>). This will open the launcher/project manager.</p>
+				<p>If you want to work on the engine itself, you&#39;ll need to have NPM installed; run <code>npm install</code> in .engine/resources/app/.</p>
 				<h2 id="current-technologies">Current technologies</h2>
 				<ul>
 					<li>Electron: <a href="https://github.com/atom/electron">https://github.com/atom/electron</a></li>
@@ -83,6 +84,7 @@
 				<h2 id="roadmap">Roadmap</h2>
 				<p>This is stuff I intend to do, and/or am actively working on. I&#39;m trying to keep this up to date with my commits.</p>
 				<ul>
+					<li>Finish the rename</li>
 					<li>Bugs/Unsorted<ul>
 							<li>userconfig.json in userdatadir<ul>
 									<li>Defaults in project config.json</li>
@@ -102,13 +104,13 @@
 							<li>Split config.json into necessary game setup vs. player configuration (bake non-player config into game setup on export, leave config as only player config, or play config should be in userdataDir)</li>
 						</ul>
 					</li>
-					<li>=== SIMPLEQUEST RELEASE ===</li>
+					<li><strong>=== SIMPLEQUEST RELEASE [ENGINE 0.1]===</strong></li>
 					<li>Bugs/Unsorted<ul>
 							<li>Make browser NOT close the currently active game<ul>
 									<li>or just revisit the whole browser interface in general</li>
 								</ul>
 							</li>
-							<li>If a project has a build.js/build.ts, run it after TS compilation</li>
+							<li>If a project has a <code>build.js</code>/<code>build.ts</code>, run it after TS compilation</li>
 						</ul>
 					</li>
 					<li>RPGKit<ul>
@@ -119,7 +121,7 @@
 						</ul>
 					</li>
 					<li>Data Editor<ul>
-							<li>Manager .json files; top level is an object with a &quot;.schemas&quot; key plus &quot;tables&quot; of typed objects</li>
+							<li>Manages .json files; top level is an object with a &quot;.schemas&quot; key plus &quot;tables&quot; of typed objects</li>
 						</ul>
 					</li>
 					<li>Reconcile File stuff<ul>
@@ -131,9 +133,15 @@
 							<li>Linux</li>
 						</ul>
 					</li>
-					<li>config.json should be able to define an expected version, Egg should be smart enough to do the right thing<ul>
+					<li>config.json should be able to define an expected version, Cozy should be smart enough to do the right thing<ul>
 							<li>I think this means &quot;shipping&quot; compiled .js blobs of previous versions along with the engine, and having the player select the right one</li>
 							<li>This is irrelevant for exported games; they&#39;ll be packaged with the version they were used to create it</li>
+						</ul>
+					</li>
+					<li>Documentation<ul>
+							<li>Better docs on core functions</li>
+							<li>Higher level intro, etc</li>
+							<li>Tutorials</li>
 						</ul>
 					</li>
 					<li>Testing<ul>
@@ -141,10 +149,10 @@
 						</ul>
 					</li>
 					<li>Release stuff<ul>
-							<li>Check for existence of .engine/src and do not do core watch or compiles if it doesn&#39;t</li>
+							<li>Check if <code>.engine/src</code> exists and do not do core watch or compiles if it doesn&#39;t</li>
 						</ul>
 					</li>
-					<li>=== ENGINE RELEASE 1.0 ===</li>
+					<li><strong>=== ENGINE RELEASE 1.0 ===</strong></li>
 				</ul>
 				<h2 id="wish-list-ideas-some-day-maybe-">Wish list/Ideas (some day maybe):</h2>
 				<p>Stuff I&#39;ve thought of and would be nice, or might be useful. I may or may not ever get around to these or consider them worthwhile.</p>
