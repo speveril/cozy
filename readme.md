@@ -32,7 +32,6 @@ Just run the Egg shortcut (or .engine/egg.exe). This will open the launcher/proj
 This is stuff I intend to do, and/or am actively working on. I'm trying to keep this up to date with my commits.
 
 - Bugs/Unsorted
-    - What is with the 2.5s delay on decoding audio?
     - userconfig.json in userdatadir
         - Defaults in project config.json
         - In-game input config
