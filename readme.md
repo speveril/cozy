@@ -33,7 +33,6 @@ If you want to work on the engine itself, you'll need to have NPM installed; run
 
 This is stuff I intend to do, and/or am actively working on. I'm trying to keep this up to date with my commits.
 
-- Finish the rename
 - Bugs/Unsorted
     - userconfig.json in userdatadir
         - Defaults in project config.json
@@ -102,8 +101,8 @@ Stuff I've thought of and would be nice, or might be useful. I may or may not ev
 - **SimpleQuest** - SimpleQuest, a small but complete RPG
     - See simplequest/README.md for more information
     - Currently still a work in progress
-- **examples/EggInvaders** - A simple 2-player pong game
-- **examples/EggPong** - A partial Space Invaders clone
+- **examples/CozyInvaders** - A simple 2-player pong game
+- **examples/CozyPong** - A partial Space Invaders clone
 - **toys** - Random junk that demonstrates something
 
 To run the examples, simply click them in the game list in the launcher.

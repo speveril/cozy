@@ -1,6 +1,6 @@
-.engine/resources/app/Egg.js
-.engine/resources/app/Egg.js.map
-.engine/resources/app/Egg.d.ts
+.engine/resources/app/Cozy.js
+.engine/resources/app/Cozy.js.map
+.engine/resources/app/Cozy.d.ts
 .engine/resources/app/node_modules
 examples/**/*.js
 examples/**/*.js.map
