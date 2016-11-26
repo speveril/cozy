@@ -1,4 +1,4 @@
-module Egg {
+module Cozy {
     export class Plane {
         container:HTMLElement;
 
@@ -33,7 +33,7 @@ module Egg {
 
         constructor(args:any) {
             super(args);
-            this.renderer = new PIXI.WebGLRenderer(Egg.config['width'], Egg.config['height'], { transparent: true });
+            this.renderer = new PIXI.WebGLRenderer(Cozy.config['width'], Cozy.config['height'], { transparent: true });
             this.renderer.backgroundColor = args.renderBackground === undefined ? 'rgba(0, 0, 0, 0)' : args.renderBackground;
             this.container.appendChild(this.renderer.view);
             this.layers = [];
@@ -56,7 +56,7 @@ module Egg {
             this.renderer.backgroundColor = color;
         }
 
-        addRenderLayer(index?:number):Egg.Layer {
+        addRenderLayer(index?:number):Cozy.Layer {
             var lyr = new Layer();
             if (index === undefined) {
                 this.layers.push(lyr);
@@ -74,7 +74,7 @@ module Egg {
 
         resize(mult):void {
             this.renderer.resolution = mult;
-            this.renderer.resize(Egg.config['width'], Egg.config['height']);
+            this.renderer.resize(Cozy.config['width'], Cozy.config['height']);
         }
     }
 
@@ -95,7 +95,7 @@ module Egg {
 
         addHTML(file) {
             var container = document.createElement('div');
-            container.innerHTML = Egg.gameDir.find(file).read();
+            container.innerHTML = Cozy.gameDir.find(file).read();
             this.container.appendChild(container);
             return container;
         }
@@ -112,8 +112,8 @@ module Egg {
 
         resize(mult):void {
             this.container.style.transform = "scale(" + mult + ")";
-            this.container.style.width = Egg.config['width'];
-            this.container.style.height = Egg.config['height'];
+            this.container.style.width = Cozy.config['width'];
+            this.container.style.height = Cozy.config['height'];
         }
     }
 }

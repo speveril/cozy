@@ -17,7 +17,7 @@ namespace RPG {
             this.key = key;
             this.sort = data.sort;
 
-            this.icon = data.icon ? Egg.gameDir.file(data.icon).url : '';
+            this.icon = data.icon ? Cozy.gameDir.file(data.icon).url : '';
             this.iconFrame = data.icon_frame;
             this.name = data.name;
             this.description = data.description;
@@ -56,7 +56,7 @@ namespace RPG {
         private id_:string;
         public location:any;
         constructor(def:ItemDef) {
-            this.id_ = Egg.uniqueID();
+            this.id_ = Cozy.uniqueID();
             this.location = null;
             this.def = def;
             this.overrides = null;

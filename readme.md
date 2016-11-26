@@ -42,6 +42,7 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
     - Menus need some polish
         - Menu should have .menu and .active; selection container should have .selections, and it should just get added by setupSelections
         - Need to provide a better way for menus to return a value to a previous menu -- promises?
+    - Should be able to refresh/reset; the way the message waiting works, this doesn't work the way it should
 - Exporting
     - Make glob.js easier to recreate
     - Split config.json into necessary game setup vs. player configuration (bake non-player config into game setup on export, leave config as only player config, or play config should be in userdataDir)

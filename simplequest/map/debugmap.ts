@@ -90,7 +90,7 @@ module SimpleQuest {
         music_prev(args) {
             RPG.Scene.do(function*() {
                 var musicKeys = _.keys(RPG.music);
-                var index = Egg.wrap(musicKeys.indexOf(this.musicKey) - 1, musicKeys.length);
+                var index = Cozy.wrap(musicKeys.indexOf(this.musicKey) - 1, musicKeys.length);
                 this.musicKey = musicKeys[index];
                 RPG.music[this.musicKey].start();
                 yield* this.waitTextbox(null, [
@@ -102,7 +102,7 @@ module SimpleQuest {
         music_next(args) {
             RPG.Scene.do(function*() {
                 var musicKeys = _.keys(RPG.music);
-                var index = Egg.wrap(musicKeys.indexOf(this.musicKey) + 1, musicKeys.length);
+                var index = Cozy.wrap(musicKeys.indexOf(this.musicKey) + 1, musicKeys.length);
                 this.musicKey = musicKeys[index];
                 RPG.music[this.musicKey].start();
                 yield* this.waitTextbox(null, [

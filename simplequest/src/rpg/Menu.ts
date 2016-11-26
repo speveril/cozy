@@ -1,56 +1,56 @@
 module RPG {
     export enum MenuDirection { VERTICAL, HORIZONTAL, GRID };
 
-    export class Menu extends Egg.UiComponent {
+    export class Menu extends Cozy.UiComponent {
         static menuStack:Menu[] = [];
-        static blip:Egg.Sound = null;
-        static choose:Egg.Sound = null;
-        static sfxBad:Egg.Sound = null;
+        static blip:Cozy.Sound = null;
+        static choose:Cozy.Sound = null;
+        static sfxBad:Cozy.Sound = null;
 
         static get currentMenu():Menu {
             return Menu.menuStack[Menu.menuStack.length - 1] || null;
         }
 
         static init() {
-            Egg.Input.on('menu.down cancel.down', (info) => {
+            Cozy.Input.on('menu.down cancel.down', (info) => {
                 if (!Menu.currentMenu || !Menu.currentMenu.cancelable || Menu.currentMenu.paused) return;
-                Egg.Input.debounce(info.button);
+                Cozy.Input.debounce(info.button);
                 Menu.currentMenu.cancel();
             }, this);
 
-            Egg.Input.on('up.down vertical-.down', (info) => {
+            Cozy.Input.on('up.down vertical-.down', (info) => {
                 if (!Menu.currentMenu || Menu.currentMenu.paused || Menu.currentMenu.direction === MenuDirection.HORIZONTAL) return;
-                Egg.Input.debounce(info.button, 0.2);
+                Cozy.Input.debounce(info.button, 0.2);
                 if (Menu.currentMenu.moveSelection(-1, MenuDirection.VERTICAL) && Menu.blip) Menu.blip.play();
             }, this);
 
-            Egg.Input.on('down.down vertical+.down', (info) => {
+            Cozy.Input.on('down.down vertical+.down', (info) => {
                 if (!Menu.currentMenu || Menu.currentMenu.paused || Menu.currentMenu.direction === MenuDirection.HORIZONTAL) return;
-                Egg.Input.debounce(info.button, 0.2);
+                Cozy.Input.debounce(info.button, 0.2);
                 if (Menu.currentMenu.moveSelection(+1, MenuDirection.VERTICAL) && Menu.blip) Menu.blip.play();
             }, this);
 
-            Egg.Input.on('left.down horizontal-.down', (info) => {
+            Cozy.Input.on('left.down horizontal-.down', (info) => {
                 if (!Menu.currentMenu || Menu.currentMenu.paused || Menu.currentMenu.direction === MenuDirection.VERTICAL) return;
-                Egg.Input.debounce(info.button, 0.2);
+                Cozy.Input.debounce(info.button, 0.2);
                 if (Menu.currentMenu.moveSelection(-1, MenuDirection.HORIZONTAL) && Menu.blip) Menu.blip.play();
             }, this);
 
-            Egg.Input.on('right.down horizontal+.down', (info) => {
+            Cozy.Input.on('right.down horizontal+.down', (info) => {
                 if (!Menu.currentMenu || Menu.currentMenu.paused || Menu.currentMenu.direction === MenuDirection.VERTICAL) return;
-                Egg.Input.debounce(info.button, 0.2);
+                Cozy.Input.debounce(info.button, 0.2);
                 if (Menu.currentMenu.moveSelection(+1, MenuDirection.HORIZONTAL) && Menu.blip) Menu.blip.play();
             }, this);
 
-            Egg.Input.on('confirm.down', (info) => {
+            Cozy.Input.on('confirm.down', (info) => {
                 if (!Menu.currentMenu || Menu.currentMenu.paused) return;
-                Egg.Input.debounce(info.button);
+                Cozy.Input.debounce(info.button);
                 Menu.currentMenu.confirmSelection();
             }, this);
         }
 
         static push(m:Menu):Menu {
-            Egg.Input.debounce("menu cancel up vertical- down vertical+ left horizontal- right horizontal confirm");
+            Cozy.Input.debounce("menu cancel up vertical- down vertical+ left horizontal- right horizontal confirm");
 
             if (Menu.menuStack.length > 0) {
                 Menu.currentMenu.pause();
@@ -216,7 +216,7 @@ module RPG {
                 this.selections[this.selectionIndex].classList.remove('active');
             }
 
-            this.selectionIndex = Egg.wrap(index, this.selections.length);
+            this.selectionIndex = Cozy.wrap(index, this.selections.length);
             this.selections[this.selectionIndex].classList.add('active');
             this.fixScroll();
             return true;

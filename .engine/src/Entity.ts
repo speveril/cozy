@@ -1,7 +1,7 @@
 ///<reference path="Component.ts"/>
 ///<reference path="Components/all.ts"/>
 
-module Egg {
+module Cozy {
     /**
     Entity class. Pairs with Component. Intended as an eventual ECS-style structure, either as a replacement or an
     alternative to the Object hierarchy. Not currently finished -- your mileage may vary.

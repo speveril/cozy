@@ -2,7 +2,7 @@
 
 module SimpleQuest {
     export module Menu {
-        export class Main_StatusPanel extends Egg.UiComponent {
+        export class Main_StatusPanel extends Cozy.UiComponent {
             constructor() {
                 super({
                     className: 'panel status'

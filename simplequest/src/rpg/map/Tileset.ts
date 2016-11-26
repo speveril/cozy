@@ -5,5 +5,5 @@ module RPG.Map {
         animations:{ [name:string]: any } = {};
     }
 
-    export class MapTile extends Egg.Sprite {}
+    export class MapTile extends Cozy.Sprite {}
 }

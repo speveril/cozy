@@ -4,7 +4,7 @@ module RPG.Map.Loader {
 
         var parser = new DOMParser(); // TODO XML type for File.read()?
         var dataDirectory = path.substr(0, path.lastIndexOf('/') + 1);
-        var data = parser.parseFromString(Egg.gameDir.file(path).read(), "text/xml");
+        var data = parser.parseFromString(Cozy.gameDir.file(path).read(), "text/xml");
         var mapEl = data.getElementsByTagName('map')[0];
 
         map.filename = path;

@@ -7,7 +7,7 @@ module SimpleQuest {
         export function quitGame() {
             RPG.Scene.do(function*() {
                 yield* RPG.Scene.waitFadeTo("black", 1.0);
-                Egg.quit();
+                Cozy.quit();
             }.bind(this));
         }
     }

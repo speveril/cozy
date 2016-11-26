@@ -1,5 +1,5 @@
 module Invaders {
-    export class Alien extends Egg.Sprite {
+    export class Alien extends Cozy.Sprite {
         speed:number;
         direction:number;
         destroyed:Boolean;
@@ -9,8 +9,8 @@ module Invaders {
         constructor(args:any) {
             var variant = args.variant || '1';
             args = _.extend({
-                texture: Egg.textures['alien_' + variant],
-                hotspot: { x: Egg.textures['alien_' + variant].width / 2, y: Egg.textures['alien_' + variant].width / 2 }
+                texture: Cozy.textures['alien_' + variant],
+                hotspot: { x: Cozy.textures['alien_' + variant].width / 2, y: Cozy.textures['alien_' + variant].width / 2 }
             }, args);
             super(args);
 

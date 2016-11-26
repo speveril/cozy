@@ -1,12 +1,12 @@
 # SimpleQuest
 
-I've built this game as a proof of concept and demo of the capabilities of the Egg Engine and RPGKit. I developed the engine and the kit in tandem with the game. Things may be a bit rough! Please let me know if you have any problems with anything.
+I've built this game as a proof of concept and demo of the capabilities of the Cozy Engine and its RPGKit. I developed the engine and the kit in tandem with the game. Things may be a bit rough! Please let me know if you have any problems with anything.
 
 -- Shamus Peveril (http://shamuspeveril.com)
 
 ## Credits
 
-Game developed by Shamus Peveril (http://shamuspeveril.com) with the Egg Engine.
+Game developed by Shamus Peveril (http://shamuspeveril.com) with the Cozy Engine.
 
 ### Art
 

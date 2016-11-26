@@ -1,4 +1,4 @@
-class Ball extends Egg.Sprite {
+class Ball extends Cozy.Sprite {
     velocity: number;
     angle: number;
 
@@ -52,7 +52,7 @@ class Ball extends Egg.Sprite {
             player2.score++;
             resetBall();
         }
-        if (this.position.x >= Egg.config['width'] + this.radius) {
+        if (this.position.x >= Cozy.config['width'] + this.radius) {
             player1.score++;
             resetBall();
         }
@@ -62,7 +62,7 @@ class Ball extends Egg.Sprite {
             this.normalizeAngle();
             this.velocity += 1 + Math.random() * 0.3;
         }
-        if (this.position.y >= Egg.config['height'] -this.radius) {
+        if (this.position.y >= Cozy.config['height'] -this.radius) {
             this.angle = (Math.PI / 2) + (Math.PI / 2 - this.angle);
             this.normalizeAngle();
             this.velocity += 1 + Math.random() * 0.3;
@@ -70,7 +70,7 @@ class Ball extends Egg.Sprite {
     }
 }
 
-class Player extends Egg.Sprite {
+class Player extends Cozy.Sprite {
     score: number;
     speed: number;
     width: number;
@@ -86,7 +86,7 @@ class Player extends Egg.Sprite {
     }
 }
 
-class ScoreComponent extends Egg.UiComponent {
+class ScoreComponent extends Cozy.UiComponent {
     player: Player;
 
     constructor(args) {
@@ -116,45 +116,45 @@ var player1: Player;
 var player2: Player;
 
 var ball: Ball;
-var renderPlane: Egg.RenderPlane;
-var uiPlane: Egg.UiPlane;
-var stage: Egg.Layer;
+var renderPlane: Cozy.RenderPlane;
+var uiPlane: Cozy.UiPlane;
+var stage: Cozy.Layer;
 
 function start() {
-    Egg.loadTextures({
+    Cozy.loadTextures({
         "ball": "ball.png",
         "paddle": "paddle.png"
     }).then(beginGame);
 }
 
 function beginGame() {
-    renderPlane = <Egg.RenderPlane>Egg.addPlane(Egg.RenderPlane);
+    renderPlane = <Cozy.RenderPlane>Cozy.addPlane(Cozy.RenderPlane);
     renderPlane.setBackground(0x223322);
     stage = renderPlane.addRenderLayer();
 
     ball = new Ball({
-        texture: Egg.textures['ball'],
+        texture: Cozy.textures['ball'],
         hotspot: { x: 6, y: 6 }
     });
     stage.add(ball);
 
     player1 = new Player({
-        texture: Egg.textures['paddle'],
+        texture: Cozy.textures['paddle'],
         hotspot: { x: 3, y: 24 },
-        position: { x: 6 * 3, y: Egg.config['height'] / 2 - 48 / 2 }
+        position: { x: 6 * 3, y: Cozy.config['height'] / 2 - 48 / 2 }
     });
 
     stage.add(player1);
 
     player2 = new Player({
-        texture: Egg.textures['paddle'],
+        texture: Cozy.textures['paddle'],
         hotspot: { x: 3, y: 24 },
-        position: { x: Egg.config['width'] - 6 * 3 - 1, y: Egg.config['height'] / 2 - 48 / 2 }
+        position: { x: Cozy.config['width'] - 6 * 3 - 1, y: Cozy.config['height'] / 2 - 48 / 2 }
     });
 
     stage.add(player2);
 
-    uiPlane = <Egg.UiPlane>Egg.addPlane(Egg.UiPlane);
+    uiPlane = <Cozy.UiPlane>Cozy.addPlane(Cozy.UiPlane);
 
     player1.scoreDisplay = new ScoreComponent({ side: 'left', player: player1 });
     uiPlane.addChild(player1.scoreDisplay);
@@ -164,34 +164,34 @@ function beginGame() {
 
     resetBall();
 
-    Egg.unpause();
+    Cozy.unpause();
 }
 
 function frame(dt) {
-    if (Egg.Input.pressed('exit')) {
-        Egg.quit();
+    if (Cozy.Input.pressed('exit')) {
+        Cozy.quit();
     }
 
     ball.step(dt);
     ball.bounce();
 
-    if (Egg.Input.pressed('p1_up')) {
+    if (Cozy.Input.pressed('p1_up')) {
         player1.innerSprite.position.y -= player1.speed * dt;
     }
-    if (Egg.Input.pressed('p1_down')) {
+    if (Cozy.Input.pressed('p1_down')) {
         player1.innerSprite.position.y += player1.speed * dt;
     }
 
-    if (Egg.Input.pressed('p2_up')) {
+    if (Cozy.Input.pressed('p2_up')) {
         player2.innerSprite.position.y -= player2.speed * dt;
     }
-    if (Egg.Input.pressed('p2_down')) {
+    if (Cozy.Input.pressed('p2_down')) {
         player2.innerSprite.position.y += player2.speed * dt;
     }
 }
 
 function resetBall() {
-    ball.setPosition(Egg.config['width'] / 2, Egg.config['height'] / 2);
+    ball.setPosition(Cozy.config['width'] / 2, Cozy.config['height'] / 2);
     ball.velocity = 250;
     ball.angle = Math.random() * (Math.PI / 2);
     if (Math.random() < 0.5) {

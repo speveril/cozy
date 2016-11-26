@@ -46,7 +46,7 @@ module SimpleQuest {
                     RPG.SavedGame.fromState()
                         .then((saveGame) => {
                             var filename = e.getAttribute('data-id');
-                            if (filename !== '@new') saveGame.file = new Egg.File(filename);
+                            if (filename !== '@new') saveGame.file = new Cozy.File(filename);
                             saveGame.writeToDisk();
                             // TODO tell the player it worked
                             RPG.Menu.pop();

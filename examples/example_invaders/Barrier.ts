@@ -1,5 +1,5 @@
 module Invaders {
-    export class Barrier extends Egg.Sprite {
+    export class Barrier extends Cozy.Sprite {
 
     }
 }

@@ -1,5 +1,5 @@
 module RPG.BattleSystem.SoloFrontView {
-    export class uiBattleScreen extends Egg.UiComponent {
+    export class uiBattleScreen extends Cozy.UiComponent {
         private actionMenu:uiActionMenu;
         private player:Character;
         private monster:Character;
@@ -142,7 +142,7 @@ module RPG.BattleSystem.SoloFrontView {
         }
     }
 
-    export class uiItemRow extends Egg.UiComponent {
+    export class uiItemRow extends Cozy.UiComponent {
         constructor(args:any) {
             super({
                 tag: 'li',

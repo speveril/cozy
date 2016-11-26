@@ -22,10 +22,10 @@ module SimpleQuest {
             battleSystemConfig: {
                 fightMusic:             'battle',
                 victoryMusic:           'victory',
-                monsters:               Egg.gameDir.file('src/monsters.json').read('json'),
+                monsters:               Cozy.gameDir.file('src/monsters.json').read('json'),
             },
             loadSkip:               [ "src_image/" ],
-            items:                  Egg.gameDir.file('src/items.json').read('json'),
+            items:                  Cozy.gameDir.file('src/items.json').read('json'),
             sfx: {
                 'hit':                  "audio/sfx/smash.wav",
                 'restore':              "audio/sfx/Healing Full.wav",
@@ -65,7 +65,7 @@ module SimpleQuest {
             RPG.Menu.choose = RPG.sfx['menu_choose'];
             RPG.Menu.sfxBad = RPG.sfx['menu_bad'];
 
-            Egg.unpause();
+            Cozy.unpause();
 
             SimpleQuest.bootSequence();
         }.bind(this));
@@ -79,14 +79,14 @@ module SimpleQuest {
         RPG.uiPlane.addChild(bootMenu);
         RPG.Menu.push(bootMenu);
 
-        Egg.unpause();
+        Cozy.unpause();
     }
 
     export function startGame(game:RPG.SavedGame) {
-        Egg.pause();
+        Cozy.pause();
         console.log(game.data);
         game.applyToState();
-        Egg.unpause();
+        Cozy.unpause();
     }
 
     export function newGameData() {

@@ -22,9 +22,9 @@ declare var FontFace:any;
 type Dict<T> = { [key:string]: T }
 
 /**
- * The main container for everything Egg.
+ * The main container for everything Cozy.
  */
-module Egg {
+module Cozy {
     export var Game:any;
     export var debug:boolean;
     export var config:Object;
@@ -33,9 +33,9 @@ module Egg {
     export var browserWindow:GitHubElectron.BrowserWindow;
     export var scene:Entity;
     export var gameName:string; // TODO unnecessary?
-    export var engineDir:Egg.Directory;
-    export var gameDir:Egg.Directory;
-    export var userdataDir:Egg.Directory;
+    export var engineDir:Cozy.Directory;
+    export var gameDir:Cozy.Directory;
+    export var userdataDir:Cozy.Directory;
 
     var enginePath:string;
     var paused:Boolean;
@@ -43,7 +43,7 @@ module Egg {
     var lastTime: number;
 
     export function setup(opts:any) {
-        console.log("Creating Egg Object...", opts);
+        console.log("Creating Cozy Object...", opts);
 
         this.config = opts;
         this.debug = !!opts.debug;
@@ -64,14 +64,14 @@ module Egg {
         //    https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html
         var userdataStem = process.env.APPDATA + '\\' || (process.platform == 'darwin' ? process.env.HOME + 'Library/Application Support/' : process.env.HOME + "/.");
 
-        this.engineDir = new Egg.Directory(path.join(process.cwd(), opts.enginePath, "resources", "app"));
-        this.gameDir = new Egg.Directory(path.join(process.cwd(), this.gameName));
+        this.engineDir = new Cozy.Directory(path.join(process.cwd(), opts.enginePath, "resources", "app"));
+        this.gameDir = new Cozy.Directory(path.join(process.cwd(), this.gameName));
 
         if (!this.config.userdata) {
             this.config.userdata = this.gameName;
             console.warn("No 'userdata' key found in config. This will be a problem when you export -- be sure to set it to something.");
         }
-        this.userdataDir = new Egg.Directory(userdataStem).subdir(this.config.userdata, true);
+        this.userdataDir = new Cozy.Directory(userdataStem).subdir(this.config.userdata, true);
 
         this.textures = {};
         this.paused = true;
@@ -79,7 +79,7 @@ module Egg {
 
     export function run() {
         process.chdir(this.gameDir.path);
-        Egg.Input.init(this.config['controls']);
+        Cozy.Input.init(this.config['controls']);
 
         // set up window
         var multX = screen.availWidth / this.config['width'],
@@ -95,7 +95,7 @@ module Egg {
         if (this.debug) { // ~ key, opens console
             window.addEventListener('onkeydown', (e) => {
                 if (e['keyCode'] === 192) {
-                    Egg.browserWindow['toggleDevTools']();
+                    Cozy.browserWindow['toggleDevTools']();
                 }
             });
         }
@@ -105,20 +105,20 @@ module Egg {
         planes = [];
 
         // set up audio
-        Egg.Audio.init();
-        if (Egg.config['volume']) {
-            if (Egg.config['volume']['sfx'] !== undefined) {
-                Audio.setSFXVolume(Egg.config['volume']['sfx']);
+        Cozy.Audio.init();
+        if (Cozy.config['volume']) {
+            if (Cozy.config['volume']['sfx'] !== undefined) {
+                Audio.setSFXVolume(Cozy.config['volume']['sfx']);
             }
-            if (Egg.config['volume']['music'] !== undefined) {
-                Audio.setMusicVolume(Egg.config['volume']['music']);
+            if (Cozy.config['volume']['music'] !== undefined) {
+                Audio.setMusicVolume(Cozy.config['volume']['music']);
             }
         }
 
         var styles = [];
         _.each(this.config['css'], (path:string) => {
             _.each(this.gameDir.glob(path), (f:File) => {
-                Egg.addStyleSheet(f);
+                Cozy.addStyleSheet(f);
             })
         });
 
@@ -250,7 +250,7 @@ module Egg {
     }
 
     export function getTexture(f) {
-        return Egg.textures[f.replace(/\\/g, "/")];
+        return Cozy.textures[f.replace(/\\/g, "/")];
     }
 
     export function addStyleSheet(file:File):void {
@@ -276,7 +276,7 @@ module Egg {
 
     export function saveImageToFile(image:any):File {
         var filename = `${(new Date()).toISOString().replace(/[-T:Z\.]/g,"")}.png`;
-        var file = Egg.userdataDir.subdir('screenshots', true).file(filename);
+        var file = Cozy.userdataDir.subdir('screenshots', true).file(filename);
         file.write(image.toPng(), 'binary');
         return file;
     }

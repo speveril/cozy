@@ -1,5 +1,5 @@
-module Egg.Components {
-    class Position extends Egg.Component {
+module Cozy.Components {
+    class Position extends Cozy.Component {
         x:number;
         y:number;
         z:number;

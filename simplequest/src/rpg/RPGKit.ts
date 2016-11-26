@@ -30,27 +30,27 @@ module RPG {
     export var cameraHalf:PIXI.Point;
     export var cameraFocus:PIXI.Point;
 
-    export var renderPlane:Egg.RenderPlane;
-    export var uiPlane:Egg.UiPlane;
+    export var renderPlane:Cozy.RenderPlane;
+    export var uiPlane:Cozy.UiPlane;
     export var battleSystem:any;
     export var mainMenuClass:any;
 
     export var equipSlots                          = ["weapon", "shield", "armor", "accessory"];
     export var moneyName:string                    = "G";
-    export var sfx:{ [name:string]: Egg.Sound }    = {};
-    export var music:{ [name:string]: Egg.Music }  = {};
+    export var sfx:{ [name:string]: Cozy.Sound }    = {};
+    export var music:{ [name:string]: Cozy.Music }  = {};
 
     export function start(config:any):Promise<any> {
         console.log("RPGKit start");
 
-        RPG.renderPlane = <Egg.RenderPlane>Egg.addPlane(Egg.RenderPlane, { className: 'render-plane' });
-        RPG.uiPlane = <Egg.UiPlane>Egg.addPlane(Egg.UiPlane, { className: 'overlay' });
+        RPG.renderPlane = <Cozy.RenderPlane>Cozy.addPlane(Cozy.RenderPlane, { className: 'render-plane' });
+        RPG.uiPlane = <Cozy.UiPlane>Cozy.addPlane(Cozy.UiPlane, { className: 'overlay' });
 
         if (config.sfx) {
-            _.each(config.sfx, (args:string, name:string) => this.sfx[name] = new Egg.Sound(args));
+            _.each(config.sfx, (args:string, name:string) => this.sfx[name] = new Cozy.Sound(args));
         }
         if (config.music) {
-            _.each(config.music, (args:any, name:string) => this.music[name] = new Egg.Music(args));
+            _.each(config.music, (args:any, name:string) => this.music[name] = new Cozy.Music(args));
         }
         if (config.battleSystem) {
             this.battleSystem = new config.battleSystem['System'](config.battleSystemConfig || {});
@@ -61,21 +61,21 @@ module RPG {
 
         RPG.Item.load(config.items || {});
 
-        cameraHalf = new PIXI.Point(Egg.config['width'] / 2, Egg.config['height'] / 2);
+        cameraHalf = new PIXI.Point(Cozy.config['width'] / 2, Cozy.config['height'] / 2);
         cameraFocus = new PIXI.Point(0, 0);
 
         // scrape all images under the project
         var textures = {};
-        _.each(Egg.gameDir.glob("**/*.{png,jpg,gif}"), (f) => {
-            if (f instanceof Egg.File) {
+        _.each(Cozy.gameDir.glob("**/*.{png,jpg,gif}"), (f) => {
+            if (f instanceof Cozy.File) {
                 if (_.reduce(loadSkip, (memo, ignore:string) => memo || f.path.indexOf(ignore) === 0, false)) return;
-                textures[(<Egg.File>f).relativePath(Egg.gameDir)] = f;
+                textures[(<Cozy.File>f).relativePath(Cozy.gameDir)] = f;
             }
         });
 
         RPG.Menu.init();
 
-        var promises = [ Egg.loadTextures(textures) ];
+        var promises = [ Cozy.loadTextures(textures) ];
         _.each(sfx, function(s) { promises.push(s.loaded()); })
         _.each(music, function(m) { promises.push(m.loaded()); })
         return Promise.all(promises);
@@ -136,14 +136,14 @@ module RPG {
         var cameraBox = _.find(map.cameraBoxes, (box) => box.contains(cx, cy));
 
         if (cameraBox) {
-            if (cameraBox.width <= Egg.config['width']) {
+            if (cameraBox.width <= Cozy.config['width']) {
                 cx = cameraBox.x + cameraBox.width / 2;
             } else {
                 cx = Math.max(cameraBox.x + cameraHalf.x, cx);
                 cx = Math.min(cameraBox.x + cameraBox.width - cameraHalf.x, cx);
             }
 
-            if (cameraBox.height <= Egg.config['height']) {
+            if (cameraBox.height <= Cozy.config['height']) {
                 cy = cameraBox.y + cameraBox.height / 2;
             } else {
                 cy = Math.max(cameraBox.y + cameraHalf.y, cy);

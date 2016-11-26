@@ -2,7 +2,7 @@
 /// <reference path="../../src/typescript/node.d.ts" />
 /// <reference path="../../src/typescript/pixi.js.d.ts" />
 /// <reference path="../../src/typescript/underscore.d.ts" />
-declare module Egg {
+declare module Cozy {
     class Sound {
         buffer: AudioBuffer;
         source: AudioBufferSourceNode;
@@ -37,7 +37,7 @@ declare module Egg {
         static setMusicVolume(v: number): void;
     }
 }
-declare module Egg {
+declare module Cozy {
     class Component {
         static lookup: Array<Array<Component>>;
         owner: Entity;
@@ -47,9 +47,9 @@ declare module Egg {
         render(): void;
     }
 }
-declare module Egg.Components {
+declare module Cozy.Components {
 }
-declare module Egg.Components {
+declare module Cozy.Components {
     class Renderer extends Component {
         private HTMLcontainer;
         private renderer;
@@ -59,22 +59,22 @@ declare module Egg.Components {
         render(): void;
     }
 }
-declare module Egg.Components {
-    class Sprite extends Egg.Component {
-        s: Egg.Sprite;
+declare module Cozy.Components {
+    class Sprite extends Cozy.Component {
+        s: Cozy.Sprite;
         constructor(args?: any);
         added(): void;
     }
 }
-declare module Egg.Components {
-    class SpriteLayer extends Egg.Component {
+declare module Cozy.Components {
+    class SpriteLayer extends Cozy.Component {
         innerContainer: PIXI.Container;
         constructor(args?: any);
         added(): void;
         add(thing: any): void;
     }
 }
-declare module Egg {
+declare module Cozy {
     class Entity {
         parent: Entity;
         children: Array<Entity>;
@@ -100,7 +100,7 @@ declare module Egg {
 }
 declare var fs: any;
 declare var path: any;
-declare module Egg {
+declare module Cozy {
     class Directory {
         root: string;
         constructor(f: string);
@@ -127,7 +127,7 @@ declare module Egg {
         write(data: any, format?: string): any;
     }
 }
-declare module Egg {
+declare module Cozy {
     class Input {
         static deadzone: number;
         private static buttonMap;
@@ -151,10 +151,10 @@ declare module Egg {
         static debounce(names: string, duration?: number): void;
     }
 }
-declare module Egg {
+declare module Cozy {
     class Layer {
         innerContainer: PIXI.Container;
-        sprites: Array<Egg.Sprite>;
+        sprites: Array<Cozy.Sprite>;
         constructor();
         update(dt: number): void;
         offset(x: number, y: number): void;
@@ -165,11 +165,11 @@ declare module Egg {
         clear(): void;
     }
 }
-declare module Egg {
+declare module Cozy {
     class Map {
     }
 }
-declare module Egg {
+declare module Cozy {
     class Plane {
         container: HTMLElement;
         constructor(args: any);
@@ -189,7 +189,7 @@ declare module Egg {
         render(): void;
         update(dt: any): void;
         setBackground(color: any): void;
-        addRenderLayer(index?: number): Egg.Layer;
+        addRenderLayer(index?: number): Cozy.Layer;
         clear(): void;
         resize(mult: any): void;
     }
@@ -203,7 +203,7 @@ declare module Egg {
         resize(mult: any): void;
     }
 }
-declare module Egg {
+declare module Cozy {
     class Sprite {
         texture: PIXI.Texture;
         textureFrame: PIXI.Rectangle;
@@ -214,7 +214,7 @@ declare module Egg {
         frameBank: PIXI.Rectangle;
         frameSize: PIXI.Point;
         frameCounts: PIXI.Point;
-        layer: Egg.Layer;
+        layer: Cozy.Layer;
         frame_: number;
         animations: {};
         currentAnimation: {};
@@ -234,7 +234,7 @@ declare module Egg {
         private positionInnerSprite();
     }
 }
-declare module Egg {
+declare module Cozy {
     class Texture {
         innerTexture: PIXI.Texture;
         constructor(inner: any);
@@ -242,7 +242,7 @@ declare module Egg {
         height: number;
     }
 }
-declare module Egg {
+declare module Cozy {
     class UiComponent {
         element: HTMLElement;
         protected parent: UiComponent;
@@ -271,7 +271,7 @@ declare var FontFace: any;
 declare type Dict<T> = {
     [key: string]: T;
 };
-declare module Egg {
+declare module Cozy {
     var Game: any;
     var debug: boolean;
     var config: Object;
@@ -280,9 +280,9 @@ declare module Egg {
     var browserWindow: GitHubElectron.BrowserWindow;
     var scene: Entity;
     var gameName: string;
-    var engineDir: Egg.Directory;
-    var gameDir: Egg.Directory;
-    var userdataDir: Egg.Directory;
+    var engineDir: Cozy.Directory;
+    var gameDir: Cozy.Directory;
+    var userdataDir: Cozy.Directory;
     function setup(opts: any): void;
     function run(): void;
     function frame(): void;

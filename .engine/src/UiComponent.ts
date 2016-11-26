@@ -1,4 +1,4 @@
-module Egg {
+module Cozy {
     export class UiComponent {
         public element:HTMLElement;
 
@@ -13,7 +13,7 @@ module Egg {
             this.element = document.createElement(this.tag);
 
             var html = args.html || this.html || '';
-            this.element.innerHTML = Egg.fixHTML(html);
+            this.element.innerHTML = Cozy.fixHTML(html);
             if (args.className) this.element.className = args.className;
         }
 

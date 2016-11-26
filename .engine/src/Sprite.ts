@@ -1,4 +1,4 @@
-module Egg {
+module Cozy {
     export class Sprite {
         texture: PIXI.Texture;
         textureFrame: PIXI.Rectangle;
@@ -9,7 +9,7 @@ module Egg {
         frameBank: PIXI.Rectangle;
         frameSize: PIXI.Point;
         frameCounts: PIXI.Point;
-        layer: Egg.Layer;
+        layer: Cozy.Layer;
         frame_:number;
 
         animations: {};
@@ -35,7 +35,7 @@ module Egg {
 
         constructor(args) {
             if (typeof args === "string") {
-                args = Egg.gameDir.file(args).read('json');
+                args = Cozy.gameDir.file(args).read('json');
             }
 
             if (!args.texture) throw new Error("Sprite must be instantiated with a 'texture'");
@@ -45,7 +45,7 @@ module Egg {
             args.frameSize = args.frameSize || {};
 
             if (typeof args.texture === 'string') {
-                args.texture = Egg.getTexture(args.texture);
+                args.texture = Cozy.getTexture(args.texture);
             }
             this.texture = new PIXI.Texture(args.texture.innerTexture);
             this.innerSprite = new PIXI.Sprite(this.texture);

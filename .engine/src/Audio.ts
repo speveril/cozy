@@ -1,4 +1,4 @@
-module Egg {
+module Cozy {
     export class Sound {
         buffer:AudioBuffer;
         source:AudioBufferSourceNode;
@@ -6,7 +6,7 @@ module Egg {
 
         constructor(fileName:string) {
             this.loadedPromise = new Promise((resolve, reject) => {
-                Egg.gameDir.file(fileName).readAsync('binary')
+                Cozy.gameDir.file(fileName).readAsync('binary')
                 .then(
                     (fileContents:ArrayBuffer) => {
                         Audio.context.decodeAudioData(
@@ -57,7 +57,7 @@ module Egg {
                 var trackResolve = _.after(def.tracks.length - 1, resolve);
 
                 _.each(def.tracks, (fileName:string):void => {
-                    Egg.gameDir.file(fileName).readAsync('binary')
+                    Cozy.gameDir.file(fileName).readAsync('binary')
                         .then((fileContents:ArrayBuffer) => {
                             Audio.context.decodeAudioData(fileContents, (decoded) => {
                                 this.buffers[fileName] = decoded;

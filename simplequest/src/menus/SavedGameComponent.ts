@@ -1,6 +1,6 @@
 module SimpleQuest {
     export module Menu {
-        export class SavedGameComponent extends Egg.UiComponent {
+        export class SavedGameComponent extends Cozy.UiComponent {
             constructor(args:any) {
                 super({
                     tag: 'li',

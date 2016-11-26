@@ -1,13 +1,13 @@
 module RPG {
     export class SavedGame {
-        static _directory:Egg.Directory;
+        static _directory:Cozy.Directory;
 
-        static get directory():Egg.Directory {
-            if (!SavedGame._directory) SavedGame._directory = Egg.userdataDir.subdir("saves", true /* create if does not exists */);
+        static get directory():Cozy.Directory {
+            if (!SavedGame._directory) SavedGame._directory = Cozy.userdataDir.subdir("saves", true /* create if does not exists */);
             return SavedGame._directory;
         }
 
-        static set directory(dir:Egg.Directory) {
+        static set directory(dir:Cozy.Directory) {
             SavedGame._directory = dir;
         }
 
@@ -16,8 +16,8 @@ module RPG {
         }
 
         static getList():Array<SavedGame> {
-            var files:Array<Egg.File> = [];
-            _.each(SavedGame.directory.read(), (f:Egg.File) => {
+            var files:Array<Cozy.File> = [];
+            _.each(SavedGame.directory.read(), (f:Cozy.File) => {
                 files.push(f);
             });
 
@@ -26,21 +26,21 @@ module RPG {
                 return a.stat().mtime > b.stat().mtime ? -1 : 1;
             });
 
-            return _.map(files, (f:Egg.File):SavedGame => new SavedGame(f, f.read('json')));
+            return _.map(files, (f:Cozy.File):SavedGame => new SavedGame(f, f.read('json')));
         }
 
-        static fromFile(f:Egg.File) {
+        static fromFile(f:Cozy.File) {
             return new SavedGame(f, f.read('json'));
         }
 
         static fromState():Promise<SavedGame> {
             RPG.uiPlane.hide();
-            return Egg.captureScreenshot(64)
+            return Cozy.captureScreenshot(64)
                 .then((image) => {
                     RPG.uiPlane.show();
 
                     var next = 1;
-                    _.each(SavedGame.directory.read(), (f:Egg.File) => {
+                    _.each(SavedGame.directory.read(), (f:Cozy.File) => {
                         var m = f.name.match(/save-(\d+)/);
                         var i = parseInt(m[1], 10);
                         if (i >= next) next = i + 1;
@@ -66,10 +66,10 @@ module RPG {
 
         // ---
 
-        file:Egg.File;
+        file:Cozy.File;
         data:any;
 
-        constructor(file:Egg.File, data:any) {
+        constructor(file:Cozy.File, data:any) {
             this.file = file;
             this.data = data;
         }

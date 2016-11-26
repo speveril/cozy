@@ -12,7 +12,7 @@ module SimpleQuest {
             <span class="item-icon"></span>
             <span class="item-name"></span>
         `;
-        export class Main_EquipSlot extends Egg.UiComponent {
+        export class Main_EquipSlot extends Cozy.UiComponent {
             character:RPG.Character;
             slot:string;
 

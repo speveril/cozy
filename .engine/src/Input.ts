@@ -1,4 +1,4 @@
-module Egg {
+module Cozy {
     enum ButtonState { UP, DOWN, IGNORED };
 
     class Device {

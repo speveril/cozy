@@ -1,9 +1,9 @@
-var Egg;
-(function (Egg) {
+var Cozy;
+(function (Cozy) {
     class Sound {
         constructor(fileName) {
             this.loadedPromise = new Promise((resolve, reject) => {
-                Egg.gameDir.file(fileName).readAsync('binary')
+                Cozy.gameDir.file(fileName).readAsync('binary')
                     .then((fileContents) => {
                     Audio.context.decodeAudioData(fileContents, (decoded) => {
                         this.buffer = decoded;
@@ -28,7 +28,7 @@ var Egg;
             this.source.start(0);
         }
     }
-    Egg.Sound = Sound;
+    Cozy.Sound = Sound;
     class Music {
         constructor(def) {
             this.tracks = def.tracks;
@@ -36,7 +36,7 @@ var Egg;
             this.loadedPromise = new Promise((resolve, reject) => {
                 var trackResolve = _.after(def.tracks.length - 1, resolve);
                 _.each(def.tracks, (fileName) => {
-                    Egg.gameDir.file(fileName).readAsync('binary')
+                    Cozy.gameDir.file(fileName).readAsync('binary')
                         .then((fileContents) => {
                         Audio.context.decodeAudioData(fileContents, (decoded) => {
                             this.buffers[fileName] = decoded;
@@ -68,7 +68,7 @@ var Egg;
             this.source.disconnect();
         }
     }
-    Egg.Music = Music;
+    Cozy.Music = Music;
     class Audio {
         static init() {
             this.context = new AudioContext();
@@ -98,10 +98,10 @@ var Egg;
         }
     }
     Audio.currentMusic = null;
-    Egg.Audio = Audio;
-})(Egg || (Egg = {}));
-var Egg;
-(function (Egg) {
+    Cozy.Audio = Audio;
+})(Cozy || (Cozy = {}));
+var Cozy;
+(function (Cozy) {
     class Component {
         constructor(args) {
             this.owner = null;
@@ -116,25 +116,25 @@ var Egg;
         render() { }
     }
     Component.lookup = [];
-    Egg.Component = Component;
-})(Egg || (Egg = {}));
-var Egg;
-(function (Egg) {
+    Cozy.Component = Component;
+})(Cozy || (Cozy = {}));
+var Cozy;
+(function (Cozy) {
     var Components;
     (function (Components) {
-        class Position extends Egg.Component {
+        class Position extends Cozy.Component {
         }
-    })(Components = Egg.Components || (Egg.Components = {}));
-})(Egg || (Egg = {}));
-var Egg;
-(function (Egg) {
+    })(Components = Cozy.Components || (Cozy.Components = {}));
+})(Cozy || (Cozy = {}));
+var Cozy;
+(function (Cozy) {
     var Components;
     (function (Components) {
-        class Renderer extends Egg.Component {
+        class Renderer extends Cozy.Component {
             constructor(_args) {
                 super(_args);
                 var args = _args || {};
-                this.renderer = new PIXI.WebGLRenderer(Egg.config['width'], Egg.config['height'], { transparent: true });
+                this.renderer = new PIXI.WebGLRenderer(Cozy.config['width'], Cozy.config['height'], { transparent: true });
                 this.renderer.backgroundColor = args.renderBackground === undefined ? 'rgba(0, 0, 0, 0)' : args.renderBackground;
                 this.container = new PIXI.Container();
                 this.HTMLcontainer = document.createElement('div');
@@ -150,13 +150,13 @@ var Egg;
             }
         }
         Components.Renderer = Renderer;
-    })(Components = Egg.Components || (Egg.Components = {}));
-})(Egg || (Egg = {}));
-var Egg;
-(function (Egg) {
+    })(Components = Cozy.Components || (Cozy.Components = {}));
+})(Cozy || (Cozy = {}));
+var Cozy;
+(function (Cozy) {
     var Components;
     (function (Components) {
-        class Sprite extends Egg.Component {
+        class Sprite extends Cozy.Component {
             constructor(args) {
                 super(args);
             }
@@ -165,13 +165,13 @@ var Egg;
             }
         }
         Components.Sprite = Sprite;
-    })(Components = Egg.Components || (Egg.Components = {}));
-})(Egg || (Egg = {}));
-var Egg;
-(function (Egg) {
+    })(Components = Cozy.Components || (Cozy.Components = {}));
+})(Cozy || (Cozy = {}));
+var Cozy;
+(function (Cozy) {
     var Components;
     (function (Components) {
-        class SpriteLayer extends Egg.Component {
+        class SpriteLayer extends Cozy.Component {
             constructor(args) {
                 super(args);
                 this.innerContainer = new PIXI.Container();
@@ -187,10 +187,10 @@ var Egg;
             }
         }
         Components.SpriteLayer = SpriteLayer;
-    })(Components = Egg.Components || (Egg.Components = {}));
-})(Egg || (Egg = {}));
-var Egg;
-(function (Egg) {
+    })(Components = Cozy.Components || (Cozy.Components = {}));
+})(Cozy || (Cozy = {}));
+var Cozy;
+(function (Cozy) {
     class Entity {
         constructor(parent, components) {
             this.parent = null;
@@ -255,12 +255,12 @@ var Egg;
             this.children.forEach((e) => e.render());
         }
     }
-    Egg.Entity = Entity;
-})(Egg || (Egg = {}));
+    Cozy.Entity = Entity;
+})(Cozy || (Cozy = {}));
 var fs = require('fs');
 var path = require('path');
-var Egg;
-(function (Egg) {
+var Cozy;
+(function (Cozy) {
     class Directory {
         constructor(f) {
             if (!fs.existsSync(f))
@@ -306,7 +306,7 @@ var Egg;
             return this.buildList(window['glob'].sync(pattern, opts));
         }
     }
-    Egg.Directory = Directory;
+    Cozy.Directory = Directory;
     class File {
         constructor(f) {
             this.filepath = path.resolve(f);
@@ -315,7 +315,7 @@ var Egg;
         get name() { return path.basename(this.filepath); }
         get path() { return this.filepath; }
         get exists() { return fs.existsSync(this.filepath); }
-        get url() { return this.relativePath(Egg.engineDir).replace(/\\/g, "/"); }
+        get url() { return this.relativePath(Cozy.engineDir).replace(/\\/g, "/"); }
         stat() {
             return fs.statSync(this.filepath);
         }
@@ -358,10 +358,10 @@ var Egg;
             }
         }
     }
-    Egg.File = File;
-})(Egg || (Egg = {}));
-var Egg;
-(function (Egg) {
+    Cozy.File = File;
+})(Cozy || (Cozy = {}));
+var Cozy;
+(function (Cozy) {
     var ButtonState;
     (function (ButtonState) {
         ButtonState[ButtonState["UP"] = 0] = "UP";
@@ -640,10 +640,10 @@ var Egg;
         }
     }
     Input.deadzone = 0.25;
-    Egg.Input = Input;
-})(Egg || (Egg = {}));
-var Egg;
-(function (Egg) {
+    Cozy.Input = Input;
+})(Cozy || (Cozy = {}));
+var Cozy;
+(function (Cozy) {
     class Layer {
         constructor() {
             this.sprites = [];
@@ -662,7 +662,7 @@ var Egg;
             return _.clone(this.innerContainer.position);
         }
         add(thing) {
-            if (thing instanceof Egg.Sprite) {
+            if (thing instanceof Cozy.Sprite) {
                 this.sprites.push(thing);
                 thing.layer = this;
                 this.innerContainer.addChild(thing.innerSprite);
@@ -684,16 +684,16 @@ var Egg;
             }.bind(this));
         }
     }
-    Egg.Layer = Layer;
-})(Egg || (Egg = {}));
-var Egg;
-(function (Egg) {
+    Cozy.Layer = Layer;
+})(Cozy || (Cozy = {}));
+var Cozy;
+(function (Cozy) {
     class Map {
     }
-    Egg.Map = Map;
-})(Egg || (Egg = {}));
-var Egg;
-(function (Egg) {
+    Cozy.Map = Map;
+})(Cozy || (Cozy = {}));
+var Cozy;
+(function (Cozy) {
     class Plane {
         constructor(args) {
             this.container = document.createElement('div');
@@ -714,11 +714,11 @@ var Egg;
         clear() { }
         resize(mult) { }
     }
-    Egg.Plane = Plane;
+    Cozy.Plane = Plane;
     class RenderPlane extends Plane {
         constructor(args) {
             super(args);
-            this.renderer = new PIXI.WebGLRenderer(Egg.config['width'], Egg.config['height'], { transparent: true });
+            this.renderer = new PIXI.WebGLRenderer(Cozy.config['width'], Cozy.config['height'], { transparent: true });
             this.renderer.backgroundColor = args.renderBackground === undefined ? 'rgba(0, 0, 0, 0)' : args.renderBackground;
             this.container.appendChild(this.renderer.view);
             this.layers = [];
@@ -738,7 +738,7 @@ var Egg;
             this.renderer.backgroundColor = color;
         }
         addRenderLayer(index) {
-            var lyr = new Egg.Layer();
+            var lyr = new Cozy.Layer();
             if (index === undefined) {
                 this.layers.push(lyr);
             }
@@ -754,15 +754,15 @@ var Egg;
         }
         resize(mult) {
             this.renderer.resolution = mult;
-            this.renderer.resize(Egg.config['width'], Egg.config['height']);
+            this.renderer.resize(Cozy.config['width'], Cozy.config['height']);
         }
     }
-    Egg.RenderPlane = RenderPlane;
+    Cozy.RenderPlane = RenderPlane;
     class UiPlane extends Plane {
         constructor(args) {
             super(args);
             this.container.className += ' ui';
-            this.root = new Egg.UiComponent({});
+            this.root = new Cozy.UiComponent({});
             this.container.appendChild(this.root.element);
         }
         update(dt) {
@@ -770,7 +770,7 @@ var Egg;
         }
         addHTML(file) {
             var container = document.createElement('div');
-            container.innerHTML = Egg.gameDir.find(file).read();
+            container.innerHTML = Cozy.gameDir.find(file).read();
             this.container.appendChild(container);
             return container;
         }
@@ -784,18 +784,18 @@ var Egg;
         }
         resize(mult) {
             this.container.style.transform = "scale(" + mult + ")";
-            this.container.style.width = Egg.config['width'];
-            this.container.style.height = Egg.config['height'];
+            this.container.style.width = Cozy.config['width'];
+            this.container.style.height = Cozy.config['height'];
         }
     }
-    Egg.UiPlane = UiPlane;
-})(Egg || (Egg = {}));
-var Egg;
-(function (Egg) {
+    Cozy.UiPlane = UiPlane;
+})(Cozy || (Cozy = {}));
+var Cozy;
+(function (Cozy) {
     class Sprite {
         constructor(args) {
             if (typeof args === "string") {
-                args = Egg.gameDir.file(args).read('json');
+                args = Cozy.gameDir.file(args).read('json');
             }
             if (!args.texture)
                 throw new Error("Sprite must be instantiated with a 'texture'");
@@ -803,7 +803,7 @@ var Egg;
             args.position = args.position || {};
             args.frameSize = args.frameSize || {};
             if (typeof args.texture === 'string') {
-                args.texture = Egg.getTexture(args.texture);
+                args.texture = Cozy.getTexture(args.texture);
             }
             this.texture = new PIXI.Texture(args.texture.innerTexture);
             this.innerSprite = new PIXI.Sprite(this.texture);
@@ -955,10 +955,10 @@ var Egg;
             }
         }
     }
-    Egg.Sprite = Sprite;
-})(Egg || (Egg = {}));
-var Egg;
-(function (Egg) {
+    Cozy.Sprite = Sprite;
+})(Cozy || (Cozy = {}));
+var Cozy;
+(function (Cozy) {
     class Texture {
         constructor(inner) {
             this.innerTexture = inner;
@@ -966,17 +966,17 @@ var Egg;
         get width() { return this.innerTexture.width; }
         get height() { return this.innerTexture.height; }
     }
-    Egg.Texture = Texture;
-})(Egg || (Egg = {}));
-var Egg;
-(function (Egg) {
+    Cozy.Texture = Texture;
+})(Cozy || (Cozy = {}));
+var Cozy;
+(function (Cozy) {
     class UiComponent {
         constructor(args) {
             this.tag = args.tag || this.tag || 'div';
             this.children = [];
             this.element = document.createElement(this.tag);
             var html = args.html || this.html || '';
-            this.element.innerHTML = Egg.fixHTML(html);
+            this.element.innerHTML = Cozy.fixHTML(html);
             if (args.className)
                 this.element.className = args.className;
         }
@@ -1022,8 +1022,8 @@ var Egg;
             this.children.forEach((child) => child.update(dt));
         }
     }
-    Egg.UiComponent = UiComponent;
-})(Egg || (Egg = {}));
+    Cozy.UiComponent = UiComponent;
+})(Cozy || (Cozy = {}));
 var Trig;
 (function (Trig) {
     function sqr(x) { return x * x; }
@@ -1053,14 +1053,14 @@ var Trig;
     Trig.distToSegment = distToSegment;
 })(Trig || (Trig = {}));
 var Electron = require('electron');
-var Egg;
-(function (Egg) {
+var Cozy;
+(function (Cozy) {
     var enginePath;
     var paused;
     var sizeMultiplier;
     var lastTime;
     function setup(opts) {
-        console.log("Creating Egg Object...", opts);
+        console.log("Creating Cozy Object...", opts);
         this.config = opts;
         this.debug = !!opts.debug;
         this.gameName = opts.game;
@@ -1074,20 +1074,20 @@ var Egg;
             });
         }
         var userdataStem = process.env.APPDATA + '\\' || (process.platform == 'darwin' ? process.env.HOME + 'Library/Application Support/' : process.env.HOME + "/.");
-        this.engineDir = new Egg.Directory(path.join(process.cwd(), opts.enginePath, "resources", "app"));
-        this.gameDir = new Egg.Directory(path.join(process.cwd(), this.gameName));
+        this.engineDir = new Cozy.Directory(path.join(process.cwd(), opts.enginePath, "resources", "app"));
+        this.gameDir = new Cozy.Directory(path.join(process.cwd(), this.gameName));
         if (!this.config.userdata) {
             this.config.userdata = this.gameName;
             console.warn("No 'userdata' key found in config. This will be a problem when you export -- be sure to set it to something.");
         }
-        this.userdataDir = new Egg.Directory(userdataStem).subdir(this.config.userdata, true);
+        this.userdataDir = new Cozy.Directory(userdataStem).subdir(this.config.userdata, true);
         this.textures = {};
         this.paused = true;
     }
-    Egg.setup = setup;
+    Cozy.setup = setup;
     function run() {
         process.chdir(this.gameDir.path);
-        Egg.Input.init(this.config['controls']);
+        Cozy.Input.init(this.config['controls']);
         var multX = screen.availWidth / this.config['width'], multY = screen.availHeight / this.config['height'], mult = Math.floor(Math.min(multX, multY));
         this.browserWindow.setMinimumSize(this.config['width'], this.config['height']);
         this.browserWindow.setContentSize(this.config['width'] * mult, this.config['height'] * mult);
@@ -1096,25 +1096,25 @@ var Egg;
         if (this.debug) {
             window.addEventListener('onkeydown', (e) => {
                 if (e['keyCode'] === 192) {
-                    Egg.browserWindow['toggleDevTools']();
+                    Cozy.browserWindow['toggleDevTools']();
                 }
             });
         }
         PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
-        Egg.planes = [];
-        Egg.Audio.init();
-        if (Egg.config['volume']) {
-            if (Egg.config['volume']['sfx'] !== undefined) {
-                Egg.Audio.setSFXVolume(Egg.config['volume']['sfx']);
+        Cozy.planes = [];
+        Cozy.Audio.init();
+        if (Cozy.config['volume']) {
+            if (Cozy.config['volume']['sfx'] !== undefined) {
+                Cozy.Audio.setSFXVolume(Cozy.config['volume']['sfx']);
             }
-            if (Egg.config['volume']['music'] !== undefined) {
-                Egg.Audio.setMusicVolume(Egg.config['volume']['music']);
+            if (Cozy.config['volume']['music'] !== undefined) {
+                Cozy.Audio.setMusicVolume(Cozy.config['volume']['music']);
             }
         }
         var styles = [];
         _.each(this.config['css'], (path) => {
             _.each(this.gameDir.glob(path), (f) => {
-                Egg.addStyleSheet(f);
+                Cozy.addStyleSheet(f);
             });
         });
         document['fonts'].ready
@@ -1126,13 +1126,13 @@ var Egg;
             this.frame();
         }.bind(this));
     }
-    Egg.run = run;
+    Cozy.run = run;
     function frame() {
         requestAnimationFrame(this.frame.bind(this));
         var dt = Date.now() - this.lastTime;
         this.lastTime += dt;
         dt /= 1000;
-        Egg.Input.update(dt);
+        Cozy.Input.update(dt);
         if (this.paused) {
             return;
         }
@@ -1155,13 +1155,13 @@ var Egg;
             this.Game.postRender(dt);
         }
     }
-    Egg.frame = frame;
+    Cozy.frame = frame;
     function setScene(e) {
         this.scene = e;
     }
-    Egg.setScene = setScene;
+    Cozy.setScene = setScene;
     function addPlane(Type, args) {
-        if (!(Type.prototype instanceof Egg.Plane)) {
+        if (!(Type.prototype instanceof Cozy.Plane)) {
             throw new TypeError("Type passed to addPlane() must inherit from Plane.");
         }
         var plane = new Type(args || {});
@@ -1169,15 +1169,15 @@ var Egg;
         plane.resize(this.sizeMultiplier);
         return plane;
     }
-    Egg.addPlane = addPlane;
+    Cozy.addPlane = addPlane;
     function pause() {
         this.paused = true;
     }
-    Egg.pause = pause;
+    Cozy.pause = pause;
     function unpause() {
         this.paused = false;
     }
-    Egg.unpause = unpause;
+    Cozy.unpause = unpause;
     function onResize(event) {
         var newSize = this.browserWindow.getContentSize(), multX = newSize[0] / this.config['width'], multY = newSize[1] / this.config['height'], mult = Math.min(multX, multY);
         if (mult > 1) {
@@ -1192,19 +1192,19 @@ var Egg;
         document.body.offsetHeight;
         document.body.style.display = '';
     }
-    Egg.onResize = onResize;
+    Cozy.onResize = onResize;
     function getCurrentZoom() {
         return this.sizeMultiplier;
     }
-    Egg.getCurrentZoom = getCurrentZoom;
+    Cozy.getCurrentZoom = getCurrentZoom;
     function setTitle(title) {
         this.browserWindow.setTitle(title);
     }
-    Egg.setTitle = setTitle;
+    Cozy.setTitle = setTitle;
     function quit() {
         this.browserWindow.close();
     }
-    Egg.quit = quit;
+    Cozy.quit = quit;
     function loadTextures(assets) {
         return new Promise((resolve, reject) => {
             if (assets.length < 1) {
@@ -1215,18 +1215,18 @@ var Egg;
             });
             PIXI.loader.load((loader, resources) => {
                 _.each(resources, (resource) => {
-                    this.textures[resource['name'].replace(/\\/g, "/")] = new Egg.Texture(resource['texture']);
+                    this.textures[resource['name'].replace(/\\/g, "/")] = new Cozy.Texture(resource['texture']);
                 });
-                this.textures = _.extend(this.textures, Egg.textures);
+                this.textures = _.extend(this.textures, Cozy.textures);
                 resolve();
             });
         });
     }
-    Egg.loadTextures = loadTextures;
+    Cozy.loadTextures = loadTextures;
     function getTexture(f) {
-        return Egg.textures[f.replace(/\\/g, "/")];
+        return Cozy.textures[f.replace(/\\/g, "/")];
     }
-    Egg.getTexture = getTexture;
+    Cozy.getTexture = getTexture;
     function addStyleSheet(file) {
         var el = document.createElement('link');
         el.rel = "stylesheet";
@@ -1234,7 +1234,7 @@ var Egg;
         el.href = file.url;
         document.head.appendChild(el);
     }
-    Egg.addStyleSheet = addStyleSheet;
+    Cozy.addStyleSheet = addStyleSheet;
     function captureScreenshot(width, height) {
         return new Promise((resolve, reject) => {
             this.browserWindow.capturePage((image) => {
@@ -1249,14 +1249,14 @@ var Egg;
             });
         });
     }
-    Egg.captureScreenshot = captureScreenshot;
+    Cozy.captureScreenshot = captureScreenshot;
     function saveImageToFile(image) {
         var filename = `${(new Date()).toISOString().replace(/[-T:Z\.]/g, "")}.png`;
-        var file = Egg.userdataDir.subdir('screenshots', true).file(filename);
+        var file = Cozy.userdataDir.subdir('screenshots', true).file(filename);
         file.write(image.toPng(), 'binary');
         return file;
     }
-    Egg.saveImageToFile = saveImageToFile;
+    Cozy.saveImageToFile = saveImageToFile;
     function fixHTML(html) {
         var el = document.createElement('div');
         el.innerHTML = html;
@@ -1272,18 +1272,18 @@ var Egg;
         });
         return el.innerHTML;
     }
-    Egg.fixHTML = fixHTML;
+    Cozy.fixHTML = fixHTML;
     function wrap(n, range) {
         while (n < 0)
             n += range;
         n %= range;
         return n;
     }
-    Egg.wrap = wrap;
+    Cozy.wrap = wrap;
     let lastID = -1;
     function uniqueID() {
         return (++lastID).toString();
     }
-    Egg.uniqueID = uniqueID;
-})(Egg || (Egg = {}));
+    Cozy.uniqueID = uniqueID;
+})(Cozy || (Cozy = {}));
 //# sourceMappingURL=Cozy.js.map

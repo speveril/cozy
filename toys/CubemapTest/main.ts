@@ -8,7 +8,7 @@ module CubemapTest {
 
 
     export function start() {
-        Egg.loadTextures({
+        Cozy.loadTextures({
             cube_1: 'assets/cube1.png'
         }).then(setup);
     }
@@ -17,8 +17,8 @@ module CubemapTest {
     }
 
     function setup() {
-        var plane:Egg.RenderPlane = <Egg.RenderPlane>Egg.addPlane(Egg.RenderPlane);
-        var layer:Egg.Layer = plane.addRenderLayer();
+        var plane:Cozy.RenderPlane = <Cozy.RenderPlane>Cozy.addPlane(Cozy.RenderPlane);
+        var layer:Cozy.Layer = plane.addRenderLayer();
 
         layer.offset(960, 540);
 
@@ -47,8 +47,8 @@ module CubemapTest {
             console.log(x,y,z);
             var tile = maplayout[z][y][x];
             if (tile !== 0) {
-                layer.add(new Egg.Sprite({
-                    texture: Egg.textures['cube_' + tile],
+                layer.add(new Cozy.Sprite({
+                    texture: Cozy.textures['cube_' + tile],
                     hotspot: { x: 48, y: 54 },
                     position: {
                         x: x * 48 - y * 48,
@@ -58,7 +58,7 @@ module CubemapTest {
             }
         }
 
-        Egg.unpause();
+        Cozy.unpause();
     }
 }
 

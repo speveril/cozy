@@ -1,4 +1,4 @@
-module Egg.Components {
+module Cozy.Components {
     export class Renderer extends Component {
         private HTMLcontainer;
         private renderer:PIXI.WebGLRenderer;
@@ -9,7 +9,7 @@ module Egg.Components {
 
             var args = _args || {};
 
-            this.renderer = new PIXI.WebGLRenderer(Egg.config['width'], Egg.config['height'], { transparent: true });
+            this.renderer = new PIXI.WebGLRenderer(Cozy.config['width'], Cozy.config['height'], { transparent: true });
             this.renderer.backgroundColor = args.renderBackground === undefined ? 'rgba(0, 0, 0, 0)' : args.renderBackground;
 
             this.container = new PIXI.Container();

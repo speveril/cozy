@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>GamepadDevice | Cozy Engine</title>
+	<title>Device | Cozy Engine</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,13 +56,13 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/egg.html">Egg</a>
+					<a href="../modules/cozy.html">Cozy</a>
 				</li>
 				<li>
-					<a href="egg.gamepaddevice.html">GamepadDevice</a>
+					<a href="cozy.device.html">Device</a>
 				</li>
 			</ul>
-			<h1>Class GamepadDevice</h1>
+			<h1>Class Device</h1>
 		</div>
 	</div>
 </header>
@@ -73,10 +73,13 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<a href="egg.device.html" class="tsd-signature-type">Device</a>
+						<span class="target">Device</span>
 						<ul class="tsd-hierarchy">
 							<li>
-								<span class="target">GamepadDevice</span>
+								<a href="cozy.keyboarddevice.html" class="tsd-signature-type">KeyboardDevice</a>
+							</li>
+							<li>
+								<a href="cozy.gamepaddevice.html" class="tsd-signature-type">GamepadDevice</a>
 							</li>
 						</ul>
 					</li>
@@ -89,22 +92,21 @@
 						<section class="tsd-index-section tsd-is-external tsd-is-not-exported">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external tsd-is-not-exported"><a href="egg.gamepaddevice.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-external tsd-is-not-exported"><a href="cozy.device.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-external tsd-is-not-exported">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external tsd-is-not-exported"><a href="egg.gamepaddevice.html#axismap" class="tsd-kind-icon">axis<wbr>Map</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external tsd-is-not-exported"><a href="egg.gamepaddevice.html#buttonmap" class="tsd-kind-icon">button<wbr>Map</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external tsd-is-not-exported"><a href="egg.gamepaddevice.html#index" class="tsd-kind-icon">index</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external tsd-is-not-exported"><a href="cozy.device.html#axismap" class="tsd-kind-icon">axis<wbr>Map</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external tsd-is-not-exported"><a href="cozy.device.html#buttonmap" class="tsd-kind-icon">button<wbr>Map</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-external tsd-is-not-exported">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external tsd-is-not-exported"><a href="egg.gamepaddevice.html#getaxisstate" class="tsd-kind-icon">get<wbr>Axis<wbr>State</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external tsd-is-not-exported"><a href="egg.gamepaddevice.html#getbuttonstate" class="tsd-kind-icon">get<wbr>Button<wbr>State</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external tsd-is-not-exported"><a href="cozy.device.html#getaxisstate" class="tsd-kind-icon">get<wbr>Axis<wbr>State</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external tsd-is-not-exported"><a href="cozy.device.html#getbuttonstate" class="tsd-kind-icon">get<wbr>Button<wbr>State</a></li>
 							</ul>
 						</section>
 					</div>
@@ -112,25 +114,21 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external tsd-is-not-exported">
 				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external tsd-is-not-exported">
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-external tsd-is-not-exported">
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Gamepad<wbr>Device<span class="tsd-signature-symbol">(</span>index<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, buttonMap<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">object</span>, axisMap<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="egg.gamepaddevice.html" class="tsd-signature-type">GamepadDevice</a></li>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-external tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Device<span class="tsd-signature-symbol">(</span>buttonMap<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">object</span>, axisMap<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="cozy.device.html" class="tsd-signature-type">Device</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Overrides <a href="egg.device.html">Device</a>.<a href="egg.device.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in Input.ts:81</li>
+									<li>Defined in Input.ts:6</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
-								<li>
-									<h5>index: <span class="tsd-signature-type">number</span></h5>
-								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> buttonMap: <span class="tsd-signature-type">object</span></h5>
 									<ul class="tsd-parameters">
@@ -148,19 +146,18 @@
 									</ul>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="egg.gamepaddevice.html" class="tsd-signature-type">GamepadDevice</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="cozy.device.html" class="tsd-signature-type">Device</a></h4>
 						</li>
 					</ul>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external tsd-is-not-exported">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external tsd-is-not-exported">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external tsd-is-not-exported">
 					<a name="axismap" class="tsd-anchor"></a>
 					<h3>axis<wbr>Map</h3>
 					<div class="tsd-signature tsd-kind-icon">axis<wbr>Map<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="egg.device.html">Device</a>.<a href="egg.device.html#axismap">axisMap</a></p>
 						<ul>
 							<li>Defined in Input.ts:6</li>
 						</ul>
@@ -174,12 +171,11 @@
 						</ul>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external tsd-is-not-exported">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external tsd-is-not-exported">
 					<a name="buttonmap" class="tsd-anchor"></a>
 					<h3>button<wbr>Map</h3>
 					<div class="tsd-signature tsd-kind-icon">button<wbr>Map<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="egg.device.html">Device</a>.<a href="egg.device.html#buttonmap">buttonMap</a></p>
 						<ul>
 							<li>Defined in Input.ts:5</li>
 						</ul>
@@ -193,31 +189,20 @@
 						</ul>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external tsd-is-not-exported">
-					<a name="index" class="tsd-anchor"></a>
-					<h3>index</h3>
-					<div class="tsd-signature tsd-kind-icon">index<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in Input.ts:81</li>
-						</ul>
-					</aside>
-				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external tsd-is-not-exported">
 				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external tsd-is-not-exported">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external tsd-is-not-exported">
 					<a name="getaxisstate" class="tsd-anchor"></a>
 					<h3>get<wbr>Axis<wbr>State</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external tsd-is-not-exported">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external tsd-is-not-exported">
 						<li class="tsd-signature tsd-kind-icon">get<wbr>Axis<wbr>State<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Overrides <a href="egg.device.html">Device</a>.<a href="egg.device.html#getaxisstate">getAxisState</a></p>
 								<ul>
-									<li>Defined in Input.ts:102</li>
+									<li>Defined in Input.ts:29</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span></h4>
@@ -229,18 +214,17 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external tsd-is-not-exported">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external tsd-is-not-exported">
 					<a name="getbuttonstate" class="tsd-anchor"></a>
 					<h3>get<wbr>Button<wbr>State</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external tsd-is-not-exported">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external tsd-is-not-exported">
 						<li class="tsd-signature tsd-kind-icon">get<wbr>Button<wbr>State<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Overrides <a href="egg.device.html">Device</a>.<a href="egg.device.html#getbuttonstate">getButtonState</a></p>
 								<ul>
-									<li>Defined in Input.ts:89</li>
+									<li>Defined in Input.ts:28</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span></h4>
@@ -264,10 +248,10 @@
 						<span>Externals</span>
 					</li>
 					<li class="current tsd-kind-module tsd-is-external">
-						<a href="../modules/egg.html">Egg</a>
+						<a href="../modules/cozy.html">Cozy</a>
 					</li>
 					<li class=" tsd-kind-module tsd-parent-kind-module tsd-is-external">
-						<a href="../modules/egg.components.html">Egg.<wbr>Components</a>
+						<a href="../modules/cozy.components.html">Cozy.<wbr>Components</a>
 					</li>
 					<li class=" tsd-kind-module tsd-is-external">
 						<a href="../modules/trig.html">Trig</a>
@@ -279,25 +263,22 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-parent-kind-module tsd-is-external tsd-is-not-exported">
-						<a href="egg.gamepaddevice.html" class="tsd-kind-icon">Gamepad<wbr>Device</a>
+						<a href="cozy.device.html" class="tsd-kind-icon">Device</a>
 						<ul>
-							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external tsd-is-not-exported">
-								<a href="egg.gamepaddevice.html#constructor" class="tsd-kind-icon">constructor</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external tsd-is-not-exported">
-								<a href="egg.gamepaddevice.html#axismap" class="tsd-kind-icon">axis<wbr>Map</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external tsd-is-not-exported">
-								<a href="egg.gamepaddevice.html#buttonmap" class="tsd-kind-icon">button<wbr>Map</a>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-external tsd-is-not-exported">
+								<a href="cozy.device.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external tsd-is-not-exported">
-								<a href="egg.gamepaddevice.html#index" class="tsd-kind-icon">index</a>
+								<a href="cozy.device.html#axismap" class="tsd-kind-icon">axis<wbr>Map</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external tsd-is-not-exported">
-								<a href="egg.gamepaddevice.html#getaxisstate" class="tsd-kind-icon">get<wbr>Axis<wbr>State</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external tsd-is-not-exported">
+								<a href="cozy.device.html#buttonmap" class="tsd-kind-icon">button<wbr>Map</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external tsd-is-not-exported">
-								<a href="egg.gamepaddevice.html#getbuttonstate" class="tsd-kind-icon">get<wbr>Button<wbr>State</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external tsd-is-not-exported">
+								<a href="cozy.device.html#getaxisstate" class="tsd-kind-icon">get<wbr>Axis<wbr>State</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external tsd-is-not-exported">
+								<a href="cozy.device.html#getbuttonstate" class="tsd-kind-icon">get<wbr>Button<wbr>State</a>
 							</li>
 						</ul>
 					</li>

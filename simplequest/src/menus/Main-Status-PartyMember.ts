@@ -38,7 +38,7 @@ module SimpleQuest {
             </section>
         `
 
-        export class Main_PartyMember extends Egg.UiComponent {
+        export class Main_PartyMember extends Cozy.UiComponent {
             index:number;
             member:RPG.PartyMember;
 
@@ -68,7 +68,7 @@ module SimpleQuest {
 
                 var portraitField = this.find('img.portrait');
                 if (this.member.character['portrait']) {
-                    portraitField.setAttribute('src', Egg.gameDir.file(this.member.character['portrait']).url);
+                    portraitField.setAttribute('src', Cozy.gameDir.file(this.member.character['portrait']).url);
                 }
             }
         }

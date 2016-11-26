@@ -12,7 +12,7 @@ module RPG.Map.Loader {
     **/
     export function load(path:string):RPG.Map.Map {
         // Currently just look at the extension. TMX is the only format we understand right now.
-        var extension = Egg.gameDir.file(path).extension;
+        var extension = Cozy.gameDir.file(path).extension;
         switch (extension) {
             case 'tmx': return TMX(path);
         }

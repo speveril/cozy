@@ -1,5 +1,5 @@
-module Egg.Components {
-    export class SpriteLayer extends Egg.Component {
+module Cozy.Components {
+    export class SpriteLayer extends Cozy.Component {
         innerContainer:PIXI.Container; // should be private, but Renderer needs to access it
 
         constructor(args?:any) {

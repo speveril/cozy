@@ -1,4 +1,4 @@
-module Egg {
+module Cozy {
     /**
     See Entity.
     **/

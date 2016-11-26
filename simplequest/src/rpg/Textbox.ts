@@ -1,5 +1,5 @@
 module RPG {
-    export class Textbox extends Egg.UiComponent {
+    export class Textbox extends Cozy.UiComponent {
         public static box:Textbox;
 
         static show(text:string) {

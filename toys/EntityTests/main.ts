@@ -1,31 +1,31 @@
 module EntityTests {
-    var root:Egg.Entity;
-    var mainLayer:Egg.Entity;
-    var player:Egg.Entity;
+    var root:Cozy.Entity;
+    var mainLayer:Cozy.Entity;
+    var player:Cozy.Entity;
 
     export function start() {
-        Egg.loadTextures({
+        Cozy.loadTextures({
             "sprites/monsters.png": "sprites/monsters.png"
         }).then(go);
     }
 
     function go() {
-        root = new Egg.Entity(null, [
-            new Egg.Components.Renderer()
+        root = new Cozy.Entity(null, [
+            new Cozy.Components.Renderer()
         ]);
-        Egg.setScene(root);
+        Cozy.setScene(root);
 
         mainLayer = root.addChild([
-            new Egg.Components.SpriteLayer()
+            new Cozy.Components.SpriteLayer()
         ]);
 
         player = mainLayer.addChild([
-            new Egg.Components.Sprite({
-                s: new Egg.Sprite('sprites/monster_skeleton.sprite')
+            new Cozy.Components.Sprite({
+                s: new Cozy.Sprite('sprites/monster_skeleton.sprite')
             })
         ]);
 
-        Egg.unpause();
+        Cozy.unpause();
     }
 
     export function frame(dt) {

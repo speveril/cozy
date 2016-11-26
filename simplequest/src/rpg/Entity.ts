@@ -8,7 +8,7 @@ module RPG {
         public name:string;
         public behavior:any;
 
-        public sprite:Egg.Sprite;
+        public sprite:Cozy.Sprite;
         public layer:Map.MapLayer;
         public speed:number;
         public radius:number;
@@ -38,7 +38,7 @@ module RPG {
             if (this.sprite) {
                 this.layer.displayLayer.remove(this.sprite);
             } else {
-                this.sprite = new Egg.Sprite(this.spriteDef);
+                this.sprite = new Cozy.Sprite(this.spriteDef);
             }
 
             this.sprite.setPosition(x, y);

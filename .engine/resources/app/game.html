@@ -11,8 +11,8 @@
 (function() {
     const Electron = require('electron');
     Electron.ipcRenderer.on('start', function(event, arg) {
-        Egg.setup(arg);
-        Egg.run();
+        Cozy.setup(arg);
+        Cozy.run();
     });
 })();
         </script>

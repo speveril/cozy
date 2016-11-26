@@ -3,28 +3,28 @@
 ///<reference path="Barrier.ts"/>
 
 module Invaders {
-    var plane:Egg.RenderPlane;
-    var stage:Egg.Layer;
+    var plane:Cozy.RenderPlane;
+    var stage:Cozy.Layer;
 
     var player:Player;
-    var playerShot:Egg.Sprite = null;
+    var playerShot:Cozy.Sprite = null;
     var aliens:Array<Alien>;
 
     var score:number;
 
     export function start() {
-        Egg.loadTextures({
+        Cozy.loadTextures({
             player:   "gfx/player.png",
             shot:     "gfx/shot.png",
             alien_1:  "gfx/alien01.png",
             alien_2:  "gfx/alien02.png",
             alien_3:  "gfx/alien03.png"
         }).then(() => {
-            _.each(Egg.textures, function(v,k) {
+            _.each(Cozy.textures, function(v,k) {
                 console.log(k,v);
             });
 
-            plane = <Egg.RenderPlane>Egg.addPlane(Egg.RenderPlane, {
+            plane = <Cozy.RenderPlane>Cozy.addPlane(Cozy.RenderPlane, {
                 renderable: true
             });
 
@@ -32,7 +32,7 @@ module Invaders {
             plane.setBackground(0x303040);
 
             resetGame();
-            Egg.unpause();
+            Cozy.unpause();
         });
     }
 
@@ -42,18 +42,18 @@ module Invaders {
 
         // -- process input --
 
-        if (Egg.Input.pressed('menu')) {
-            Egg.quit();
+        if (Cozy.Input.pressed('menu')) {
+            Cozy.quit();
         }
 
-        if (Egg.Input.pressed('left')) {
+        if (Cozy.Input.pressed('left')) {
             player.setPosition(Math.max(7, player.position.x - 200 * dt), player.position.y);
         }
-        if (Egg.Input.pressed('right')) {
-            player.setPosition(Math.min(Egg.config['width'] - 8, player.position.x + 200 * dt), player.position.y);
+        if (Cozy.Input.pressed('right')) {
+            player.setPosition(Math.min(Cozy.config['width'] - 8, player.position.x + 200 * dt), player.position.y);
         }
 
-        if (Egg.Input.pressed('confirm') || Egg.Input.pressed('cancel')) {
+        if (Cozy.Input.pressed('confirm') || Cozy.Input.pressed('cancel')) {
             playerShoot();
         }
 
@@ -90,7 +90,7 @@ module Invaders {
 
             if (!alien.destroyed) {
                 won = false;
-                if (alien.position.y > Egg.config['height'] - 32) {
+                if (alien.position.y > Cozy.config['height'] - 32) {
                     lost = true;
                 }
             }
@@ -102,10 +102,10 @@ module Invaders {
 
         if (won) {
             alert("You won!");
-            Egg.quit();
+            Cozy.quit();
         } else if (lost) {
             alert("You lost. :(");
-            Egg.quit();
+            Cozy.quit();
         }
     }
 
@@ -117,7 +117,7 @@ module Invaders {
         score = 0;
 
         player = new Player({
-            position: { x: Egg.config['width'] / 2, y: Egg.config['height'] - 25 }
+            position: { x: Cozy.config['width'] / 2, y: Cozy.config['height'] - 25 }
         });
         stage.add(player);
 
@@ -137,7 +137,7 @@ module Invaders {
         var y = 32;
         _.each(alienPattern, function(row) {
             var rowWidth = row.length;
-            var left = Egg.config['width'] / 2 - rowWidth * 16;
+            var left = Cozy.config['width'] / 2 - rowWidth * 16;
             var leftBorder = 8 + (widest - rowWidth) * 16;
             var rightBorder = 292 - (widest - rowWidth) * 16;
 
@@ -161,8 +161,8 @@ module Invaders {
 
     function playerShoot() {
         if (!playerShot) {
-            playerShot = new Egg.Sprite({
-                texture: Egg.textures['shot'],
+            playerShot = new Cozy.Sprite({
+                texture: Cozy.textures['shot'],
                 hotspot: { x: 2, y: 2 },
                 position: { x: player.position.x, y: player.position.y - 15 }
             });

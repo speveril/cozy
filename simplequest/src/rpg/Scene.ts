@@ -71,7 +71,7 @@ module RPG {
 
         static *waitButton(b:string) {
             while (true) {
-                if (Egg.Input.pressed(b)) {
+                if (Cozy.Input.pressed(b)) {
                     return;
                 }
                 yield;

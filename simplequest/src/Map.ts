@@ -25,7 +25,7 @@ module SimpleQuest {
         private nextBattle:number;
         private lastPlayerPosition:PIXI.Point;
         private onetimeSwitches:any;
-        public music:Egg.Music;
+        public music:Cozy.Music;
 
         persisted(k):boolean {
             return Map.persistent[this.filename][k];
@@ -71,8 +71,8 @@ module SimpleQuest {
 
             this.threatGroup = null;
 
-            if (this.music && this.music !== Egg.Audio.currentMusic) {
-                Egg.Audio.currentMusic.stop();
+            if (this.music && this.music !== Cozy.Audio.currentMusic) {
+                Cozy.Audio.currentMusic.stop();
                 this.music.start();
             }
         }
@@ -265,7 +265,7 @@ module SimpleQuest {
                 }
 
                 yield* RPG.Scene.waitButton("confirm");
-                Egg.Input.debounce("confirm");
+                Cozy.Input.debounce("confirm");
             }
 
             RPG.Textbox.hide();
@@ -274,13 +274,13 @@ module SimpleQuest {
         *waitCenteredTextbox(text:string) {
             RPG.Textbox.show(`<div class="__c"><div class="__c_i">${text}</div></div>`);
             yield* RPG.Scene.waitButton("confirm");
-            Egg.Input.debounce("confirm");
+            Cozy.Input.debounce("confirm");
             RPG.Textbox.hide();
         }
 
         *waitShop(args) {
-            Egg.Input.debounce('menu');
-            Egg.Input.debounce('cancel');
+            Cozy.Input.debounce('menu');
+            Cozy.Input.debounce('cancel');
             var m = new SimpleQuest.Menu.ShopMenu(args);
             RPG.uiPlane.addChild(m);
             RPG.Menu.push(m);

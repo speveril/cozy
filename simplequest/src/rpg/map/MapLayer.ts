@@ -2,7 +2,7 @@ module RPG.Map {
     export class MapLayer {
         // TODO break this out into child classes, TileLayer and EntityLayer?
         map:Map                            = null;
-        displayLayer:Egg.Layer             = null;
+        displayLayer:Cozy.Layer             = null;
         dirty:boolean                      = false;
         tiles:Array<number>                = [];
         tileLookup:Array<MapTile>          = [];
@@ -19,7 +19,7 @@ module RPG.Map {
             var i = x + (this.map.size.x * y);
             var tileInfo = this.map.lookupTileInfo(t);
 
-            if (tileInfo && Egg.getTexture(tileInfo.texture)) {
+            if (tileInfo && Cozy.getTexture(tileInfo.texture)) {
                 if (!this.tileLookup[i]) {
                     var spr = new MapTile({
                         texture: tileInfo['texture'],

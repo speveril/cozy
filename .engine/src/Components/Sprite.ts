@@ -1,6 +1,6 @@
-module Egg.Components {
-    export class Sprite extends Egg.Component {
-        s:Egg.Sprite;
+module Cozy.Components {
+    export class Sprite extends Cozy.Component {
+        s:Cozy.Sprite;
 
         constructor(args?:any) {
             super(args);

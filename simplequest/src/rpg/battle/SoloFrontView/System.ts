@@ -2,14 +2,14 @@
 
 module RPG.BattleSystem.SoloFrontView {
     export class System {
-        fightMusic:Egg.Music            = null;
-        victoryMusic:Egg.Music          = null;
+        fightMusic:Cozy.Music            = null;
+        victoryMusic:Cozy.Music          = null;
         monsters:any                    = null;
-        renderPlane:Egg.RenderPlane     = null;
-        uiPlane:Egg.UiPlane             = null;
+        renderPlane:Cozy.RenderPlane     = null;
+        uiPlane:Cozy.UiPlane             = null;
 
-        monsterLayer:Egg.Layer          = null;
-        monsterSprite:Egg.Sprite        = null;
+        monsterLayer:Cozy.Layer          = null;
+        monsterSprite:Cozy.Sprite        = null;
 
         combatants:Array<Character>     = null;
 
@@ -18,17 +18,17 @@ module RPG.BattleSystem.SoloFrontView {
             this.victoryMusic = RPG.music[args.victoryMusic] || null;
             this.monsters = args.monsters || {};
 
-            this.renderPlane = <Egg.RenderPlane>Egg.addPlane(Egg.RenderPlane, { className: 'battle-render' });
+            this.renderPlane = <Cozy.RenderPlane>Cozy.addPlane(Cozy.RenderPlane, { className: 'battle-render' });
             this.renderPlane.hide();
 
-            this.uiPlane = <Egg.UiPlane>Egg.addPlane(Egg.UiPlane, { className: 'battle-ui' });
+            this.uiPlane = <Cozy.UiPlane>Cozy.addPlane(Cozy.UiPlane, { className: 'battle-ui' });
             this.uiPlane.hide();
         }
 
         *start(args:any) {
             //// SET UP
 
-            var music = Egg.Audio.currentMusic;
+            var music = Cozy.Audio.currentMusic;
             if (this.fightMusic) this.fightMusic.start();
 
             var player = RPG.Party.members[0].character;
@@ -39,11 +39,11 @@ module RPG.BattleSystem.SoloFrontView {
             this.uiPlane.addChild(battleScreen);
 
             this.monsterLayer = this.renderPlane.addRenderLayer();
-            this.monsterLayer.add(new Egg.Sprite({
+            this.monsterLayer.add(new Cozy.Sprite({
                 texture: args.scene,
                 position: { x: 80, y: 0}
             }));
-            this.monsterSprite = new Egg.Sprite({
+            this.monsterSprite = new Cozy.Sprite({
                 texture: this.monsters[args.enemy].image,
                 position: { x: 80, y: 0}
             });
@@ -59,7 +59,7 @@ module RPG.BattleSystem.SoloFrontView {
             RPG.uiPlane.bringToFront();
             this.uiPlane.bringToFront();
 
-            Egg.Input.debounce('confirm');
+            Cozy.Input.debounce('confirm');
 
             //// LOOP
 
@@ -149,7 +149,7 @@ module RPG.BattleSystem.SoloFrontView {
                 this.output("\nYou have died!");
                 yield* RPG.Scene.waitFadeTo("black", 2.0);
 
-                Egg.quit(); // TODO this should actually be a gameover handler
+                Cozy.quit(); // TODO this should actually be a gameover handler
             } else if (battleOutcome.victory) {
                 if (this.victoryMusic) this.victoryMusic.start();
 
@@ -179,7 +179,7 @@ module RPG.BattleSystem.SoloFrontView {
 
             if (music) music.start();
 
-            Egg.Input.debounce('confirm');
+            Cozy.Input.debounce('confirm');
 
             this.renderPlane.hide();
             this.uiPlane.hide();

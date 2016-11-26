@@ -1,4 +1,4 @@
-module Egg {
+module Cozy {
     export class Texture {
         innerTexture: PIXI.Texture;
 

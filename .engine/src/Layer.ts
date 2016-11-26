@@ -1,7 +1,7 @@
-module Egg {
+module Cozy {
     export class Layer {
         innerContainer: PIXI.Container;
-        sprites: Array<Egg.Sprite>;
+        sprites: Array<Cozy.Sprite>;
 
         constructor() {
             this.sprites = [];

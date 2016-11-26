@@ -2,16 +2,16 @@ module RPG {
     export function frameMapMode(dt) {
         // handle movement
         var dx = 0, dy = 0;
-        var movex = Egg.Input.axis('horizontal') || 0,
-            movey = Egg.Input.axis('vertical') || 0;
+        var movex = Cozy.Input.axis('horizontal') || 0,
+            movey = Cozy.Input.axis('vertical') || 0;
 
-        if (Egg.Input.pressed('up')) movey -= 1;
-        if (Egg.Input.pressed('down')) movey += 1;
-        if (Egg.Input.pressed('left')) movex -= 1;
-        if (Egg.Input.pressed('right')) movex += 1;
+        if (Cozy.Input.pressed('up')) movey -= 1;
+        if (Cozy.Input.pressed('down')) movey += 1;
+        if (Cozy.Input.pressed('left')) movex -= 1;
+        if (Cozy.Input.pressed('right')) movex += 1;
 
         var move = Trig.dist({x:0,y:0}, {x:movex, y:movey});
-        if (Math.abs(move) < Egg.Input.deadzone) {
+        if (Math.abs(move) < Cozy.Input.deadzone) {
             movex = 0;
             movey = 0;
         } else if (move > 1 ) {
@@ -25,8 +25,8 @@ module RPG {
         player.move(dx, dy);
 
         // handle other input
-        if (Egg.Input.pressed('confirm')) {
-            Egg.Input.debounce('confirm');
+        if (Cozy.Input.pressed('confirm')) {
+            Cozy.Input.debounce('confirm');
             var tx = player.position.x;
             var ty = player.position.y;
             switch (player.dir) {
@@ -57,9 +57,9 @@ module RPG {
             });
         }
 
-        if (Egg.Input.pressed('menu') && RPG.mainMenuClass) {
-            Egg.Input.debounce('menu');
-            Egg.Input.debounce('cancel');
+        if (Cozy.Input.pressed('menu') && RPG.mainMenuClass) {
+            Cozy.Input.debounce('menu');
+            Cozy.Input.debounce('cancel');
             // TODO instantiate this once and show/hide it rather than re-creating
             var menu = new RPG.mainMenuClass();
             RPG.uiPlane.addChild(menu);

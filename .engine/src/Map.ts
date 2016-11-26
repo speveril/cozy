@@ -1,3 +1,3 @@
-module Egg {
+module Cozy {
     export class Map {}
 }

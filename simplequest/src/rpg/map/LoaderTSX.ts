@@ -6,7 +6,7 @@ module RPG.Map.Loader {
         if (!TSXcache[path]) {
             var ts = new MapTileset();
             var parser = new DOMParser();
-            var data = parser.parseFromString(Egg.gameDir.file(fullpath).read(), "text/xml");
+            var data = parser.parseFromString(Cozy.gameDir.file(fullpath).read(), "text/xml");
             ts.texture = path + data.getElementsByTagName('image')[0].getAttribute('source');
             _.each(data.getElementsByTagName('tile'), function(tile:HTMLElement) {
                 _.each(tile.getElementsByTagName('animation'), function(animData:HTMLElement) {
