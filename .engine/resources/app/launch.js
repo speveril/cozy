@@ -85,6 +85,8 @@ function play(path, override, debug) {
         output("<span style='color:white'>[ Launching " + (params.title || path) + " ]</span>");
 
         var window = new Electron.BrowserWindow({
+            'minWidth':           20,
+            'minHeight':          20,
             'width':              params['width'],
             'height':             params['height'],
             'title':              params['title'] || 'Cozy',

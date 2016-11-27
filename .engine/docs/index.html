@@ -84,7 +84,6 @@
 				<h2 id="roadmap">Roadmap</h2>
 				<p>This is stuff I intend to do, and/or am actively working on. I&#39;m trying to keep this up to date with my commits.</p>
 				<ul>
-					<li>Finish the rename</li>
 					<li>Bugs/Unsorted<ul>
 							<li>userconfig.json in userdatadir<ul>
 									<li>Defaults in project config.json</li>
@@ -97,6 +96,11 @@
 									<li>Need to provide a better way for menus to return a value to a previous menu -- promises?</li>
 								</ul>
 							</li>
+							<li>Should be able to refresh/reset; the way the message waiting works, this doesn&#39;t work the way it should</li>
+						</ul>
+					</li>
+					<li>RPGKit<ul>
+							<li>Zones (large polygons that can be checked, but don&#39;t necessarily fire an event when crossing the threshold) ???</li>
 						</ul>
 					</li>
 					<li>Exporting<ul>
@@ -104,13 +108,17 @@
 							<li>Split config.json into necessary game setup vs. player configuration (bake non-player config into game setup on export, leave config as only player config, or play config should be in userdataDir)</li>
 						</ul>
 					</li>
-					<li><strong>=== SIMPLEQUEST RELEASE [ENGINE 0.1]===</strong></li>
+					<li><strong>=== SIMPLEQUEST RELEASE [ENGINE 0.1] ===</strong></li>
 					<li>Bugs/Unsorted<ul>
 							<li>Make browser NOT close the currently active game<ul>
 									<li>or just revisit the whole browser interface in general</li>
 								</ul>
 							</li>
 							<li>If a project has a <code>build.js</code>/<code>build.ts</code>, run it after TS compilation</li>
+						</ul>
+					</li>
+					<li>Testing<ul>
+							<li>Investigate this</li>
 						</ul>
 					</li>
 					<li>RPGKit<ul>
@@ -121,7 +129,7 @@
 						</ul>
 					</li>
 					<li>Data Editor<ul>
-							<li>Manages .json files; top level is an object with a &quot;.schemas&quot; key plus &quot;tables&quot; of typed objects</li>
+							<li>Manage .json files; top level is an object with a &quot;.schemas&quot; key plus &quot;tables&quot; of typed objects</li>
 						</ul>
 					</li>
 					<li>Reconcile File stuff<ul>
@@ -133,23 +141,24 @@
 							<li>Linux</li>
 						</ul>
 					</li>
-					<li>config.json should be able to define an expected version, Cozy should be smart enough to do the right thing<ul>
-							<li>I think this means &quot;shipping&quot; compiled .js blobs of previous versions along with the engine, and having the player select the right one</li>
-							<li>This is irrelevant for exported games; they&#39;ll be packaged with the version they were used to create it</li>
-						</ul>
-					</li>
+					<li><strong>=== <em>NEXT GAME</em> [ENGINE 0.2] ===</strong></li>
 					<li>Documentation<ul>
 							<li>Better docs on core functions</li>
 							<li>Higher level intro, etc</li>
 							<li>Tutorials</li>
 						</ul>
 					</li>
-					<li>Testing<ul>
-							<li>Investigate this</li>
-						</ul>
-					</li>
 					<li>Release stuff<ul>
 							<li>Check if <code>.engine/src</code> exists and do not do core watch or compiles if it doesn&#39;t</li>
+							<li>config.json should be able to define an expected version, Cozy should be smart enough to do the right thing<ul>
+									<li>I think this means &quot;shipping&quot; compiled .js blobs of previous versions along with the engine, and having the player select the right one</li>
+									<li>This is irrelevant for exported games; they&#39;ll be packaged with the version they were used to create it</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+					<li>Testing<ul>
+							<li>Don&#39;t ship without tests on engine core; lets me keep track of breaking changes, etc.</li>
 						</ul>
 					</li>
 					<li><strong>=== ENGINE RELEASE 1.0 ===</strong></li>
@@ -188,8 +197,8 @@
 							<li>Currently still a work in progress</li>
 						</ul>
 					</li>
-					<li><strong>examples/EggInvaders</strong> - A simple 2-player pong game</li>
-					<li><strong>examples/EggPong</strong> - A partial Space Invaders clone</li>
+					<li><strong>examples/CozyInvaders</strong> - A simple 2-player pong game</li>
+					<li><strong>examples/CozyPong</strong> - A partial Space Invaders clone</li>
 					<li><strong>toys</strong> - Random junk that demonstrates something</li>
 				</ul>
 				<p>To run the examples, simply click them in the game list in the launcher.</p>

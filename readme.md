@@ -43,7 +43,7 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
         - Need to provide a better way for menus to return a value to a previous menu -- promises?
     - Should be able to refresh/reset; the way the message waiting works, this doesn't work the way it should
 - RPGKit
-    - Zones (large polygons that can be checked, but don't necessarily fire an event when crossing the threshold)
+    - Zones (large polygons that can be checked, but don't necessarily fire an event when crossing the threshold) ???
 - Exporting
     - Make glob.js easier to recreate
     - Split config.json into necessary game setup vs. player configuration (bake non-player config into game setup on export, leave config as only player config, or play config should be in userdataDir)
@@ -106,6 +106,9 @@ Stuff I've thought of and would be nice, or might be useful. I may or may not ev
 - **SimpleQuest** - SimpleQuest, a small but complete RPG
     - See simplequest/README.md for more information
     - Currently still a work in progress
+- **vn** - VisualNovel, a barebones swipe at making a visual novel engine
+    - Will eventually form the basis of a VisualNovelKit
+    - Heavily uh, inspired, by [The Sagittarian](http://www.newgrounds.com/portal/view/560868) by [Hyptosis](http://www.lorestrome.com)
 - **examples/CozyInvaders** - A simple 2-player pong game
 - **examples/CozyPong** - A partial Space Invaders clone
 - **toys** - Random junk that demonstrates something
