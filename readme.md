@@ -42,37 +42,42 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
         - Menu should have .menu and .active; selection container should have .selections, and it should just get added by setupSelections
         - Need to provide a better way for menus to return a value to a previous menu -- promises?
     - Should be able to refresh/reset; the way the message waiting works, this doesn't work the way it should
+- RPGKit
+    - Zones (large polygons that can be checked, but don't necessarily fire an event when crossing the threshold)
 - Exporting
     - Make glob.js easier to recreate
     - Split config.json into necessary game setup vs. player configuration (bake non-player config into game setup on export, leave config as only player config, or play config should be in userdataDir)
-- **=== SIMPLEQUEST RELEASE [ENGINE 0.1]===**
+- **=== SIMPLEQUEST RELEASE [ENGINE 0.1] ===**
 - Bugs/Unsorted
     - Make browser NOT close the currently active game
         - or just revisit the whole browser interface in general
     - If a project has a `build.js`/`build.ts`, run it after TS compilation
+- Testing
+    - Investigate this
 - RPGKit
     - Add scripted movement for entities on the map
     - Add scripted movement for entities in Scenes
     - Can I just slurp in all of the map .ts files automatically instead of having to reference each one?
     - It'd be nice if the persistent stuff in map was easier to use in general
 - Data Editor
-    - Manages .json files; top level is an object with a ".schemas" key plus "tables" of typed objects
+    - Manage .json files; top level is an object with a ".schemas" key plus "tables" of typed objects
 - Reconcile File stuff
     - Don't make it required that the current working directory is actually the gamepath
 - Other platforms
     - Mac OS
     - Linux
-- config.json should be able to define an expected version, Cozy should be smart enough to do the right thing
-    - I think this means "shipping" compiled .js blobs of previous versions along with the engine, and having the player select the right one
-    - This is irrelevant for exported games; they'll be packaged with the version they were used to create it
+- **=== *NEXT GAME* [ENGINE 0.2] ===**
 - Documentation
     - Better docs on core functions
     - Higher level intro, etc
     - Tutorials
-- Testing
-    - Investigate this
 - Release stuff
     - Check if `.engine/src` exists and do not do core watch or compiles if it doesn't
+    - config.json should be able to define an expected version, Cozy should be smart enough to do the right thing
+        - I think this means "shipping" compiled .js blobs of previous versions along with the engine, and having the player select the right one
+        - This is irrelevant for exported games; they'll be packaged with the version they were used to create it
+- Testing
+    - Don't ship without tests on engine core; lets me keep track of breaking changes, etc.
 - **=== ENGINE RELEASE 1.0 ===**
 
 ## Wish list/Ideas (some day maybe):
