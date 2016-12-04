@@ -35,11 +35,12 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
 
 - Bugs/Unsorted
     - SimpleQuest/RPGKit specific
-        - add a way to get the outcome of a battle so that code may respond to it differently -- victory vs. flee vs. defeat
-        - add a real game over
-        - allow to lose a battle without a game over
-        - add game start and game over scenes
+        - write the rest of the damn story
         - flesh out all monsters, fights
+        - add game start and game win scenes
+        - add a real lose screen
+        - ? add a way to get the outcome of a battle so that code may respond to it differently -- victory vs. flee vs. defeat
+        - ? allow to lose a battle without a game over
         - Menus need some polish
             - Menu should have .menu and .active; selection container should have .selections, and it should just get added by setupSelections
             - Need to provide a better way for menus to return a value to a previous menu -- promises?
