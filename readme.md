@@ -34,24 +34,30 @@ If you want to work on the engine itself, you'll need to have NPM installed; run
 This is stuff I intend to do, and/or am actively working on. I'm trying to keep this up to date with my commits.
 
 - Bugs/Unsorted
+    - SimpleQuest/RPGKit specific
+        - add a way to get the outcome of a battle so that code may respond to it differently -- victory vs. flee vs. defeat
+        - add a real game over
+        - allow to lose a battle without a game over
+        - add game start and game over scenes
+        - flesh out all monsters, fights
+        - Menus need some polish
+            - Menu should have .menu and .active; selection container should have .selections, and it should just get added by setupSelections
+            - Need to provide a better way for menus to return a value to a previous menu -- promises?
     - userconfig.json in userdatadir
-        - Defaults in project config.json
         - In-game input config
-    - Manager should only run one game at a time, or at least only one copy of a particular game
-    - Menus need some polish
-        - Menu should have .menu and .active; selection container should have .selections, and it should just get added by setupSelections
-        - Need to provide a better way for menus to return a value to a previous menu -- promises?
-    - Should be able to refresh/reset; the way the message waiting works, this doesn't work the way it should
+        - Defaults in project config.json
 - RPGKit
     - Zones (large polygons that can be checked, but don't necessarily fire an event when crossing the threshold) ???
 - Exporting
     - Make glob.js easier to recreate
     - Split config.json into necessary game setup vs. player configuration (bake non-player config into game setup on export, leave config as only player config, or play config should be in userdataDir)
-- **=== SIMPLEQUEST RELEASE [ENGINE 0.1] ===**
+- **=== RELEASE 0.1 - SIMPLEQUEST, RPGKIT, BASIC FUNCTIONALITY ===**
 - Bugs/Unsorted
     - Make browser NOT close the currently active game
         - or just revisit the whole browser interface in general
     - If a project has a `build.js`/`build.ts`, run it after TS compilation
+    - Manager should only run one game at a time, or at least only one copy of a particular game
+    - Should be able to refresh/reset; the way the message waiting works, this doesn't work the way it should
 - Testing
     - Investigate this
 - RPGKit
@@ -66,7 +72,7 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
 - Other platforms
     - Mac OS
     - Linux
-- **=== *NEXT GAME* [ENGINE 0.2] ===**
+- **=== RELEASE 0.2 - GRAB THE GEMS, PUZZLEKIT, QUALITY OF LIFE IMPROVEMENTS ===**
 - Documentation
     - Better docs on core functions
     - Higher level intro, etc
@@ -78,7 +84,7 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
         - This is irrelevant for exported games; they'll be packaged with the version they were used to create it
 - Testing
     - Don't ship without tests on engine core; lets me keep track of breaking changes, etc.
-- **=== ENGINE RELEASE 1.0 ===**
+- **=== RELEASE 1.0 - READY FOR PRIMETIME ===**
 
 ## Wish list/Ideas (some day maybe):
 

@@ -119,7 +119,11 @@ module RPG {
         setupSelections(parent) {
             if (this.selectionContainer) {
                 this.selectionContainer.classList.remove('active');
-                _.each(this.indicators, (e) => this.selectionContainer.removeChild(e));
+                _.each(this.indicators, (e) => {
+                    if (e.parentElement) {
+                        e.parentElement.removeChild(e);
+                    }
+                });
                 this.indicators = {};
             }
 
