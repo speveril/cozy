@@ -38,6 +38,13 @@ module Cozy {
                 args = Cozy.gameDir.file(args).read('json');
             }
 
+            while (args['.derive']) {
+                let path = args['.derive'];
+                delete args['.derive'];
+
+                args = _.extend(Cozy.gameDir.file(path).read('json'), args);
+            }
+
             if (!args.texture) throw new Error("Sprite must be instantiated with a 'texture'");
 
             args.hotspot = args.hotspot || {};

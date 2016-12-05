@@ -73,7 +73,7 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
 - Other platforms
     - Mac OS
     - Linux
-- **=== RELEASE 0.2 - GRAB THE GEMS, PUZZLEKIT, QUALITY OF LIFE IMPROVEMENTS ===**
+- **=== RELEASE 0.2 - GRAB THE GEMS, ACTIONADVENTUREKIT, QUALITY OF LIFE IMPROVEMENTS ===**
 - Documentation
     - Better docs on core functions
     - Higher level intro, etc
