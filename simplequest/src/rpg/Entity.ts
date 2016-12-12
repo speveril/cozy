@@ -34,6 +34,19 @@ module RPG {
             this.paused = false;
         }
 
+        changeSprite(newDef) {
+            this.spriteDef = newDef;
+            if (this.sprite) {
+                var x = this.sprite.position.x;
+                var y = this.sprite.position.y;
+                var lyr = this.layer;
+                this.layer.displayLayer.remove(this.sprite);
+                this.sprite = null;
+
+                this.place(x, y, lyr);
+            }
+        }
+
         place(x:number, y:number, lyr:Map.MapLayer):void {
             if (this.sprite) {
                 this.layer.displayLayer.remove(this.sprite);

@@ -78,9 +78,8 @@ module SimpleQuest {
 
         music_check(args) {
             RPG.Scene.do(function*() {
-                var choices = ["Change track...", "Leave it"];
-                var choice = yield* this.waitChoice(`Playing '${this.musicKey}'.`, choices);
-                if (choice === choices[0]) {
+                var choice = yield* this.waitChoice(`Playing '${this.musicKey}'.`, {change:'Change track...', 'cancel':'Leave it'});
+                if (choice === 'change') {
                     this.musicKey = yield* this.waitChoice("Select track...", _.keys(RPG.music));
                     RPG.music[this.musicKey].start();
                 }
@@ -119,18 +118,45 @@ module SimpleQuest {
             });
         }
 
-        fight_slime(args)              { this.test_fight("slime"); }
-        fight_blueslime(args)          { this.test_fight("blueslime"); }
-        fight_stabber(args)            { this.test_fight("stabber"); }
-        fight_skeleton(args)           { this.test_fight("skellington"); }
+        check_entity(args) {
+            var monsterTable = {
+                'sprites/monster_slime.sprite':         'slime',
+                'sprites/monster_blueslime.sprite':     'blueslime',
+                'sprites/monster_goblin.sprite':        'stabber',
+                'sprites/monster_skeleton.sprite':      'skellington'
+            }
+
+            RPG.Scene.do(function*() {
+                var choices = {
+                    change:     'Change to this sprite',
+                    fight:      'Fight it',
+                    leave:      'Leave it alone',
+                };
+                if (!monsterTable[args.target.spriteDef]) {
+                    delete choices['fight'];
+                }
+
+                var choice = yield* this.waitChoice(args.target.spriteDef, choices);
+                switch (choice) {
+                    case 'leave':
+                        return;
+                    case 'fight':
+                        console.log("fight TODO");
+                        break;
+                    case 'change':
+                        RPG.player.changeSprite(args.target.spriteDef);
+                        return;
+                }
+            }.bind(this));
+        }
 
         fight_special(args) {
             RPG.Scene.do(function*() {
                 yield *this.waitTextbox('Skeleton', [
                     "Knave! You stand before Dr. Skull Van Skellington, Esq."
                 ]);
-                var fight = yield *this.waitChoice("Fight Dr. Whatever?", ["Yes","No"]);
-                if (fight === 'Yes') {
+                var fight = yield *this.waitChoice("Fight Dr. Whatever?", {yes:"Yes", no:"No"});
+                if (fight === 'yes') {
                     yield *RPG.Battle.waitBattle({
                         enemy: 'skellington',
                         scene: 'ui/battle/scene_test.png'

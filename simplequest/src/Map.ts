@@ -210,10 +210,9 @@ module SimpleQuest {
             }
         }
 
-        *waitChoice(topic, choices:string[]) {
+        *waitChoice(topic, choices:string[]|{[key:string]: string}) {
             // TODO this is kinda gross; if I want to do this I should make it easier to create simple menus without
             //      making a new class
-            // TODO support more than two choices by scrolling
             var choicesHTML = _.reduce(choices, (str, ch, index) => str + `<li data-menu="choose" data-index="${index}">${ch}</li>`, '');
             var m = new RPG.Menu({
                 className: '__ch inline-choice menu selections scrollable',
@@ -235,7 +234,7 @@ module SimpleQuest {
             }
             RPG.Textbox.hide();
 
-            return choices[returnValue];
+            return returnValue;
         }
 
         *waitLevers(tiles:any) {
