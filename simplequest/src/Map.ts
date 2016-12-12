@@ -1,27 +1,5 @@
 module SimpleQuest {
-    var threats:any = {
-        "forest_A": {
-            "dist_min": 25,
-            "dist_max": 100,
-            "scene": "ui/battle/scene_test.png",
-            "enemies": [ "blueslime", "blueslime", "skellington" ]
-        },
-        "forest_B": {
-            "dist_min": 20,
-            "dist_max": 50,
-            "scene": "ui/battle/scene_test.png",
-            "enemies": [ "skellington", "skellington", "stabber" ]
-        },
-        "forest_C": {
-            "dist_min": 25,
-            "dist_max": 85,
-            "scene": "ui/battle/scene_test.png",
-            "enemies": [ "stabber" ]
-        }
-    };
-
     export class Map extends RPG.Map.Map {
-        private threatGroup:string;
         private nextBattle:number;
         private lastPlayerPosition:PIXI.Point;
         private onetimeSwitches:any;
@@ -69,31 +47,9 @@ module SimpleQuest {
                 }.bind(this));
             }.bind(this));
 
-            this.threatGroup = null;
-
             if (this.music && this.music !== Cozy.Audio.currentMusic) {
                 Cozy.Audio.currentMusic.stop();
                 this.music.start();
-            }
-        }
-
-        update(dt) {
-            super.update(dt);
-
-            if (this.threatGroup) {
-                var d = Trig.dist(this.lastPlayerPosition, RPG.player.position);
-                this.nextBattle -= d;
-
-                if (this.nextBattle < 0) {
-                    var groupDef = threats[this.threatGroup];
-                    var enemy = groupDef.enemies[Math.floor(Math.random() * groupDef.enemies.length)];
-                    this.nextBattle = this.tileSize.x * (groupDef['dist_min'] + Math.random() * groupDef['dist_max']);
-
-                    RPG.Battle.start({ enemy: enemy, scene: groupDef.scene });
-                }
-
-                this.lastPlayerPosition.x = RPG.player.position.x;
-                this.lastPlayerPosition.y = RPG.player.position.y;
             }
         }
 
@@ -287,24 +243,6 @@ module SimpleQuest {
                 yield;
             }
             m.remove();
-        }
-
-        set_threat(args) {
-            var group = args.event.properties['group'];
-            if (group === 'null') group = null;
-
-            if (this.threatGroup !== args.event.properties['group']) {
-                this.threatGroup = args.event.properties['group'];
-
-                if (this.threatGroup !== null) {
-                    var groupDef = threats[this.threatGroup];
-                    this.nextBattle = this.tileSize.x * (groupDef['dist_min'] + Math.random() * groupDef['dist_max']);
-                    this.lastPlayerPosition = new PIXI.Point(RPG.player.position.x, RPG.player.position.y);
-                } else {
-                    this.nextBattle = null;
-                    this.lastPlayerPosition = null;
-                }
-            }
         }
 
         open_door(args) {

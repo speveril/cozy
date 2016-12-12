@@ -7,6 +7,7 @@ module RPG {
         public respectsObstructions:boolean;
         public name:string;
         public behavior:any;
+        public params:any;
 
         public sprite:Cozy.Sprite;
         public layer:Map.MapLayer;
