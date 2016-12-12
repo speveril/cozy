@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="15" tilewidth="16" tileheight="16" nextobjectid="98">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="15" tilewidth="16" tileheight="16" nextobjectid="99">
  <properties>
   <property name="Name" value="Debugurbia"/>
  </properties>
@@ -237,6 +237,11 @@
   <object id="97" name="check_entity" type="entity" x="416" y="32" width="16" height="16">
    <properties>
     <property name="sprite" value="sprites/monster_lavaslime.sprite"/>
+   </properties>
+  </object>
+  <object id="98" name="check_entity" type="entity" x="464" y="64" width="16" height="16">
+   <properties>
+    <property name="sprite" value="sprites/monster_kobold.sprite"/>
    </properties>
   </object>
  </objectgroup>
