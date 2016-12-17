@@ -17,10 +17,10 @@ module RPG.Map.Loader {
                             parseInt(frameData.getAttribute('duration'),10)/1000
                         ]);
                     });
-                    ts.animations[tile.getAttribute("id")] = {
+                    ts.animations[tile.getAttribute("id")] = [{
                         loop: true,
                         frames: animation
-                    };
+                    }];
                 });
             });
 

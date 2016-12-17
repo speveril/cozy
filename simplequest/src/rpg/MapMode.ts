@@ -29,12 +29,11 @@ module RPG {
             Cozy.Input.debounce('confirm');
             var tx = player.position.x;
             var ty = player.position.y;
-            switch (player.dir) {
-                case 'u': ty -= map.tileSize.y; break;
-                case 'd': ty += map.tileSize.y; break;
-                case 'l': tx -= map.tileSize.x; break;
-                case 'r': tx += map.tileSize.x; break;
-            }
+            if (player.dir >= 315 || player.dir <  45) tx += map.tileSize.x;
+            if (player.dir >=  45 && player.dir < 135) ty += map.tileSize.y;
+            if (player.dir >= 135 && player.dir < 225) tx -= map.tileSize.x;
+            if (player.dir >= 225 && player.dir < 315) ty -= map.tileSize.y;
+
             var trigger = player.layer.getTriggerByPoint(tx, ty);
             if (trigger) {
                 player.layer.map[trigger.name]({

@@ -10,12 +10,12 @@ module Cozy {
         frameSize: PIXI.Point;
         frameCounts: PIXI.Point;
         layer: Cozy.Layer;
-        frame_:number;
+        direction_: number;
+        frame_: number;
 
         animations: {};
-        currentAnimation: {};
+        currentAnimation: Array<any>;
         animationScratch: {};
-        frameRate: number;
         currentQuake: {};
 
         /**
@@ -29,7 +29,6 @@ module Cozy {
                 frameSize: { x: <Number>, y: <Number> },
                 animations: { <key>: <animationDef>, ... },
                 currentAnimation: <string>,
-                frameRate: <number>
             }
         **/
 
@@ -65,16 +64,14 @@ module Cozy {
             this.frameBank = args.frameBank ? new PIXI.Rectangle(args.frameBank.x, args.frameBank.y, args.frameBank.width, args.frameBank.height) : new PIXI.Rectangle(0, 0, this.texture.width, this.texture.height);
             this.frameCounts = new PIXI.Point(Math.floor(this.frameBank.width / this.frameSize.x), Math.floor(this.frameBank.height / this.frameSize.y));
             this.clip = new PIXI.Rectangle(0, 0, this.frameSize.x, this.frameSize.y);
+            this.direction = args.direction || 0;
 
             this.updateTextureFrame();
 
             this.animations = args.animations || {};
-            this.frameRate = args.frameRate || 60;
-            if (args.currentAnimation) {
-                this.animation = args.currentAnimation;
-            }
-
             this.positionInnerSprite();
+
+            this.animation = args.currentAnimation;
         }
 
         set frame(f:number) {
@@ -91,10 +88,12 @@ module Cozy {
                 if (this.animations[anim] == this.currentAnimation) return;
                 this.currentAnimation = this.animations[anim];
                 this.animationScratch = {
+                    subAnimation: '',
                     counter: 0,
                     currentFrame: null,
                     name: anim
                 };
+                this.direction = this.direction; // fire the code that reconciles animation and direction
             } else {
                 this.currentAnimation = null;
                 this.animationScratch = null;
@@ -107,6 +106,29 @@ module Cozy {
             } else {
                 return undefined;
             }
+        }
+
+        set direction(d:number) {
+            // TODO this is wasteful; it runs through the subanimations every single time direction is set
+            this.direction_ = d;
+            if (this.currentAnimation) {
+                var currentSub = this.animationScratch['subAnimation'];
+                this.animationScratch['subAnimation'] = _.findIndex(this.currentAnimation, (a:any) => {
+                    return !(a.angle) || (this.direction >= a.angle[0] && this.direction <= a.angle[1]);
+                });
+                if (this.animationScratch['subAnimation'] < 0) this.animationScratch['subAnimation'] = 0;
+                if (currentSub !== this.animationScratch['subAnimation'] && this.animationScratch['currentFrame'] !== null) {
+                    this.animationScratch['currentFrame'] = 0;
+                    this.animationScratch['counter'] = 0;
+                    this.frame = this.currentAnimation[this.animationScratch['subAnimation']]['frames'][this.animationScratch['currentFrame']][0];
+                }
+            }
+        }
+
+        get direction():number {
+            while (this.direction_ < 0) this.direction_ += 360;
+            while (this.direction_ >= 360) this.direction_ -= 360;
+            return this.direction_;
         }
 
         setClip(x:number, y:number, w:number, h:number) {
@@ -143,12 +165,12 @@ module Cozy {
 
                 this.animationScratch['counter'] += dt;
 
-                while (this.animationScratch['counter'] > this.currentAnimation['frames'][f][1]) {
-                    this.animationScratch['counter'] -= this.currentAnimation['frames'][f][1];
+                while (this.animationScratch['counter'] > this.currentAnimation[this.animationScratch['subAnimation']]['frames'][f][1]) {
+                    this.animationScratch['counter'] -= this.currentAnimation[this.animationScratch['subAnimation']]['frames'][f][1];
                     f++;
 
-                    if (f >= this.currentAnimation['frames'].length) {
-                        if (!this.currentAnimation['loop']) {
+                    if (f >= this.currentAnimation[this.animationScratch['subAnimation']]['frames'].length) {
+                        if (!this.currentAnimation[this.animationScratch['subAnimation']]['loop']) {
                             this.animation = null;
                         } else {
                             f = 0;
@@ -157,7 +179,7 @@ module Cozy {
                 }
 
                 if (this.animationScratch['currentFrame'] !== f) {
-                    this.frame = this.currentAnimation['frames'][f][0];
+                    this.frame = this.currentAnimation[this.animationScratch['subAnimation']]['frames'][f][0];
                     this.animationScratch['currentFrame'] = f;
                 }
             }

@@ -95,9 +95,9 @@
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="cozy.sprite.html#clip" class="tsd-kind-icon">clip</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="cozy.sprite.html#currentanimation" class="tsd-kind-icon">current<wbr>Animation</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="cozy.sprite.html#currentquake" class="tsd-kind-icon">current<wbr>Quake</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="cozy.sprite.html#direction_" class="tsd-kind-icon">direction_</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="cozy.sprite.html#framebank" class="tsd-kind-icon">frame<wbr>Bank</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="cozy.sprite.html#framecounts" class="tsd-kind-icon">frame<wbr>Counts</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="cozy.sprite.html#framerate" class="tsd-kind-icon">frame<wbr>Rate</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="cozy.sprite.html#framesize" class="tsd-kind-icon">frame<wbr>Size</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="cozy.sprite.html#frame_" class="tsd-kind-icon">frame_</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="cozy.sprite.html#hotspot" class="tsd-kind-icon">hotspot</a></li>
@@ -112,6 +112,7 @@
 							<h3>Accessors</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-external"><a href="cozy.sprite.html#animation" class="tsd-kind-icon">animation</a></li>
+								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-external"><a href="cozy.sprite.html#direction" class="tsd-kind-icon">direction</a></li>
 								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-external"><a href="cozy.sprite.html#frame" class="tsd-kind-icon">frame</a></li>
 							</ul>
 						</section>
@@ -161,7 +162,6 @@
 														frameSize: { x: <Number>, y: <Number> },
 																animations: { <key>: <animationDef>, ... },
 																		currentAnimation: <string>,
-																			frameRate: <number>
 									}</li>
 								</ul>
 							</div>
@@ -184,7 +184,7 @@
 					<div class="tsd-signature tsd-kind-icon">animation<wbr>Scratch<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Sprite.ts:17</li>
+							<li>Defined in Sprite.ts:18</li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -199,7 +199,7 @@
 					<div class="tsd-signature tsd-kind-icon">animations<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Sprite.ts:15</li>
+							<li>Defined in Sprite.ts:16</li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -221,17 +221,12 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
 					<a name="currentanimation" class="tsd-anchor"></a>
 					<h3>current<wbr>Animation</h3>
-					<div class="tsd-signature tsd-kind-icon">current<wbr>Animation<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+					<div class="tsd-signature tsd-kind-icon">current<wbr>Animation<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Sprite.ts:16</li>
+							<li>Defined in Sprite.ts:17</li>
 						</ul>
 					</aside>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-						</ul>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
 					<a name="currentquake" class="tsd-anchor"></a>
@@ -247,6 +242,16 @@
 						<ul class="tsd-parameters">
 						</ul>
 					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
+					<a name="direction_" class="tsd-anchor"></a>
+					<h3>direction_</h3>
+					<div class="tsd-signature tsd-kind-icon">direction_<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in Sprite.ts:13</li>
+						</ul>
+					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
 					<a name="framebank" class="tsd-anchor"></a>
@@ -269,16 +274,6 @@
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
-					<a name="framerate" class="tsd-anchor"></a>
-					<h3>frame<wbr>Rate</h3>
-					<div class="tsd-signature tsd-kind-icon">frame<wbr>Rate<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in Sprite.ts:18</li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
 					<a name="framesize" class="tsd-anchor"></a>
 					<h3>frame<wbr>Size</h3>
 					<div class="tsd-signature tsd-kind-icon">frame<wbr>Size<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Point</span></div>
@@ -294,7 +289,7 @@
 					<div class="tsd-signature tsd-kind-icon">frame_<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Sprite.ts:13</li>
+							<li>Defined in Sprite.ts:14</li>
 						</ul>
 					</aside>
 				</section>
@@ -372,7 +367,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Sprite.ts:104</li>
+									<li>Defined in Sprite.ts:103</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -380,13 +375,45 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Sprite.ts:89</li>
+									<li>Defined in Sprite.ts:86</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>anim: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
+					<a name="direction" class="tsd-anchor"></a>
+					<h3>direction</h3>
+					<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> direction<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> direction<span class="tsd-signature-symbol">(</span>d<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in Sprite.ts:128</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in Sprite.ts:111</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>d: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -404,7 +431,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Sprite.ts:85</li>
+									<li>Defined in Sprite.ts:82</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -412,7 +439,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Sprite.ts:80</li>
+									<li>Defined in Sprite.ts:77</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -438,7 +465,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Sprite.ts:189</li>
+									<li>Defined in Sprite.ts:211</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -464,7 +491,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Sprite.ts:195</li>
+									<li>Defined in Sprite.ts:217</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -487,7 +514,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Sprite.ts:217</li>
+									<li>Defined in Sprite.ts:239</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -504,7 +531,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Sprite.ts:128</li>
+									<li>Defined in Sprite.ts:150</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -533,7 +560,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Sprite.ts:112</li>
+									<li>Defined in Sprite.ts:134</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -565,7 +592,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Sprite.ts:183</li>
+									<li>Defined in Sprite.ts:205</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -591,7 +618,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Sprite.ts:140</li>
+									<li>Defined in Sprite.ts:162</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -614,7 +641,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Sprite.ts:120</li>
+									<li>Defined in Sprite.ts:142</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -669,13 +696,13 @@
 								<a href="cozy.sprite.html#currentquake" class="tsd-kind-icon">current<wbr>Quake</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
+								<a href="cozy.sprite.html#direction_" class="tsd-kind-icon">direction_</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
 								<a href="cozy.sprite.html#framebank" class="tsd-kind-icon">frame<wbr>Bank</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
 								<a href="cozy.sprite.html#framecounts" class="tsd-kind-icon">frame<wbr>Counts</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
-								<a href="cozy.sprite.html#framerate" class="tsd-kind-icon">frame<wbr>Rate</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
 								<a href="cozy.sprite.html#framesize" class="tsd-kind-icon">frame<wbr>Size</a>
@@ -703,6 +730,9 @@
 							</li>
 							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
 								<a href="cozy.sprite.html#animation" class="tsd-kind-icon">animation</a>
+							</li>
+							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
+								<a href="cozy.sprite.html#direction" class="tsd-kind-icon">direction</a>
 							</li>
 							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
 								<a href="cozy.sprite.html#frame" class="tsd-kind-icon">frame</a>

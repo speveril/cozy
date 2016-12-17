@@ -16,8 +16,8 @@ module RPG {
 
         public spawn:PIXI.Point;
 
-        get dir():string {
-            return this.sprite.animation.slice(-1);
+        get dir():number {
+            return this.sprite.direction;
         }
 
         get position():PIXI.Point {
@@ -33,6 +33,8 @@ module RPG {
             this.name = args.name;
             this.behavior = args.behavior && RPG.Behavior[args.behavior] ? RPG.Behavior[args.behavior](this) : undefined;
             this.paused = false;
+
+            this.params = _.clone(args);
         }
 
         changeSprite(newDef) {
@@ -96,10 +98,8 @@ module RPG {
                 ty = Math.floor(this.position.y / this.layer.map.tileSize.y);
 
             if (dy !== 0 || dx !== 0) {
-                if (dx < 0 && Math.abs(dx) > Math.abs(dy)) this.sprite.animation = "walk_l";
-                else if (dx > 0 && Math.abs(dx) > Math.abs(dy)) this.sprite.animation = "walk_r";
-                else if (dy < 0) this.sprite.animation = "walk_u";
-                else if (dy > 0) this.sprite.animation = "walk_d";
+                this.sprite.direction = (Math.atan2(dy, dx) * (180 / Math.PI));
+                this.sprite.animation = 'walk';
 
                 if (!this.respectsObstructions) {
                     this.sprite.adjustPosition(dx, dy);
@@ -195,7 +195,7 @@ module RPG {
                     this.sprite.setPosition(projectedPosition.x, projectedPosition.y);
                 }
             } else {
-                this.sprite.animation = this.sprite.animation.replace('walk', 'stand');
+                this.sprite.animation = 'stand';
             }
 
             if (this.triggersEvents) {
