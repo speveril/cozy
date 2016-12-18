@@ -40,5 +40,48 @@ module RPG {
                 dist = (Math.random() * 3 + 1) * RPG.map.tileSize.x;
             }
         }
+
+        export function *guard(entity:RPG.Entity) {
+            var map = <SimpleQuest.Map>RPG.map;
+            var visionDistance:number = entity.params.vision || 3;
+            var visionEnd:PIXI.Point = new PIXI.Point(
+                entity.position.x + Math.cos(entity.dir * PIXI.DEG_TO_RAD) * visionDistance * map.tileSize.x,
+                entity.position.y + Math.sin(entity.dir * PIXI.DEG_TO_RAD) * visionDistance * map.tileSize.y
+            );
+
+            while (true) {
+                var dt = yield;
+                if (Trig.distToSegment(RPG.player.position, entity.position, visionEnd) < RPG.player.radius) {
+                    RPG.controlStack.push(RPG.ControlMode.Scene);
+                    yield *map.waitTextbox(null, ["Hey! You!"]);
+                    yield *map.waitFight(entity);
+                    RPG.controlStack.pop();
+                }
+            }
+        }
+
+        export function *guard_right(entity:RPG.Entity) {
+            entity.dir = 0;
+            entity.sprite.animation = 'stand';
+            yield *guard(entity);
+        }
+
+        export function *guard_down(entity:RPG.Entity) {
+            entity.dir = 90;
+            entity.sprite.animation = 'stand';
+            yield *guard(entity);
+        }
+
+        export function *guard_left(entity:RPG.Entity) {
+            entity.dir = 180;
+            entity.sprite.animation = 'stand';
+            yield *guard(entity);
+        }
+
+        export function *guard_up(entity:RPG.Entity) {
+            entity.dir = 270;
+            entity.sprite.animation = 'stand';
+            yield *guard(entity);
+        }
     }
 }

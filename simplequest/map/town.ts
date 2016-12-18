@@ -17,7 +17,7 @@ module SimpleQuest {
             RPG.Scene.do(function*() {
                 var choices = ["Yeah okay.", "What, no"];
                 var choice = yield* this.waitChoice("Go to the debug map?", choices);
-                if (choice === choices[0]) {
+                if (choice == 0) {
                     RPG.startMap('debug', 9, 7);
                 }
             }.bind(this));

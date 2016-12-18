@@ -18,5 +18,10 @@
         "hp": 10, "attributes": { "attack": 9, "damage": 2, "defense": 2, "critical": 2, "evade": 4 },
         "image": "ui/battle/monster_stabber.png",
         "treasure": { "money": "2d6" }
+    },
+    "cultist": { "name": "Cultist", "xp": 5,
+        "hp": 12, "attributes": { "attack": 5, "damage": 5, "defense": 5, "critical": 5, "evade": 5 },
+        "image": "ui/battle/monster_placeholder.png",
+        "treasure": { "money": "2d10" }
     }
 }

@@ -35,6 +35,8 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
 
 - Bugs/Unsorted
     - SimpleQuest/RPGKit specific
+        - scrolling on equip item list is broken again >:[
+        - change Sprite direction accessors to have degree and radian variants, reading/writing a single internal format and converting as necessary
         - write the rest of the damn story
         - flesh out all monsters, fights
         - add game start and game win scenes
@@ -54,6 +56,7 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
     - Split config.json into necessary game setup vs. player configuration (bake non-player config into game setup on export, leave config as only player config, or play config should be in userdataDir)
 - **=== RELEASE 0.1 - SIMPLEQUEST, RPGKIT, BASIC FUNCTIONALITY ===**
 - Bugs/Unsorted
+    - Support a 'keep' direction or something on sprite animation angles -- just keep playing the same direction as before
     - Make browser NOT close the currently active game
         - or just revisit the whole browser interface in general
     - If a project has a `build.js`/`build.ts`, run it after TS compilation

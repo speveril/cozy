@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="45" tilewidth="16" tileheight="16" nextobjectid="176">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="45" tilewidth="16" tileheight="16" nextobjectid="177">
  <properties>
   <property name="Name" value="The Dark Forest"/>
  </properties>
@@ -153,7 +153,7 @@
  </layer>
  <objectgroup name="#spritelayer">
   <object id="13" x="128" y="720">
-   <polyline points="0,0 0,-48 16,-48 32,-64 32,-80 16,-80 16,-96 0,-96"/>
+   <polyline points="0,0 0,-48 16,-48 32,-64 16,-80 16,-96 0,-96"/>
   </object>
   <object id="15" x="80" y="176">
    <polyline points="64,80 64,0 0,0 0,144 16,144 16,176 32,176 32,160 48,160 64,144 64,160 80,160 80,144 96,160 160,160 176,144 208,144"/>
@@ -284,7 +284,7 @@
     <property name="count" value="200"/>
    </properties>
   </object>
-  <object id="131" type="entity" x="288" y="288" width="16" height="16">
+  <object id="131" type="entity" x="304" y="288" width="16" height="16">
    <properties>
     <property name="sprite" value="sprites/cultist.sprite"/>
    </properties>
@@ -365,8 +365,10 @@
     <property name="sprite" value="sprites/ghost.sprite"/>
    </properties>
   </object>
-  <object id="159" type="entity" x="192" y="544" width="16" height="16">
+  <object id="159" name="doFight" type="entity" x="192" y="544" width="16" height="16">
    <properties>
+    <property name="behavior" value="guard_left"/>
+    <property name="monster" value="cultist"/>
     <property name="sprite" value="sprites/cultist.sprite"/>
    </properties>
   </object>
@@ -375,17 +377,19 @@
     <property name="sprite" value="sprites/cultist.sprite"/>
    </properties>
   </object>
-  <object id="161" type="entity" x="48" y="544" width="16" height="16">
+  <object id="161" name="doFight" type="entity" x="48" y="544" width="16" height="16">
    <properties>
+    <property name="behavior" value="guard_down"/>
+    <property name="monster" value="cultist"/>
     <property name="sprite" value="sprites/cultist.sprite"/>
    </properties>
   </object>
-  <object id="162" type="entity" x="432" y="608" width="16" height="16">
+  <object id="162" type="entity" x="432" y="592" width="16" height="16">
    <properties>
     <property name="sprite" value="sprites/monster_goblin.sprite"/>
    </properties>
   </object>
-  <object id="163" type="entity" x="480" y="640" width="16" height="16">
+  <object id="163" type="entity" x="496" y="640" width="16" height="16">
    <properties>
     <property name="sprite" value="sprites/monster_goblin.sprite"/>
    </properties>
@@ -448,6 +452,11 @@
   <object id="175" type="entity" x="544" y="416" width="16" height="16">
    <properties>
     <property name="sprite" value="sprites/monster_goblin.sprite"/>
+   </properties>
+  </object>
+  <object id="176" type="entity" x="272" y="288" width="16" height="16">
+   <properties>
+    <property name="sprite" value="sprites/cultist.sprite"/>
    </properties>
   </object>
  </objectgroup>

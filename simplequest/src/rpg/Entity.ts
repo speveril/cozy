@@ -20,6 +20,10 @@ module RPG {
             return this.sprite.direction;
         }
 
+        set dir(x:number) {
+            this.sprite.direction = x;
+        }
+
         get position():PIXI.Point {
             return this.sprite.position;
         }
@@ -35,6 +39,7 @@ module RPG {
             this.paused = false;
 
             this.params = _.clone(args);
+            console.log(this.params);
         }
 
         changeSprite(newDef) {

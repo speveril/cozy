@@ -1,8 +1,5 @@
 module SimpleQuest {
     export class Map extends RPG.Map.Map {
-        private nextBattle:number;
-        private lastPlayerPosition:PIXI.Point;
-        private onetimeSwitches:any;
         public music:Cozy.Music;
 
         persisted(k):boolean {
@@ -51,6 +48,24 @@ module SimpleQuest {
                 Cozy.Audio.currentMusic.stop();
                 this.music.start();
             }
+        }
+
+        doFight(entity) {
+            console.log("doFight->", entity);
+            RPG.Battle.start({
+                enemy: entity.params.monster,
+                scene: 'ui/battle/scene_placeholder.png'
+            });
+            entity.destroy();
+        }
+
+        *waitFight(entity) {
+            console.log("waitFight->", entity);
+            yield *RPG.Battle.waitBattle({
+                enemy: entity.params.monster,
+                scene: 'ui/battle/scene_placeholder.png'
+            });
+            entity.destroy();
         }
 
         doDoor(name) {
@@ -370,9 +385,9 @@ module SimpleQuest {
         switch_layers(args) {
             var spriteLayer = RPG.player.layer;
 
-            if (RPG.player.dir === 'u') {
+            if (RPG.player.dir > Math.PI) {
                 spriteLayer = this.getLayerByName("#spritelayer-upper");
-            } else if (RPG.player.dir === 'd') {
+            } else {
                 spriteLayer = this.getLayerByName("#spritelayer");
             }
 
