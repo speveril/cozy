@@ -2,9 +2,11 @@ module Cozy {
     export class Layer {
         innerContainer: PIXI.Container;
         sprites: Array<Cozy.Sprite>;
+        spriteLookup: { [key:string]: Cozy.Sprite };
 
         constructor() {
             this.sprites = [];
+            this.spriteLookup = {};
             this.innerContainer = new PIXI.Container();
         }
 
@@ -26,6 +28,7 @@ module Cozy {
         add(thing:any) {
             if (thing instanceof Sprite) {
                 this.sprites.push(thing);
+                this.spriteLookup[thing.innerSprite['uid']] = thing;
                 thing.layer = this;
                 this.innerContainer.addChild(thing.innerSprite);
             }
@@ -40,7 +43,10 @@ module Cozy {
         }
 
         sortSprites(f:(a:any, b:any) => number) {
-            this.innerContainer.children.sort(f);
+            // this.innerContainer.children.sort(f);
+            this.innerContainer.children.sort((a:any, b:any) => {
+                return f(this.spriteLookup[a['uid']], this.spriteLookup[b['uid']]);
+            });
             // TODO keep this.sprites in sync with the innerContainer children
         }
 

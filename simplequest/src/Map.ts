@@ -51,6 +51,7 @@ module SimpleQuest {
         }
 
         doFight(entity) {
+            // TODO RPG.Scene.do(), yield to waitFight?
             console.log("doFight->", entity);
             RPG.Battle.start({
                 enemy: entity.params.monster,

@@ -10,6 +10,7 @@ module RPG {
         public params:any;
 
         public sprite:Cozy.Sprite;
+        public emoteSprite:Cozy.Sprite;
         public layer:Map.MapLayer;
         public speed:number;
         public radius:number;
@@ -39,7 +40,6 @@ module RPG {
             this.paused = false;
 
             this.params = _.clone(args);
-            console.log(this.params);
         }
 
         changeSprite(newDef) {
@@ -55,16 +55,39 @@ module RPG {
             }
         }
 
+        emote(key:string) {
+            if (!this.emoteSprite) {
+                this.emoteSprite = new Cozy.Sprite("sprites/emotes.sprite");
+                this.layer.displayLayer.add(this.emoteSprite);
+                this.emoteSprite.setPosition(this.sprite.position.x, this.sprite.position.y + 0.01);
+                // TODO this would be handled much better with multilayer sprites
+            }
+            this.emoteSprite.animation = key;
+        }
+
+        clearEmote() {
+            if (this.emoteSprite) {
+                this.layer.displayLayer.remove(this.emoteSprite);
+                this.emoteSprite = null;
+            }
+        }
+
         place(x:number, y:number, lyr:Map.MapLayer):void {
             if (this.sprite) {
                 this.layer.displayLayer.remove(this.sprite);
             } else {
                 this.sprite = new Cozy.Sprite(this.spriteDef);
             }
+            if (this.emoteSprite) this.layer.displayLayer.remove(this.emoteSprite);
 
             this.sprite.setPosition(x, y);
             this.layer = lyr;
             this.layer.displayLayer.add(this.sprite);
+
+            if (this.emoteSprite) {
+                this.layer.displayLayer.add(this.emoteSprite);
+                this.emoteSprite.setPosition(this.sprite.position.x, this.sprite.position.y + 1);
+            }
 
             if (!_.contains(this.layer.entities, this)) {
                 this.layer.entities.push(this);
@@ -82,6 +105,10 @@ module RPG {
         }
 
         update(dt:number) {
+            // if (this.emoteSprite) {
+            //     this.emoteSprite.position = this.position;
+            // }
+
             if (!this.paused && this.behavior) {
                 var result = this.behavior.next(dt);
                 if (result.done) {

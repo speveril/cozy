@@ -34,6 +34,8 @@ If you want to work on the engine itself, you'll need to have NPM installed; run
 This is stuff I intend to do, and/or am actively working on. I'm trying to keep this up to date with my commits.
 
 - Bugs/Unsorted
+    - Use FontAwesome icons in the project manager
+    - Loading screen
     - SimpleQuest/RPGKit specific
         - scrolling on equip item list is broken again >:[
         - change Sprite direction accessors to have degree and radian variants, reading/writing a single internal format and converting as necessary
@@ -43,6 +45,7 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
         - add a real lose screen
         - ? add a way to get the outcome of a battle so that code may respond to it differently -- victory vs. flee vs. defeat
         - ? allow to lose a battle without a game over
+        - ? add bouncies, slashies to combat
         - Menus need some polish
             - Menu should have .menu and .active; selection container should have .selections, and it should just get added by setupSelections
             - Need to provide a better way for menus to return a value to a previous menu -- promises?
@@ -56,6 +59,9 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
     - Split config.json into necessary game setup vs. player configuration (bake non-player config into game setup on export, leave config as only player config, or play config should be in userdataDir)
 - **=== RELEASE 0.1 - SIMPLEQUEST, RPGKIT, BASIC FUNCTIONALITY ===**
 - Bugs/Unsorted
+    - Need to figure out hierarchical/multilayer sprites
+        - Give Sprite a Container, put itself in the container and add THAT to the layer's container, then all children sprites can go in there afterward
+        - Do I need/want a true hierarchy, or just layers?
     - Support a 'keep' direction or something on sprite animation angles -- just keep playing the same direction as before
     - Make browser NOT close the currently active game
         - or just revisit the whole browser interface in general

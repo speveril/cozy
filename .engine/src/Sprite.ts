@@ -3,7 +3,6 @@ module Cozy {
         texture: PIXI.Texture;
         textureFrame: PIXI.Rectangle;
         clip: PIXI.Rectangle;
-        innerSprite: PIXI.Sprite;
         hotspot: PIXI.Point;
         position: PIXI.Point;
         frameBank: PIXI.Rectangle;
@@ -12,6 +11,8 @@ module Cozy {
         layer: Cozy.Layer;
         direction_: number;
         frame_: number;
+        innerSprite: PIXI.Sprite;
+        layers: Array<PIXI.Sprite>;
 
         animations: {};
         currentAnimation: Array<any>;
@@ -55,6 +56,7 @@ module Cozy {
             }
             this.texture = new PIXI.Texture(args.texture.innerTexture);
             this.innerSprite = new PIXI.Sprite(this.texture);
+            this.innerSprite['uid'] = Cozy.uniqueID();
 
             this.hotspot = new PIXI.Point(args.hotspot.x || 0, args.hotspot.y || 0);
             this.position = new PIXI.Point(args.position.x || 0, args.position.y || 0 );

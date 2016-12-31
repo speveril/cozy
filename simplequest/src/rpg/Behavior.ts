@@ -52,9 +52,16 @@ module RPG {
             while (true) {
                 var dt = yield;
                 if (Trig.distToSegment(RPG.player.position, entity.position, visionEnd) < RPG.player.radius) {
-                    RPG.controlStack.push(RPG.ControlMode.Scene);
+                    RPG.controlStack.push(RPG.ControlMode.None);
+                    RPG.player.sprite.animation = 'stand';
+
+                    entity.emote("!");
+                    RPG.sfx['alert'].play();
                     yield *map.waitTextbox(null, ["Hey! You!"]);
+                    entity.clearEmote();
+                    // TODO walk up to player
                     yield *map.waitFight(entity);
+
                     RPG.controlStack.pop();
                 }
             }

@@ -85,13 +85,18 @@
 				<p>This is stuff I intend to do, and/or am actively working on. I&#39;m trying to keep this up to date with my commits.</p>
 				<ul>
 					<li>Bugs/Unsorted<ul>
+							<li>Use FontAwesome icons in the project manager</li>
+							<li>Loading screen</li>
 							<li>SimpleQuest/RPGKit specific<ul>
+									<li>scrolling on equip item list is broken again &gt;:[</li>
+									<li>change Sprite direction accessors to have degree and radian variants, reading/writing a single internal format and converting as necessary</li>
 									<li>write the rest of the damn story</li>
 									<li>flesh out all monsters, fights</li>
 									<li>add game start and game win scenes</li>
 									<li>add a real lose screen</li>
 									<li>? add a way to get the outcome of a battle so that code may respond to it differently -- victory vs. flee vs. defeat</li>
 									<li>? allow to lose a battle without a game over</li>
+									<li>? add bouncies, slashies to combat</li>
 									<li>Menus need some polish<ul>
 											<li>Menu should have .menu and .active; selection container should have .selections, and it should just get added by setupSelections</li>
 											<li>Need to provide a better way for menus to return a value to a previous menu -- promises?</li>
@@ -117,6 +122,11 @@
 					</li>
 					<li><strong>=== RELEASE 0.1 - SIMPLEQUEST, RPGKIT, BASIC FUNCTIONALITY ===</strong></li>
 					<li>Bugs/Unsorted<ul>
+							<li>Need to figure out hierarchical/multilayer sprites<ul>
+									<li>Give Sprite a Container, put itself in the container and add THAT to the layer&#39;s container, then all children sprites can go in there afterward</li>
+									<li>Do I need/want a true hierarchy, or just layers?</li>
+								</ul>
+							</li>
 							<li>Support a &#39;keep&#39; direction or something on sprite animation angles -- just keep playing the same direction as before</li>
 							<li>Make browser NOT close the currently active game<ul>
 									<li>or just revisit the whole browser interface in general</li>

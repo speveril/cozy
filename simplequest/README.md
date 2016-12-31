@@ -41,6 +41,11 @@ Some sound effects from Michael Koenig
 - http://soundbible.com/1165-Dinosaur-Roar.html
     - dinosaur_roar.wav
 
+Some sound effects by Juhani Junkala
+
+- http://opengameart.org/content/512-sound-effects-8-bit-style
+    - sfx_alarm_loop6.wav
+
 Some music by Otto Halmén - https://ottohalmen.bandcamp.com
 
 - https://ottohalmen.bandcamp.com/album/ottos-creative-commons-tracks

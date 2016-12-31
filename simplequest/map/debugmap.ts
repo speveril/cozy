@@ -141,11 +141,31 @@ module SimpleQuest {
                     case 'leave':
                         return;
                     case 'fight':
-                        console.log("fight TODO");
-                        break;
+                        yield *this.waitFight(args.target);
+                        return;
                     case 'change':
                         RPG.player.changeSprite(args.target.spriteDef);
                         return;
+                }
+            }.bind(this));
+        }
+
+        emote_test(args) {
+            RPG.Scene.do(function*() {
+                var emotes = {
+                    "done": "Never mind",
+                    "!": "!"
+                }
+                yield *this.waitTextbox("Emote Tester", ["I'm the emote tester!"]);
+                while (true) {
+                    var choice = yield *this.waitChoice("Which emote?", emotes);
+                    if (choice === 'done') {
+                        yield *this.waitTextbox("Emote Tester", ["Okay, bye!"]);
+                        args.target.clearEmote();
+                        break;
+                    } else {
+                        args.target.emote(choice);
+                    }
                 }
             }.bind(this));
         }

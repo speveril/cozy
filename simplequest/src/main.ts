@@ -32,6 +32,7 @@ module SimpleQuest {
                 'thud':                 "audio/sfx/thud.wav",
                 'chnk':                 "audio/sfx/chnk.ogg",
                 'negative':             "audio/sfx/ALERT_Error.wav",
+                'alert':                "audio/sfx/sfx_alarm_loop6.wav",
 
                 'menu_move':            'audio/sfx/MENU_Pick.wav',
                 'menu_choose':          'audio/sfx/MENU B_Select.wav',

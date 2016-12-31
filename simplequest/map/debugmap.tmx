@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="15" tilewidth="16" tileheight="16" nextobjectid="99">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="15" tilewidth="16" tileheight="16" nextobjectid="101">
  <properties>
   <property name="Name" value="Debugurbia"/>
  </properties>
@@ -158,7 +158,7 @@
     <property name="sprite" value="sprites/monster_skeleton.sprite"/>
    </properties>
   </object>
-  <object id="74" type="entity" x="512" y="144" width="16" height="16">
+  <object id="74" type="entity" x="32" y="192" width="16" height="16">
    <properties>
     <property name="behavior" value="wander"/>
     <property name="speed" value="15"/>
@@ -242,6 +242,11 @@
   <object id="98" name="check_entity" type="entity" x="464" y="64" width="16" height="16">
    <properties>
     <property name="sprite" value="sprites/monster_kobold.sprite"/>
+   </properties>
+  </object>
+  <object id="100" name="emote_test" type="entity" x="560" y="128" width="16" height="16">
+   <properties>
+    <property name="sprite" value="sprites/villager_m.sprite"/>
    </properties>
   </object>
  </objectgroup>
