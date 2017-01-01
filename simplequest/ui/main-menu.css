@@ -190,11 +190,13 @@
     flex-grow: 1;
 }
 
+.main-menu .main-area .panel.exit,
 .main-menu .main-area .panel.save {
     display: flex;
     flex-direction: column;
 }
 
+.main-menu .main-area .panel.exit .title,
 .main-menu .main-area .panel.save .title {
     flex: 0 0 20px;
     text-align: center;
@@ -203,8 +205,24 @@
     flex-direction: column;
 }
 
+.main-menu .main-area .panel.exit .selections,
 .main-menu .main-area .panel.save .selections {
     flex: 1 0;
     position: relative;
     overflow: hidden;
+}
+
+.main-menu .main-area .panel.exit .selections {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.main-menu .main-area .panel.exit .selections li {
+    margin: 0 30px;
+}
+
+.main-menu .main-area .panel.exit .note {
+    flex: 0 0 auto;
+    position: relative;
 }

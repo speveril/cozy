@@ -3,7 +3,7 @@ module SimpleQuest {
         export class Main_ExitSubmenu extends RPG.Menu {
             constructor() {
                 super({
-                    className: 'menu exit-menu',
+                    className: 'panel exit',
                     cancelable: true,
                     html: `
                         <div class="title">Exit Game</div>
@@ -15,6 +15,8 @@ module SimpleQuest {
                         <div class="note">Any progress since your last save will be lost.</div>
                     `
                 });
+
+                this.setupSelections(this.find('ul.selections'));
             }
 
             mainmenu() {

@@ -34,7 +34,6 @@ If you want to work on the engine itself, you'll need to have NPM installed; run
 This is stuff I intend to do, and/or am actively working on. I'm trying to keep this up to date with my commits.
 
 - SimpleQuest/RPGKit specific
-    - main menu "exit" should offer quit to main menu vs. to desktop
     - Add scripted movement for entities in Scenes
         - Make guard monsters walk up to you when alerted
     - Flesh out rest of world
