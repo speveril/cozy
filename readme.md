@@ -33,32 +33,30 @@ If you want to work on the engine itself, you'll need to have NPM installed; run
 
 This is stuff I intend to do, and/or am actively working on. I'm trying to keep this up to date with my commits.
 
+- SimpleQuest/RPGKit specific
+    - scrolling on equip item list is broken again >:[
+    - Add scripted movement for entities in Scenes
+        - Make guard monsters walk up to you when alerted
+    - write the rest of the damn story
+    - flesh out all monsters, fights
+    - add game start and game win scenes
+    - add a real lose screen
+    - ? add a way to get the outcome of a battle so that code may respond to it differently -- victory vs. flee vs. defeat
+    - ? allow to lose a battle without a game over
+    - ? add bouncies, slashies to combat
+    - ? hide debug map better
 - Bugs/Unsorted
-    - Use FontAwesome icons in the project manager
     - Loading screen
-    - SimpleQuest/RPGKit specific
-        - scrolling on equip item list is broken again >:[
-        - change Sprite direction accessors to have degree and radian variants, reading/writing a single internal format and converting as necessary
-        - write the rest of the damn story
-        - flesh out all monsters, fights
-        - add game start and game win scenes
-        - add a real lose screen
-        - ? add a way to get the outcome of a battle so that code may respond to it differently -- victory vs. flee vs. defeat
-        - ? allow to lose a battle without a game over
-        - ? add bouncies, slashies to combat
-        - Menus need some polish
-            - Menu should have .menu and .active; selection container should have .selections, and it should just get added by setupSelections
-            - Need to provide a better way for menus to return a value to a previous menu -- promises?
     - userconfig.json in userdatadir
         - In-game input config
         - Defaults in project config.json
-- RPGKit
-    - Zones (large polygons that can be checked, but don't necessarily fire an event when crossing the threshold) ???
 - Exporting
     - Make glob.js easier to recreate
     - Split config.json into necessary game setup vs. player configuration (bake non-player config into game setup on export, leave config as only player config, or play config should be in userdataDir)
 - **=== RELEASE 0.1 - SIMPLEQUEST, RPGKIT, BASIC FUNCTIONALITY ===**
 - Bugs/Unsorted
+    - Use FontAwesome icons in the project manager
+    - change Sprite direction accessors to have degree and radian variants, reading/writing a single internal format and converting as necessary
     - Need to figure out hierarchical/multilayer sprites
         - Give Sprite a Container, put itself in the container and add THAT to the layer's container, then all children sprites can go in there afterward
         - Do I need/want a true hierarchy, or just layers?
@@ -72,9 +70,12 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
     - Investigate this
 - RPGKit
     - Add scripted movement for entities on the map
-    - Add scripted movement for entities in Scenes
     - Can I just slurp in all of the map .ts files automatically instead of having to reference each one?
     - It'd be nice if the persistent stuff in map was easier to use in general
+    - Zones (large polygons that can be checked, but don't necessarily fire an event when crossing the threshold) ???
+    - Menus need some polish
+        - Menu should have .menu and .active; selection container should have .selections, and it should just get added by setupSelections
+        - Need to provide a better way for menus to return a value to a previous menu -- promises?
 - Data Editor
     - Manage .json files; top level is an object with a ".schemas" key plus "tables" of typed objects
 - Reconcile File stuff
@@ -91,7 +92,7 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
     - Check if `.engine/src` exists and do not do core watch or compiles if it doesn't
     - config.json should be able to define an expected version, Cozy should be smart enough to do the right thing
         - I think this means "shipping" compiled .js blobs of previous versions along with the engine, and having the player select the right one
-        - This is irrelevant for exported games; they'll be packaged with the version they were used to create it
+        - This is irrelevant for games once exported; they'll be packaged with the version they were used to create it
 - Testing
     - Don't ship without tests on engine core; lets me keep track of breaking changes, etc.
 - **=== RELEASE 1.0 - READY FOR PRIMETIME ===**
