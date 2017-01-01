@@ -77,6 +77,10 @@ module RPG {
         applyToState() {
             // TODO there may be implications here of not doing deep-clones
 
+            // TODO probably want to be actually do this somewhere in Party; a cleanup maybe?
+            RPG.Party.inventory = new RPG.Inventory();
+            RPG.Party.members = [];
+
             _.each(this.data.party.inventory, (k:string) => RPG.Party.inventory.add(k));
             RPG.characters = _.mapObject(this.data.characters, (def) => new Character(def));
             _.each(this.data.party.members, (k:string) => RPG.Party.add(RPG.characters[k]));

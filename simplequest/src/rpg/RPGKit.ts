@@ -81,6 +81,26 @@ module RPG {
         return Promise.all(promises);
     }
 
+    export function cleanup() {
+        if (Cozy.Audio.currentMusic) {
+            Cozy.Audio.currentMusic.stop();
+        }
+
+        map = null;
+        player = null;
+        Scene.cleanup();
+
+        controlStack = [];
+        controlStack.push(RPG.ControlMode.Map);
+
+        Menu.menuStack = [];
+
+        renderPlane.clear();
+        uiPlane.clear();
+
+        console.log("Done RPG.cleanup()");
+    }
+
     export function frame(dt) {
         if (map) {
             map.update(dt);

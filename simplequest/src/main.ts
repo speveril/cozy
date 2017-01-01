@@ -65,16 +65,13 @@ module SimpleQuest {
             RPG.Menu.blip   = RPG.sfx['menu_move'];
             RPG.Menu.choose = RPG.sfx['menu_choose'];
             RPG.Menu.sfxBad = RPG.sfx['menu_bad'];
-
-            Cozy.unpause();
-
             SimpleQuest.bootSequence();
         }.bind(this));
     }
 
     export function bootSequence() {
+        RPG.cleanup();
         RPG.music['overworld'].start();
-        RPG.controlStack.push(RPG.ControlMode.Map);
 
         var bootMenu = new Menu.Boot();
         RPG.uiPlane.addChild(bootMenu);
@@ -85,7 +82,6 @@ module SimpleQuest {
 
     export function startGame(game:RPG.SavedGame) {
         Cozy.pause();
-        console.log(game.data);
         game.applyToState();
         Cozy.unpause();
     }

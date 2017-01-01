@@ -36,7 +36,7 @@ module SimpleQuest {
                     RPG.Menu.pop();
                     this.remove();
                     SimpleQuest.startGame(gameData);
-                }.bind(this))
+                }.bind(this));
             }
 
             unpause() {

@@ -2,6 +2,7 @@
 ///<reference path="Main-Save.ts"/>
 ///<reference path="Main-Items.ts"/>
 ///<reference path="Main-Equip.ts"/>
+///<reference path="Main-Exit.ts"/>
 
 module SimpleQuest {
     export module Menu {
@@ -39,7 +40,8 @@ module SimpleQuest {
                 this.submenus = {
                     items: Main_ItemsSubmenu,
                     equip: Main_EquipSubmenu,
-                    save: Main_SaveSubmenu
+                    save: Main_SaveSubmenu,
+                    exit: Main_ExitSubmenu
                 };
 
                 this.statusPanel = new Main_StatusPanel();
@@ -76,7 +78,7 @@ module SimpleQuest {
             items() { this.showSubmenu('items'); }
             equip() { this.showSubmenu('equip'); }
             save() { this.showSubmenu('save'); }
-            exit() { SimpleQuest.Menu.quitGame(); } // TODO confirmation
+            exit() { this.showSubmenu('exit'); }
         }
     }
 }

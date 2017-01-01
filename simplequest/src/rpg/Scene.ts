@@ -28,8 +28,14 @@ module RPG {
             return Scene.scenes[Scene.scenes.length - 1];
         }
 
+        static cleanup():void {
+            this.scenes = [];
+            this.fadeLayer = null;
+        }
+
         static do(sceneFunc) {
             // TODO remove fadeLayer when it's opacity 0, re-append it as necessary
+            // TODO why isn't fadeLayer just a uicomponent?
             if (!this.fadeLayer) {
                 this.fadeLayer = document.createElement('div');
                 this.fadeLayer.style.height = "100%";
@@ -63,6 +69,7 @@ module RPG {
                     if (this.scenes.length === 1) {
                         this.fadeLayer.style.opacity = '0';
                     }
+console.trace("POPPING CONTROLSTACK");
                     RPG.controlStack.pop();
                     this.scenes.pop();
                 }

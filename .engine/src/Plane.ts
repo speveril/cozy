@@ -83,10 +83,8 @@ module Cozy {
 
         constructor(args:any) {
             super(args);
-            this.container.className += ' ui';
-
-            this.root = new UiComponent({});
-            this.container.appendChild(this.root.element);
+            this.container.classList.add('ui');
+            this.clear();
         }
 
         update(dt):void {
@@ -105,9 +103,14 @@ module Cozy {
         }
 
         clear():void {
-            while(this.container.lastChild) {
+            if (this.root) {
+                this.root.remove();
+            }
+            while (this.container.lastChild) {
                 this.container.removeChild(this.container.lastChild);
             }
+            this.root = new UiComponent({});
+            this.container.appendChild(this.root.element);
         }
 
         resize(mult):void {

@@ -84,35 +84,32 @@
 				<h2 id="roadmap">Roadmap</h2>
 				<p>This is stuff I intend to do, and/or am actively working on. I&#39;m trying to keep this up to date with my commits.</p>
 				<ul>
-					<li>Bugs/Unsorted<ul>
-							<li>Use FontAwesome icons in the project manager</li>
-							<li>Loading screen</li>
-							<li>SimpleQuest/RPGKit specific<ul>
-									<li>scrolling on equip item list is broken again &gt;:[</li>
-									<li>change Sprite direction accessors to have degree and radian variants, reading/writing a single internal format and converting as necessary</li>
-									<li>write the rest of the damn story</li>
-									<li>flesh out all monsters, fights</li>
-									<li>add game start and game win scenes</li>
-									<li>add a real lose screen</li>
-									<li>? add a way to get the outcome of a battle so that code may respond to it differently -- victory vs. flee vs. defeat</li>
-									<li>? allow to lose a battle without a game over</li>
-									<li>? add bouncies, slashies to combat</li>
-									<li>Menus need some polish<ul>
-											<li>Menu should have .menu and .active; selection container should have .selections, and it should just get added by setupSelections</li>
-											<li>Need to provide a better way for menus to return a value to a previous menu -- promises?</li>
-										</ul>
-									</li>
+					<li>SimpleQuest/RPGKit specific<ul>
+							<li>main menu &quot;exit&quot; should offer quit to main menu vs. to desktop</li>
+							<li>Add scripted movement for entities in Scenes<ul>
+									<li>Make guard monsters walk up to you when alerted</li>
 								</ul>
 							</li>
+							<li>Flesh out rest of world<ul>
+									<li>&quot;story&quot; sequences</li>
+									<li>monsters, fights</li>
+								</ul>
+							</li>
+							<li>add game start and game win scenes</li>
+							<li>add a real lose screen</li>
+							<li>add bouncies, slashies to combat</li>
+							<li>? add a way to get the outcome of a battle so that code may respond to it differently -- victory vs. flee vs. defeat</li>
+							<li>? allow to lose a battle without a game over</li>
+							<li>? hide debug map better</li>
+						</ul>
+					</li>
+					<li>Bugs/Unsorted<ul>
+							<li>Engine loading screen</li>
 							<li>userconfig.json in userdatadir<ul>
 									<li>In-game input config</li>
 									<li>Defaults in project config.json</li>
 								</ul>
 							</li>
-						</ul>
-					</li>
-					<li>RPGKit<ul>
-							<li>Zones (large polygons that can be checked, but don&#39;t necessarily fire an event when crossing the threshold) ???</li>
 						</ul>
 					</li>
 					<li>Exporting<ul>
@@ -122,30 +119,35 @@
 					</li>
 					<li><strong>=== RELEASE 0.1 - SIMPLEQUEST, RPGKIT, BASIC FUNCTIONALITY ===</strong></li>
 					<li>Bugs/Unsorted<ul>
+							<li>Move &quot;ControlStack&quot; idea into core</li>
+						</ul>
+					</li>
+					<li>Project Manager<ul>
+							<li>Use FontAwesome icons</li>
+							<li>Make browser NOT close the currently active game<ul>
+									<li>or just revisit the whole browser interface in general</li>
+								</ul>
+							</li>
+							<li>Manager should only run one game at a time, or at least only one copy of a particular game</li>
+						</ul>
+					</li>
+					<li>Infrastructure<ul>
+							<li>If a project has a <code>build.js</code>/<code>build.ts</code>, run it after TS compilation</li>
+							<li>Should be able to refresh/reset; the way the message waiting works, this doesn&#39;t work the way it should</li>
+						</ul>
+					</li>
+					<li>Cozy.Sprite<ul>
+							<li>change Sprite direction accessors to have degree and radian variants, reading/writing a single internal format and converting as necessary</li>
 							<li>Need to figure out hierarchical/multilayer sprites<ul>
 									<li>Give Sprite a Container, put itself in the container and add THAT to the layer&#39;s container, then all children sprites can go in there afterward</li>
 									<li>Do I need/want a true hierarchy, or just layers?</li>
 								</ul>
 							</li>
 							<li>Support a &#39;keep&#39; direction or something on sprite animation angles -- just keep playing the same direction as before</li>
-							<li>Make browser NOT close the currently active game<ul>
-									<li>or just revisit the whole browser interface in general</li>
-								</ul>
-							</li>
-							<li>If a project has a <code>build.js</code>/<code>build.ts</code>, run it after TS compilation</li>
-							<li>Manager should only run one game at a time, or at least only one copy of a particular game</li>
-							<li>Should be able to refresh/reset; the way the message waiting works, this doesn&#39;t work the way it should</li>
 						</ul>
 					</li>
 					<li>Testing<ul>
 							<li>Investigate this</li>
-						</ul>
-					</li>
-					<li>RPGKit<ul>
-							<li>Add scripted movement for entities on the map</li>
-							<li>Add scripted movement for entities in Scenes</li>
-							<li>Can I just slurp in all of the map .ts files automatically instead of having to reference each one?</li>
-							<li>It&#39;d be nice if the persistent stuff in map was easier to use in general</li>
 						</ul>
 					</li>
 					<li>Data Editor<ul>
@@ -162,6 +164,22 @@
 						</ul>
 					</li>
 					<li><strong>=== RELEASE 0.2 - GRAB THE GEMS, ACTIONADVENTUREKIT, QUALITY OF LIFE IMPROVEMENTS ===</strong></li>
+					<li>Bugs/Unsorted<ul>
+							<li>Figure out seamless upgrades</li>
+						</ul>
+					</li>
+					<li>RPGKit<ul>
+							<li>Add scripted movement for entities on the map</li>
+							<li>Can I just slurp in all of the map .ts files automatically instead of having to reference each one?</li>
+							<li>It&#39;d be nice if the persistent stuff in map was easier to use in general</li>
+							<li>Zones (large polygons that can be checked, but don&#39;t necessarily fire an event when crossing the threshold) ???</li>
+							<li>Menus need some polish<ul>
+									<li>Menu should have .menu and .active; selection container should have .selections, and it should just get added by setupSelections</li>
+									<li>Need to provide a better way for menus to return a value to a previous menu -- promises?</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
 					<li>Documentation<ul>
 							<li>Better docs on core functions</li>
 							<li>Higher level intro, etc</li>
@@ -172,7 +190,7 @@
 							<li>Check if <code>.engine/src</code> exists and do not do core watch or compiles if it doesn&#39;t</li>
 							<li>config.json should be able to define an expected version, Cozy should be smart enough to do the right thing<ul>
 									<li>I think this means &quot;shipping&quot; compiled .js blobs of previous versions along with the engine, and having the player select the right one</li>
-									<li>This is irrelevant for exported games; they&#39;ll be packaged with the version they were used to create it</li>
+									<li>This is irrelevant for games once exported; they&#39;ll be packaged with the version they were used to create it</li>
 								</ul>
 							</li>
 						</ul>
