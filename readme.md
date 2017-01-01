@@ -34,9 +34,9 @@ If you want to work on the engine itself, you'll need to have NPM installed; run
 This is stuff I intend to do, and/or am actively working on. I'm trying to keep this up to date with my commits.
 
 - SimpleQuest/RPGKit specific
+    - main menu "exit" should offer quit to main menu vs. to desktop
     - Add scripted movement for entities in Scenes
         - Make guard monsters walk up to you when alerted
-    - main menu "exit" should offer quit to main menu vs. to desktop
     - Flesh out rest of world
         - "story" sequences
         - monsters, fights
@@ -47,7 +47,7 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
     - ? allow to lose a battle without a game over
     - ? hide debug map better
 - Bugs/Unsorted
-    - Loading screen
+    - Engine loading screen
     - userconfig.json in userdatadir
         - In-game input config
         - Defaults in project config.json
@@ -56,17 +56,21 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
     - Split config.json into necessary game setup vs. player configuration (bake non-player config into game setup on export, leave config as only player config, or play config should be in userdataDir)
 - **=== RELEASE 0.1 - SIMPLEQUEST, RPGKIT, BASIC FUNCTIONALITY ===**
 - Bugs/Unsorted
-    - Use FontAwesome icons in the project manager
+    - Move "ControlStack" idea into core
+- Project Manager
+    - Use FontAwesome icons
+    - Make browser NOT close the currently active game
+        - or just revisit the whole browser interface in general
+    - Manager should only run one game at a time, or at least only one copy of a particular game
+- Infrastructure
+    - If a project has a `build.js`/`build.ts`, run it after TS compilation
+    - Should be able to refresh/reset; the way the message waiting works, this doesn't work the way it should
+- Cozy.Sprite
     - change Sprite direction accessors to have degree and radian variants, reading/writing a single internal format and converting as necessary
     - Need to figure out hierarchical/multilayer sprites
         - Give Sprite a Container, put itself in the container and add THAT to the layer's container, then all children sprites can go in there afterward
         - Do I need/want a true hierarchy, or just layers?
     - Support a 'keep' direction or something on sprite animation angles -- just keep playing the same direction as before
-    - Make browser NOT close the currently active game
-        - or just revisit the whole browser interface in general
-    - If a project has a `build.js`/`build.ts`, run it after TS compilation
-    - Manager should only run one game at a time, or at least only one copy of a particular game
-    - Should be able to refresh/reset; the way the message waiting works, this doesn't work the way it should
 - Testing
     - Investigate this
 - Data Editor
@@ -77,6 +81,8 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
     - Mac OS
     - Linux
 - **=== RELEASE 0.2 - GRAB THE GEMS, ACTIONADVENTUREKIT, QUALITY OF LIFE IMPROVEMENTS ===**
+- Bugs/Unsorted
+    - Figure out seamless upgrades
 - RPGKit
     - Add scripted movement for entities on the map
     - Can I just slurp in all of the map .ts files automatically instead of having to reference each one?
