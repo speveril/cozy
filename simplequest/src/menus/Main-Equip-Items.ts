@@ -14,7 +14,7 @@ module SimpleQuest {
                     cancelable: true,
                     className: 'scrollable items-submenu layout-column',
                     html: `
-                        <ul class="items selections"></ul>
+                        <ul class="items selections scrollable"></ul>
                     `
                 });
                 this.character = args.character;
