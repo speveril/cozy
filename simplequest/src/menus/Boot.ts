@@ -41,7 +41,6 @@ module SimpleQuest {
 
             unpause() {
                 super.unpause();
-                console.log(this.submenu, this.submenu.choice);
                 if (this.submenu && this.submenu.choice) {
                     this.beginGame(this.submenu.choice);
                 }
