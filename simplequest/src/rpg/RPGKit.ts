@@ -16,7 +16,7 @@
 ///<reference path="battle/Battle.ts"/>
 
 module RPG {
-    var VERSION = '0pre'
+    var VERSION = '0pre';
 
     export enum ControlMode { None, Scene, Menu, Map, Battle };
 
@@ -43,7 +43,7 @@ module RPG {
     export var music:{ [name:string]: Cozy.Music }  = {};
 
     export function start(config:any):Promise<any> {
-        console.log(`Loading RPGKit (v.${RPG.VERSION})`);
+        console.log(`Loading RPGKit (v.${VERSION})`);
 
         RPG.renderPlane = <Cozy.RenderPlane>Cozy.addPlane(Cozy.RenderPlane, { className: 'render-plane' });
         RPG.uiPlane = <Cozy.UiPlane>Cozy.addPlane(Cozy.UiPlane, { className: 'overlay' });
