@@ -368,6 +368,7 @@
   <object id="159" name="doFight" type="entity" x="192" y="544" width="16" height="16">
    <properties>
     <property name="behavior" value="guard_left"/>
+    <property name="exclamation" value="Hey, what are you doing in here?"/>
     <property name="monster" value="cultist"/>
     <property name="sprite" value="sprites/cultist.sprite"/>
    </properties>

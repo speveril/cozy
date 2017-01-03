@@ -84,6 +84,44 @@ module RPG {
             }
         }
 
+        static *waitEntityMove(entity:Entity, steps:Array<number>) {
+            const steplen = steps.length;
+            let step;
+            let dt;
+            let dx, dy;
+            let tx, ty;
+
+            for (let i = 0; i < steplen; i++) {
+                step = steps[i];
+
+                dx = Math.cos(PIXI.DEG_TO_RAD * step) * RPG.map.tileSize.x;
+                dy = Math.sin(PIXI.DEG_TO_RAD * step) * RPG.map.tileSize.y;
+                // correct for floating point trig drift
+                if (Math.abs(dx) < 1) dx = 0;
+                if (Math.abs(dy) < 1) dy = 0;
+
+                tx = entity.position.x + dx;
+                ty = entity.position.y + dy;
+
+                while (entity.position.x !== tx || entity.position.y !== ty) {
+                    let dt = yield;
+
+                    let px = entity.position.x, py = entity.position.y;
+                    entity.move(dx * dt, dy * dt);
+                    if (entity.position.x === px && entity.position.y === py) {
+                        // got stuck, skip the rest of this movement
+                        // TODO make this configurable somehow? in some cases maybe we want to wait for a while instead
+                        break;
+                    }
+
+                    if (dx > 0 && entity.position.x > tx) entity.position.x = tx;
+                    if (dx < 0 && entity.position.x < tx) entity.position.x = tx;
+                    if (dy > 0 && entity.position.y > ty) entity.position.y = ty;
+                    if (dy < 0 && entity.position.y < ty) entity.position.y = ty;
+                }
+            }
+        }
+
         static *waitFadeTo(color:string, duration:number) {
             this.fadeLayer.style.opacity = '0';
             this.fadeLayer.style.backgroundColor = color;

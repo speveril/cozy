@@ -86,7 +86,7 @@ module RPG {
 
             if (this.emoteSprite) {
                 this.layer.displayLayer.add(this.emoteSprite);
-                this.emoteSprite.setPosition(this.sprite.position.x, this.sprite.position.y + 1);
+                this.emoteSprite.setPosition(this.sprite.position.x, this.sprite.position.y + 0.1);
             }
 
             if (!_.contains(this.layer.entities, this)) {
@@ -96,6 +96,10 @@ module RPG {
 
         adjust(dx:number, dy:number):void {
             this.sprite.setPosition(this.sprite.position.x + dx, this.sprite.position.y + dy);
+
+            if (this.emoteSprite) {
+                this.emoteSprite.setPosition(this.sprite.position.x, this.sprite.position.y + 0.1);
+            }
         }
 
         destroy() {
@@ -225,6 +229,9 @@ module RPG {
                     travelled += d / dist;
 
                     this.sprite.setPosition(projectedPosition.x, projectedPosition.y);
+                    if (this.emoteSprite) {
+                        this.emoteSprite.setPosition(this.sprite.position.x, this.sprite.position.y + 0.1);
+                    }
                 }
             } else {
                 this.sprite.animation = 'stand';

@@ -41,54 +41,58 @@ module RPG {
             }
         }
 
-        export function *guard(entity:RPG.Entity) {
+        export function *guard(entity:RPG.Entity, direction:number) {
+            entity.dir = direction;
+            entity.sprite.animation = 'stand';
+
             var map = <SimpleQuest.Map>RPG.map;
             var visionDistance:number = entity.params.vision || 3;
             var visionEnd:PIXI.Point = new PIXI.Point(
                 entity.position.x + Math.cos(entity.dir * PIXI.DEG_TO_RAD) * visionDistance * map.tileSize.x,
                 entity.position.y + Math.sin(entity.dir * PIXI.DEG_TO_RAD) * visionDistance * map.tileSize.y
             );
+            let movement = [];
+            _.times(visionDistance, () => movement.push(direction));
 
             while (true) {
-                var dt = yield;
+                let dt = yield;
                 if (Trig.distToSegment(RPG.player.position, entity.position, visionEnd) < RPG.player.radius) {
                     RPG.controlStack.push(RPG.ControlMode.None);
-                    RPG.player.sprite.animation = 'stand';
 
-                    entity.emote("!");
-                    RPG.sfx['alert'].play();
-                    yield *map.waitTextbox(null, ["Hey! You!"]);
-                    entity.clearEmote();
-                    // TODO walk up to player
-                    yield *map.waitFight(entity);
+                    if (entity.params.notice && _.has(map, entity.params.notice)) {
+                        map[entity.params.notice]();
+                    } else {
+                        RPG.player.sprite.animation = 'stand';
 
+                        let exclamation = entity.params.exclamation || "Hey, you!";
+
+                        entity.emote("!");
+                        RPG.sfx['alert'].play();
+                        yield *Scene.waitEntityMove(entity, movement);
+                        yield *map.waitTextbox(null, [exclamation]);
+                        entity.clearEmote();
+
+                        yield *map.waitFight(entity);
+                    }
                     RPG.controlStack.pop();
                 }
             }
         }
 
         export function *guard_right(entity:RPG.Entity) {
-            entity.dir = 0;
-            entity.sprite.animation = 'stand';
-            yield *guard(entity);
+            yield *guard(entity, 0);
         }
 
         export function *guard_down(entity:RPG.Entity) {
-            entity.dir = 90;
-            entity.sprite.animation = 'stand';
-            yield *guard(entity);
+            yield *guard(entity, 90);
         }
 
         export function *guard_left(entity:RPG.Entity) {
-            entity.dir = 180;
-            entity.sprite.animation = 'stand';
-            yield *guard(entity);
+            yield *guard(entity, 180);
         }
 
         export function *guard_up(entity:RPG.Entity) {
-            entity.dir = 270;
-            entity.sprite.animation = 'stand';
-            yield *guard(entity);
+            yield *guard(entity, 270);
         }
     }
 }

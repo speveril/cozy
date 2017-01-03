@@ -34,13 +34,11 @@ If you want to work on the engine itself, you'll need to have NPM installed; run
 This is stuff I intend to do, and/or am actively working on. I'm trying to keep this up to date with my commits.
 
 - SimpleQuest/RPGKit specific
-    - Add scripted movement for entities in Scenes
-        - Make guard monsters walk up to you when alerted
+    - add a real lose screen
+    - add game start and game win scenes
     - Flesh out rest of world
         - "story" sequences
         - monsters, fights
-    - add game start and game win scenes
-    - add a real lose screen
     - add bouncies, slashies to combat
     - ? add a way to get the outcome of a battle so that code may respond to it differently -- victory vs. flee vs. defeat
     - ? allow to lose a battle without a game over

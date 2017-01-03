@@ -16,7 +16,7 @@
 ///<reference path="battle/Battle.ts"/>
 
 module RPG {
-    var VERSION = '0pre';
+    var VERSION = '0.1pre';
 
     export enum ControlMode { None, Scene, Menu, Map, Battle };
 
@@ -37,13 +37,13 @@ module RPG {
     export var battleSystem:any;
     export var mainMenuClass:any;
 
-    export var equipSlots                          = ["weapon", "shield", "armor", "accessory"];
+    export var equipSlots:Array<string>            = ["weapon", "shield", "armor", "accessory"];
     export var moneyName:string                    = "G";
-    export var sfx:{ [name:string]: Cozy.Sound }    = {};
-    export var music:{ [name:string]: Cozy.Music }  = {};
+    export var sfx:{ [name:string]: Cozy.Sound }   = {};
+    export var music:{ [name:string]: Cozy.Music } = {};
 
     export function start(config:any):Promise<any> {
-        console.log(`Loading RPGKit (v.${VERSION})`);
+        console.log(`Loading RPGKit (v${VERSION})`);
 
         RPG.renderPlane = <Cozy.RenderPlane>Cozy.addPlane(Cozy.RenderPlane, { className: 'render-plane' });
         RPG.uiPlane = <Cozy.UiPlane>Cozy.addPlane(Cozy.UiPlane, { className: 'overlay' });
