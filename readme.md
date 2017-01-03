@@ -84,6 +84,7 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
     - Figure out seamless upgrades
 - RPGKit
     - Add scripted movement for entities on the map
+    - Add Scene.waitAll() which takes multiple generator functions and waits for them all to finish
     - Can I just slurp in all of the map .ts files automatically instead of having to reference each one?
     - It'd be nice if the persistent stuff in map was easier to use in general
     - Zones (large polygons that can be checked, but don't necessarily fire an event when crossing the threshold) ???
