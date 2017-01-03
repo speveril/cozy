@@ -23,6 +23,7 @@ module SimpleQuest {
                 fightMusic:             'battle',
                 victoryMusic:           'victory',
                 monsters:               Cozy.gameDir.file('src/monsters.json').read('json'),
+                gameOver:               this.gameOverSequence
             },
             loadSkip:               [ "src_image/" ],
             items:                  Cozy.gameDir.file('src/items.json').read('json'),
@@ -84,6 +85,12 @@ module SimpleQuest {
         Cozy.pause();
         game.applyToState();
         Cozy.unpause();
+    }
+
+    export function gameOverSequence() {
+        let gameOverMenu = new Menu.GameOver();
+        RPG.uiPlane.addChild(gameOverMenu);
+        RPG.Menu.push(gameOverMenu);
     }
 
     export function newGameData() {

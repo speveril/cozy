@@ -36,10 +36,10 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
 - SimpleQuest/RPGKit specific
     - add a real lose screen
     - add game start and game win scenes
+    - add bouncies, slashies to combat
     - Flesh out rest of world
         - "story" sequences
         - monsters, fights
-    - add bouncies, slashies to combat
     - ? add a way to get the outcome of a battle so that code may respond to it differently -- victory vs. flee vs. defeat
     - ? allow to lose a battle without a game over
     - ? hide debug map better

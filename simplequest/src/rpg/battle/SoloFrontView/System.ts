@@ -4,19 +4,21 @@ module RPG.BattleSystem.SoloFrontView {
     export class System {
         fightMusic:Cozy.Music            = null;
         victoryMusic:Cozy.Music          = null;
-        monsters:any                    = null;
+        monsters:any                     = null;
         renderPlane:Cozy.RenderPlane     = null;
         uiPlane:Cozy.UiPlane             = null;
+        gameOver:any                     = null;
 
         monsterLayer:Cozy.Layer          = null;
         monsterSprite:Cozy.Sprite        = null;
 
-        combatants:Array<Character>     = null;
+        combatants:Array<Character>      = null;
 
         constructor(args:any) {
             this.fightMusic = RPG.music[args.fightMusic] || null;
             this.victoryMusic = RPG.music[args.victoryMusic] || null;
             this.monsters = args.monsters || {};
+            this.gameOver = args.gameOver || Cozy.quit;
 
             this.renderPlane = <Cozy.RenderPlane>Cozy.addPlane(Cozy.RenderPlane, { className: 'battle-render' });
             this.renderPlane.hide();
@@ -149,7 +151,15 @@ module RPG.BattleSystem.SoloFrontView {
                 this.output("\nYou have died!");
                 yield* RPG.Scene.waitFadeTo("black", 2.0);
 
-                Cozy.quit(); // TODO this should actually be a gameover handler
+                Cozy.Input.debounce('confirm');
+                this.renderPlane.hide();
+                this.uiPlane.hide();
+                this.renderPlane.clear();
+                RPG.Textbox.hide();
+
+                this.gameOver();
+                yield* RPG.Scene.waitFadeFrom("black", 2.0);
+                return;
             } else if (battleOutcome.victory) {
                 if (this.victoryMusic) this.victoryMusic.start();
 
@@ -194,6 +204,7 @@ module RPG.BattleSystem.SoloFrontView {
         }
 
         monsterThink() {
+            // TODO
             return "fight";
         }
 

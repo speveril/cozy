@@ -1,4 +1,5 @@
 ///<reference path="Boot.ts"/>
+///<reference path="GameOver.ts"/>
 ///<reference path="Main.ts"/>
 ///<reference path="Shop.ts"/>
 
