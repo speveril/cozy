@@ -83,6 +83,7 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
 - Bugs/Unsorted
     - Figure out seamless upgrades
 - RPGKit
+    - SavedGame should write a version number, and have upgrade functions; when loading a SavedGame, run through each necessary upgrade before returning it
     - Add scripted movement for entities on the map
     - Add Scene.waitAll() which takes multiple generator functions and waits for them all to finish
     - Can I just slurp in all of the map .ts files automatically instead of having to reference each one?
