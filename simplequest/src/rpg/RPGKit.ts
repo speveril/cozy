@@ -16,6 +16,8 @@
 ///<reference path="battle/Battle.ts"/>
 
 module RPG {
+    var VERSION = '0pre'
+
     export enum ControlMode { None, Scene, Menu, Map, Battle };
 
     export var characters:{[key:string]:Character} = {};
@@ -41,7 +43,7 @@ module RPG {
     export var music:{ [name:string]: Cozy.Music }  = {};
 
     export function start(config:any):Promise<any> {
-        console.log("RPGKit start");
+        console.log(`Loading RPGKit (v.${RPG.VERSION})`);
 
         RPG.renderPlane = <Cozy.RenderPlane>Cozy.addPlane(Cozy.RenderPlane, { className: 'render-plane' });
         RPG.uiPlane = <Cozy.UiPlane>Cozy.addPlane(Cozy.UiPlane, { className: 'overlay' });
@@ -97,8 +99,6 @@ module RPG {
 
         renderPlane.clear();
         uiPlane.clear();
-
-        console.log("Done RPG.cleanup()");
     }
 
     export function frame(dt) {
@@ -122,13 +122,11 @@ module RPG {
         } else {
             switch(controls) {
                 case ControlMode.Map:
-                    console.log("bad controls [map]: >>",map,player); break;
+                    console.warn("bad controls [map]: >>",map,player); break;
                 case ControlMode.Scene:
-                    console.log("bad controls [scene]: >>",Scene.currentScene); break;
+                    console.warn("bad controls [scene]: >>",Scene.currentScene); break;
                 case ControlMode.Menu:
-                    console.log("bad controls [menu]: >>",Menu.currentMenu); break;
-                // case ControlMode.Battle:
-                //     console.log("bad controls [battle]: >>",Battle.active); break;
+                    console.warn("bad controls [menu]: >>",Menu.currentMenu); break;
             }
         }
 

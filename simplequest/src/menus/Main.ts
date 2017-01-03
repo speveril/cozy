@@ -71,6 +71,7 @@ module SimpleQuest {
                     this.addChild(RPG.Menu.currentMenu, '.main-area');
                 } else {
                     console.warn("! Tried to show bad submenu", key);
+                    console.trace();
                 }
             }
 

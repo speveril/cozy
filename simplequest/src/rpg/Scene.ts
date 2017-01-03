@@ -69,7 +69,6 @@ module RPG {
                     if (this.scenes.length === 1) {
                         this.fadeLayer.style.opacity = '0';
                     }
-console.trace("POPPING CONTROLSTACK");
                     RPG.controlStack.pop();
                     this.scenes.pop();
                 }
@@ -114,6 +113,5 @@ console.trace("POPPING CONTROLSTACK");
                 elapsed += yield;
             }
         }
-
     }
 }

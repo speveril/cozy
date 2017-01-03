@@ -77,8 +77,6 @@ module SimpleQuest {
                     case 'd': args.target.sprite.animation = "stand_u"; break;
                     case 'l': args.target.sprite.animation = "stand_r"; break;
                 }
-                console.log(args.entity.dir, args.target.animation);
-
                 yield* this.waitTextbox("VILLAGER", [
                     "Fresh water is good for you! I'm so glad we have the well."
                 ]);

@@ -4,7 +4,8 @@ module RPG {
             if (this[effect]) {
                 return this[effect].apply(null, [source, target].concat(params));
             } else {
-                console.trace("! Bad effect", effect);
+                console.warn("! Bad effect", effect);
+                console.trace();
             }
         }
 

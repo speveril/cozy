@@ -74,7 +74,6 @@ module RPG {
             }
             var m = Menu.menuStack.pop();
             m.stop();
-console.trace("POPPING CONTROLSTACK");
             RPG.controlStack.pop();
             if (Menu.menuStack.length > 0) {
                 Menu.currentMenu.unpause();

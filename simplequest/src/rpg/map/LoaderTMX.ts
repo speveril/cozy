@@ -24,7 +24,7 @@ module RPG.Map.Loader {
                         if (propertyMap[key]) {
                             map[propertyMap[key]] = propEl.getAttribute('value');
                         } else {
-                            console.log(`Ignoring unrecognized property called '${key}'.`);
+                            console.warn(`Ignoring unrecognized property called '${key}'.`);
                         }
                     });
                     break;
@@ -165,7 +165,7 @@ module RPG.Map.Loader {
                     });
                     break;
                 default:
-                    console.log("Got a '" + el.tagName + "' in the map, not sure what to do with it so I'm ignoring it.");
+                    console.warn(`Ignoring unknown tag named '${el.tagName}'.`);
             }
         });
 

@@ -59,7 +59,6 @@ module RPG {
                             y: (RPG.player.position.y / RPG.map.tileSize.y) | 0
                         }
                     };
-                    console.log(data);
                     return new SavedGame(file, data);
                 });
         }
