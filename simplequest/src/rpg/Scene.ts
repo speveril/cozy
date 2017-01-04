@@ -94,20 +94,20 @@ module RPG {
             for (let i = 0; i < steplen; i++) {
                 step = steps[i];
 
-                dx = Math.cos(PIXI.DEG_TO_RAD * step) * RPG.map.tileSize.x;
-                dy = Math.sin(PIXI.DEG_TO_RAD * step) * RPG.map.tileSize.y;
+                dx = Math.cos(PIXI.DEG_TO_RAD * step);
+                dy = Math.sin(PIXI.DEG_TO_RAD * step);
                 // correct for floating point trig drift
                 if (Math.abs(dx) < 1) dx = 0;
                 if (Math.abs(dy) < 1) dy = 0;
 
-                tx = entity.position.x + dx;
-                ty = entity.position.y + dy;
+                tx = entity.position.x + dx * RPG.map.tileSize.x;
+                ty = entity.position.y + dy * RPG.map.tileSize.y;
 
                 while (entity.position.x !== tx || entity.position.y !== ty) {
                     let dt = yield;
 
                     let px = entity.position.x, py = entity.position.y;
-                    entity.move(dx * dt, dy * dt);
+                    entity.move(entity.speed * dx * dt, entity.speed * dy * dt);
                     if (entity.position.x === px && entity.position.y === py) {
                         // got stuck, skip the rest of this movement
                         // TODO make this configurable somehow? in some cases maybe we want to wait for a while instead
@@ -150,6 +150,25 @@ module RPG {
             while (elapsed < duration) {
                 elapsed += yield;
             }
+        }
+
+        static *waitTextbox(speaker, lines:string[]) {
+            for(var i = 0; i < lines.length; i++) {
+                if (i === 0) {
+                    if (speaker) {
+                        RPG.Textbox.show(`<span class="speaker">${speaker}:</span> ${lines[i]}`);
+                    } else {
+                        RPG.Textbox.show(lines[i]);
+                    }
+                } else {
+                    RPG.Textbox.box.appendText("\n" + lines[i]);
+                }
+
+                yield* RPG.Scene.waitButton("confirm");
+                Cozy.Input.debounce("confirm");
+            }
+
+            RPG.Textbox.hide();
         }
     }
 }

@@ -38,7 +38,7 @@ module SimpleQuest {
 
         read_sign(args) {
             RPG.Scene.do(function*() {
-                yield* this.waitTextbox(null, [
+                yield* RPG.Scene.waitTextbox(null, [
                     `<div style="text-align:center">Welcome to the debug map!</div>This map showcases many of the things that SimpleQuest and the RPGKit can do.`,
                     "It also provides a convenient way to skip to any maps.",
                     "If you'd like to go back to town, simply go and activate the town to south."
@@ -92,7 +92,7 @@ module SimpleQuest {
                 var index = Cozy.wrap(musicKeys.indexOf(this.musicKey) - 1, musicKeys.length);
                 this.musicKey = musicKeys[index];
                 RPG.music[this.musicKey].start();
-                yield* this.waitTextbox(null, [
+                yield* RPG.Scene.waitTextbox(null, [
                     `<center>Now playing:\n${this.musicKey}</center>`
                 ]);
             }.bind(this));
@@ -104,7 +104,7 @@ module SimpleQuest {
                 var index = Cozy.wrap(musicKeys.indexOf(this.musicKey) + 1, musicKeys.length);
                 this.musicKey = musicKeys[index];
                 RPG.music[this.musicKey].start();
-                yield* this.waitTextbox(null, [
+                yield* RPG.Scene.waitTextbox(null, [
                     `<center>Now playing:\n${this.musicKey}</center>`
                 ]);
             }.bind(this));
@@ -156,11 +156,11 @@ module SimpleQuest {
                     "done": "Never mind",
                     "!": "!"
                 }
-                yield *this.waitTextbox("Emote Tester", ["I'm the emote tester!"]);
+                yield *RPG.Scene.waitTextbox("Emote Tester", ["I'm the emote tester!"]);
                 while (true) {
                     var choice = yield *this.waitChoice("Which emote?", emotes);
                     if (choice === 'done') {
-                        yield *this.waitTextbox("Emote Tester", ["Okay, bye!"]);
+                        yield *RPG.Scene.waitTextbox("Emote Tester", ["Okay, bye!"]);
                         args.target.clearEmote();
                         break;
                     } else {
@@ -172,7 +172,7 @@ module SimpleQuest {
 
         fight_special(args) {
             RPG.Scene.do(function*() {
-                yield *this.waitTextbox('Skeleton', [
+                yield *RPG.Scene.waitTextbox('Skeleton', [
                     "Knave! You stand before Dr. Skull Van Skellington, Esq."
                 ]);
                 var fight = yield *this.waitChoice("Fight Dr. Whatever?", {yes:"Yes", no:"No"});
@@ -181,11 +181,11 @@ module SimpleQuest {
                         enemy: 'skellington',
                         scene: 'ui/battle/scene_test.png'
                     });
-                    yield *this.waitTextbox('Skeleton', [
+                    yield *RPG.Scene.waitTextbox('Skeleton', [
                         "Capital! Good show."
                     ]);
                 } else {
-                    yield *this.waitTextbox('Skeleton', [
+                    yield *RPG.Scene.waitTextbox('Skeleton', [
                         "Yes! Cower before my skeletal might!"
                     ]);
                 }

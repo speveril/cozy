@@ -193,10 +193,11 @@ module RPG {
 
             var mapArgs = _.clone(mapLookup[mapkey]);
             var mapType = mapArgs.shift();
-            map = new mapType(mapArgs);
+            map = new mapType(mapArgs.shift());
             map.open();
 
             player.place((x + 0.5) * map.tileSize.x, (y + 0.5) * map.tileSize.y, map.getLayerByName(layerName || '#spritelayer'));
+            if (opts.direction) player.dir = opts.direction;
             RPG.centerCameraOn(player.position, true);
 
             if (!opts.noFadeIn)

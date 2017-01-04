@@ -54,7 +54,7 @@ module SimpleQuest {
 
         exit_door(args) {
             RPG.Scene.do(function*() {
-                yield *this.waitTextbox(null, ['The door is locked!']);
+                yield *RPG.Scene.waitTextbox(null, ['The door is locked!']);
             }.bind(this))
         }
 

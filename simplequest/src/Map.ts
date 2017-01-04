@@ -109,7 +109,7 @@ module SimpleQuest {
                 }.bind(this));
             } else {
                 RPG.Scene.do(function*() {
-                    yield* this.waitTextbox(null, [message || "This door is locked, and you don't have the key."]);
+                    yield* RPG.Scene.waitTextbox(null, [message || "This door is locked, and you don't have the key."]);
                 }.bind(this));
             }
         }
@@ -118,7 +118,7 @@ module SimpleQuest {
             if (Map.persistent[this.filename][switchName + '__switched']) return;
 
             RPG.Scene.do(function*() {
-                yield* this.waitTextbox(null, [message || "There is no obvious way to open this door."]);
+                yield* RPG.Scene.waitTextbox(null, [message || "There is no obvious way to open this door."]);
             }.bind(this));
         }
 
@@ -134,7 +134,7 @@ module SimpleQuest {
                 if (doorName) {
                     this.doDoor(doorName);
                 }
-                yield* this.waitTextbox(null, [message || "Something opened in the distance."]);
+                yield* RPG.Scene.waitTextbox(null, [message || "Something opened in the distance."]);
             }.bind(this))
         }
 
@@ -223,25 +223,6 @@ module SimpleQuest {
             yield* RPG.Scene.waitTime(0.5);
         }
 
-        *waitTextbox(speaker, lines:string[]) {
-            for(var i = 0; i < lines.length; i++) {
-                if (i === 0) {
-                    if (speaker) {
-                        RPG.Textbox.show(`<span class="speaker">${speaker}:</span> ${lines[i]}`);
-                    } else {
-                        RPG.Textbox.show(lines[i]);
-                    }
-                } else {
-                    RPG.Textbox.box.appendText("\n" + lines[i]);
-                }
-
-                yield* RPG.Scene.waitButton("confirm");
-                Cozy.Input.debounce("confirm");
-            }
-
-            RPG.Textbox.hide();
-        }
-
         *waitCenteredTextbox(text:string) {
             RPG.Textbox.show(`<div class="__c"><div class="__c_i">${text}</div></div>`);
             yield* RPG.Scene.waitButton("confirm");
@@ -299,8 +280,8 @@ module SimpleQuest {
 
                 if (smashed.length === Map.persistent[this.filename].potCount) {
                     RPG.Scene.do(function*() {
-                        yield* this.waitTextbox(null, ["You've broken all the pots."]);
-                        yield* this.waitTextbox(null, ["Are you proud of yourself now?"]);
+                        yield* RPG.Scene.waitTextbox(null, ["You've broken all the pots."]);
+                        yield* RPG.Scene.waitTextbox(null, ["Are you proud of yourself now?"]);
                     }.bind(this));
                 }
             }

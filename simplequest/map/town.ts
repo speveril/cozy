@@ -10,7 +10,14 @@ module SimpleQuest {
         }
 
         exit_town(args) {
-            RPG.startMap('overworld', 14, 12);
+            if (!this.persisted('talked to mayor')) {
+                RPG.Scene.do(function*() {
+                    yield *RPG.Scene.waitTextbox(null, ["I should look around for someone who needs help before I leave town."]);
+                    yield *RPG.Scene.waitEntityMove(RPG.player, [90]);
+                });
+            } else {
+                RPG.startMap('overworld', 14, 12);
+            }
         }
 
         goto_debug(args) {
@@ -39,9 +46,9 @@ module SimpleQuest {
             RPG.Scene.do(function*() {
                 if (!this.persisted('talked to item shop')) {
                     this.persist('talked to item shop');
-                    yield* this.waitTextbox("SHOPKEEP", ["Don't you just love shopping?!"]);
-                    yield* this.waitTextbox("HERO", ["..."]);
-                    yield* this.waitTextbox("SHOPKEEP", ["Me too!"]);
+                    yield* RPG.Scene.waitTextbox("SHOPKEEP", ["Don't you just love shopping?!"]);
+                    yield* RPG.Scene.waitTextbox("HERO", ["..."]);
+                    yield* RPG.Scene.waitTextbox("SHOPKEEP", ["Me too!"]);
                 }
 
                 yield* this.waitShop({
@@ -55,7 +62,7 @@ module SimpleQuest {
             RPG.Scene.do(function*() {
                 if (!this.persisted('talked to equip shop')) {
                     this.persist('talked to equip shop');
-                    yield* this.waitTextbox("SHOPKEEP", ["Buy somethin', will ya!"]);
+                    yield* RPG.Scene.waitTextbox("SHOPKEEP", ["Buy somethin', will ya!"]);
                 }
 
                 yield* this.waitShop({
@@ -77,7 +84,7 @@ module SimpleQuest {
                     case 'd': args.target.sprite.animation = "stand_u"; break;
                     case 'l': args.target.sprite.animation = "stand_r"; break;
                 }
-                yield* this.waitTextbox("VILLAGER", [
+                yield* RPG.Scene.waitTextbox("VILLAGER", [
                     "Fresh water is good for you! I'm so glad we have the well."
                 ]);
                 args.target.unpause();
@@ -86,13 +93,14 @@ module SimpleQuest {
 
         villager_mayor(args) {
             RPG.Scene.do(function*() {
-                yield* this.waitTextbox("MAYOR JOAN", [
+                this.persist('talked to mayor');
+                yield* RPG.Scene.waitTextbox("MAYOR JOAN", [
                     "Welcome to Carp's Bend.",
                     "Do you happen to have any experience in slaying dragons?",
                     "We've been having trouble with a dragon that lives up north on Mount Danger."
                 ]);
-                yield* this.waitTextbox("HERO", ["..."]);
-                yield* this.waitTextbox("MAYOR JOAN", [
+                yield* RPG.Scene.waitTextbox("HERO", ["..."]);
+                yield* RPG.Scene.waitTextbox("MAYOR JOAN", [
                     "You would do us a great service by defeating this dragon...",
                     "Your name would probably be remembered in song for... days! Probably!"
                 ]);
@@ -101,7 +109,7 @@ module SimpleQuest {
 
         villager_south_house(args) {
             RPG.Scene.do(function*() {
-                yield* this.waitTextbox("VILLAGER", [
+                yield* RPG.Scene.waitTextbox("VILLAGER", [
                     "The dragon attacks have been getting worse lately.",
                     "At least I have a house! Most people in this town just seem to sleep outside."
                 ]);
@@ -110,22 +118,22 @@ module SimpleQuest {
 
         villager_fisher(args) {
             RPG.Scene.do(function*() {
-                yield* this.waitTextbox("FISHERMAN", ["We like to fish, here in Carp's Bend."]);
+                yield* RPG.Scene.waitTextbox("FISHERMAN", ["We like to fish, here in Carp's Bend."]);
             }.bind(this));
         }
 
         villager_bushes(args) {
             RPG.Scene.do(function*() {
-                yield* this.waitTextbox("VILLAGER", [
+                yield* RPG.Scene.waitTextbox("VILLAGER", [
                     "Whoa there! This here's private property.",
                     "Go find your own dang bushes!"
                 ]);
                 var tonics = RPG.Party.inventory.get((it) => it.key === 'tonic');
                 if (tonics.length > 0) {
-                    yield* this.waitTextbox("VILLAGER", ["Know what? I'mma steal a tonic from you!"]);
+                    yield* RPG.Scene.waitTextbox("VILLAGER", ["Know what? I'mma steal a tonic from you!"]);
                     RPG.Party.inventory.remove(tonics[0]);
                     yield* this.waitCenteredTextbox("You lost a tonic!");
-                    yield* this.waitTextbox("HERO", ["..."]);
+                    yield* RPG.Scene.waitTextbox("HERO", ["..."]);
                 }
             }.bind(this));
         }

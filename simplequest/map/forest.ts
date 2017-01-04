@@ -60,7 +60,7 @@ module SimpleQuest {
 
         examine_statue(args) {
             RPG.Scene.do(function*() {
-                yield* this.waitTextbox(null, [
+                yield* RPG.Scene.waitTextbox(null, [
                     "The statues seem ancient, but are in remarkably good repair.",
                     "It is not clear what they are supposed to represent, though."
                 ]);

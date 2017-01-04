@@ -69,7 +69,7 @@ module RPG {
                         entity.emote("!");
                         RPG.sfx['alert'].play();
                         yield *Scene.waitEntityMove(entity, movement);
-                        yield *map.waitTextbox(null, [exclamation]);
+                        yield *Scene.waitTextbox(null, [exclamation]);
                         entity.clearEmote();
 
                         yield *map.waitFight(entity);

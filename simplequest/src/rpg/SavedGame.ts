@@ -87,7 +87,7 @@ module RPG {
             RPG.player = RPG.Party.members[0].makeEntity();
 
             if (this.data.mapPersistent) RPG.Map.Map.persistent = this.data.mapPersistent;
-            RPG.startMap(this.data.map, this.data.playerLocation.x, this.data.playerLocation.y);
+            if (this.data.map) RPG.startMap(this.data.map, this.data.playerLocation.x, this.data.playerLocation.y);
         }
 
         writeToDisk() {

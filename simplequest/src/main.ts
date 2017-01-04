@@ -84,7 +84,32 @@ module SimpleQuest {
     export function startGame(game:RPG.SavedGame) {
         Cozy.pause();
         game.applyToState();
+
         Cozy.unpause();
+        if (!RPG.map) {
+            this.newGameSequence();
+        }
+    }
+
+    export function newGameSequence() {
+        let lyr = RPG.renderPlane.addRenderLayer();
+        let sprite = new Cozy.Sprite(RPG.characters['hero'].sprite);
+        lyr.add(sprite);
+        sprite.setPosition(160, 120)
+        sprite.direction = 90;
+
+        RPG.Scene.do(function*() {
+            yield *RPG.Scene.waitFadeFrom('black', 1.0);
+            yield *RPG.Scene.waitTextbox(null, [
+                "My name is Hero. Great expectations were thrust upon me at birth.",
+                "I've been wandering for most of my life, trying to figure out how to fulfill those expectations.",
+                "Or how to escape them."
+            ]);
+            yield *RPG.Scene.waitTextbox(null, [
+                "For now I've come to this place. A small village named Carp's Bend. Maybe I'll find what I'm looking for here."
+            ]);
+            RPG.startMap('village', 8, 2, undefined, { direction: 90 });
+        });
     }
 
     export function gameOverSequence() {
@@ -120,9 +145,7 @@ module SimpleQuest {
             party: {
                 members: ['hero'],
                 inventory: ['tonic','tonic','oak_sword','quilt_armor']
-            },
-            map: 'village',
-            playerLocation: { x: 10, y: 7 }
+            }
         });
     }
 }

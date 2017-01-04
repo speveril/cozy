@@ -35,7 +35,7 @@ module SimpleQuest {
 
         examine_ship(args) {
             RPG.Scene.do(function*() {
-                yield* this.waitTextbox(null, ["You can't leave this place until you've found what you're looking for."]);
+                yield* RPG.Scene.waitTextbox(null, ["I can't leave yet."]);
             }.bind(this));
         }
     }
