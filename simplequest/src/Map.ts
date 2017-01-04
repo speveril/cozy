@@ -50,14 +50,15 @@ module SimpleQuest {
             }
         }
 
-        doFight(entity) {
+        doFight(args) {
             // TODO RPG.Scene.do(), yield to waitFight?
-            console.log("doFight->", entity);
+            console.log("doFight->", args.entity);
             RPG.Battle.start({
-                enemy: entity.params.monster,
+                enemy: args.entity.params.monster,
                 scene: 'ui/battle/scene_placeholder.png'
             });
-            entity.destroy();
+            // TODO what if the player fled the battle?
+            args.entity.destroy();
         }
 
         *waitFight(entity) {

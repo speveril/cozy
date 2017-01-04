@@ -76,6 +76,16 @@ module SimpleQuest {
             }.bind(this));
         }
 
+        showCredits(args) {
+            RPG.Scene.do(function*() {
+                var choice = yield *this.waitChoice("View ending credits?", {yes:"Yes", no:"No"});
+                if (choice === 'yes') {
+                    RPG.music['victory'].start();
+                    SimpleQuest.gameWinSequence()
+                }
+            }.bind(this));
+        }
+
         music_check(args) {
             RPG.Scene.do(function*() {
                 var choice = yield* this.waitChoice(`Playing '${this.musicKey}'.`, {change:'Change track...', 'cancel':'Leave it'});
@@ -108,14 +118,6 @@ module SimpleQuest {
                     `<center>Now playing:\n${this.musicKey}</center>`
                 ]);
             }.bind(this));
-        }
-
-
-        test_fight(enemy) {
-            RPG.Battle.start({
-                enemy: enemy,
-                scene: 'ui/battle/scene_test.png'
-            });
         }
 
         check_entity(args) {

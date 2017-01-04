@@ -51,6 +51,11 @@ Some music by Otto Halmén - https://ottohalmen.bandcamp.com
 - https://ottohalmen.bandcamp.com/album/ottos-creative-commons-tracks
     - Otto Halmén - Death Is Just Another Path
 
+Some music by Joseph Gilbert - https://kistol.bandcamp.com/
+
+- http://opengameart.org/content/snowfall
+    - Snowfall (looped version)
+
 Some music from the RMN Music Pack - https://rpgmaker.net/musicpack/
 
 - Jasprelao - Town of Wishes

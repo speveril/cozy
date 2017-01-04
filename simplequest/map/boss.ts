@@ -59,10 +59,7 @@ module SimpleQuest {
         }
 
         leave_room(args) {
-            // do ending sequence
-            RPG.Scene.do(function*() {
-                yield *this.waitCenteredTextbox('You won!');
-            }.bind(this))
+            SimpleQuest.gameWinSequence();
         }
 
         trigger_switch(args) {

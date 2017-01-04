@@ -2,6 +2,7 @@
 
 ///<reference path="Map.ts"/>
 ///<reference path="menus/all.ts"/>
+///<reference path="CreditsComponent.ts"/>
 
 ///<reference path="../map/boss.ts"/>
 ///<reference path="../map/castle.ts"/>
@@ -50,7 +51,8 @@ module SimpleQuest {
                 'cave':                 { tracks: ["audio/music/1-10 Brazen.ogg"] },
                 'boss':                 { tracks: ["audio/music/3-11 Royalty of Sin.ogg"] },
                 'battle':               { tracks: ["audio/music/1-02 Resonant Hopes Ignited Wills.ogg"] },
-                'victory':              { tracks: ["audio/music/2-12 Victory Theme.ogg"] }
+                'victory':              { tracks: ["audio/music/2-12 Victory Theme.ogg"] },
+                'endcredits':           { tracks: ["audio/music/Snowfall (Looped ver.).ogg"] }
             },
             maps: {
                 'overworld':            [ Map_Overworld ],
@@ -86,7 +88,8 @@ module SimpleQuest {
         game.applyToState();
 
         Cozy.unpause();
-        if (!RPG.map) {
+
+        if (!game.data.map) {
             this.newGameSequence();
         }
     }
@@ -109,13 +112,60 @@ module SimpleQuest {
                 "For now I've come to this place. A small village named Carp's Bend. Maybe I'll find what I'm looking for here."
             ]);
             RPG.startMap('village', 8, 2, undefined, { direction: 90 });
-        });
+        }.bind(this));
     }
 
     export function gameOverSequence() {
         let gameOverMenu = new Menu.GameOver();
         RPG.uiPlane.addChild(gameOverMenu);
         RPG.Menu.push(gameOverMenu);
+    }
+
+    export function gameWinSequence() {
+        RPG.Scene.do(function*() {
+            yield *RPG.Scene.waitFadeTo('black', 1.0);
+
+            RPG.map.finish();
+            RPG.map = null;
+            RPG.renderPlane.clear();
+            RPG.player = null;
+
+            const lyr = RPG.renderPlane.addRenderLayer();
+            const sprite = new Cozy.Sprite(RPG.characters['hero'].sprite);
+            lyr.add(sprite);
+            sprite.setPosition(160, 120)
+            sprite.direction = 90;
+
+            yield *RPG.Scene.waitFadeFrom('black', 1.0);
+            yield *RPG.Scene.waitTextbox(null, [
+                "With the dragon destroyed, I take my leave of Carp's Bend.",
+                "I do not know what they will think of me, or if they will understand what I've done for them.",
+                "I don't need applause. I don't need gold or gems. I just need to know they are safe.",
+                "In the end it was kind of a terrible town anyway so I'm glad to get out of here."
+            ]);
+
+            Cozy.Audio.currentMusic.stop(1.0);
+            yield *RPG.Scene.waitFadeTo('black', 1.0);
+            RPG.renderPlane.clear();
+
+            let y = 0;
+            const creditScroll = new CreditsComponent();
+            RPG.uiPlane.addChild(creditScroll);
+
+            RPG.music['endcredits'].start();
+            yield *RPG.Scene.waitFadeFrom('black', 1.0);
+
+            const len = creditScroll.getScrollLength();
+            while (creditScroll.scrolled < len) {
+                let dt = yield;
+                creditScroll.scroll(dt * 10);
+            }
+
+            RPG.music['endcredits'].stop(2);
+            yield *RPG.Scene.waitFadeTo('black', 2.0);
+
+            this.bootSequence();
+        }.bind(this));
     }
 
     export function newGameData() {
