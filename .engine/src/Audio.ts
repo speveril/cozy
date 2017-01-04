@@ -75,9 +75,17 @@ module Cozy {
             return this.loadedPromise;
         }
 
-        start():void {
+        start(fade?:number):void {
             if (Audio.currentMusic) {
                 Audio.currentMusic.stop();
+            }
+
+            if (fade > 0) {
+                Audio.musicFade = {
+                    progress: 0,
+                    direction: +1,
+                    duration: fade
+                };
             }
 
             Audio.currentMusic = this;
@@ -88,9 +96,17 @@ module Cozy {
             this.source.start(0);
         }
 
-        stop():void {
-            this.source.stop();
-            this.source.disconnect();
+        stop(fade?:number):void {
+            if (fade > 0) {
+                Audio.musicFade = {
+                    progress: 1,
+                    direction: -1,
+                    duration: fade
+                };
+            } else {
+                this.source.stop();
+                this.source.disconnect();
+            }
         }
     }
 
@@ -99,12 +115,15 @@ module Cozy {
         static currentMusic:Music = null;
         static musicGain:GainNode;
         static sfxGain:GainNode;
+        static musicFade:any;
 
         static musicVolume:number;
         static sfxVolume:number;
 
         static init():void {
             this.context = new AudioContext();
+
+            this.musicFade = null;
 
             this.musicGain = this.context.createGain();
             this.musicGain.connect(this.context.destination);
@@ -115,6 +134,23 @@ module Cozy {
             this.musicVolume = 0.5;
             this.sfxVolume = 0.5;
             this.unmute();
+        }
+
+        static update(dt) {
+            if (this.musicFade) {
+                this.musicFade.progress += dt * this.musicFade.direction / this.musicFade.duration;
+
+                if (this.musicFade.progress < 0) {
+                    this.musicFade = null;
+                    this.musicGain.gain.value = this.musicVolume;
+                    this.currentMusic.stop();
+                } else if (this.musicFade.progress > 1) {
+                    this.musicFade = null;
+                    this.musicGain.gain.value = this.musicVolume;
+                } else {
+                    this.musicGain.gain.value = this.musicVolume * this.musicFade.progress;
+                }
+            }
         }
 
         static mute() {

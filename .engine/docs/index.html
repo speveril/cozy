@@ -85,19 +85,14 @@
 				<p>This is stuff I intend to do, and/or am actively working on. I&#39;m trying to keep this up to date with my commits.</p>
 				<ul>
 					<li>SimpleQuest/RPGKit specific<ul>
-							<li>main menu &quot;exit&quot; should offer quit to main menu vs. to desktop</li>
-							<li>Add scripted movement for entities in Scenes<ul>
-									<li>Make guard monsters walk up to you when alerted</li>
-								</ul>
-							</li>
+							<li>add game win scene</li>
+							<li>add bouncies, slashies to combat</li>
+							<li>SavedGame needs to store/restore layer</li>
 							<li>Flesh out rest of world<ul>
 									<li>&quot;story&quot; sequences</li>
 									<li>monsters, fights</li>
 								</ul>
 							</li>
-							<li>add game start and game win scenes</li>
-							<li>add a real lose screen</li>
-							<li>add bouncies, slashies to combat</li>
 							<li>? add a way to get the outcome of a battle so that code may respond to it differently -- victory vs. flee vs. defeat</li>
 							<li>? allow to lose a battle without a game over</li>
 							<li>? hide debug map better</li>
@@ -169,7 +164,9 @@
 						</ul>
 					</li>
 					<li>RPGKit<ul>
+							<li>SavedGame should write a version number, and have upgrade functions; when loading a SavedGame, run through each necessary upgrade before returning it</li>
 							<li>Add scripted movement for entities on the map</li>
+							<li>Add Scene.waitAll() which takes multiple generator functions and waits for them all to finish</li>
 							<li>Can I just slurp in all of the map .ts files automatically instead of having to reference each one?</li>
 							<li>It&#39;d be nice if the persistent stuff in map was easier to use in general</li>
 							<li>Zones (large polygons that can be checked, but don&#39;t necessarily fire an event when crossing the threshold) ???</li>

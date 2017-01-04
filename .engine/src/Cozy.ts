@@ -145,6 +145,7 @@ module Cozy {
         dt /= 1000;
 
         Input.update(dt);
+        Audio.update(dt);
 
         if (this.paused) { return; }
 
