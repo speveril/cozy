@@ -54,6 +54,7 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
 - **=== RELEASE 0.1 - SIMPLEQUEST, RPGKIT, BASIC FUNCTIONALITY ===**
 - Bugs/Unsorted
     - Move "ControlStack" idea into core
+    - Allow crossfading music
 - Project Manager
     - Use FontAwesome icons
     - Make browser NOT close the currently active game
