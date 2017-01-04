@@ -11,16 +11,6 @@ module SimpleQuest {
             this.fixSwitchDoor('trigger_forest_door_switch', 'locked_door');
             this.fixKeyDoor('forest_door_A');
             this.fixKeyDoor('forest_door_B');
-
-            // _.each(['skeleton_doorguard'], (name) => {
-            //     if (SimpleQuest.Map.persistent['global']['defeated_' + name]) {
-            //         var spriteLayer = RPG.map.getLayerByName("#spritelayer");
-            //         var entity = spriteLayer.getEntitiesByName(name)[0];
-            //         if (entity) {
-            //             entity.destroy();
-            //         }
-            //     }
-            // });
         }
 
         exit_forest(args) {
@@ -46,18 +36,7 @@ module SimpleQuest {
         forest_door_B(args) {
             this.doKeyDoor('forest_door_B', 'gold_key');
         }
-
-        // skeleton_doorguard(args) {
-        //     RPG.Battle.start({
-        //         enemy: "skellington",
-        //         scene: 'ui/battle/scene_test.png'
-        //     })
-        //     .then(function() {
-        //         args.target.destroy();
-        //         Map.persistent['global']['defeated_skeleton_doorguard'] = true;
-        //     }.bind(this));
-        // }
-
+        
         examine_statue(args) {
             RPG.Scene.do(function*() {
                 yield* RPG.Scene.waitTextbox(null, [
