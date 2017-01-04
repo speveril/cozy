@@ -155,10 +155,22 @@ module SimpleQuest {
             RPG.music['endcredits'].start();
             yield *RPG.Scene.waitFadeFrom('black', 1.0);
 
+            let hold = 0;
             const len = creditScroll.getScrollLength();
+
             while (creditScroll.scrolled < len) {
                 let dt = yield;
                 creditScroll.scroll(dt * 10);
+
+                if (Cozy.Input.pressed('confirm')) {
+                    hold += dt;
+                    creditScroll.setHoldLevel(hold / 2);
+                } else if (hold > 0) {
+                    hold -= dt * 3;
+                    if (hold < 0) hold = 0;
+                    creditScroll.setHoldLevel(hold / 2);
+                }
+                if (hold > 2) break;
             }
 
             RPG.music['endcredits'].stop(2);

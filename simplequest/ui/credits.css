@@ -1,4 +1,28 @@
-.credits {
+.credits .hold-indicator {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    opacity: 0;
+    height: 5px;
+    width: 30px;
+    border: 2px solid #442434;
+    transition: opacity 0.2s;
+    box-sizing: border-box;
+}
+
+.credits .hold-indicator::-webkit-meter-bar {
+    background: #442434;
+}
+
+.credits .hold-indicator::-webkit-meter-optimum-value {
+    background: #deeed6;
+}
+
+.credits .hold-indicator.visible {
+    opacity: 1;
+}
+
+.credits .scroller {
     width: 100%;
     height: 100%;
     overflow: hidden;
@@ -6,7 +30,7 @@
     text-shadow: 1px 1px 0px #442434;
 }
 
-.credits > div {
+.credits .scroller > div {
     margin: 240px 0;
 }
 
