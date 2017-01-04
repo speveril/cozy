@@ -34,7 +34,6 @@ If you want to work on the engine itself, you'll need to have NPM installed; run
 This is stuff I intend to do, and/or am actively working on. I'm trying to keep this up to date with my commits.
 
 - SimpleQuest/RPGKit specific
-    - add a real lose screen
     - add game start and game win scenes
     - add bouncies, slashies to combat
     - Flesh out rest of world
