@@ -90,7 +90,8 @@ module SimpleQuest {
             RPG.Scene.do(function*() {
                 var choice = yield* this.waitChoice(`Playing '${this.musicKey}'.`, {change:'Change track...', 'cancel':'Leave it'});
                 if (choice === 'change') {
-                    this.musicKey = yield* this.waitChoice("Select track...", _.keys(RPG.music));
+                    let musicKeys = _.keys(RPG.music);
+                    this.musicKey = musicKeys[yield* this.waitChoice("Select track...", musicKeys)];
                     RPG.music[this.musicKey].start();
                 }
             }.bind(this));
