@@ -9,9 +9,6 @@ module RPG.BattleSystem.SoloFrontView {
         uiPlane:Cozy.UiPlane                    = null;
         gameOver:any                            = null;
 
-        monsterLayer:Cozy.Layer                 = null;
-        monsterSprite:Cozy.Sprite               = null;
-
         combatants:Array<Character>             = null;
         bouncyComponent:RPG.BouncyComponent     = null;
 
@@ -41,16 +38,16 @@ module RPG.BattleSystem.SoloFrontView {
             var battleScreen = new uiBattleScreen(player, monster);
             this.uiPlane.addChild(battleScreen);
 
-            this.monsterLayer = this.renderPlane.addRenderLayer();
-            this.monsterLayer.add(new Cozy.Sprite({
+            let monsterLayer = this.renderPlane.addRenderLayer();
+            monsterLayer.add(new Cozy.Sprite({
                 texture: args.scene,
                 position: { x: 80, y: 0}
             }));
-            this.monsterSprite = new Cozy.Sprite({
+            let monsterSprite = new Cozy.Sprite({
                 texture: this.monsters[args.enemy].image,
                 position: { x: 80, y: 0}
             });
-            this.monsterLayer.add(this.monsterSprite);
+            monsterLayer.add(monsterSprite);
 
             RPG.Textbox.show("Encountered " + monster.name + "!");
             battleScreen.update(0);
@@ -92,6 +89,7 @@ module RPG.BattleSystem.SoloFrontView {
                             case 'miss': this.output(`\nYou miss the ${monster.name}.`); break;
                         }
                         monster.hp -= result.damage;
+                        monsterSprite.quake(0.5, { x: 5, y: 1 }, { x: 10, y: 2 });
                         if (result.type === 'miss') {
                             this.bouncyComponent.show("miss");
                         } else {
