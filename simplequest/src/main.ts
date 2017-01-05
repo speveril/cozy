@@ -52,6 +52,7 @@ module SimpleQuest {
                 'boss':                 { tracks: ["audio/music/3-11 Royalty of Sin.ogg"] },
                 'battle':               { tracks: ["audio/music/1-02 Resonant Hopes Ignited Wills.ogg"] },
                 'victory':              { tracks: ["audio/music/2-12 Victory Theme.ogg"] },
+                'lose':                 { tracks: ["audio/music/old city theme.ogg" ] },
                 'endcredits':           { tracks: ["audio/music/Snowfall (Looped ver.).ogg"] }
             },
             maps: {
@@ -118,7 +119,14 @@ module SimpleQuest {
     export function gameOverSequence() {
         let gameOverMenu = new Menu.GameOver();
         RPG.uiPlane.addChild(gameOverMenu);
-        RPG.Menu.push(gameOverMenu);
+        RPG.Scene.do(function*() {
+            RPG.music['lose'].start(2.0);
+            yield *RPG.Scene.waitFadeFrom('black', 2.0);
+            RPG.Menu.push(gameOverMenu);
+            while (!gameOverMenu.done) {
+                yield;
+            }
+        });
     }
 
     export function gameWinSequence() {

@@ -123,11 +123,11 @@ module RPG {
         } else {
             switch(controls) {
                 case ControlMode.Map:
-                    console.warn("bad controls [map]: >>",map,player); break;
+                    console.warn("bad controls [map]: >>",map,player, RPG.controlStack); break;
                 case ControlMode.Scene:
-                    console.warn("bad controls [scene]: >>",Scene.currentScene); break;
+                    console.warn("bad controls [scene]: >>",Scene.currentScene, RPG.controlStack); break;
                 case ControlMode.Menu:
-                    console.warn("bad controls [menu]: >>",Menu.currentMenu); break;
+                    console.warn("bad controls [menu]: >>",Menu.currentMenu, RPG.controlStack); break;
             }
         }
 

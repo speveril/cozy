@@ -56,6 +56,11 @@ Some music by Joseph Gilbert - https://kistol.bandcamp.com/
 - http://opengameart.org/content/snowfall
     - Snowfall (looped version)
 
+Some music by remaxim
+
+- http://opengameart.org/content/old-city-theme
+    - Old City Theme
+
 Some music from the RMN Music Pack - https://rpgmaker.net/musicpack/
 
 - Jasprelao - Town of Wishes

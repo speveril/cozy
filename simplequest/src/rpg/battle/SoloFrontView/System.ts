@@ -158,6 +158,7 @@ module RPG.BattleSystem.SoloFrontView {
 
             if (battleOutcome.defeat) {
                 this.output("\nYou have died!");
+                Cozy.Audio.currentMusic.stop(2.0);
                 yield* RPG.Scene.waitFadeTo("black", 2.0);
 
                 Cozy.Input.debounce('confirm');
@@ -167,7 +168,6 @@ module RPG.BattleSystem.SoloFrontView {
                 RPG.Textbox.hide();
 
                 this.gameOver();
-                yield* RPG.Scene.waitFadeFrom("black", 2.0);
                 return;
             } else if (battleOutcome.victory) {
                 if (this.victoryMusic) this.victoryMusic.start();
