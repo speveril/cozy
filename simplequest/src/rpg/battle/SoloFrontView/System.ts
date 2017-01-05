@@ -2,17 +2,18 @@
 
 module RPG.BattleSystem.SoloFrontView {
     export class System {
-        fightMusic:Cozy.Music            = null;
-        victoryMusic:Cozy.Music          = null;
-        monsters:any                     = null;
-        renderPlane:Cozy.RenderPlane     = null;
-        uiPlane:Cozy.UiPlane             = null;
-        gameOver:any                     = null;
+        fightMusic:Cozy.Music                   = null;
+        victoryMusic:Cozy.Music                 = null;
+        monsters:any                            = null;
+        renderPlane:Cozy.RenderPlane            = null;
+        uiPlane:Cozy.UiPlane                    = null;
+        gameOver:any                            = null;
 
-        monsterLayer:Cozy.Layer          = null;
-        monsterSprite:Cozy.Sprite        = null;
+        monsterLayer:Cozy.Layer                 = null;
+        monsterSprite:Cozy.Sprite               = null;
 
-        combatants:Array<Character>      = null;
+        combatants:Array<Character>             = null;
+        bouncyComponent:RPG.BouncyComponent     = null;
 
         constructor(args:any) {
             this.fightMusic = RPG.music[args.fightMusic] || null;
@@ -61,6 +62,9 @@ module RPG.BattleSystem.SoloFrontView {
             RPG.uiPlane.bringToFront();
             this.uiPlane.bringToFront();
 
+            this.bouncyComponent = new RPG.BouncyComponent();
+            this.uiPlane.addChild(this.bouncyComponent);
+
             Cozy.Input.debounce('confirm');
 
             //// LOOP
@@ -88,6 +92,11 @@ module RPG.BattleSystem.SoloFrontView {
                             case 'miss': this.output(`\nYou miss the ${monster.name}.`); break;
                         }
                         monster.hp -= result.damage;
+                        if (result.type === 'miss') {
+                            this.bouncyComponent.show("miss");
+                        } else {
+                            this.bouncyComponent.show(result.damage.toString());
+                        }
                         break;
                     case 'item':
                         var item = battleScreen.menu.result.item;

@@ -89,3 +89,35 @@
 .battle-screen .item-row .count {
     flex: 0 0 auto;
 }
+
+@keyframes bounce {
+    0% { transform:translateY(0); animation-timing-function:ease-out; }
+    12% { transform:translateY(-100%); animation-timing-function:ease-in; }
+    24% { transform:translateY(0); animation-timing-function:ease-out; }
+    36% { transform:translateY(-50%); animation-timing-function:ease-in; }
+    48% { transform:translateY(0); animation-timing-function:ease-out; }
+    60% { transform:translateY(-25%); animation-timing-function:ease-in; }
+    72% { transform:translateY(0); animation-timing-function:ease-out; }
+    84% { transform:translateY(-12.5%); animation-timing-function:ease-in; }
+    100% { transform:translateY(0); animation-timing-function:ease-out; }
+}
+
+.bouncy {
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.bouncy .digit {
+    opacity: 0;
+    display: inline-block;
+    transition: opacity 0.2s;
+}
+
+.bouncy .digit.bouncing {
+    animation-name: bounce;
+    animation-duration: 1s;
+    opacity: 1;
+}

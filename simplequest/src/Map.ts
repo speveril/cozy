@@ -52,7 +52,6 @@ module SimpleQuest {
 
         doFight(args) {
             // TODO RPG.Scene.do(), yield to waitFight?
-            console.log("doFight->", args.entity);
             RPG.Battle.start({
                 enemy: args.entity.params.monster,
                 scene: 'ui/battle/scene_placeholder.png'
@@ -61,13 +60,15 @@ module SimpleQuest {
             args.entity.destroy();
         }
 
-        *waitFight(entity) {
-            console.log("waitFight->", entity);
+        *waitFight(entity, options?:any) {
+            var opts = options ? options : {};
             yield *RPG.Battle.waitBattle({
                 enemy: entity.params.monster,
                 scene: 'ui/battle/scene_placeholder.png'
             });
-            entity.destroy();
+            if (!opts.leaveEntity) {
+                entity.destroy();
+            }
         }
 
         doDoor(name) {

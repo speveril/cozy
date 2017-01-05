@@ -121,20 +121,13 @@ module SimpleQuest {
         }
 
         check_entity(args) {
-            var monsterTable = {
-                'sprites/monster_slime.sprite':         'slime',
-                'sprites/monster_blueslime.sprite':     'blueslime',
-                'sprites/monster_goblin.sprite':        'stabber',
-                'sprites/monster_skeleton.sprite':      'skellington'
-            }
-
             RPG.Scene.do(function*() {
                 var choices = {
                     change:     'Change to this sprite',
                     fight:      'Fight it',
                     leave:      'Leave it alone',
                 };
-                if (!monsterTable[args.target.spriteDef]) {
+                if (!args.target.params.monster) {
                     delete choices['fight'];
                 }
 
@@ -143,7 +136,7 @@ module SimpleQuest {
                     case 'leave':
                         return;
                     case 'fight':
-                        yield *this.waitFight(args.target);
+                        yield *this.waitFight(args.target, { leaveEntity: true });
                         return;
                     case 'change':
                         RPG.player.changeSprite(args.target.spriteDef);

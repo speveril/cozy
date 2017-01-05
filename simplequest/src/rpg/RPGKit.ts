@@ -1,4 +1,5 @@
 ///<reference path="Behavior.ts"/>
+///<reference path="BouncyComponent.ts"/>
 ///<reference path="Character.ts"/>
 ///<reference path="Dice.ts"/>
 ///<reference path="Effect.ts"/>

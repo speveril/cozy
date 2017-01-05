@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="15" tilewidth="16" tileheight="16" nextobjectid="102">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="15" tilewidth="16" tileheight="16" nextobjectid="103">
  <properties>
   <property name="Name" value="Debugurbia"/>
  </properties>
@@ -145,6 +145,7 @@
   <object id="70" name="read_sign" type="trigger" x="128" y="80" width="16" height="16"/>
   <object id="71" name="check_entity" type="entity" x="384" y="32" width="16" height="16">
    <properties>
+    <property name="monster" value="slime"/>
     <property name="sprite" value="sprites/monster_slime.sprite"/>
    </properties>
   </object>
@@ -155,6 +156,7 @@
   </object>
   <object id="73" name="check_entity" type="entity" x="432" y="32" width="16" height="16">
    <properties>
+    <property name="monster" value="skellington"/>
     <property name="sprite" value="sprites/monster_skeleton.sprite"/>
    </properties>
   </object>
@@ -167,6 +169,7 @@
   </object>
   <object id="75" name="check_entity" type="entity" x="400" y="32" width="16" height="16">
    <properties>
+    <property name="monster" value="blueslime"/>
     <property name="sprite" value="sprites/monster_blueslime.sprite"/>
    </properties>
   </object>
@@ -191,6 +194,7 @@
   </object>
   <object id="86" name="check_entity" type="entity" x="368" y="64" width="16" height="16">
    <properties>
+    <property name="monster" value="cultist"/>
     <property name="sprite" value="sprites/cultist.sprite"/>
    </properties>
   </object>
