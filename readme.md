@@ -35,7 +35,6 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
 
 - Simple Quest/RPGKit specific
     - Map.persistent is not being reset on new game properly
-    - SavedGame needs to store/restore layer
     - Flesh out rest of world
         - "story" sequences
         - monsters, fights

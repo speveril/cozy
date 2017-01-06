@@ -55,8 +55,9 @@ module RPG {
                         party:          RPG.Party.serialize(),
                         characters:     _.mapObject(RPG.characters, (ch) => ch.serialize()),
                         playerLocation: {
-                            x: (RPG.player.position.x / RPG.map.tileSize.x) | 0,
-                            y: (RPG.player.position.y / RPG.map.tileSize.y) | 0
+                            x:   (RPG.player.position.x / RPG.map.tileSize.x) | 0,
+                            y:   (RPG.player.position.y / RPG.map.tileSize.y) | 0,
+                            lyr: RPG.player.layer.name
                         }
                     };
                     return new SavedGame(file, data);
@@ -87,7 +88,7 @@ module RPG {
             RPG.player = RPG.Party.members[0].makeEntity();
 
             if (this.data.mapPersistent) RPG.Map.Map.persistent = this.data.mapPersistent;
-            if (this.data.map) RPG.startMap(this.data.map, this.data.playerLocation.x, this.data.playerLocation.y);
+            if (this.data.map) RPG.startMap(this.data.map, this.data.playerLocation.x, this.data.playerLocation.y, this.data.playerLocation.lyr);
         }
 
         writeToDisk() {

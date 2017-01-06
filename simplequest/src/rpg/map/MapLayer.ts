@@ -2,7 +2,7 @@ module RPG.Map {
     export class MapLayer {
         // TODO break this out into child classes, TileLayer and EntityLayer?
         map:Map                            = null;
-        displayLayer:Cozy.Layer             = null;
+        displayLayer:Cozy.Layer            = null;
         dirty:boolean                      = false;
         tiles:Array<number>                = [];
         tileLookup:Array<MapTile>          = [];
@@ -10,6 +10,13 @@ module RPG.Map {
         events:Array<MapEvent>             = [];
         triggers:Array<MapTrigger>         = [];
         entities:Array<Entity>             = [];
+        _name:string                       = '';
+
+        get name():string { return this._name; }
+
+        constructor(name:string) {
+            this._name = name;
+        }
 
         getTile(x:number, y:number):number {
             return this.tiles[x + (this.map.size.x * y)];

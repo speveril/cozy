@@ -123,6 +123,7 @@ module RPG.Map {
             } else {
                 this.layers.splice(index, 0, lyr);
             }
+            this.layerLookup[lyr.name] = lyr;
         }
 
         addTileSet(firstIndex:number, ts:MapTileset):void {

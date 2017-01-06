@@ -41,18 +41,16 @@ module RPG.Map.Loader {
                     var dataEl:HTMLElement = <HTMLElement>el.getElementsByTagName('data')[0];
                     var tileString = dataEl.innerHTML.replace(/\s/g, '');
 
-                    var layer = new MapLayer();
+                    var layer = new MapLayer(el.getAttribute("name"));
                     map.addLayer(layer);
-                    map.layerLookup[el.getAttribute("name")] = layer;
                     layer.map = map;
                     layer.tiles = [];
                     layer.tileLookup = [];
                     _.each(tileString.split(','), (x) => layer.tiles.push(parseInt(x, 10)));
                     break;
                 case "objectgroup":
-                    var layer = new MapLayer();
+                    var layer = new MapLayer(el.getAttribute("name"));
                     map.addLayer(layer);
-                    map.layerLookup[el.getAttribute("name")] = layer;
                     layer.map = map;
                     layer.obstructions = [];
                     layer.events = [];

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="45" tilewidth="16" tileheight="16" nextobjectid="177">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="45" tilewidth="16" tileheight="16" nextobjectid="180">
  <properties>
   <property name="Name" value="The Dark Forest"/>
  </properties>
@@ -440,21 +440,6 @@
     <property name="sprite" value="sprites/monster_goblin.sprite"/>
    </properties>
   </object>
-  <object id="173" type="entity" x="416" y="464" width="16" height="16">
-   <properties>
-    <property name="sprite" value="sprites/monster_goblin.sprite"/>
-   </properties>
-  </object>
-  <object id="174" type="entity" x="608" y="416" width="16" height="16">
-   <properties>
-    <property name="sprite" value="sprites/monster_goblin.sprite"/>
-   </properties>
-  </object>
-  <object id="175" type="entity" x="544" y="416" width="16" height="16">
-   <properties>
-    <property name="sprite" value="sprites/monster_goblin.sprite"/>
-   </properties>
-  </object>
   <object id="176" type="entity" x="272" y="288" width="16" height="16">
    <properties>
     <property name="sprite" value="sprites/cultist.sprite"/>
@@ -539,5 +524,20 @@
   <object id="114" name="smash_pot" type="trigger" x="576" y="400" width="16" height="16"/>
   <object id="115" name="smash_pot" type="trigger" x="608" y="448" width="16" height="16"/>
   <object id="135" name="trigger_well" type="trigger" x="432" y="448" width="16" height="16"/>
+  <object id="177" type="entity" x="416" y="464" width="16" height="16">
+   <properties>
+    <property name="sprite" value="sprites/monster_goblin.sprite"/>
+   </properties>
+  </object>
+  <object id="178" type="entity" x="544" y="416" width="16" height="16">
+   <properties>
+    <property name="sprite" value="sprites/monster_goblin.sprite"/>
+   </properties>
+  </object>
+  <object id="179" type="entity" x="608" y="416" width="16" height="16">
+   <properties>
+    <property name="sprite" value="sprites/monster_goblin.sprite"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

@@ -51,13 +51,9 @@ module SimpleQuest {
         }
 
         doFight(args) {
-            // TODO RPG.Scene.do(), yield to waitFight?
-            RPG.Battle.start({
-                enemy: args.entity.params.monster,
-                scene: 'ui/battle/scene_placeholder.png'
-            });
-            // TODO what if the player fled the battle?
-            args.entity.destroy();
+            RPG.Scene.do(function*() {
+                yield *this.waitFight(args.target);
+            }.bind(this));
         }
 
         *waitFight(entity, options?:any) {
@@ -66,6 +62,7 @@ module SimpleQuest {
                 enemy: entity.params.monster,
                 scene: 'ui/battle/scene_placeholder.png'
             });
+            // TODO what if the player fled the battle?
             if (!opts.leaveEntity) {
                 entity.destroy();
             }
@@ -369,7 +366,7 @@ module SimpleQuest {
         switch_layers(args) {
             var spriteLayer = RPG.player.layer;
 
-            if (RPG.player.dir > Math.PI) {
+            if (RPG.player.dir > 180) {
                 spriteLayer = this.getLayerByName("#spritelayer-upper");
             } else {
                 spriteLayer = this.getLayerByName("#spritelayer");
