@@ -107,7 +107,7 @@ module SimpleQuest {
         sprite.direction = 90;
 
         RPG.Scene.do(function*() {
-            yield *RPG.Scene.waitFadeFrom('black', 1.0);
+            yield *RPG.Scene.waitFadeIn(1.0);
             yield *RPG.Scene.waitTextbox(null, [
                 "My name is Hero. Great expectations were thrust upon me at birth.",
                 "I've been wandering for most of my life, trying to figure out how to fulfill those expectations.",
@@ -124,8 +124,9 @@ module SimpleQuest {
         let gameOverMenu = new Menu.GameOver();
         RPG.uiPlane.addChild(gameOverMenu);
         RPG.Scene.do(function*() {
+            console.log("GAME OVER");
             RPG.music['lose'].start(2.0);
-            yield *RPG.Scene.waitFadeFrom('black', 2.0);
+            yield *RPG.Scene.waitFadeIn(2.0);
             RPG.Menu.push(gameOverMenu);
             while (!gameOverMenu.done) {
                 yield;
@@ -135,7 +136,7 @@ module SimpleQuest {
 
     export function gameWinSequence() {
         RPG.Scene.do(function*() {
-            yield *RPG.Scene.waitFadeTo('black', 1.0);
+            yield *RPG.Scene.waitFadeOut(1.0);
 
             RPG.map.finish();
             RPG.map = null;
@@ -148,7 +149,7 @@ module SimpleQuest {
             sprite.setPosition(160, 120)
             sprite.direction = 90;
 
-            yield *RPG.Scene.waitFadeFrom('black', 1.0);
+            yield *RPG.Scene.waitFadeIn(1.0);
             yield *RPG.Scene.waitTextbox(null, [
                 "With the dragon destroyed, I take my leave of Carp's Bend.",
                 "I do not know what they will think of me, or if they will understand what I've done for them.",
@@ -157,7 +158,7 @@ module SimpleQuest {
             ]);
 
             Cozy.Audio.currentMusic.stop(1.0);
-            yield *RPG.Scene.waitFadeTo('black', 1.0);
+            yield *RPG.Scene.waitFadeOut(1.0);
             RPG.renderPlane.clear();
 
             let y = 0;
@@ -165,7 +166,7 @@ module SimpleQuest {
             RPG.uiPlane.addChild(creditScroll);
 
             RPG.music['endcredits'].start();
-            yield *RPG.Scene.waitFadeFrom('black', 1.0);
+            yield *RPG.Scene.waitFadeIn(1.0);
 
             let hold = 0;
             const len = creditScroll.getScrollLength();
@@ -186,7 +187,7 @@ module SimpleQuest {
             }
 
             RPG.music['endcredits'].stop(2);
-            yield *RPG.Scene.waitFadeTo('black', 2.0);
+            yield *RPG.Scene.waitFadeOut(2.0);
 
             this.bootSequence();
         }.bind(this));

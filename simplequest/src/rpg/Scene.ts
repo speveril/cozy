@@ -145,6 +145,14 @@ module RPG {
             }
         }
 
+        static *waitFadeOut(duration:number) {
+            yield *this.waitFadeTo(document.body.style.backgroundColor, duration);
+        }
+
+        static *waitFadeIn(duration:number) {
+            yield *this.waitFadeFrom(document.body.style.backgroundColor, duration);
+        }
+
         static *waitTime(duration:number) {
             var elapsed = 0;
             while (elapsed < duration) {

@@ -184,7 +184,7 @@ module RPG {
         var opts = options || {};
         Scene.do(function*() {
             if (!opts.noFadeOut)
-                yield* Scene.waitFadeTo("black", 0.2);
+                yield* Scene.waitFadeOut(0.2);
 
             if (map) {
                 map.finish();
@@ -202,7 +202,7 @@ module RPG {
             RPG.centerCameraOn(player.position, true);
 
             if (!opts.noFadeIn)
-                yield* RPG.Scene.waitFadeFrom("black", 0.2);
+                yield* RPG.Scene.waitFadeIn(0.2);
 
             map.start();
         });
