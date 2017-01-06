@@ -33,7 +33,7 @@ If you want to work on the engine itself, you'll need to have NPM installed; run
 
 This is stuff I intend to do, and/or am actively working on. I'm trying to keep this up to date with my commits.
 
-- SimpleQuest/RPGKit specific
+- Simple Quest/RPGKit specific
     - add bouncies, slashies to combat
     - SavedGame needs to store/restore layer
     - Flesh out rest of world
@@ -50,6 +50,7 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
 - Exporting
     - Make glob.js easier to recreate
     - Split config.json into necessary game setup vs. player configuration (bake non-player config into game setup on export, leave config as only player config, or play config should be in userdataDir)
+- Double check licensing and attributions for Simple Quest
 - **=== RELEASE 0.1 - SIMPLEQUEST, RPGKIT, BASIC FUNCTIONALITY ===**
 - Bugs/Unsorted
     - Move "ControlStack" idea into core
