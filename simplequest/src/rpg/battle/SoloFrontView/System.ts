@@ -70,6 +70,8 @@ module RPG.BattleSystem.SoloFrontView {
             var battleOutcome:any = null;
             var dt:any = 0;
 
+            // TODO sounds should be passed into the configuration somehow, or something like that
+
             while (!battleOutcome) {
                 //// PLAYER ACTION PHASE
 
@@ -82,18 +84,31 @@ module RPG.BattleSystem.SoloFrontView {
                 switch(battleScreen.menu.result.action) {
                     case 'fight':
                         result = this.resolveAttack(player, monster);
-                        switch (result.type) {
-                            case 'crit': this.output(`\nYou score a critical hit on the ${monster.name}! It takes ${result.damage} damage.`); break;
-                            case 'hit':  this.output(`\nYou hit the ${monster.name}! It takes ${result.damage} damage.`); break;
-                            case 'weak': this.output(`\nYou hit the ${monster.name}, but it's a weak hit. It takes ${result.damage} damage.`); break;
-                            case 'miss': this.output(`\nYou miss the ${monster.name}.`); break;
-                        }
                         monster.hp -= result.damage;
-                        monsterSprite.quake(0.5, { x: 5, y: 1 }, { x: 10, y: 2 });
-                        if (result.type === 'miss') {
-                            this.bouncyComponent.show("miss");
-                        } else {
-                            this.bouncyComponent.show(result.damage.toString());
+                        switch (result.type) {
+                            case 'crit':
+                                RPG.sfx['battle_playerhit'].play();
+                                this.output(`\nYou score a critical hit on the ${monster.name}! It takes ${result.damage} damage.`);
+                                monsterSprite.quake(0.5, { x: 7, y: 2 }, { x: 14, y: 4 });
+                                this.bouncyComponent.show(result.damage.toString());
+                                break;
+                            case 'hit':
+                                RPG.sfx['battle_playerhit'].play();
+                                this.output(`\nYou hit the ${monster.name}! It takes ${result.damage} damage.`);
+                                monsterSprite.quake(0.5, { x: 5, y: 1 }, { x: 10, y: 2 });
+                                this.bouncyComponent.show(result.damage.toString());
+                                break;
+                            case 'weak':
+                                this.output(`\nYou hit the ${monster.name}, but it's a weak hit. It takes ${result.damage} damage.`);
+                                RPG.sfx['battle_playerweakhit'].play();
+                                monsterSprite.quake(0.5, { x: 3, y: 0 }, { x: 6, y: 0 });
+                                this.bouncyComponent.show(result.damage.toString());
+                                break;
+                            case 'miss':
+                                RPG.sfx['battle_playermiss'].play();
+                                this.output(`\nYou miss the ${monster.name}.`);
+                                this.bouncyComponent.show("miss");
+                                break;
                         }
                         break;
                     case 'item':
@@ -131,10 +146,25 @@ module RPG.BattleSystem.SoloFrontView {
                     case 'fight':
                         result = this.resolveAttack(monster, player);
                         switch (result.type) {
-                            case 'crit': this.output(`\nThe ${monster.name} scores a critical hit on you! You take ${result.damage} damage.`); break;
-                            case 'hit':  this.output(`\nThe ${monster.name} hits you! You take ${result.damage} damage.`); break;
-                            case 'weak': this.output(`\nThe ${monster.name} hits you, but it's a weak hit. You take ${result.damage} damage.`); break;
-                            case 'miss': this.output(`\nThe ${monster.name} attacks, but misses you.`); break;
+                            case 'crit':
+                                RPG.sfx['battle_playerhit'].play(); // TODO
+                                battleScreen.shake();
+                                this.output(`\nThe ${monster.name} scores a critical hit on you! You take ${result.damage} damage.`);
+                                break;
+                            case 'hit':
+                                RPG.sfx['battle_playerhit'].play(); // TODO
+                                battleScreen.shake();
+                                this.output(`\nThe ${monster.name} hits you! You take ${result.damage} damage.`);
+                                break;
+                            case 'weak':
+                                RPG.sfx['battle_playerweakhit'].play(); // TODO
+                                battleScreen.shake();
+                                this.output(`\nThe ${monster.name} hits you, but it's a weak hit. You take ${result.damage} damage.`);
+                                break;
+                            case 'miss':
+                                RPG.sfx['battle_playermiss'].play(); // TODO
+                                this.output(`\nThe ${monster.name} attacks, but misses you.`);
+                                break;
                         }
                         player.hp -= result.damage;
                         break;

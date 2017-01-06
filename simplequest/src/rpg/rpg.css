@@ -6,8 +6,8 @@ body {
     font-family: Omelet;
     font-size: 16px;
     line-height: 14px;
-    color: white;
-    text-shadow: 1px 1px 0px rgba(0, 0, 0, 1);
+    color: #deeed6;
+    text-shadow: 1px 1px 0px #140c1c;
 }
 
 .box {

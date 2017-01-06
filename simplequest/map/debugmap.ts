@@ -124,8 +124,8 @@ module SimpleQuest {
         check_entity(args) {
             RPG.Scene.do(function*() {
                 var choices = {
-                    change:     'Change to this sprite',
                     fight:      'Fight it',
+                    change:     'Change to this sprite',
                     leave:      'Leave it alone',
                 };
                 if (!args.target.params.monster) {

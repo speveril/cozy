@@ -38,6 +38,12 @@ module RPG.BattleSystem.SoloFrontView {
 
         }
 
+        shake():void {
+            this.element.classList.remove('shake');
+            this.element.clientWidth; // force recalc
+            this.element.classList.add('shake');
+        }
+
         get menu():uiActionMenu { return this.actionMenu; }
     }
 

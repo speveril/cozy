@@ -42,6 +42,10 @@ module SimpleQuest {
                 'menu_newgame':         'audio/sfx/MENU A_Select.wav',
 
                 'dragon_roar':          'audio/sfx/dinosaur_roar.wav',
+
+                'battle_playerhit':     'audio/sfx/sword-slash3.mp3',
+                'battle_playerweakhit': 'audio/sfx/sword-clash1.mp3',
+                'battle_playermiss':    'audio/sfx/sword-gesture2.mp3'
             },
             music: {
                 'village':              { tracks: ["audio/music/1-01 Town of Wishes.ogg"] },
