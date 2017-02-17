@@ -123,6 +123,7 @@ module RPG {
         }
 
         static *waitFadeTo(color:string, duration:number) {
+console.log("FADETO", color);
             this.fadeLayer.style.opacity = '0';
             this.fadeLayer.style.backgroundColor = color;
 
@@ -135,6 +136,7 @@ module RPG {
         }
 
         static *waitFadeFrom(color:string, duration:number) {
+console.log("FADEFROM", color);
             this.fadeLayer.style.opacity = '1';
             this.fadeLayer.style.backgroundColor = color;
 
@@ -146,11 +148,11 @@ module RPG {
         }
 
         static *waitFadeOut(duration:number) {
-            yield *this.waitFadeTo(document.body.style.backgroundColor, duration);
+            yield *this.waitFadeTo(window.getComputedStyle(document.body).backgroundColor, duration);
         }
 
         static *waitFadeIn(duration:number) {
-            yield *this.waitFadeFrom(document.body.style.backgroundColor, duration);
+            yield *this.waitFadeFrom(window.getComputedStyle(document.body).backgroundColor, duration);
         }
 
         static *waitTime(duration:number) {
