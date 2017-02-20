@@ -158,7 +158,7 @@ module RPG {
 
                     o = [];
                     for (i = 0; i < obstructions.length; i++) {
-                        if (!obstructions[i].active) {
+                        if (this === RPG.player && !obstructions[i].active) {
                             continue;
                         }
                         var closest = Trig.closestPointOnLine(projectedPosition, obstructions[i].a, obstructions[i].b);

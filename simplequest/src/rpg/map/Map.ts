@@ -32,7 +32,21 @@ module RPG.Map {
         }
     }
 
-    export class MapEvent extends MapRect {}
+    export class MapEvent extends MapRect {
+        obstructions:Array<MapObstruction>;
+        private _solid:boolean = true;
+
+        get solid():boolean {
+            return this._solid;
+        }
+
+        set solid(v:boolean) {
+            this._solid = v;
+            _.each(this.obstructions, function(o) {
+                o.active = v;
+            });
+        }
+    }
     export class MapTrigger extends MapRect {
         obstructions:Array<MapObstruction>;
         private _solid:boolean = true;

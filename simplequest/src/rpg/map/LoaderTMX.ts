@@ -74,6 +74,22 @@ module RPG.Map.Loader {
                                         ev.properties[property.getAttribute('name')] = property.getAttribute('value');
                                     });
                                 }
+
+                                ev.obstructions = [];
+                                var o:MapObstruction = new MapObstruction(new PIXI.Point(x,y), new PIXI.Point(x+w,y));
+                                layer.obstructions.push(o);
+                                ev.obstructions.push(o);
+                                o = new MapObstruction(new PIXI.Point(x,y), new PIXI.Point(x,y+h));
+                                layer.obstructions.push(o);
+                                ev.obstructions.push(o);
+                                o = new MapObstruction(new PIXI.Point(x,y+h), new PIXI.Point(x+w,y+h))
+                                layer.obstructions.push(o);
+                                ev.obstructions.push(o);
+                                o = new MapObstruction(new PIXI.Point(x+w,y), new PIXI.Point(x+w,y+h));
+                                layer.obstructions.push(o);
+                                ev.obstructions.push(o);
+
+                                ev.solid = false;
                                 layer.events.push(ev);
                                 break;
                             case "trigger":
