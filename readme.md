@@ -34,7 +34,6 @@ If you want to work on the engine itself, you'll need to have NPM installed; run
 This is stuff I intend to do, and/or am actively working on. I'm trying to keep this up to date with my commits.
 
 - Simple Quest/RPGKit specific
-    - Game over sequence won't accept input and never fades in, AGAIN
     - Flesh out rest of world
         - "story" sequences
         - monsters, fights

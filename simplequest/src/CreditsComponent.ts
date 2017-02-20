@@ -73,6 +73,7 @@ module SimpleQuest {
             <li>tulokyn</li>
             <li>Hyptosis</li>
             <li>Eliot</li>
+            <li>Liam</li>
             <li>DawnBringer</li>
             <li>#sancho</li>
             <li>#killpop</li>
