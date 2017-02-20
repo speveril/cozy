@@ -414,7 +414,7 @@
   <object id="162" type="entity" x="432" y="592" width="16" height="16">
    <properties>
     <property name="behavior" value="guard_down"/>
-    <property name="monster" value="stabber"/>
+    <property name="monster" value="goblin"/>
     <property name="sprite" value="sprites/monster_goblin.sprite"/>
    </properties>
   </object>
@@ -426,49 +426,49 @@
   <object id="164" type="entity" x="480" y="512" width="16" height="16">
    <properties>
     <property name="behavior" value="guard_right"/>
-    <property name="monster" value="stabber"/>
+    <property name="monster" value="goblin"/>
     <property name="sprite" value="sprites/monster_goblin.sprite"/>
    </properties>
   </object>
   <object id="165" type="entity" x="496" y="320" width="16" height="16">
    <properties>
     <property name="behavior" value="guard_down"/>
-    <property name="monster" value="stabber"/>
+    <property name="monster" value="goblin"/>
     <property name="sprite" value="sprites/monster_goblin.sprite"/>
    </properties>
   </object>
   <object id="166" type="entity" x="576" y="208" width="16" height="16">
    <properties>
     <property name="behavior" value="guard_left"/>
-    <property name="monster" value="stabber"/>
+    <property name="monster" value="goblin"/>
     <property name="sprite" value="sprites/monster_goblin.sprite"/>
    </properties>
   </object>
   <object id="167" type="entity" x="496" y="80" width="16" height="16">
    <properties>
     <property name="behavior" value="guard_right"/>
-    <property name="monster" value="stabber"/>
+    <property name="monster" value="goblin"/>
     <property name="sprite" value="sprites/monster_goblin.sprite"/>
    </properties>
   </object>
   <object id="168" type="entity" x="544" y="48" width="16" height="16">
    <properties>
     <property name="behavior" value="guard_left"/>
-    <property name="monster" value="stabber"/>
+    <property name="monster" value="goblin"/>
     <property name="sprite" value="sprites/monster_goblin.sprite"/>
    </properties>
   </object>
   <object id="169" type="entity" x="512" y="32" width="16" height="16">
    <properties>
     <property name="behavior" value="guard_down"/>
-    <property name="monster" value="stabber"/>
+    <property name="monster" value="goblin"/>
     <property name="sprite" value="sprites/monster_goblin.sprite"/>
    </properties>
   </object>
   <object id="170" type="entity" x="48" y="368" width="16" height="16">
    <properties>
     <property name="behavior" value="guard_right"/>
-    <property name="monster" value="stabber"/>
+    <property name="monster" value="goblin"/>
     <property name="sprite" value="sprites/monster_goblin.sprite"/>
    </properties>
   </object>
@@ -482,7 +482,7 @@
   <object id="172" type="entity" x="160" y="416" width="16" height="16">
    <properties>
     <property name="behavior" value="guard_left"/>
-    <property name="monster" value="stabber"/>
+    <property name="monster" value="goblin"/>
     <property name="sprite" value="sprites/monster_goblin.sprite"/>
    </properties>
   </object>
@@ -575,17 +575,21 @@
   <object id="177" type="entity" x="416" y="464" width="16" height="16">
    <properties>
     <property name="behavior" value="guard_up"/>
-    <property name="monster" value="stabber"/>
+    <property name="monster" value="goblin"/>
     <property name="sprite" value="sprites/monster_goblin.sprite"/>
    </properties>
   </object>
   <object id="178" type="entity" x="544" y="416" width="16" height="16">
    <properties>
+    <property name="behavior" value="guard_down"/>
+    <property name="monster" value="goblin"/>
     <property name="sprite" value="sprites/monster_goblin.sprite"/>
    </properties>
   </object>
   <object id="179" type="entity" x="608" y="416" width="16" height="16">
    <properties>
+    <property name="behavior" value="guard_down"/>
+    <property name="monster" value="goblin"/>
     <property name="sprite" value="sprites/monster_goblin.sprite"/>
    </properties>
   </object>
