@@ -18,19 +18,19 @@ module SimpleQuest {
                                 <div class="right-align">LV <span data-field="level"></span></div>
                             </section>
                             <section class="layout-row">
-                                <div>ATK</div><div class="right-align"><span data-field="attack"></span></div>
-                            </section>
-                            <section class="layout-row">
                                 <div>DMG</div><div class="right-align"><span data-field="damage"></span></div>
-                            </section>
-                            <section class="layout-row">
-                                <div>DEF</div><div class="right-align"><span data-field="defense"></span></div>
                             </section>
                             <section class="layout-row">
                                 <div>CRT</div><div class="right-align"><span data-field="critical"></span></div>
                             </section>
                             <section class="layout-row">
-                                <div>EVD</div><div class="right-align"><span data-field="evade"></span></div>
+                                <div>DOD</div><div class="right-align"><span data-field="dodge"></span></div>
+                            </section>
+                            <section class="layout-row">
+                                <div>BLK</div><div class="right-align"><span data-field="block"></span></div>
+                            </section>
+                            <section class="layout-row">
+                                <div>DEF</div><div class="right-align"><span data-field="defense"></span></div>
                             </section>
                         </section>
                     </section>
@@ -64,7 +64,7 @@ module SimpleQuest {
                 this.element.setAttribute('data-member', this.index.toString());
 
                 ['name','title','level','hp','maxhp','xp'].forEach((f) => this.setField(f, this.member.character[f]));
-                ['attack','defense','critical','evade'].forEach((f) => this.setField(f, this.member.character.get(f)));
+                ['damage','critical','dodge','block','defense'].forEach((f) => this.setField(f, this.member.character.get(f)));
 
                 var portraitField = this.find('img.portrait');
                 if (this.member.character['portrait']) {

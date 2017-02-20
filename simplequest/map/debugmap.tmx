@@ -30,11 +30,11 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,17,0,0,37,0,138,0,0,0,0,138,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,90,0,138,0,53,53,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,138,0,0,90,0,0,37,0,0,138,0,0,0,0,53,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,203,0,0,0,
-0,0,33,90,35,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,203,0,0,171,0,0,0,53,0,0,0,0,
-0,0,0,0,0,0,0,0,0,233,0,0,0,0,0,0,0,0,0,0,0,0,0,0,187,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,53,0,0,0,0,141,0,0,0,0,0,163,165,164,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,53,0,0,0,0,0,0,0,0,0,179,194,180,0,84,86,0,0,0,0,0,0,0,0,139,0,0,0,0,0,0,0,0,0,0,0,138,
+0,0,0,0,0,138,0,0,90,0,0,37,0,0,138,0,0,0,0,53,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,171,0,0,0,
+0,0,33,90,35,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,53,0,0,0,0,
+0,0,0,0,0,0,0,0,0,233,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,53,0,0,0,0,141,0,0,0,0,0,163,165,164,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,187,0,0,0,0,0,
+0,0,0,53,0,0,0,0,0,0,0,0,0,179,194,180,0,84,86,0,0,0,0,0,0,139,0,0,0,0,0,0,0,0,0,0,0,171,0,138,
 138,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,116,118,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,124,0,0,117,117,0,0,0,0,0,138,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,84,85,86,0,0,
 0,0,0,0,0,0,0,117,118,127,127,116,0,161,162,0,0,0,0,0,0,0,0,0,0,0,0,0,0,53,0,0,0,0,0,100,0,0,85,85,
@@ -143,20 +143,21 @@
    </properties>
   </object>
   <object id="70" name="read_sign" type="trigger" x="128" y="80" width="16" height="16"/>
-  <object id="71" name="check_entity" type="entity" x="384" y="32" width="16" height="16">
+  <object id="71" name="check_entity" type="entity" x="480" y="112" width="16" height="16">
    <properties>
     <property name="monster" value="slime"/>
     <property name="sprite" value="sprites/monster_slime.sprite"/>
    </properties>
   </object>
-  <object id="72" name="check_entity" type="entity" x="480" y="64" width="16" height="16">
+  <object id="72" name="check_entity" type="entity" x="496" y="96" width="16" height="16">
    <properties>
+    <property name="monster" value="stabber"/>
     <property name="sprite" value="sprites/monster_goblin.sprite"/>
    </properties>
   </object>
-  <object id="73" name="check_entity" type="entity" x="432" y="32" width="16" height="16">
+  <object id="73" name="check_entity" type="entity" x="384" y="48" width="16" height="16">
    <properties>
-    <property name="monster" value="skellington"/>
+    <property name="monster" value="skeleton"/>
     <property name="sprite" value="sprites/monster_skeleton.sprite"/>
    </properties>
   </object>
@@ -167,7 +168,7 @@
     <property name="sprite" value="sprites/villager_f.sprite"/>
    </properties>
   </object>
-  <object id="75" name="check_entity" type="entity" x="400" y="32" width="16" height="16">
+  <object id="75" name="check_entity" type="entity" x="480" y="80" width="16" height="16">
    <properties>
     <property name="monster" value="blueslime"/>
     <property name="sprite" value="sprites/monster_blueslime.sprite"/>
@@ -181,45 +182,52 @@
   <object id="79" name="music_prev" type="trigger" x="32" y="96" width="16" height="16"/>
   <object id="80" name="music_check" type="trigger" x="48" y="96" width="16" height="16"/>
   <object id="81" name="music_next" type="trigger" x="64" y="96" width="16" height="16"/>
-  <object id="83" name="trigger_well" type="trigger" x="432" y="144" width="16" height="16"/>
-  <object id="84" name="check_entity" type="entity" x="448" y="32" width="16" height="16">
+  <object id="83" name="trigger_well" type="trigger" x="400" y="144" width="16" height="16"/>
+  <object id="84" name="check_entity" type="entity" x="416" y="48" width="16" height="16">
    <properties>
+    <property name="monster" value="skeletonwarrior"/>
     <property name="sprite" value="sprites/monster_skelwarrior.sprite"/>
    </properties>
   </object>
-  <object id="85" name="check_entity" type="entity" x="464" y="32" width="16" height="16">
+  <object id="85" name="check_entity" type="entity" x="368" y="64" width="16" height="16">
    <properties>
+    <property name="monster" value="ghost"/>
     <property name="sprite" value="sprites/ghost.sprite"/>
    </properties>
   </object>
-  <object id="86" name="check_entity" type="entity" x="368" y="64" width="16" height="16">
+  <object id="86" name="check_entity" type="entity" x="384" y="80" width="16" height="16">
    <properties>
     <property name="monster" value="cultist"/>
     <property name="sprite" value="sprites/cultist.sprite"/>
    </properties>
   </object>
-  <object id="87" name="check_entity" type="entity" x="384" y="64" width="16" height="16">
+  <object id="87" name="check_entity" type="entity" x="368" y="96" width="16" height="16">
    <properties>
+    <property name="monster" value="cultleader"/>
     <property name="sprite" value="sprites/cultist_leader.sprite"/>
    </properties>
   </object>
-  <object id="89" name="check_entity" type="entity" x="384" y="80" width="16" height="16">
+  <object id="89" name="check_entity" type="entity" x="432" y="64" width="16" height="16">
    <properties>
+    <property name="monster" value="bat"/>
     <property name="sprite" value="sprites/bat.sprite"/>
    </properties>
   </object>
-  <object id="90" name="check_entity" type="entity" x="368" y="80" width="16" height="16">
+  <object id="90" name="check_entity" type="entity" x="448" y="32" width="16" height="16">
    <properties>
+    <property name="monster" value="firebat"/>
     <property name="sprite" value="sprites/bat_fire.sprite"/>
    </properties>
   </object>
-  <object id="91" name="check_entity" type="entity" x="496" y="64" width="16" height="16">
+  <object id="91" name="check_entity" type="entity" x="384" y="112" width="16" height="16">
    <properties>
+    <property name="monster" value="bramblekin"/>
     <property name="sprite" value="sprites/monster_bramblekin.sprite"/>
    </properties>
   </object>
-  <object id="92" name="check_entity" type="entity" x="400" y="144" width="16" height="16">
+  <object id="92" name="check_entity" type="entity" x="400" y="32" width="16" height="16">
    <properties>
+    <property name="monster" value="lich"/>
     <property name="sprite" value="sprites/lich.sprite"/>
    </properties>
   </object>
@@ -238,13 +246,15 @@
     <property name="sprite" value="sprites/hero.sprite"/>
    </properties>
   </object>
-  <object id="97" name="check_entity" type="entity" x="416" y="32" width="16" height="16">
+  <object id="97" name="check_entity" type="entity" x="480" y="48" width="16" height="16">
    <properties>
+    <property name="monster" value="lavaslime"/>
     <property name="sprite" value="sprites/monster_lavaslime.sprite"/>
    </properties>
   </object>
-  <object id="98" name="check_entity" type="entity" x="464" y="64" width="16" height="16">
+  <object id="98" name="check_entity" type="entity" x="464" y="32" width="16" height="16">
    <properties>
+    <property name="monster" value="kobold"/>
     <property name="sprite" value="sprites/monster_kobold.sprite"/>
    </properties>
   </object>

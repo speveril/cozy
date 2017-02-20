@@ -17,24 +17,24 @@ module SimpleQuest {
                         <section class="layout-row title-row">Equip</section>
                         <section class="layout-row equip-info-row">
                             <section class="layout-column stats-column">
-                                <section class="layout-row" data-stat="attack">
-                                    <span class="label">ATK</span>
-                                    <span class="value">0</span>
-                                </section>
                                 <section class="layout-row" data-stat="damage">
                                     <span class="label">DMG</span>
-                                    <span class="value">0</span>
-                                </section>
-                                <section class="layout-row" data-stat="defense">
-                                    <span class="label">DEF</span>
                                     <span class="value">0</span>
                                 </section>
                                 <section class="layout-row" data-stat="critical">
                                     <span class="label">CRT</span>
                                     <span class="value">0</span>
                                 </section>
-                                <section class="layout-row" data-stat="evade">
-                                    <span class="label">EVD</span>
+                                <section class="layout-row" data-stat="dodge">
+                                    <span class="label">DOD</span>
+                                    <span class="value">0</span>
+                                </section>
+                                <section class="layout-row" data-stat="block">
+                                    <span class="label">BLK</span>
+                                    <span class="value">0</span>
+                                </section>
+                                <section class="layout-row" data-stat="defense">
+                                    <span class="label">DEF</span>
                                     <span class="value">0</span>
                                 </section>
                             </section>

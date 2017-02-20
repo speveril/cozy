@@ -2,8 +2,6 @@ module RPG {
     // var dbg = console.log.bind(console); // uncomment to turn ON debugging
     var dbg = function(...args) {}; // uncomment to turn OFF debugging
 
-    var tokenRegexp = '\\(|\\)|d|\\*|\\/|\\+|\\-|\\$\\w+|\\w+|\\d+|,';
-
     var rollDie = (dieSize) => Math.floor(Math.random() * dieSize) + 1;
     var rollDice = (numDice, dieSize) => {
         var rolls = [];
@@ -25,8 +23,6 @@ module RPG {
         }
 
         constructor(s:string) {
-            var re = new RegExp(tokenRegexp, 'g');
-
             this.tokens = this.tokenize(s);
             this.tree = this.parse();
         }

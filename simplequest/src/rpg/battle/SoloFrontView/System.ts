@@ -246,30 +246,69 @@ module RPG.BattleSystem.SoloFrontView {
             return "fight";
         }
 
+        statCheck(stat:number) {
+            return Math.random() < (stat / 100);
+        }
+
+        curveRoll(min:number, max:number) {
+            let r = (Math.random() + Math.random() + Math.random()) / 3;
+            return min + (max - min) * r;
+        }
+
         resolveAttack(attacker:Character, defender:Character):any {
-            var result:any = {};
+            var result:any = {
+                type: 'hit',
+                damage: attacker.get('damage')
+            };
 
-            var attackRange:number = attacker.get('attack') + defender.get('evade');
-            var attackRoll:number = (Math.random() * attackRange) | 0;
-
-            if (attackRoll >= defender.get('evade')) {
-                var damageRange:number = attacker.get('critical') + attacker.get('damage') + defender.get('defense');
-                var damageRoll:number = (Math.random() * damageRange) | 0;
-
-                if (damageRoll >= defender.get('defense') + attacker.get('damage')) {
-                    result.type = 'crit';
-                    result.damage = Math.max(1, (attacker.get('damage') * (2.0 + Math.random())) | 0);
-                } else if (damageRoll >= defender.get('defense')) {
-                    result.type = 'hit';
-                    result.damage = Math.max(1, (attacker.get('damage') * (1.0 + Math.random() - 0.5)) | 0);
-                } else {
-                    result.type = 'weak';
-                    result.damage = (attacker.get('damage') * (Math.random() / 2)) | 0;
-                }
-            } else {
+            if (this.statCheck(defender.get('dodge'))) {
                 result.type = 'miss';
-                result.damage = 0;
+            } else {
+                if (this.statCheck(defender.get('block'))) {
+                    result.type = 'weak';
+                }
+                if (this.statCheck(attacker.get('critical'))) {
+                    result.type = (result.type === 'weak' ? 'hit' : 'crit');
+                }
             }
+
+            switch (result.type) {
+                case 'miss':
+                    result.damage *= 0; break;
+                case 'weak':
+                    result.damage *= this.curveRoll(0, 0.5); break;
+                case 'hit':
+                    result.damage *= this.curveRoll(0.75, 1.25); break;
+                case 'crit':
+                    result.damage *= this.curveRoll(2, 3); break;
+            }
+
+            result.damage *= Math.min(1, Math.max(0, 1 - (defender.get('defense') / 100)));
+
+            result.damage = Math.round(Math.max(0, result.damage));
+            //
+            //
+            // var attackRange:number = attacker.get('attack') + defender.get('dodge');
+            // var attackRoll:number = (Math.random() * attackRange) | 0;
+            //
+            // if (attackRoll >= defender.get('dodge')) {
+            //     var damageRange:number = attacker.get('critical') + attacker.get('damage') + defender.get('defense');
+            //     var damageRoll:number = (Math.random() * damageRange) | 0;
+            //
+            //     if (damageRoll >= defender.get('defense') + attacker.get('damage')) {
+            //         result.type = 'crit';
+            //         result.damage = Math.max(1, (attacker.get('damage') * (2.0 + Math.random())) | 0);
+            //     } else if (damageRoll >= defender.get('defense')) {
+            //         result.type = 'hit';
+            //         result.damage = Math.max(1, (attacker.get('damage') * (1.0 + Math.random() - 0.5)) | 0);
+            //     } else {
+            //         result.type = 'weak';
+            //         result.damage = (attacker.get('damage') * (Math.random() / 2)) | 0;
+            //     }
+            // } else {
+            //     result.type = 'miss';
+            //     result.damage = 0;
+            // }
 
             return result;
         }
@@ -289,18 +328,20 @@ module RPG.BattleSystem.SoloFrontView {
         }
 
         resolveFlee(runner:Character, chaser:Character):any {
-            var result:any = {};
+            return { success: (Math.random() < 0.6) };
 
-            var fleeRange:number = runner.get('evade') + chaser.get('evade') + 2;
-            var fleeRoll:number = (Math.random() * fleeRange) | 0;
-
-            if (fleeRoll >= chaser.get('evade') + 1) {
-                result.success = true;
-            } else {
-                result.success = false;
-            }
-
-            return result;
+            // var result:any = {};
+            //
+            // var fleeRange:number = runner.get('dodge') + chaser.get('dodge') + 2;
+            // var fleeRoll:number = (Math.random() * fleeRange) | 0;
+            //
+            // if (fleeRoll >= chaser.get('dodge') + 1) {
+            //     result.success = true;
+            // } else {
+            //     result.success = false;
+            // }
+            //
+            // return result;
         }
 
         isCombatant(ch:Character):boolean {
