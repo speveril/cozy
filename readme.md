@@ -34,6 +34,7 @@ If you want to work on the engine itself, you'll need to have NPM installed; run
 This is stuff I intend to do, and/or am actively working on. I'm trying to keep this up to date with my commits.
 
 - Simple Quest/RPGKit specific
+    - Saved games don't seem to load character stats properly
     - Flesh out rest of world
         - "story" sequences
         - monsters, fights
