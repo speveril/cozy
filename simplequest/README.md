@@ -14,10 +14,7 @@ Tiny16 tileset and sprites created by Lanea Zimmerman - http://opengameart.org/c
 
 Item graphics by Jerom, recolored by PriorBlue - http://opengameart.org/content/recolor-all-the-items
 
-Some monster graphics by Hyptosis - http://www.lorestrome.com/
-
-- Slime battle graphic
-- Stabber battle graphic
+Battle graphics by Hyptosis - http://www.lorestrome.com/
 
 Other art, including additions and modifications of above, by Shamus Peveril
 

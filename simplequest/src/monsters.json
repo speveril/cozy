@@ -16,22 +16,22 @@
     },
     "ghost": { "name": "Ghost", "xp": 20,
         "hp": 100, "attributes": { "damage": 15, "critical": 2, "dodge": 2, "block": 5, "defense": 5 },
-        "image": "ui/battle/monster_placeholder.png",
+        "image": "ui/battle/monster_ghost.png",
         "treasure": { "money": "1d10 + 5" }
     },
     "skeleton": { "name": "Skeleton Drudge", "xp": 20,
         "hp": 100, "attributes": { "damage": 15, "critical": 2, "dodge": 2, "block": 5, "defense": 5 },
-        "image": "ui/battle/monster_skellington.png",
+        "image": "ui/battle/monster_skeleton.png",
         "treasure": { "money": "1d10 + 5" }
     },
     "skeletonwarrior": { "name": "Skeleton Warrior", "xp": 20,
         "hp": 100, "attributes": { "damage": 15, "critical": 2, "dodge": 2, "block": 5, "defense": 5 },
-        "image": "ui/battle/monster_placeholder.png",
+        "image": "ui/battle/monster_skeletonwarrior.png",
         "treasure": { "money": "1d4" }
     },
     "lich": { "name": "Lich", "xp": 15,
         "hp": 100, "attributes": { "damage": 15, "critical": 2, "dodge": 2, "block": 5, "defense": 5 },
-        "image": "ui/battle/monster_placeholder.png",
+        "image": "ui/battle/monster_lich.png",
         "treasure": { "money": "1d6 + 6" }
     },
     "goblin": { "name": "Goblin Stabber", "xp": 35,
@@ -41,32 +41,32 @@
     },
     "bramblekin": { "name": "Bramblekin", "xp": 15,
         "hp": 100, "attributes": { "damage": 15, "critical": 2, "dodge": 2, "block": 5, "defense": 5 },
-        "image": "ui/battle/monster_placeholder.png",
+        "image": "ui/battle/monster_bramblekin.png",
         "treasure": { "money": "1d6 + 6" }
     },
     "cultist": { "name": "Cultist", "xp": 5,
         "hp": 100, "attributes": { "damage": 15, "critical": 2, "dodge": 2, "block": 5, "defense": 5 },
-        "image": "ui/battle/monster_placeholder.png",
+        "image": "ui/battle/monster_cultist.png",
         "treasure": { "money": "2d10 + 20" }
     },
     "cultleader": { "name": "Cult Leader", "xp": 15,
         "hp": 100, "attributes": { "damage": 15, "critical": 2, "dodge": 2, "block": 5, "defense": 5 },
-        "image": "ui/battle/monster_placeholder.png",
+        "image": "ui/battle/monster_cultleader.png",
         "treasure": { "money": "1d6 + 6" }
     },
     "bat": { "name": "Bat", "xp": 15,
         "hp": 100, "attributes": { "damage": 15, "critical": 2, "dodge": 2, "block": 5, "defense": 5 },
-        "image": "ui/battle/monster_placeholder.png",
+        "image": "ui/battle/monster_bat.png",
         "treasure": { "money": "1d6 + 6" }
     },
     "firebat": { "name": "Fire Bat", "xp": 15,
         "hp": 100, "attributes": { "damage": 15, "critical": 2, "dodge": 2, "block": 5, "defense": 5 },
-        "image": "ui/battle/monster_placeholder.png",
+        "image": "ui/battle/monster_firebat.png",
         "treasure": { "money": "1d6 + 6" }
     },
     "kobold": { "name": "Kobold Warrior", "xp": 15,
         "hp": 100, "attributes": { "damage": 15, "critical": 2, "dodge": 2, "block": 5, "defense": 5 },
-        "image": "ui/battle/monster_placeholder.png",
+        "image": "ui/battle/monster_koboldorange.png",
         "treasure": { "money": "1d6 + 6" }
     }
 }

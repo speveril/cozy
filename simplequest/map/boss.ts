@@ -12,6 +12,7 @@ module SimpleQuest {
         constructor() {
             super('map/boss.tmx');
             this.music = RPG.music['boss'];
+            this.battleScene = 'ui/battle/scene_cave.png';
 
             this.torchTiles = {
                 none: 205,

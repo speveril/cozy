@@ -6,6 +6,7 @@ module SimpleQuest {
             super('map/debugmap.tmx');
             this.musicKey = 'overworld';
             this.music = RPG.music[this.musicKey];
+            this.battleScene = 'ui/battle/scene_dungeon.png';
         }
 
         open() {

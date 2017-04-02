@@ -3,6 +3,7 @@ module SimpleQuest {
         constructor() {
             super('map/castle.tmx');
             this.music = RPG.music['castle'];
+            this.battleScene = 'ui/battle/scene_dungeon.png';
         }
 
         open() {

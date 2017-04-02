@@ -3,6 +3,7 @@ module SimpleQuest {
         constructor() {
             super('map/forest.tmx');
             this.music = RPG.music['forest'];
+            this.battleScene = 'ui/battle/scene_forest.png';
         }
 
         open() {
@@ -36,7 +37,7 @@ module SimpleQuest {
         forest_door_B(args) {
             this.doKeyDoor('forest_door_B', 'gold_key');
         }
-        
+
         examine_statue(args) {
             RPG.Scene.do(function*() {
                 yield* RPG.Scene.waitTextbox(null, [

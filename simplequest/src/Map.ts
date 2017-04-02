@@ -1,6 +1,7 @@
 module SimpleQuest {
     export class Map extends RPG.Map.Map {
         public music:Cozy.Music;
+        public battleScene:string;
 
         persisted(k):boolean {
             return Map.persistent[this.filename][k];
@@ -60,7 +61,7 @@ module SimpleQuest {
             var opts = options ? options : {};
             yield *RPG.Battle.waitBattle({
                 enemy: entity.params.monster,
-                scene: 'ui/battle/scene_placeholder.png'
+                scene: this.battleScene || 'ui/battle/scene_placeholder.png'
             });
             // TODO what if the player fled the battle?
             if (!opts.leaveEntity) {
