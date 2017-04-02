@@ -251,8 +251,15 @@ module RPG.BattleSystem.SoloFrontView {
         }
 
         curveRoll(min:number, max:number) {
-            let r = (Math.random() + Math.random() + Math.random()) / 3;
-            return min + (max - min) * r;
+            let curve = (a,b,c) => {
+                // median
+                let m = Math.max(a,b,c);
+                return (m === a ? Math.max(b,c) : (m === b ? Math.max(a,c) : Math.max(a,b)));
+                //average
+                // return (a+b+c) / 3;
+            }
+            let r = curve(Math.random(), Math.random(), Math.random());
+            return min + (max - min + 1) * r;
         }
 
         resolveAttack(attacker:Character, defender:Character):any {
