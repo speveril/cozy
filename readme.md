@@ -55,7 +55,7 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
     - Move "ControlStack" idea into core
     - Allow crossfading music
 - Project Manager
-    - Use FontAwesome icons
+    - Use an SVG library
     - Make browser NOT close the currently active game
         - or just revisit the whole browser interface in general
     - Manager should only run one game at a time, or at least only one copy of a particular game
