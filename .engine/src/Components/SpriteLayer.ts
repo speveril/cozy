@@ -14,7 +14,7 @@ module Cozy.Components {
         add(thing:any):void {
             if (thing instanceof Sprite) {
                 // this.sprites.push(thing);
-                thing.s.layer = this;
+                // thing.s.layer = <Layer>this;
                 this.innerContainer.addChild(thing.s.innerSprite);
             }
         }

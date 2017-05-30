@@ -1,5 +1,5 @@
 #!/usr/bin/env node
 
-var TypeDoc = require('./node_modules/typedoc/lib/cli.js');
+var TypeDoc = require('./node_modules/typedoc/dist/lib/cli.js');
 new TypeDoc.CliApplication();
 process.exit(0);
