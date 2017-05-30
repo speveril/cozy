@@ -58,6 +58,12 @@ module RPG {
                     case "equipped":
                         data[data_k] = _.mapObject(this[k], (vv:Item, kk:string) => vv.key);
                         break;
+                    case "baseAttribute":
+                        data["attributes"] = this[k];
+                        break;
+                    case "effectiveAttribute":
+                        // skip this one
+                        break;
                     default:
                         data[data_k] = this[k];
                 }
