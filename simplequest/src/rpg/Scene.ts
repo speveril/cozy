@@ -54,7 +54,7 @@ module RPG {
                     RPG.player.sprite.animation = "stand_" + RPG.player.dir;
                 }
 
-                RPG.controlStack.push(RPG.ControlMode.Scene);
+                RPG.ControlStack.push(RPG.ControlMode.Scene);
                 yield* sceneFunc();
             }
 
@@ -69,7 +69,7 @@ module RPG {
                     if (this.scenes.length === 1) {
                         this.fadeLayer.style.opacity = '0';
                     }
-                    RPG.controlStack.pop();
+                    RPG.ControlStack.pop();
                     this.scenes.pop();
                 }
             }
@@ -133,6 +133,7 @@ console.log("FADETO", color);
                 elapsed += yield;
                 this.fadeLayer.style.opacity = Math.min(1, elapsed / duration).toString();
             }
+console.log("DONE FADETO", color);
         }
 
         static *waitFadeFrom(color:string, duration:number) {
@@ -145,6 +146,7 @@ console.log("FADEFROM", color);
                 elapsed += yield;
                 this.fadeLayer.style.opacity = Math.max(0, 1 - (elapsed / duration)).toString();
             }
+console.log("DONE FADEFROM", color);
         }
 
         static *waitFadeOut(duration:number) {

@@ -1,6 +1,7 @@
 ///<reference path="Behavior.ts"/>
 ///<reference path="BouncyComponent.ts"/>
 ///<reference path="Character.ts"/>
+///<reference path="ControlStack.ts"/>
 ///<reference path="Dice.ts"/>
 ///<reference path="Effect.ts"/>
 ///<reference path="Entity.ts"/>
@@ -19,11 +20,8 @@
 module RPG {
     var VERSION = '0.1pre';
 
-    export enum ControlMode { None, Scene, Menu, Map, Battle };
-
     export var characters:{[key:string]:Character} = {};
     export var loadSkip:Array<string>              = [];
-    export var controlStack:Array<ControlMode>     = [];
     export var player:Entity                       = null;
     export var map:Map.Map                         = null;
     export var mapkey:string                       = '';
@@ -93,8 +91,8 @@ module RPG {
         player = null;
         Scene.cleanup();
 
-        controlStack = [];
-        controlStack.push(RPG.ControlMode.Map);
+        ControlStack.cleanup();
+        ControlStack.push(RPG.ControlMode.Map);
 
         Menu.menuStack = [];
 
@@ -107,11 +105,11 @@ module RPG {
             map.update(dt);
         }
 
-        if (controlStack.length < 1) {
+        if (ControlStack.length < 1) {
             throw new Error("Control stack got emptied");
         }
 
-        var controls = controlStack[controlStack.length - 1];
+        var controls = ControlStack.top();
         if (controls === ControlMode.Map && map && player) {
             RPG.frameMapMode(dt);
         } else if (controls === ControlMode.Scene && Scene.currentScene) {
@@ -123,11 +121,11 @@ module RPG {
         } else {
             switch(controls) {
                 case ControlMode.Map:
-                    console.warn("bad controls [map]: >>",map,player, RPG.controlStack); break;
+                    console.warn("bad controls [map]: >>",map,player, RPG.ControlStack); break;
                 case ControlMode.Scene:
-                    console.warn("bad controls [scene]: >>",Scene.currentScene, RPG.controlStack); break;
+                    console.warn("bad controls [scene]: >>",Scene.currentScene, RPG.ControlStack); break;
                 case ControlMode.Menu:
-                    console.warn("bad controls [menu]: >>",Menu.currentMenu, RPG.controlStack); break;
+                    console.warn("bad controls [menu]: >>",Menu.currentMenu, RPG.ControlStack); break;
             }
         }
 

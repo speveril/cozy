@@ -57,7 +57,7 @@ module RPG {
             while (true) {
                 let dt = yield;
                 if (Trig.distToSegment(RPG.player.position, entity.position, visionEnd) < RPG.player.radius) {
-                    RPG.controlStack.push(RPG.ControlMode.None);
+                    RPG.ControlStack.push(RPG.ControlMode.None);
 
                     if (entity.params.notice && _.has(map, entity.params.notice)) {
                         map[entity.params.notice]();
@@ -74,7 +74,7 @@ module RPG {
 
                         yield *map.waitFight(entity);
                     }
-                    RPG.controlStack.pop();
+                    RPG.ControlStack.pop();
                 }
             }
         }

@@ -59,10 +59,12 @@ module SimpleQuest {
 
         *waitFight(entity, options?:any) {
             var opts = options ? options : {};
+            console.log("BATTLE START", entity.params.monster);
             yield *RPG.Battle.waitBattle({
                 enemy: entity.params.monster,
                 scene: this.battleScene || 'ui/battle/scene_placeholder.png'
             });
+            console.log("BATTLE FINISH", entity.params.monster);
             // TODO what if the player fled the battle?
             if (!opts.leaveEntity) {
                 entity.destroy();
