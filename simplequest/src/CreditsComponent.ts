@@ -75,6 +75,7 @@ module SimpleQuest {
             <li>Eliot</li>
             <li>Liam</li>
             <li>DawnBringer</li>
+            <li>#just_stars_now</li>
             <li>#sancho</li>
             <li>#killpop</li>
             <li>opengameart.org</li>

@@ -15,6 +15,7 @@ module SimpleQuest {
                             <li class="new"       data-menu="newGame">New Game</li>
                             <li class="load"      data-menu="loadGame">Load Game</li>
                             <li class="options"   data-menu="@disabled">Options</li>
+                            <li class="credits"   data-menu="credits">Credits</li>
                             <li class="exit"      data-menu="exit">Exit</li>
                         </ul>
                     `
@@ -58,6 +59,15 @@ module SimpleQuest {
                 this.submenu = new Boot_Load();
                 this.addChild(this.submenu);
                 RPG.Menu.push(this.submenu);
+            }
+
+            credits() {
+                RPG.Scene.do(function*() {
+                    this.element.style.display = 'none';
+                    yield *SimpleQuest.waitOnCredits();
+                    this.element.style.display = '';
+                    RPG.music['overworld'].start();
+                }.bind(this));
             }
 
             options() {

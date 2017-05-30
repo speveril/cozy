@@ -159,38 +159,42 @@ module SimpleQuest {
 
             Cozy.Audio.currentMusic.stop(1.0);
             yield *RPG.Scene.waitFadeOut(1.0);
-            RPG.renderPlane.clear();
-
-            let y = 0;
-            const creditScroll = new CreditsComponent();
-            RPG.uiPlane.addChild(creditScroll);
-
-            RPG.music['endcredits'].start();
-            yield *RPG.Scene.waitFadeIn(1.0);
-
-            let hold = 0;
-            const len = creditScroll.getScrollLength();
-
-            while (creditScroll.scrolled < len) {
-                let dt = yield;
-                creditScroll.scroll(dt * 10);
-
-                if (Cozy.Input.pressed('confirm')) {
-                    hold += dt;
-                    creditScroll.setHoldLevel(hold / 2);
-                } else if (hold > 0) {
-                    hold -= dt * 3;
-                    if (hold < 0) hold = 0;
-                    creditScroll.setHoldLevel(hold / 2);
-                }
-                if (hold > 2) break;
-            }
-
-            RPG.music['endcredits'].stop(2);
-            yield *RPG.Scene.waitFadeOut(2.0);
+            yield *this.waitOnCredits();
 
             this.bootSequence();
         }.bind(this));
+    }
+
+    export function *waitOnCredits() {
+        RPG.renderPlane.clear();
+
+        let y = 0;
+        const creditScroll = new CreditsComponent();
+        RPG.uiPlane.addChild(creditScroll);
+
+        RPG.music['endcredits'].start();
+        yield *RPG.Scene.waitFadeIn(1.0);
+
+        let hold = 0;
+        const len = creditScroll.getScrollLength();
+
+        while (creditScroll.scrolled < len) {
+            let dt = yield;
+            creditScroll.scroll(dt * 10);
+
+            if (Cozy.Input.pressed('confirm')) {
+                hold += dt;
+                creditScroll.setHoldLevel(hold / 2);
+            } else if (hold > 0) {
+                hold -= dt * 3;
+                if (hold < 0) hold = 0;
+                creditScroll.setHoldLevel(hold / 2);
+            }
+            if (hold > 2) break;
+        }
+
+        RPG.music['endcredits'].stop(2);
+        yield *RPG.Scene.waitFadeOut(2.0);
     }
 
     export function newGameData() {
