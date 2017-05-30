@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="45" tilewidth="16" tileheight="16" nextobjectid="181">
+<map version="1.0.0" orientation="orthogonal" renderorder="right-down" width="40" height="45" tilewidth="16" tileheight="16" nextobjectid="181">
  <properties>
   <property name="Name" value="The Dark Forest"/>
  </properties>
@@ -270,11 +270,6 @@
    </properties>
   </object>
   <object id="97" name="open_door" type="event" x="112" y="608" width="16" height="16"/>
-  <object id="104" name="set_threat" type="event" x="512" y="16" width="16" height="16">
-   <properties>
-    <property name="group" value="forest_C"/>
-   </properties>
-  </object>
   <object id="109" name="smash_pot" type="trigger" x="320" y="464" width="16" height="16"/>
   <object id="110" name="smash_pot" type="trigger" x="368" y="480" width="16" height="16"/>
   <object id="111" name="smash_pot" type="trigger" x="384" y="480" width="16" height="16"/>
@@ -284,14 +279,14 @@
     <property name="count" value="200"/>
    </properties>
   </object>
-  <object id="131" type="entity" x="304" y="288" width="16" height="16">
+  <object id="131" name="doFight" type="entity" x="304" y="288" width="16" height="16">
    <properties>
     <property name="behavior" value="guard_left"/>
     <property name="monster" value="cultist"/>
     <property name="sprite" value="sprites/cultist.sprite"/>
    </properties>
   </object>
-  <object id="133" type="entity" x="320" y="208" width="16" height="16">
+  <object id="133" name="doFight" type="entity" x="320" y="208" width="16" height="16">
    <properties>
     <property name="behavior" value="guard_down"/>
     <property name="monster" value="cultist"/>
@@ -314,76 +309,76 @@
   <object id="145" name="open_door" type="event" x="112" y="464" width="16" height="16"/>
   <object id="146" name="smash_pot" type="trigger" x="96" y="480" width="16" height="16"/>
   <object id="147" name="smash_pot" type="trigger" x="128" y="528" width="16" height="16"/>
-  <object id="148" type="entity" x="144" y="192" width="16" height="16">
+  <object id="148" name="doFight" type="entity" x="144" y="192" width="16" height="16">
    <properties>
     <property name="behavior" value="guard_up"/>
     <property name="monster" value="cultist"/>
     <property name="sprite" value="sprites/cultist.sprite"/>
    </properties>
   </object>
-  <object id="149" type="entity" x="160" y="112" width="16" height="16">
+  <object id="149" name="doFight" type="entity" x="160" y="112" width="16" height="16">
    <properties>
     <property name="behavior" value="guard_left"/>
     <property name="monster" value="cultist"/>
     <property name="sprite" value="sprites/cultist.sprite"/>
    </properties>
   </object>
-  <object id="150" type="entity" x="32" y="160" width="16" height="16">
+  <object id="150" name="doFight" type="entity" x="32" y="160" width="16" height="16">
    <properties>
     <property name="behavior" value="guard_right"/>
     <property name="monster" value="cultist"/>
     <property name="sprite" value="sprites/cultist.sprite"/>
    </properties>
   </object>
-  <object id="151" type="entity" x="288" y="112" width="16" height="16">
+  <object id="151" name="doFight" type="entity" x="288" y="112" width="16" height="16">
    <properties>
     <property name="behavior" value="guard_right"/>
     <property name="monster" value="bramblekin"/>
     <property name="sprite" value="sprites/monster_bramblekin.sprite"/>
    </properties>
   </object>
-  <object id="152" type="entity" x="352" y="128" width="16" height="16">
+  <object id="152" name="doFight" type="entity" x="352" y="128" width="16" height="16">
    <properties>
     <property name="behavior" value="guard_up"/>
     <property name="monster" value="bramblekin"/>
     <property name="sprite" value="sprites/monster_bramblekin.sprite"/>
    </properties>
   </object>
-  <object id="153" type="entity" x="416" y="256" width="16" height="16">
+  <object id="153" name="doFight" type="entity" x="416" y="256" width="16" height="16">
    <properties>
     <property name="behavior" value="guard_left"/>
     <property name="monster" value="cultist"/>
     <property name="sprite" value="sprites/cultist.sprite"/>
    </properties>
   </object>
-  <object id="154" type="entity" x="384" y="320" width="16" height="16">
+  <object id="154" name="doFight" type="entity" x="384" y="320" width="16" height="16">
    <properties>
     <property name="behavior" value="guard_up"/>
     <property name="monster" value="cultist"/>
     <property name="sprite" value="sprites/cultist.sprite"/>
    </properties>
   </object>
-  <object id="155" type="entity" x="432" y="336" width="16" height="16">
+  <object id="155" name="doFight" type="entity" x="464" y="288" width="16" height="16">
    <properties>
-    <property name="behavior" value="guard_up"/>
-    <property name="monster" value="cultist"/>
+    <property name="behavior" value=""/>
+    <property name="monster" value="cultleader"/>
     <property name="sprite" value="sprites/cultist_leader.sprite"/>
    </properties>
   </object>
-  <object id="156" type="entity" x="336" y="448" width="16" height="16">
+  <object id="156" name="doFight" type="entity" x="336" y="448" width="16" height="16">
    <properties>
     <property name="behavior" value="wander"/>
     <property name="sprite" value="sprites/ghost.sprite"/>
    </properties>
   </object>
-  <object id="157" type="entity" x="352" y="544" width="16" height="16">
+  <object id="157" name="doFight" type="entity" x="352" y="544" width="16" height="16">
    <properties>
     <property name="behavior" value="guard_up"/>
     <property name="monster" value="ghost"/>
     <property name="sprite" value="sprites/ghost.sprite"/>
    </properties>
   </object>
-  <object id="158" type="entity" x="576" y="528" width="16" height="16">
+  <object id="158" name="doFight" type="entity" x="576" y="528" width="16" height="16">
    <properties>
     <property name="behavior" value="wander"/>
     <property name="sprite" value="sprites/ghost.sprite"/>
@@ -397,7 +392,7 @@
     <property name="sprite" value="sprites/cultist.sprite"/>
    </properties>
   </object>
-  <object id="160" type="entity" x="128" y="496" width="16" height="16">
+  <object id="160" name="doFight" type="entity" x="128" y="496" width="16" height="16">
    <properties>
     <property name="behavior" value="guard_left"/>
     <property name="monster" value="cultist"/>
@@ -411,82 +406,82 @@
     <property name="sprite" value="sprites/cultist.sprite"/>
    </properties>
   </object>
-  <object id="162" type="entity" x="432" y="592" width="16" height="16">
+  <object id="162" name="doFight" type="entity" x="432" y="592" width="16" height="16">
    <properties>
     <property name="behavior" value="guard_down"/>
     <property name="monster" value="goblin"/>
     <property name="sprite" value="sprites/monster_goblin.sprite"/>
    </properties>
   </object>
-  <object id="163" type="entity" x="496" y="640" width="16" height="16">
+  <object id="163" name="doFight" type="entity" x="496" y="640" width="16" height="16">
    <properties>
     <property name="sprite" value="sprites/monster_goblin.sprite"/>
    </properties>
   </object>
-  <object id="164" type="entity" x="480" y="512" width="16" height="16">
+  <object id="164" name="doFight" type="entity" x="480" y="512" width="16" height="16">
    <properties>
     <property name="behavior" value="guard_right"/>
     <property name="monster" value="goblin"/>
     <property name="sprite" value="sprites/monster_goblin.sprite"/>
    </properties>
   </object>
-  <object id="165" type="entity" x="496" y="320" width="16" height="16">
+  <object id="165" name="doFight" type="entity" x="496" y="320" width="16" height="16">
    <properties>
     <property name="behavior" value="guard_down"/>
     <property name="monster" value="goblin"/>
     <property name="sprite" value="sprites/monster_goblin.sprite"/>
    </properties>
   </object>
-  <object id="166" type="entity" x="576" y="208" width="16" height="16">
+  <object id="166" name="doFight" type="entity" x="576" y="208" width="16" height="16">
    <properties>
     <property name="behavior" value="guard_left"/>
     <property name="monster" value="goblin"/>
     <property name="sprite" value="sprites/monster_goblin.sprite"/>
    </properties>
   </object>
-  <object id="167" type="entity" x="496" y="80" width="16" height="16">
+  <object id="167" name="doFight" type="entity" x="496" y="80" width="16" height="16">
    <properties>
     <property name="behavior" value="guard_right"/>
     <property name="monster" value="goblin"/>
     <property name="sprite" value="sprites/monster_goblin.sprite"/>
    </properties>
   </object>
-  <object id="168" type="entity" x="544" y="48" width="16" height="16">
+  <object id="168" name="doFight" type="entity" x="544" y="48" width="16" height="16">
    <properties>
     <property name="behavior" value="guard_left"/>
     <property name="monster" value="goblin"/>
     <property name="sprite" value="sprites/monster_goblin.sprite"/>
    </properties>
   </object>
-  <object id="169" type="entity" x="512" y="32" width="16" height="16">
+  <object id="169" name="doFight" type="entity" x="512" y="32" width="16" height="16">
    <properties>
     <property name="behavior" value="guard_down"/>
     <property name="monster" value="goblin"/>
     <property name="sprite" value="sprites/monster_goblin.sprite"/>
    </properties>
   </object>
-  <object id="170" type="entity" x="48" y="368" width="16" height="16">
+  <object id="170" name="doFight" type="entity" x="48" y="368" width="16" height="16">
    <properties>
     <property name="behavior" value="guard_right"/>
     <property name="monster" value="goblin"/>
     <property name="sprite" value="sprites/monster_goblin.sprite"/>
    </properties>
   </object>
-  <object id="171" type="entity" x="368" y="80" width="16" height="16">
+  <object id="171" name="doFight" type="entity" x="368" y="80" width="16" height="16">
    <properties>
     <property name="behavior" value="guard_left"/>
     <property name="monster" value="bramblekin"/>
     <property name="sprite" value="sprites/monster_bramblekin.sprite"/>
    </properties>
   </object>
-  <object id="172" type="entity" x="160" y="416" width="16" height="16">
+  <object id="172" name="doFight" type="entity" x="160" y="416" width="16" height="16">
    <properties>
     <property name="behavior" value="guard_left"/>
     <property name="monster" value="goblin"/>
     <property name="sprite" value="sprites/monster_goblin.sprite"/>
    </properties>
   </object>
-  <object id="176" type="entity" x="272" y="288" width="16" height="16">
+  <object id="176" name="doFight" type="entity" x="272" y="288" width="16" height="16">
    <properties>
     <property name="behavior" value="guard_right"/>
     <property name="monster" value="cultist"/>
@@ -579,14 +574,14 @@
     <property name="sprite" value="sprites/monster_goblin.sprite"/>
    </properties>
   </object>
-  <object id="178" type="entity" x="544" y="416" width="16" height="16">
+  <object id="178" name="doFight" type="entity" x="544" y="416" width="16" height="16">
    <properties>
     <property name="behavior" value="guard_down"/>
     <property name="monster" value="goblin"/>
     <property name="sprite" value="sprites/monster_goblin.sprite"/>
    </properties>
   </object>
-  <object id="179" type="entity" x="608" y="416" width="16" height="16">
+  <object id="179" name="doFight" type="entity" x="608" y="416" width="16" height="16">
    <properties>
     <property name="behavior" value="guard_down"/>
     <property name="monster" value="goblin"/>

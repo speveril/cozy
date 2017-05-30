@@ -14,6 +14,7 @@ module RPG {
         public layer:Map.MapLayer;
         public speed:number;
         public radius:number;
+        public solid:boolean;
 
         public spawn:PIXI.Point;
 
@@ -38,6 +39,8 @@ module RPG {
             this.name = args.name;
             this.behavior = args.behavior && RPG.Behavior[args.behavior] ? RPG.Behavior[args.behavior](this) : undefined;
             this.paused = false;
+            this.solid = !(args.solid === 'false');
+            console.log(">>", args.solid, this.solid);
 
             this.params = _.clone(args);
         }
@@ -169,41 +172,43 @@ module RPG {
                         }
                     }
 
-                    for (i = 0; i < entities.length; i++) {
-                        if (entities[i] === this) continue;
+                    if (this.solid) {
+                        for (i = 0; i < entities.length; i++) {
+                            if (entities[i] === this || !entities[i].solid) continue;
 
-                        d = Math.sqrt(Trig.dist2(projectedPosition, entities[i].position));
+                            d = Math.sqrt(Trig.dist2(projectedPosition, entities[i].position));
 
-                        // TODO set stationary to false if the entity is moving
-                        var stationary = true;
+                            // TODO set stationary to false if the entity is moving
+                            var stationary = true;
 
-                        // short circuit if we're at more than 1.5 x the radius of the entity -- theoretically this
-                        // "should" be 1 if in motion, and 1.414(etc.) if not, but this is good enough for a first pass
-                        if (d > (entities[i].radius + this.radius) * 1.5) continue;
+                            // short circuit if we're at more than 1.5 x the radius of the entity -- theoretically this
+                            // "should" be 1 if in motion, and 1.414(etc.) if not, but this is good enough for a first pass
+                            if (d > (entities[i].radius + this.radius) * 1.5) continue;
 
-                        // treat stationary entities as squares, and moving ones as circles
-                        if (stationary) {
-                            var entityX = entities[i].position.x;
-                            var entityY = entities[i].position.y;
-                            var entityR = entities[i].radius;
-                            var edges = [
-                                [ { x: entityX - entityR, y: entityY - entityR }, { x: entityX + entityR, y: entityY - entityR } ],
-                                [ { x: entityX + entityR, y: entityY - entityR }, { x: entityX + entityR, y: entityY + entityR } ],
-                                [ { x: entityX - entityR, y: entityY + entityR }, { x: entityX + entityR, y: entityY + entityR } ],
-                                [ { x: entityX - entityR, y: entityY - entityR }, { x: entityX - entityR, y: entityY + entityR } ]
-                            ];
-                            for (j = 0; j < edges.length; j++) {
-                                var closest = Trig.closestPointOnLine(projectedPosition, edges[j][0], edges[j][1]);
-                                d = Math.sqrt(Trig.dist2(projectedPosition, closest));
-                                if (d < this.radius) {
-                                    e = { d: d, type: 'line', a: edges[j][0], b: edges[j][1] };
+                            // treat stationary entities as squares, and moving ones as circles
+                            if (stationary) {
+                                var entityX = entities[i].position.x;
+                                var entityY = entities[i].position.y;
+                                var entityR = entities[i].radius;
+                                var edges = [
+                                    [ { x: entityX - entityR, y: entityY - entityR }, { x: entityX + entityR, y: entityY - entityR } ],
+                                    [ { x: entityX + entityR, y: entityY - entityR }, { x: entityX + entityR, y: entityY + entityR } ],
+                                    [ { x: entityX - entityR, y: entityY + entityR }, { x: entityX + entityR, y: entityY + entityR } ],
+                                    [ { x: entityX - entityR, y: entityY - entityR }, { x: entityX - entityR, y: entityY + entityR } ]
+                                ];
+                                for (j = 0; j < edges.length; j++) {
+                                    var closest = Trig.closestPointOnLine(projectedPosition, edges[j][0], edges[j][1]);
+                                    d = Math.sqrt(Trig.dist2(projectedPosition, closest));
+                                    if (d < this.radius) {
+                                        e = { d: d, type: 'line', a: edges[j][0], b: edges[j][1] };
+                                        o.splice(_.sortedIndex(o, e, (x) => x.d), 0, e);
+                                    }
+                                }
+                            } else {
+                                if (d < this.radius + entities[i].radius) {
+                                    e = { d: d - entities[i].radius, type: 'circ', x: entities[i].sprite.position.x, y: entities[i].sprite.position.y, r: entities[i].radius };
                                     o.splice(_.sortedIndex(o, e, (x) => x.d), 0, e);
                                 }
-                            }
-                        } else {
-                            if (d < this.radius + entities[i].radius) {
-                                e = { d: d - entities[i].radius, type: 'circ', x: entities[i].sprite.position.x, y: entities[i].sprite.position.y, r: entities[i].radius };
-                                o.splice(_.sortedIndex(o, e, (x) => x.d), 0, e);
                             }
                         }
                     }
