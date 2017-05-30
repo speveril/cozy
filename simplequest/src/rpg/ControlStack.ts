@@ -32,10 +32,10 @@ module RPG {
         }
 
         public static top():ControlMode {
-            return this.stack[ControlStack.length - 1];
+            return this.stack[ControlStack.len - 1];
         }
 
-        public static get length():number {
+        public static get len():number {
             return this.stack.length;
         }
     }

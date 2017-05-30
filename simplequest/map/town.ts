@@ -77,13 +77,7 @@ module SimpleQuest {
 
         villager_well(args) {
             RPG.Scene.do(function*() {
-                args.target.pause();
-                switch (args.entity.dir) {
-                    case 'u': args.target.sprite.animation = "stand_d"; break;
-                    case 'r': args.target.sprite.animation = "stand_l"; break;
-                    case 'd': args.target.sprite.animation = "stand_u"; break;
-                    case 'l': args.target.sprite.animation = "stand_r"; break;
-                }
+                this.entityFacePlayerAndPause(args.target);
                 yield* RPG.Scene.waitTextbox("VILLAGER", [
                     "Fresh water is good for you! I'm so glad we have the well."
                 ]);

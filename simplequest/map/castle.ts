@@ -51,5 +51,15 @@ module SimpleQuest {
         blue_door(args) {
             this.doSwitch('blue_door');
         }
+
+        ghost_frontgate(args) {
+            RPG.Scene.do(function*() {
+                this.entityFacePlayerAndPause(args.target);
+                yield *RPG.Scene.waitTextbox("GHOST", ["Why have you come to this accursed place?"]);
+                yield *RPG.Scene.waitTextbox("HERO", ["..."]);
+                yield *this.waitFight(args.target, {});
+                args.target.unpause();
+            });
+        }
     }
 }

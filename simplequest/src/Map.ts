@@ -71,6 +71,12 @@ module SimpleQuest {
             }
         }
 
+        entityFacePlayerAndPause(e:RPG.Entity) {
+            e.pause();
+            e.sprite.animation = 'stand';
+            e.sprite.direction = RPG.player.dir - 180;
+        }
+
         doDoor(name) {
             var doors = this.getAllTriggersByName(name);
 

@@ -109,12 +109,12 @@ module SimpleQuest {
         RPG.Scene.do(function*() {
             yield *RPG.Scene.waitFadeIn(1.0);
             yield *RPG.Scene.waitTextbox(null, [
-                "My name is Hero. Great expectations were thrust upon me at birth.",
+                "My name is 'Hero'. Great expectations were thrust upon me at birth.",
                 "I've been wandering for most of my life, trying to figure out how to fulfill those expectations.",
                 "Or how to escape them."
             ]);
             yield *RPG.Scene.waitTextbox(null, [
-                "For now I've come to this place. A small village named Carp's Bend. Maybe I'll find what I'm looking for here."
+                "For now I've come to this place: a small village named Carp's Bend. Maybe I'll find what I'm looking for here."
             ]);
             RPG.startMap('village', 8, 2, undefined, { direction: 90 });
         }.bind(this));

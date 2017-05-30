@@ -105,7 +105,7 @@ module RPG {
             map.update(dt);
         }
 
-        if (ControlStack.length < 1) {
+        if (ControlStack.len < 1) {
             throw new Error("Control stack got emptied");
         }
 
