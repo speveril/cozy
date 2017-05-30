@@ -59,7 +59,7 @@ module SimpleQuest {
                 yield *RPG.Scene.waitTextbox("HERO", ["..."]);
                 yield *this.waitFight(args.target, {});
                 args.target.unpause();
-            });
+            }.bind(this));
         }
     }
 }
