@@ -327,4 +327,17 @@ module Cozy {
     export function uniqueID() {
         return (++lastID).toString();
     }
+
+    let uniqueStrings = {"":true};
+    let stringChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    export function randomString(len:number):string {
+        let s = "";
+        while (uniqueStrings[s]) {
+            for (let i = 0; i < len; i++) {
+                s += stringChars[(Math.random() * stringChars.length) | 0];
+            }
+        }
+        uniqueStrings[s] = true;
+        return s;
+    }
 }
