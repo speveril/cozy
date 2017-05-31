@@ -41,6 +41,7 @@ module RPG {
             }
         }
 
+        let guardMutex = null;
         export function *guard(entity:RPG.Entity, direction:number) {
             entity.dir = direction;
             entity.sprite.animation = 'stand';
@@ -68,13 +69,21 @@ module RPG {
 
                         entity.emote("!");
                         RPG.sfx['alert'].play();
+
+                        while (guardMutex) {
+                            dt = yield;
+                        }
+                        guardMutex = true;
+
                         yield *Scene.waitEntityMove(entity, movement);
                         yield *Scene.waitTextbox(null, [exclamation]);
                         entity.clearEmote();
 
                         yield *map.waitFight(entity);
+
+                        guardMutex = null;
+                        RPG.ControlStack.pop();
                     }
-                    RPG.ControlStack.pop();
                 }
             }
         }

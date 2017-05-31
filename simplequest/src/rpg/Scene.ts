@@ -55,6 +55,8 @@ module RPG {
                 }
 
                 RPG.ControlStack.push(RPG.ControlMode.Scene);
+
+                let id = Cozy.randomString(6);
                 yield* sceneFunc();
             }
 

@@ -368,6 +368,7 @@
   <object id="156" name="doFight" type="entity" x="336" y="448" width="16" height="16">
    <properties>
     <property name="behavior" value="wander"/>
+    <property name="speed" value="10"/>
     <property name="sprite" value="sprites/ghost.sprite"/>
    </properties>
   </object>
