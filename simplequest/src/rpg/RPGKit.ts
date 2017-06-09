@@ -30,6 +30,7 @@ module RPG {
     export var cameraSpeed:number                  = 750;
     export var cameraHalf:PIXI.Point;
     export var cameraFocus:PIXI.Point;
+    export var cameraTarget:Entity                 = null;
 
     export var renderPlane:Cozy.RenderPlane;
     export var uiPlane:Cozy.UiPlane;
@@ -129,6 +130,10 @@ module RPG {
             }
         }
 
+        if (cameraTarget && cameraTarget.sprite) {
+            centerCameraOn(cameraTarget.sprite.position);
+        }
+
         if (player && player.layer) {
             var offs = player.layer.displayLayer.getOffset(),
                 dx = (cameraFocus.x) - (-offs.x + cameraHalf.x),
@@ -136,6 +141,7 @@ module RPG {
                 dd = Math.sqrt(dx * dx + dy * dy),
                 maxDist = cameraSpeed * dt;
 
+            // TODO this math looks... wrong
             if (dd > maxDist) {
                 dx *= (maxDist / dd);
                 dy *= (maxDist / dd);
@@ -176,6 +182,10 @@ module RPG {
                 layer.displayLayer.offset(-cx + cameraHalf.x, -cy + cameraHalf.y);
             });
         }
+    }
+
+    export function cameraFollow(e:Entity) {
+        cameraTarget = e;
     }
 
     export function startMap(newMap:string, x?:number, y?:number, layerName?:string, options?:any) {

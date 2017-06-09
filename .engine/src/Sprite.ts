@@ -4,6 +4,7 @@ module Cozy {
         textureFrame: PIXI.Rectangle;
         clip: PIXI.Rectangle;
         hotspot: PIXI.Point;
+        offset: PIXI.Point;
         position: PIXI.Point;
         frameBank: PIXI.Rectangle;
         frameSize: PIXI.Point;
@@ -58,6 +59,7 @@ module Cozy {
             this.innerSprite = new PIXI.Sprite(this.texture);
             this.innerSprite['uid'] = Cozy.uniqueID();
 
+            this.offset = args.offset ? new PIXI.Point(args.offset.x, args.offset.y) : new PIXI.Point(0, 0);
             this.hotspot = new PIXI.Point(args.hotspot.x || 0, args.hotspot.y || 0);
             this.position = new PIXI.Point(args.position.x || 0, args.position.y || 0 );
             this.frameSize = new PIXI.Point(args.frameSize.x || args.texture.width, args.frameSize.y || args.texture.height);
@@ -216,6 +218,12 @@ module Cozy {
             this.positionInnerSprite();
         }
 
+        setOffset(x:number, y:number):void {
+            this.offset.x = x;
+            this.offset.y = y;
+            this.positionInnerSprite();
+        }
+
         overlaps(sp:Sprite):Boolean {
             var me = {
                 left: this.innerSprite.position.x,
@@ -239,8 +247,8 @@ module Cozy {
         }
 
         private positionInnerSprite():void {
-            this.innerSprite.x = Math.floor(this.position.x - this.hotspot.x);
-            this.innerSprite.y = Math.floor(this.position.y - this.hotspot.y);
+            this.innerSprite.x = Math.floor(this.position.x - this.hotspot.x + this.offset.x);
+            this.innerSprite.y = Math.floor(this.position.y - this.hotspot.y + this.offset.y);
             if (this.currentQuake) {
                 this.innerSprite.x +=  Math.floor(this.currentQuake['offset'].x)
                 this.innerSprite.y +=  Math.floor(this.currentQuake['offset'].y)

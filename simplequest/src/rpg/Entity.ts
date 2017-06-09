@@ -1,7 +1,12 @@
 module RPG {
+    const BOUNCE_GRAVITY = 850;
+    const BOUNCE_ENTROPY = 0.5;
+    const BOUNCE_THRESHOLD = 30;
+
     export class Entity {
         private spriteDef:any; // can be an object or a string
         private paused:boolean;
+        private bouncing:any;
 
         public triggersEvents:boolean;
         public respectsObstructions:boolean;
@@ -39,9 +44,8 @@ module RPG {
             this.name = args.name;
             this.behavior = args.behavior && RPG.Behavior[args.behavior] ? RPG.Behavior[args.behavior](this) : undefined;
             this.paused = false;
+            this.bouncing = false;
             this.solid = !(args.solid === 'false');
-            console.log(">>", args.solid, this.solid);
-
             this.params = _.clone(args);
         }
 
@@ -73,6 +77,13 @@ module RPG {
                 this.layer.displayLayer.remove(this.emoteSprite);
                 this.emoteSprite = null;
             }
+        }
+
+        bounce(height:number) {
+            this.bouncing = {
+                y: 0,
+                vy: Math.sqrt(2 * BOUNCE_GRAVITY * height)
+            };
         }
 
         place(x:number, y:number, lyr:Map.MapLayer):void {
@@ -116,10 +127,34 @@ module RPG {
             //     this.emoteSprite.position = this.position;
             // }
 
-            if (!this.paused && this.behavior) {
-                var result = this.behavior.next(dt);
-                if (result.done) {
-                    this.behavior = result.value;
+            if (!this.paused) {
+                if (this.bouncing) {
+                    this.bouncing.y += this.bouncing.vy * dt - (BOUNCE_GRAVITY * dt * dt) / 2;
+                    this.bouncing.vy -= BOUNCE_GRAVITY * dt;
+
+                    if (this.bouncing.y <= 0) {
+                        this.bouncing.y *= -1;
+                        this.bouncing.vy *= -BOUNCE_ENTROPY;
+                        if (this.bouncing.vy < BOUNCE_THRESHOLD) {
+                            console.log("        >", 'done');
+                            this.bouncing = null;
+                        }
+                    }
+
+                    if (this.bouncing) {
+                        this.sprite.setOffset(0, -this.bouncing.y);
+                        if (this.emoteSprite) {
+                            this.emoteSprite.setPosition(this.sprite.position.x, this.sprite.position.y - this.bouncing.y + 0.1);
+                        }
+                    } else {
+                        this.sprite.setOffset(0, 0);
+                    }
+                }
+                if (this.behavior) {
+                    var result = this.behavior.next(dt);
+                    if (result.done) {
+                        this.behavior = result.value;
+                    }
                 }
             }
         }

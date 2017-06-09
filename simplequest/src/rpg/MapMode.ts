@@ -64,7 +64,5 @@ module RPG {
             RPG.uiPlane.addChild(menu);
             Menu.push(menu);
         }
-
-        RPG.centerCameraOn(player.position);
     }
 }

@@ -56,8 +56,8 @@ module RPG {
 
                 RPG.ControlStack.push(RPG.ControlMode.Scene);
 
-                let id = Cozy.randomString(6);
                 yield* sceneFunc();
+                RPG.cameraFollow(RPG.player);
             }
 
             this.scenes.push([wrapper.call(this)]);
@@ -122,6 +122,19 @@ module RPG {
                     if (dy < 0 && entity.position.y < ty) entity.position.y = ty;
                 }
             }
+        }
+
+        static *waitCameraMove(targetX:number, targetY:number, t:number) {
+            RPG.cameraFollow(null);
+            let speed = RPG.cameraSpeed;
+            let targetPt = new PIXI.Point(targetX, targetY);
+            let d = Trig.dist(targetPt, RPG.cameraFocus);
+            RPG.cameraSpeed = d / t;
+            RPG.centerCameraOn(targetPt);
+
+            yield *this.waitTime(t);
+
+            RPG.cameraSpeed = speed;
         }
 
         static *waitFadeTo(color:string, duration:number) {
