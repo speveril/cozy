@@ -31,6 +31,9 @@ module SimpleQuest {
         }
 
         forest_door_A(args) {
+            if (this.persisted('plateau cutscene')) {
+                yield* RPG.Scene.waitTextbox("Hero", ["Those cultists said they needed a Massive Key for this door."]);
+            }
             this.doKeyDoor('forest_door_A', 'gold_key');
         }
 
