@@ -32,7 +32,9 @@ module SimpleQuest {
 
         forest_door_A(args) {
             if (this.persisted('plateau cutscene')) {
-                yield* RPG.Scene.waitTextbox("Hero", ["Those cultists said they needed a Massive Key for this door."]);
+                RPG.Scene.do(function*() {
+                    yield* RPG.Scene.waitTextbox("Hero", ["Those cultists said they needed a Gold Key for this door."]);
+                }.bind(this));
             }
             this.doKeyDoor('forest_door_A', 'gold_key');
         }
@@ -100,7 +102,7 @@ module SimpleQuest {
                     yield* RPG.Scene.waitTextbox("Cultist", ["We didn't really think to ask, Master!"]);
                     cultLeader.bounce(8);
                     yield* RPG.Scene.waitTextbox("Cult Leader", [
-                        "You buffoons! You know we need that Massive Key to open the door to the ruins! Now what are we supposed to do?!",
+                        "You buffoons! You know we need that Gold Key to open the door to the ruins! Now what are we supposed to do?!",
                     ]);
                     cultistC.bounce(8);
                     yield* RPG.Scene.waitTextbox("Cultist", ["Master, I just want it to be clear I had nothing to do with any of this!"]);
