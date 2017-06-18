@@ -41,6 +41,49 @@ module RPG {
             }
         }
 
+        export function *path(entity:RPG.Entity, path:Array<any>) {
+            let dt:number;
+            let dx:number, dy:number;
+            let tx:number, ty:number;
+            let px:number, py:number;
+            let step:any;
+            let framedist:number, dist:number;
+
+            dist = 0;
+
+            for (let i = 0; i < path.length; i++) {
+                step = path[i];
+
+                if (step[1] === undefined || step[1] === 0) {
+                    entity.dir = step[0];
+                    continue;
+                }
+
+                dx = Math.cos(PIXI.DEG_TO_RAD * step[0]);
+                dy = Math.sin(PIXI.DEG_TO_RAD * step[0]);
+                // correct for floating point trig drift
+                if (Math.abs(dx) < 1) dx = 0;
+                if (Math.abs(dy) < 1) dy = 0;
+
+                while (dist < step[1]) {
+                    dt = yield;
+                    framedist = entity.speed * dt;
+                    dist += framedist;
+
+                    if (dist > step[1]) {
+                        framedist = dist - step[1];
+                    }
+
+                    entity.move(framedist * dx, framedist * dy);
+
+                    if (dx > 0 && entity.position.x > tx) entity.position.x = tx;
+                    if (dx < 0 && entity.position.x < tx) entity.position.x = tx;
+                    if (dy > 0 && entity.position.y > ty) entity.position.y = ty;
+                    if (dy < 0 && entity.position.y < ty) entity.position.y = ty;
+                }
+            }
+        }
+
         let guardMutex = null;
         export function *guard(entity:RPG.Entity, direction:number) {
             entity.dir = direction;

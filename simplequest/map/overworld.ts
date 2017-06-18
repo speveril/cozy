@@ -26,7 +26,7 @@ module SimpleQuest {
         }
 
         enter_castle(args) {
-            RPG.startMap('castle', 25, 43);
+            RPG.startMap('castle', 19.5, 43);
         }
 
         enter_cave(args) {

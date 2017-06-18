@@ -56,10 +56,61 @@ module SimpleQuest {
             RPG.Scene.do(function*() {
                 this.entityFacePlayerAndPause(args.target);
                 yield *RPG.Scene.waitTextbox("GHOST", ["Why have you come to this accursed place?"]);
-                yield *RPG.Scene.waitTextbox("HERO", ["..."]);
                 yield *this.waitFight(args.target, {});
+                yield *RPG.Scene.waitTextbox("HERO", ["..."]);
                 args.target.unpause();
             }.bind(this));
+        }
+
+        start_boss_cutscene(args) {
+            if (this.persisted('saw_lich_cutscene')) {
+                return;
+            }
+
+            this.persist('saw_lich_cutscene');
+
+            let lich = this.getAllEntitiesByName('lich')[0];
+            let warriorA = this.getAllEntitiesByName('warriorA')[0];
+            let warriorB = this.getAllEntitiesByName('warriorB')[0];
+            let warriorC = this.getAllEntitiesByName('warriorC')[0];
+            let warriorD = this.getAllEntitiesByName('warriorD')[0];
+
+            RPG.Scene.do(function*() {
+                lich.hop(8);
+                yield *RPG.Scene.waitTextbox("LICH", ["Behold! Another human intent on soiling my castle with the filth of the living!"]);
+                warriorA.hop(8);
+                yield *RPG.Scene.waitTime(0.17);
+                warriorC.hop(8);
+                yield *RPG.Scene.waitTime(0.12);
+                warriorB.hop(8);
+                yield *RPG.Scene.waitTime(0.21);
+                warriorD.hop(8);
+                yield *RPG.Scene.waitTextbox("LACKEYS", ["Ha ha ha!", "Death has not diminished your cleverness, Lord!"]);
+                lich.hop(8);
+                yield *RPG.Scene.waitTextbox("LICH", ["Yes, yes."]);
+                yield *RPG.Scene.waitTime(1.5);
+                yield *RPG.Scene.waitTextbox("LICH", ["Ahem.", "Well?"]);
+                warriorA.hop(8);
+                yield *RPG.Scene.waitTime(0.17);
+                warriorC.hop(8);
+                yield *RPG.Scene.waitTime(0.12);
+                warriorB.hop(8);
+                yield *RPG.Scene.waitTime(0.21);
+                warriorD.hop(8);
+                yield *RPG.Scene.waitTextbox("LACKEYS", ["Right away, Lord!"]);
+
+                warriorA.behavior = RPG.Behavior['path'](warriorA, [[ 90, 5 * RPG.map.tileSize.x],[  0, 0]]);
+                warriorB.behavior = RPG.Behavior['path'](warriorB, [[ 90, 4 * RPG.map.tileSize.x],[ 90, 0]]);
+                warriorC.behavior = RPG.Behavior['path'](warriorC, [[ 90, 4 * RPG.map.tileSize.x],[ 90, 0]]);
+                warriorD.behavior = RPG.Behavior['path'](warriorD, [[ 90, 5 * RPG.map.tileSize.x],[180, 0]]);
+
+            }.bind(this));
+        }
+
+        jeff(args) {
+            RPG.Scene.do(function*() {
+                yield *RPG.Scene.waitTextbox(null, ["It's some sort of cultist.", "The nametag on the robe says 'Jeff'."]);
+            });
         }
     }
 }

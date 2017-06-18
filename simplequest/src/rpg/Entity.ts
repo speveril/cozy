@@ -7,6 +7,7 @@ module RPG {
         private spriteDef:any; // can be an object or a string
         private paused:boolean;
         private bouncing:any;
+        private path:any;
 
         public triggersEvents:boolean;
         public respectsObstructions:boolean;
@@ -86,6 +87,11 @@ module RPG {
             };
         }
 
+        hop(height:number) {
+            // TODO
+            this.bounce(height);
+        }
+
         place(x:number, y:number, lyr:Map.MapLayer):void {
             if (this.sprite) {
                 this.layer.displayLayer.remove(this.sprite);
@@ -158,6 +164,8 @@ module RPG {
                 }
             }
         }
+
+        // TODO findPath()
 
         pause() {
             this.paused = true;
