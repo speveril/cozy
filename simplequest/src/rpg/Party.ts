@@ -13,7 +13,7 @@ module RPG {
                 sprite: this.character.sprite,
                 speed: 64,
                 triggersEvents: true,
-                respectsObstructions: true
+                respectsObstructions: 'true'
             });
         }
     }

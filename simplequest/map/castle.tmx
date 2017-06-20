@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0.0" orientation="orthogonal" renderorder="right-down" width="40" height="60" tilewidth="16" tileheight="16" nextobjectid="220">
+<map version="1.0.0" orientation="orthogonal" renderorder="right-down" width="40" height="60" tilewidth="16" tileheight="16" nextobjectid="221">
  <properties>
   <property name="Name" value="The Ruined Keep"/>
  </properties>
@@ -72,7 +72,7 @@
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,36,0,138,0,0,0,0,0,37,36,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,36,0,138,0,37,0,0,0,37,36,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,37,0,0,0,0,20,206,206,20,0,0,202,0,138,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,37,0,0,0,0,0,36,107,107,36,0,0,0,138,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,36,0,0,0,0,0,0,0,138,0,0,36,0,138,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -198,7 +198,7 @@
  </layer>
  <objectgroup name="#spritelayer">
   <object id="16" x="304" y="192">
-   <polyline points="0,80 0,0 -48,0 -48,-16 -64,-16 -64,0 -80,0 -80,-16 -96,-16 -96,-32 -112,-32 -112,-128 -96,-128 -96,-144 -80,-144 -80,-160 -64,-160 -64,-144 -48,-144 -48,-160 -16,-160 -16,-112 48,-112 48,-160 80,-160 80,-144 96,-144 96,-160 112,-160 112,-144 128,-144 128,-128 144,-128 144,-32 128,-32 128,-16 112,-16 112,0 96,0 96,-16 80,-16 80,0 32,0 32,80"/>
+   <polyline points="0,80 0,0 -48,0 -48,-16 -64,-16 -64,0 -80,0 -80,-16 -96,-16 -96,-32 -112,-32 -112,-128 -96,-128 -96,-144 -80,-144 -80,-160 -64,-160 -64,-144 -48,-144 -48,-160 -16,-160 0,-160 0,-144 -16,-144 -16,-112 48,-112 48,-160 80,-160 80,-144 96,-144 96,-160 112,-160 112,-144 128,-144 128,-128 144,-128 144,-32 128,-32 128,-16 112,-16 112,0 96,0 96,-16 80,-16 80,0 32,0 32,80"/>
   </object>
   <object id="17" x="400" y="128">
    <polyline points="0,0 0,16 16,16 16,0 0,0"/>
@@ -506,27 +506,31 @@
     <property name="sprite" value="sprites/lich.sprite"/>
    </properties>
   </object>
-  <object id="147" name="warriorB" type="entity" x="304" y="112" width="16" height="16">
+  <object id="147" name="lackeyB" type="entity" x="304" y="112" width="16" height="16">
    <properties>
     <property name="monster" value="skeletonwarrior"/>
+    <property name="respectsObstructions" value="false"/>
     <property name="sprite" value="sprites/monster_skelwarrior.sprite"/>
    </properties>
   </object>
-  <object id="149" name="warriorC" type="entity" x="320" y="112" width="16" height="16">
+  <object id="149" name="lackeyC" type="entity" x="320" y="112" width="16" height="16">
    <properties>
     <property name="monster" value="skeletonwarrior"/>
+    <property name="respectsObstructions" value="false"/>
     <property name="sprite" value="sprites/monster_skelwarrior.sprite"/>
    </properties>
   </object>
-  <object id="150" name="warriorA" type="entity" x="288" y="96" width="16" height="16">
+  <object id="150" name="lackeyA" type="entity" x="288" y="96" width="16" height="16">
    <properties>
     <property name="monster" value="skeletonwarrior"/>
+    <property name="respectsObstructions" value="false"/>
     <property name="sprite" value="sprites/monster_skelwarrior.sprite"/>
    </properties>
   </object>
-  <object id="151" name="warriorD" type="entity" x="336" y="96" width="16" height="16">
+  <object id="151" name="lackeyD" type="entity" x="336" y="96" width="16" height="16">
    <properties>
     <property name="monster" value="skeletonwarrior"/>
+    <property name="respectsObstructions" value="false"/>
     <property name="sprite" value="sprites/monster_skelwarrior.sprite"/>
    </properties>
   </object>
@@ -731,12 +735,18 @@
    </properties>
   </object>
   <object id="217" name="jeff" type="trigger" x="384" y="48" width="16" height="16"/>
+  <object id="220" name="open_chest" type="trigger" x="304" y="32" width="16" height="16">
+   <properties>
+    <property name="contents" value=""/>
+    <property name="count" value=""/>
+   </properties>
+  </object>
  </objectgroup>
  <layer name="foreground" width="40" height="60">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,20,0,0,0,0,0,0,0,0,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10,87,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,20,0,0,0,0,0,0,0,0,0,0,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

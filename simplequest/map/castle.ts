@@ -70,40 +70,61 @@ module SimpleQuest {
             this.persist('saw_lich_cutscene');
 
             let lich = this.getAllEntitiesByName('lich')[0];
-            let warriorA = this.getAllEntitiesByName('warriorA')[0];
-            let warriorB = this.getAllEntitiesByName('warriorB')[0];
-            let warriorC = this.getAllEntitiesByName('warriorC')[0];
-            let warriorD = this.getAllEntitiesByName('warriorD')[0];
+            let lackeyA = this.getAllEntitiesByName('lackeyA')[0];
+            let lackeyB = this.getAllEntitiesByName('lackeyB')[0];
+            let lackeyC = this.getAllEntitiesByName('lackeyC')[0];
+            let lackeyD = this.getAllEntitiesByName('lackeyD')[0];
 
             RPG.Scene.do(function*() {
+                let target = { x: 320, y: 184 };
+                let d = Trig.dist(RPG.player.position, target);
+                RPG.player.behavior = RPG.Behavior['path'](RPG.player, [[Math.atan2(target.y - RPG.player.position.y, target.x - RPG.player.position.x) * PIXI.RAD_TO_DEG, d]]);
+                yield *RPG.Scene.waitTime(d / RPG.player.speed + 0.1);
+
                 lich.hop(8);
                 yield *RPG.Scene.waitTextbox("LICH", ["Behold! Another human intent on soiling my castle with the filth of the living!"]);
-                warriorA.hop(8);
+                lackeyA.hop(8);
                 yield *RPG.Scene.waitTime(0.17);
-                warriorC.hop(8);
+                lackeyC.hop(8);
                 yield *RPG.Scene.waitTime(0.12);
-                warriorB.hop(8);
+                lackeyB.hop(8);
                 yield *RPG.Scene.waitTime(0.21);
-                warriorD.hop(8);
+                lackeyD.hop(8);
                 yield *RPG.Scene.waitTextbox("LACKEYS", ["Ha ha ha!", "Death has not diminished your cleverness, Lord!"]);
                 lich.hop(8);
                 yield *RPG.Scene.waitTextbox("LICH", ["Yes, yes."]);
                 yield *RPG.Scene.waitTime(1.5);
                 yield *RPG.Scene.waitTextbox("LICH", ["Ahem.", "Well?"]);
-                warriorA.hop(8);
+                lackeyA.hop(8);
                 yield *RPG.Scene.waitTime(0.17);
-                warriorC.hop(8);
+                lackeyC.hop(8);
                 yield *RPG.Scene.waitTime(0.12);
-                warriorB.hop(8);
+                lackeyB.hop(8);
                 yield *RPG.Scene.waitTime(0.21);
-                warriorD.hop(8);
+                lackeyD.hop(8);
                 yield *RPG.Scene.waitTextbox("LACKEYS", ["Right away, Lord!"]);
 
-                warriorA.behavior = RPG.Behavior['path'](warriorA, [[ 90, 5 * RPG.map.tileSize.x],[  0, 0]]);
-                warriorB.behavior = RPG.Behavior['path'](warriorB, [[ 90, 4 * RPG.map.tileSize.x],[ 90, 0]]);
-                warriorC.behavior = RPG.Behavior['path'](warriorC, [[ 90, 4 * RPG.map.tileSize.x],[ 90, 0]]);
-                warriorD.behavior = RPG.Behavior['path'](warriorD, [[ 90, 5 * RPG.map.tileSize.x],[180, 0]]);
+                lackeyA.behavior = RPG.Behavior['path'](lackeyA, [[ 90, 5 * RPG.map.tileSize.y],[  0, RPG.map.tileSize.x * 0.5]]);
+                lackeyB.behavior = RPG.Behavior['path'](lackeyB, [[ 90, 3 * RPG.map.tileSize.y],[ 90, 0]]);
+                lackeyC.behavior = RPG.Behavior['path'](lackeyC, [[ 90, 3 * RPG.map.tileSize.y],[ 90, 0]]);
+                lackeyD.behavior = RPG.Behavior['path'](lackeyD, [[ 90, 5 * RPG.map.tileSize.y],[180, RPG.map.tileSize.x * 0.5]]);
 
+                // TODO there should be a better way to wait for some number of movements to finish
+                yield *RPG.Scene.waitTime(5.5 * RPG.map.tileSize.x / lackeyA.speed);
+                yield *this.waitFight(lackeyB);
+                yield *RPG.Scene.waitTime(0.25);
+                yield *this.waitFight(lackeyC);
+                yield *RPG.Scene.waitTime(0.25);
+                yield *this.waitFight(lackeyA);
+                yield *RPG.Scene.waitTime(0.25);
+                yield *this.waitFight(lackeyD);
+                yield *RPG.Scene.waitTime(0.25);
+
+                lich.hop(8);
+                yield *RPG.Scene.waitTextbox("LICH", ["You've defeated my minions, perhaps, but you won't find me so easy to deal with!"]);
+                lich.behavior = RPG.Behavior['path'](lich, [[ 90, 5 * RPG.map.tileSize.y]]);
+                yield *RPG.Scene.waitTime(1.0);
+                yield *this.waitFight(lich);
             }.bind(this));
         }
 

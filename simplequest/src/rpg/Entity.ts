@@ -40,7 +40,7 @@ module RPG {
             this.spriteDef = args.sprite;
             this.speed = args.speed || 100;
             this.triggersEvents = (args.triggersEvents !== undefined ? args.triggersEvents : false);
-            this.respectsObstructions = (args.respectsObstructions !== undefined ? args.respectsObstructions : true);
+            this.respectsObstructions = (args.respectsObstructions !== undefined ? args.respectsObstructions === 'true' : true);
             this.radius = args.radius || args.sprite.radius || 8;
             this.name = args.name;
             this.behavior = args.behavior && RPG.Behavior[args.behavior] ? RPG.Behavior[args.behavior](this) : undefined;
@@ -142,7 +142,6 @@ module RPG {
                         this.bouncing.y *= -1;
                         this.bouncing.vy *= -BOUNCE_ENTROPY;
                         if (this.bouncing.vy < BOUNCE_THRESHOLD) {
-                            console.log("        >", 'done');
                             this.bouncing = null;
                         }
                     }

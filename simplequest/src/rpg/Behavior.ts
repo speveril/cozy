@@ -61,9 +61,6 @@ module RPG {
 
                 dx = Math.cos(PIXI.DEG_TO_RAD * step[0]);
                 dy = Math.sin(PIXI.DEG_TO_RAD * step[0]);
-                // correct for floating point trig drift
-                if (Math.abs(dx) < 1) dx = 0;
-                if (Math.abs(dy) < 1) dy = 0;
 
                 while (dist < step[1]) {
                     dt = yield;
