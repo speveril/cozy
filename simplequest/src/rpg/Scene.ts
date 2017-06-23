@@ -175,6 +175,14 @@ module RPG {
             }
         }
 
+        static *waitFrame(duration:number) {
+            var elapsed = 0;
+            while (elapsed < duration) {
+                elapsed++;
+                yield;
+            }
+        }
+
         static *waitTextbox(speaker, lines:string[]) {
             for(var i = 0; i < lines.length; i++) {
                 if (i === 0) {

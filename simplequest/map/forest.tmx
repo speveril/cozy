@@ -425,6 +425,7 @@
   <object id="163" name="doFight" type="entity" x="496" y="640" width="16" height="16">
    <properties>
     <property name="behavior" value="guard_up"/>
+    <property name="monster" value="goblin"/>
     <property name="sprite" value="sprites/monster_goblin.sprite"/>
    </properties>
   </object>

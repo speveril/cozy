@@ -31,12 +31,12 @@ module SimpleQuest {
         }
 
         forest_door_A(args) {
-            if (this.persisted('plateau cutscene')) {
+            this.doKeyDoor('forest_door_A', 'gold_key');
+            if (this.persisted('plateau cutscene') && !this.persisted('forest_door_A__opened')) {
                 RPG.Scene.do(function*() {
                     yield* RPG.Scene.waitTextbox("Hero", ["Those cultists said they needed a Gold Key for this door."]);
                 }.bind(this));
             }
-            this.doKeyDoor('forest_door_A', 'gold_key');
         }
 
         forest_door_B(args) {

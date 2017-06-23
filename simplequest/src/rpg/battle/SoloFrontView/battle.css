@@ -24,6 +24,11 @@
     left: 16px;
     padding: 5px;
     box-sizing: border-box;
+    transition: transform 0.25s;
+}
+
+.battle-screen.hide .left-sidebar {
+    transform: translateX(-100px);
 }
 
 .battle-screen .left-sidebar meter {
@@ -59,6 +64,11 @@
     right: 16px;
     padding: 5px;
     box-sizing: border-box;
+    transition: transform 0.25s;
+}
+
+.battle-screen.hide .right-sidebar {
+    transform: translateX(100px);
 }
 
 .battle-screen .action-menu {

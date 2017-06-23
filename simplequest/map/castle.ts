@@ -78,7 +78,7 @@ module SimpleQuest {
             RPG.Scene.do(function*() {
                 let target = { x: 320, y: 184 };
                 let d = Trig.dist(RPG.player.position, target);
-                RPG.player.behavior = RPG.Behavior['path'](RPG.player, [[Math.atan2(target.y - RPG.player.position.y, target.x - RPG.player.position.x) * PIXI.RAD_TO_DEG, d]]);
+                RPG.player.behavior = RPG.Behavior['path'](RPG.player, [[Math.atan2(target.y - RPG.player.position.y, target.x - RPG.player.position.x) * PIXI.RAD_TO_DEG, d],[270,0]]);
                 yield *RPG.Scene.waitTime(d / RPG.player.speed + 0.1);
 
                 lich.hop(8);
@@ -104,26 +104,49 @@ module SimpleQuest {
                 lackeyD.hop(8);
                 yield *RPG.Scene.waitTextbox("LACKEYS", ["Right away, Lord!"]);
 
-                lackeyA.behavior = RPG.Behavior['path'](lackeyA, [[ 90, 5 * RPG.map.tileSize.y],[  0, RPG.map.tileSize.x * 0.5]]);
-                lackeyB.behavior = RPG.Behavior['path'](lackeyB, [[ 90, 3 * RPG.map.tileSize.y],[ 90, 0]]);
-                lackeyC.behavior = RPG.Behavior['path'](lackeyC, [[ 90, 3 * RPG.map.tileSize.y],[ 90, 0]]);
-                lackeyD.behavior = RPG.Behavior['path'](lackeyD, [[ 90, 5 * RPG.map.tileSize.y],[180, RPG.map.tileSize.x * 0.5]]);
+                lackeyA.behavior = RPG.Behavior['path'](lackeyA, [[ 90, 5 * RPG.map.tileSize.y],[  0, 0]]);
+                lackeyB.behavior = RPG.Behavior['path'](lackeyB, [[ 90, 2 * RPG.map.tileSize.y],[ 90, 0]]);
+                lackeyC.behavior = RPG.Behavior['path'](lackeyC, [[ 90, 2 * RPG.map.tileSize.y],[ 90, 0]]);
+                lackeyD.behavior = RPG.Behavior['path'](lackeyD, [[ 90, 5 * RPG.map.tileSize.y],[180, 0]]);
 
                 // TODO there should be a better way to wait for some number of movements to finish
-                yield *RPG.Scene.waitTime(5.5 * RPG.map.tileSize.x / lackeyA.speed);
+                yield *RPG.Scene.waitTime(5 * RPG.map.tileSize.x / lackeyA.speed);
+
+                lackeyB.hop(8);
+                yield *RPG.Scene.waitTextbox('LACKEY', ["For the master!"]);
+                lackeyB.speed = 128;
+                lackeyB.behavior = RPG.Behavior['path'](lackeyB, [[ 90, RPG.map.tileSize.y]]);
+                yield *RPG.Scene.waitTime(1 * RPG.map.tileSize.x / lackeyB.speed);
                 yield *this.waitFight(lackeyB);
-                yield *RPG.Scene.waitTime(0.25);
+
+                lackeyC.hop(8);
+                yield *RPG.Scene.waitTextbox('LACKEY', ["Death shall consume all!"]);
+                lackeyC.speed = 128;
+                lackeyC.behavior = RPG.Behavior['path'](lackeyC, [[ 90, RPG.map.tileSize.y]]);
+                yield *RPG.Scene.waitTime(1 * RPG.map.tileSize.x / lackeyC.speed);
                 yield *this.waitFight(lackeyC);
-                yield *RPG.Scene.waitTime(0.25);
+
+                lackeyA.hop(8);
+                yield *RPG.Scene.waitTextbox('LACKEY', ["I might have a few regrets!"]);
+                lackeyA.speed = 128;
+                lackeyA.behavior = RPG.Behavior['path'](lackeyA, [[  0, RPG.map.tileSize.y]]);
+                yield *RPG.Scene.waitTime(1 * RPG.map.tileSize.x / lackeyA.speed);
                 yield *this.waitFight(lackeyA);
-                yield *RPG.Scene.waitTime(0.25);
+
+                lackeyD.hop(8);
+                yield *RPG.Scene.waitTextbox('LACKEY', ["Die!"]);
+                lackeyD.speed = 128;
+                lackeyD.behavior = RPG.Behavior['path'](lackeyD, [[180, RPG.map.tileSize.y]]);
+                yield *RPG.Scene.waitTime(1 * RPG.map.tileSize.x / lackeyD.speed);
                 yield *this.waitFight(lackeyD);
-                yield *RPG.Scene.waitTime(0.25);
+
 
                 lich.hop(8);
-                yield *RPG.Scene.waitTextbox("LICH", ["You've defeated my minions, perhaps, but you won't find me so easy to deal with!"]);
+                yield *RPG.Scene.waitTextbox("LICH", ["Hmm."]);
+                yield *RPG.Scene.waitTextbox("LICH", ["You've defeated my minions, perhaps...","but you won't find me so easy to deal with!"]);
+                lich.speed = 128;
                 lich.behavior = RPG.Behavior['path'](lich, [[ 90, 5 * RPG.map.tileSize.y]]);
-                yield *RPG.Scene.waitTime(1.0);
+                yield *RPG.Scene.waitTime(5 * RPG.map.tileSize.y / lich.speed);
                 yield *this.waitFight(lich);
             }.bind(this));
         }

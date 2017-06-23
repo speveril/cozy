@@ -7,7 +7,7 @@ module RPG.BattleSystem.SoloFrontView {
 
         constructor(player, monster) {
             super({
-                className: 'battle-screen',
+                className: 'battle-screen hide',
                 html: `
                     <div class="box left-sidebar">
                         <div><span class="name">${player.name}</span></div>
@@ -36,6 +36,10 @@ module RPG.BattleSystem.SoloFrontView {
                 this.find('.left-sidebar span.hp').innerHTML = this.player['hp'].toString();
             }
 
+        }
+
+        go():void {
+            this.element.classList.remove('hide');
         }
 
         shake():void {

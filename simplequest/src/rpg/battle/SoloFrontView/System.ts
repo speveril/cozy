@@ -3,6 +3,7 @@
 module RPG.BattleSystem.SoloFrontView {
     export class System {
         fightMusic:Cozy.Music                   = null;
+        fightSound:Cozy.Sound                   = null;
         victoryMusic:Cozy.Music                 = null;
         monsters:any                            = null;
         renderPlane:Cozy.RenderPlane            = null;
@@ -14,11 +15,13 @@ module RPG.BattleSystem.SoloFrontView {
 
         constructor(args:any) {
             this.fightMusic = RPG.music[args.fightMusic] || null;
+            this.fightSound = RPG.sfx[args.fightSound] || null;
             this.victoryMusic = RPG.music[args.victoryMusic] || null;
             this.monsters = args.monsters || {};
             this.gameOver = args.gameOver || Cozy.quit;
 
             this.renderPlane = <Cozy.RenderPlane>Cozy.addPlane(Cozy.RenderPlane, { className: 'battle-render' });
+            this.renderPlane.container.classList.add('hide');
             this.renderPlane.hide();
 
             this.uiPlane = <Cozy.UiPlane>Cozy.addPlane(Cozy.UiPlane, { className: 'battle-ui' });
@@ -28,7 +31,12 @@ module RPG.BattleSystem.SoloFrontView {
         *start(args:any) {
             //// SET UP
 
+            this.uiPlane.clear();
+            this.renderPlane.clear();
+            this.renderPlane.container.classList.add('hide');
+
             var music = Cozy.Audio.currentMusic;
+            if (this.fightSound) this.fightSound.play();
             if (this.fightMusic) this.fightMusic.start();
 
             var player = RPG.Party.members[0].character;
@@ -39,17 +47,17 @@ module RPG.BattleSystem.SoloFrontView {
             this.uiPlane.addChild(battleScreen);
 
             let monsterLayer = this.renderPlane.addRenderLayer();
-            monsterLayer.add(new Cozy.Sprite({
+            let bgSprite = new Cozy.Sprite({
                 texture: args.scene,
-                position: { x: 80, y: 0}
-            }));
+                position: { x: 80, y: 0 }
+            });
             let monsterSprite = new Cozy.Sprite({
                 texture: this.monsters[args.enemy].image,
-                position: { x: 80, y: 0}
+                position: { x: -320, y: 0 }
             });
+            monsterLayer.add(bgSprite);
             monsterLayer.add(monsterSprite);
 
-            RPG.Textbox.show("Encountered " + monster.name + "!");
             battleScreen.update(0);
 
             this.uiPlane.show();
@@ -58,6 +66,7 @@ module RPG.BattleSystem.SoloFrontView {
             this.renderPlane.bringToFront();
             RPG.uiPlane.bringToFront();
             this.uiPlane.bringToFront();
+            this.renderPlane.container.classList.add('hide');
 
             this.bouncyComponent = new RPG.BouncyComponent();
             this.uiPlane.addChild(this.bouncyComponent);
@@ -70,8 +79,26 @@ module RPG.BattleSystem.SoloFrontView {
             var battleOutcome:any = null;
             var dt:any = 0;
 
-            // TODO sounds should be passed into the configuration somehow, or something like that
+            yield *RPG.Scene.waitFrame(1);
+            this.renderPlane.container.classList.remove('hide');
+            yield *RPG.Scene.waitTime(0.25);
 
+            const v = 400 / 0.25;
+            let d = 0;
+
+            while (monsterSprite.position.x < 80) {
+                dt = yield;
+                d = v * dt;
+
+                monsterSprite.adjustPosition(d, 0);
+            }
+            battleScreen.go();
+
+            monsterSprite.setPosition(80, 0);
+
+            RPG.Textbox.show("Encountered " + monster.name + "!");
+
+            // TODO sounds should be passed into the configuration somehow, or something like that
             while (!battleOutcome) {
                 //// PLAYER ACTION PHASE
 

@@ -22,6 +22,7 @@ module SimpleQuest {
             battleSystem:           RPG.BattleSystem.SoloFrontView,
             battleSystemConfig: {
                 fightMusic:             'battle',
+                // fightSound:             'battle_start',
                 victoryMusic:           'victory',
                 monsters:               Cozy.gameDir.file('src/monsters.json').read('json'),
                 gameOver:               this.gameOverSequence
