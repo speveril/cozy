@@ -65,12 +65,13 @@ module RPG {
                 while (dist < step[1]) {
                     dt = yield;
                     framedist = entity.speed * dt;
-                    dist += framedist;
 
-                    if (dist > step[1]) {
-                        framedist = dist - step[1];
+                    if (dist + framedist > step[1]) {
+                        framedist = step[1] - dist;
                     }
 
+                    dist += framedist;
+                    
                     entity.move(framedist * dx, framedist * dy);
 
                     if (dx > 0 && entity.position.x > tx) entity.position.x = tx;
