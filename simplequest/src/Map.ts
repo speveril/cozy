@@ -109,7 +109,6 @@ module SimpleQuest {
             if (Map.persistent[this.filename][name + "__opened"]) return;
 
             var key = RPG.Party.inventory.has(keyName);
-            console.log("keyDoor", keyName, "->", key);
             if (key) {
                 RPG.Scene.do(function*() {
                     Map.persistent[this.filename][name + "__opened"] = true;
@@ -165,8 +164,6 @@ module SimpleQuest {
 
                 door.solid = false;
             });
-
-
         }
 
         fixSwitch(name) {

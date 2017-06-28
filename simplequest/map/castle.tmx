@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0.0" orientation="orthogonal" renderorder="right-down" width="40" height="60" tilewidth="16" tileheight="16" nextobjectid="221">
+<map version="1.0.0" orientation="orthogonal" renderorder="right-down" width="40" height="60" tilewidth="16" tileheight="16" nextobjectid="243">
  <properties>
   <property name="Name" value="The Ruined Keep"/>
  </properties>
@@ -52,11 +52,11 @@
 126,126,126,198,198,198,198,198,198,198,198,198,198,198,198,198,198,198,198,70,70,198,198,126,126,126,126,126,126,126,126,126,126,198,198,198,198,126,126,126,
 126,126,126,126,126,126,126,126,126,126,126,126,126,126,126,126,126,126,126,70,70,126,126,126,126,126,126,126,126,126,126,126,126,126,126,126,126,126,126,126,
 87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,
-87,247,9,9,9,249,87,247,9,9,9,249,87,87,87,87,87,87,87,87,87,87,247,9,9,9,12,9,9,9,9,9,12,9,9,9,249,87,87,87,
-87,10,121,121,121,10,87,10,121,121,121,10,87,87,87,87,87,87,87,87,87,87,10,121,121,121,251,121,121,121,121,121,251,121,121,121,10,87,87,87,
+87,247,9,9,9,249,87,247,9,9,9,249,87,87,87,87,87,87,87,87,87,87,247,9,9,9,12,9,12,9,12,9,12,9,9,9,249,87,87,87,
+87,10,121,121,121,10,87,10,121,121,121,10,87,87,87,87,87,87,87,87,87,87,10,121,121,121,251,121,251,121,251,121,251,121,121,121,10,87,87,87,
 87,10,121,121,121,10,87,10,121,121,121,10,87,87,87,87,87,87,87,87,87,87,10,121,121,121,121,121,121,121,121,121,121,121,121,121,10,87,87,87,
-87,10,121,121,121,10,87,263,237,121,236,264,87,247,9,9,9,249,87,87,87,87,10,121,121,121,248,121,121,121,121,121,248,121,121,121,10,87,87,87,
-87,263,237,121,236,265,12,11,121,121,121,250,12,11,121,121,121,11,249,87,87,87,10,121,121,121,263,9,9,9,9,9,11,249,121,247,252,87,87,87,
+87,10,121,121,121,10,87,263,237,121,236,264,87,247,9,9,9,249,87,87,87,87,10,121,121,121,248,121,248,121,248,121,248,121,121,121,10,87,87,87,
+87,263,237,121,236,265,12,11,121,121,121,250,12,252,121,121,121,250,249,87,87,87,10,121,121,121,263,9,11,9,11,9,11,249,121,247,252,87,87,87,
 87,10,121,121,121,11,252,121,121,121,121,121,251,121,95,94,96,121,10,87,87,87,10,9,121,9,10,87,87,87,87,87,87,10,121,10,87,87,87,87,
 87,10,121,121,121,121,121,121,121,123,121,121,121,121,94,94,94,121,10,87,87,87,10,121,121,121,263,9,9,9,249,87,247,252,121,250,249,87,87,87,
 87,10,121,121,121,247,249,121,121,121,121,121,248,121,111,94,112,121,10,87,87,247,252,121,121,121,251,121,121,121,250,12,252,121,121,121,250,249,87,87,
@@ -116,16 +116,16 @@
 127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,0,0,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,
 127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,0,0,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,206,0,206,0,0,206,0,206,0,0,206,0,206,0,0,0,0,
-0,0,141,37,141,0,0,0,37,0,53,0,0,0,0,0,0,0,0,0,0,0,0,138,33,0,0,141,0,141,0,141,0,138,53,53,0,0,0,0,
-0,0,203,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,206,0,206,0,0,0,0,0,0,0,206,0,206,0,0,0,0,
+0,0,141,37,141,0,0,0,37,0,53,0,0,0,0,0,0,0,0,0,0,0,0,138,33,0,0,141,206,141,206,141,0,138,53,53,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,206,5,206,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,141,0,141,0,141,0,0,0,138,0,0,0,0,
 0,0,254,21,254,0,0,0,0,0,0,0,0,0,138,0,0,0,0,0,0,0,0,0,0,203,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,206,0,0,0,0,0,222,21,222,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,65,0,0,0,0,0,0,0,0,0,0,0,0,139,0,0,0,0,0,0,0,0,0,0,0,206,0,206,0,0,0,206,0,206,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,206,0,0,0,0,0,0,0,0,0,138,53,53,0,0,0,0,0,0,0,0,0,0,
 0,0,254,21,254,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,138,0,0,0,138,0,0,0,53,0,0,0,0,0,0,0,0,0,
-0,0,53,0,0,0,0,0,206,5,206,0,0,0,0,0,0,0,0,0,0,0,0,203,0,0,0,0,37,0,0,0,0,0,0,0,0,0,0,0,
+0,0,53,0,203,0,0,0,206,5,206,0,0,0,0,0,0,0,0,0,0,0,0,203,0,0,0,0,37,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,53,0,0,0,0,0,203,0,0,0,0,0,0,0,0,0,0,0,138,0,0,0,0,203,0,0,0,0,53,0,0,0,138,0,0,0,
 0,0,0,37,53,0,0,0,53,53,0,0,0,0,0,0,0,0,0,0,0,0,0,138,53,53,0,0,53,0,0,0,0,53,138,138,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -196,7 +196,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup name="#spritelayer" visible="0">
+ <objectgroup name="#spritelayer">
   <object id="16" x="304" y="192">
    <polyline points="0,80 0,0 -48,0 -48,-16 -64,-16 -64,0 -80,0 -80,-16 -96,-16 -96,-32 -112,-32 -112,-128 -96,-128 -96,-144 -80,-144 -80,-160 -64,-160 -64,-144 -48,-144 -48,-160 -16,-160 0,-160 0,-144 -16,-144 -16,-112 48,-112 48,-160 80,-160 80,-144 96,-144 96,-160 112,-160 112,-144 128,-144 128,-128 144,-128 144,-32 128,-32 128,-16 112,-16 112,0 96,0 96,-16 80,-16 80,0 32,0 32,80"/>
   </object>
@@ -238,13 +238,13 @@
    <polyline points="0,0 0,16 16,16 16,32 32,32 32,80 16,80 16,96 -32,96 -32,80 -48,80 -48,32 -32,32 -32,16 -16,16 -16,0"/>
   </object>
   <object id="39" x="560" y="832">
-   <polyline points="0,0 0,-32 16,-32 16,-80 -32,-80 -32,-64 -64,-64 -64,-80 -80,-80 -80,-64 -96,-64 -96,-80 -112,-80 -112,-64 -144,-64 -144,-80 -192,-80 -192,-16 -176,-16"/>
+   <polyline points="0,0 0,-32 16,-32 16,-80 -32,-80 -32,-64 -144,-64 -144,-80 -192,-80 -192,-16 -176,-16"/>
   </object>
   <object id="40" x="384" y="816">
    <polyline points="0,0 0,16 -16,16 -16,48 -32,48 -32,96 -16,96 -16,112 32,112 32,96 48,96 48,112 96,112 96,96 112,96 112,48 96,48 96,32 48,32 48,48 32,48 32,16 16,16 16,0"/>
   </object>
   <object id="41" x="400" y="816">
-   <polyline points="0,0 16,0 16,-32 48,-32 48,-16 64,-16 64,-32 80,-32 80,-16 96,-16 96,-32 128,-32 128,-16 144,-16 144,16"/>
+   <polyline points="0,0 16,0 16,-32 128,-32 128,-16 144,-16 144,16"/>
   </object>
   <object id="43" name="exit_castle" type="event" x="304" y="704" width="32" height="16"/>
   <object id="44" name="smash_pot" type="trigger" x="528" y="528" width="16" height="16"/>
@@ -476,7 +476,7 @@
     <property name="sprite" value="sprites/ghost.sprite"/>
    </properties>
   </object>
-  <object id="140" name="ghost_west_tower_A" type="entity" x="64" y="768" width="16" height="16">
+  <object id="140" name="ghost_west_tower_A" type="entity" x="32" y="896" width="16" height="16">
    <properties>
     <property name="behavior" value="wander"/>
     <property name="solid" value="false"/>
@@ -534,7 +534,6 @@
     <property name="sprite" value="sprites/monster_skelwarrior.sprite"/>
    </properties>
   </object>
-  <object id="152" type="event" x="192" y="832" width="16" height="16"/>
   <object id="155" name="start_boss_cutscene" type="event" x="288" y="176" width="64" height="16"/>
   <object id="158" name="smash_pot" type="trigger" x="592" y="480" width="16" height="16"/>
   <object id="159" name="smash_pot" type="trigger" x="592" y="432" width="16" height="16"/>
@@ -675,6 +674,7 @@
     <property name="behavior" value="guard_down"/>
     <property name="monster" value="skeleton"/>
     <property name="sprite" value="sprites/monster_skeleton.sprite"/>
+    <property name="vision" value="2"/>
    </properties>
   </object>
   <object id="206" name="doFight" type="entity" x="192" y="496" width="16" height="16">
@@ -731,6 +731,7 @@
    <properties>
     <property name="behavior" value="guard_left"/>
     <property name="monster" value="ghost"/>
+    <property name="respectsObstructions" value="false"/>
     <property name="sprite" value="sprites/ghost.sprite"/>
    </properties>
   </object>
@@ -739,6 +740,141 @@
    <properties>
     <property name="contents" value=""/>
     <property name="count" value=""/>
+   </properties>
+  </object>
+  <object id="222" name="doFight" type="entity" x="80" y="288" width="16" height="16">
+   <properties>
+    <property name="behavior" value="guard_down"/>
+    <property name="monster" value="skeleton"/>
+    <property name="sprite" value="sprites/monster_skeleton.sprite"/>
+   </properties>
+  </object>
+  <object id="223" name="doFight" type="entity" x="32" y="336" width="16" height="16">
+   <properties>
+    <property name="behavior" value="guard_right"/>
+    <property name="monster" value="skeleton"/>
+    <property name="sprite" value="sprites/monster_skeleton.sprite"/>
+   </properties>
+  </object>
+  <object id="224" name="doFight" type="entity" x="48" y="832" width="16" height="16">
+   <properties>
+    <property name="behavior" value="guard_right"/>
+    <property name="monster" value="skeleton"/>
+    <property name="sprite" value="sprites/monster_skeleton.sprite"/>
+   </properties>
+  </object>
+  <object id="226" name="west_tower_skelwarrior" type="entity" x="48" y="768" width="16" height="16">
+   <properties>
+    <property name="behavior" value="guard_down"/>
+    <property name="monster" value="skeletonwarrior"/>
+    <property name="sprite" value="sprites/monster_skelwarrior.sprite"/>
+    <property name="vision" value="0"/>
+   </properties>
+  </object>
+  <object id="227" name="west_tower_skelwarrior" type="entity" x="432" y="352" width="16" height="16">
+   <properties>
+    <property name="behavior" value="guard_right"/>
+    <property name="monster" value="skeletonwarrior"/>
+    <property name="sprite" value="sprites/monster_skelwarrior.sprite"/>
+   </properties>
+  </object>
+  <object id="228" name="doFight" type="entity" x="464" y="352" width="16" height="16">
+   <properties>
+    <property name="behavior" value="guard_left"/>
+    <property name="monster" value="skeleton"/>
+    <property name="sprite" value="sprites/monster_skeleton.sprite"/>
+   </properties>
+  </object>
+  <object id="229" name="doFight" type="entity" x="592" y="384" width="16" height="16">
+   <properties>
+    <property name="behavior" value="guard_left"/>
+    <property name="monster" value="skeleton"/>
+    <property name="sprite" value="sprites/monster_skeleton.sprite"/>
+   </properties>
+  </object>
+  <object id="230" name="doFight" type="entity" x="576" y="480" width="16" height="16">
+   <properties>
+    <property name="behavior" value="guard_up"/>
+    <property name="monster" value="skeleton"/>
+    <property name="sprite" value="sprites/monster_skeleton.sprite"/>
+   </properties>
+  </object>
+  <object id="231" name="doFight" type="entity" x="464" y="512" width="16" height="16">
+   <properties>
+    <property name="behavior" value="guard_right"/>
+    <property name="monster" value="skeletonwarrior"/>
+    <property name="sprite" value="sprites/monster_skelwarrior.sprite"/>
+   </properties>
+  </object>
+  <object id="232" name="doFight" type="entity" x="512" y="576" width="16" height="16">
+   <properties>
+    <property name="behavior" value="guard_up"/>
+    <property name="monster" value="skeletonwarrior"/>
+    <property name="sprite" value="sprites/monster_skelwarrior.sprite"/>
+   </properties>
+  </object>
+  <object id="233" name="doFight" type="entity" x="528" y="784" width="16" height="16">
+   <properties>
+    <property name="behavior" value="guard_right"/>
+    <property name="monster" value="skeleton"/>
+    <property name="sprite" value="sprites/monster_skeleton.sprite"/>
+   </properties>
+  </object>
+  <object id="235" name="doFight" type="entity" x="464" y="768" width="16" height="16">
+   <properties>
+    <property name="behavior" value="guard_right"/>
+    <property name="monster" value="skeletonwarrior"/>
+    <property name="sprite" value="sprites/monster_skelwarrior.sprite"/>
+    <property name="vision" value="4"/>
+   </properties>
+  </object>
+  <object id="236" name="doFight" type="entity" x="480" y="768" width="16" height="16">
+   <properties>
+    <property name="behavior" value="guard_right"/>
+    <property name="monster" value="skeleton"/>
+    <property name="sprite" value="sprites/monster_skeleton.sprite"/>
+   </properties>
+  </object>
+  <object id="237" name="doFight" type="entity" x="432" y="464" width="16" height="16">
+   <properties>
+    <property name="behavior" value="guard_up"/>
+    <property name="monster" value="skeleton"/>
+    <property name="sprite" value="sprites/monster_skeleton.sprite"/>
+   </properties>
+  </object>
+  <object id="238" name="doFight" type="entity" x="448" y="464" width="16" height="16">
+   <properties>
+    <property name="behavior" value="guard_right"/>
+    <property name="monster" value="skeleton"/>
+    <property name="sprite" value="sprites/monster_skeleton.sprite"/>
+   </properties>
+  </object>
+  <object id="239" name="doFight" type="entity" x="496" y="384" width="16" height="16">
+   <properties>
+    <property name="behavior" value="guard_down"/>
+    <property name="monster" value="skeleton"/>
+    <property name="sprite" value="sprites/monster_skeleton.sprite"/>
+   </properties>
+  </object>
+  <object id="240" name="doFight" type="entity" x="528" y="416" width="16" height="16">
+   <properties>
+    <property name="behavior" value="guard_left"/>
+    <property name="monster" value="skeleton"/>
+    <property name="sprite" value="sprites/monster_skeleton.sprite"/>
+   </properties>
+  </object>
+  <object id="241" name="doFight" type="entity" x="368" y="832" width="16" height="16">
+   <properties>
+    <property name="behavior" value="guard_right"/>
+    <property name="monster" value="skeleton"/>
+    <property name="sprite" value="sprites/monster_skeleton.sprite"/>
+   </properties>
+  </object>
+  <object id="242" name="doFight" type="entity" x="400" y="848" width="16" height="16">
+   <properties>
+    <property name="behavior" value="guard_left"/>
+    <property name="monster" value="skeleton"/>
+    <property name="sprite" value="sprites/monster_skeleton.sprite"/>
    </properties>
   </object>
  </objectgroup>

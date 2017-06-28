@@ -29,7 +29,16 @@ module SimpleQuest {
         }
 
         trigger_green_castle_switch(args) {
-            this.doSwitch('trigger_green_castle_switch', 'green_door');
+            RPG.Scene.do(function*() {
+                this.doSwitch('trigger_green_castle_switch', 'green_door');
+                let warrior = this.getAllEntitiesByName('west_tower_skelwarrior')[0];
+                if (warrior) {
+                    yield *RPG.Scene.waitTime(0.01);
+                    warrior.respectsObstructions = false;
+                    warrior.params.vision = 5;
+                    warrior.behavior = RPG.Behavior['guard_down'](warrior);
+                }
+            }.bind(this));
         }
 
         green_door(args) {
@@ -60,6 +69,10 @@ module SimpleQuest {
                 yield *RPG.Scene.waitTextbox("HERO", ["..."]);
                 args.target.unpause();
             }.bind(this));
+        }
+
+        west_tower_skelwarrior(args) {
+            this.doFight(args);
         }
 
         start_boss_cutscene(args) {
