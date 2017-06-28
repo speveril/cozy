@@ -23,7 +23,7 @@
 87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,10,94,94,10,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,
 87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,10,94,94,10,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,87,
 87,87,87,247,9,9,9,12,9,9,9,12,9,9,249,87,87,247,11,94,94,11,249,87,87,247,9,9,9,12,87,87,87,87,87,87,87,87,87,87,
-87,87,87,10,121,121,121,10,121,121,121,10,121,121,10,87,247,252,95,94,94,96,250,250,9,252,121,121,121,10,87,87,247,9,9,9,249,87,87,87,
+87,87,87,10,121,121,121,10,121,121,121,10,121,121,10,87,247,252,95,94,94,96,250,9,9,252,121,121,121,10,87,87,247,9,9,9,249,87,87,87,
 87,87,87,10,121,121,121,10,121,121,121,10,121,121,10,87,10,121,94,94,94,94,121,121,121,121,121,121,121,10,87,247,252,121,121,121,250,249,87,87,
 87,247,9,252,121,121,121,10,121,121,121,10,121,121,10,87,263,237,94,94,94,94,236,12,9,249,121,121,121,10,87,10,121,121,121,121,121,10,87,87,
 87,10,121,121,121,121,121,10,121,121,121,10,121,121,10,87,10,121,94,94,94,94,121,10,87,263,9,9,9,11,9,264,121,121,121,121,121,10,87,87,
@@ -820,19 +820,19 @@
     <property name="sprite" value="sprites/monster_skeleton.sprite"/>
    </properties>
   </object>
+  <object id="236" name="doFight" type="entity" x="480" y="768" width="16" height="16">
+   <properties>
+    <property name="behavior" value="guard_right"/>
+    <property name="monster" value="skeleton"/>
+    <property name="sprite" value="sprites/monster_skeleton.sprite"/>
+   </properties>
+  </object>
   <object id="235" name="doFight" type="entity" x="464" y="768" width="16" height="16">
    <properties>
     <property name="behavior" value="guard_right"/>
     <property name="monster" value="skeletonwarrior"/>
     <property name="sprite" value="sprites/monster_skelwarrior.sprite"/>
     <property name="vision" value="4"/>
-   </properties>
-  </object>
-  <object id="236" name="doFight" type="entity" x="480" y="768" width="16" height="16">
-   <properties>
-    <property name="behavior" value="guard_right"/>
-    <property name="monster" value="skeleton"/>
-    <property name="sprite" value="sprites/monster_skeleton.sprite"/>
    </properties>
   </object>
   <object id="237" name="doFight" type="entity" x="432" y="464" width="16" height="16">
