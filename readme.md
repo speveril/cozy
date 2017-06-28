@@ -53,6 +53,7 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
 - Bugs/Unsorted
     - Move "ControlStack" idea into core
     - Allow crossfading music
+    - Don't use <reference>, use imports etc. and something like webpack to generate the output
 - Project Manager
     - Use an SVG library
     - Make browser NOT close the currently active game
@@ -83,6 +84,7 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
     - SavedGame should write a version number, and have upgrade functions; when loading a SavedGame, run through each necessary upgrade before returning it
     - Add scripted movement for entities on the map
     - Add Scene.waitAll() which takes multiple generator functions and waits for them all to finish
+    - Need a way to chain from another scene, e.g. wait for a door to finish and THEN do another scene function
     - Can I just slurp in all of the map .ts files automatically instead of having to reference each one?
     - It'd be nice if the persistent stuff in map was easier to use in general
     - Zones (large polygons that can be checked, but don't necessarily fire an event when crossing the threshold) ???
