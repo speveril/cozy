@@ -58,7 +58,7 @@ module SimpleQuest {
         }
 
         blue_door(args) {
-            this.doSwitch('blue_door');
+            this.doSwitchDoor('blue_door');
         }
 
         ghost_frontgate(args) {
