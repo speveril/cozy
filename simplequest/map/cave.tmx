@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0.0" orientation="orthogonal" renderorder="right-down" width="20" height="45" tilewidth="16" tileheight="16" nextobjectid="76">
+<map version="1.0.0" orientation="orthogonal" renderorder="right-down" width="20" height="45" tilewidth="16" tileheight="16" nextobjectid="95">
  <properties>
   <property name="Name" value="Mount Danger"/>
  </properties>
@@ -8,16 +8,16 @@
   <data encoding="csv">
 87,87,87,87,87,87,87,87,87,87,87,87,10,105,10,87,87,87,87,87,
 87,87,87,87,87,87,87,87,87,87,87,87,10,105,10,87,87,87,87,87,
-87,87,87,87,87,87,87,87,87,87,87,87,10,105,12,9,9,9,9,12,
+87,87,87,87,87,87,87,87,87,87,87,87,10,105,263,9,9,9,9,249,
 87,87,87,87,231,231,231,231,231,231,87,87,10,105,10,105,105,105,105,10,
 87,87,87,231,119,119,119,119,119,151,87,87,10,105,10,105,105,105,105,10,
 87,87,231,119,119,119,119,119,119,119,87,87,10,105,10,105,105,105,105,10,
-87,87,152,119,119,151,119,231,119,231,9,9,11,105,11,9,11,9,105,10,
+87,87,152,119,119,151,119,231,119,231,9,9,252,105,250,9,11,9,105,10,
 87,87,119,119,119,119,87,105,105,105,105,105,105,105,105,105,105,105,105,10,
 87,87,120,70,120,120,87,105,105,105,105,105,105,105,105,105,105,105,105,10,
-87,87,87,70,87,87,87,87,87,87,9,12,105,105,105,12,9,9,9,11,
+87,87,87,70,87,87,87,87,87,87,9,249,105,105,105,247,9,9,9,252,
 87,87,119,119,119,119,231,231,87,87,87,10,105,105,105,10,87,87,87,87,
-87,87,87,119,119,119,119,119,87,87,87,11,9,9,9,11,87,87,87,87,
+87,87,87,119,119,119,119,119,87,87,87,250,9,9,9,252,87,87,87,87,
 87,87,87,151,119,119,119,119,87,87,231,231,231,231,231,104,104,104,87,87,
 87,231,87,87,87,87,119,87,87,87,119,152,119,119,119,103,103,103,87,87,
 87,119,231,231,231,231,119,231,87,87,119,119,119,119,119,88,88,88,104,87,
@@ -264,5 +264,130 @@
    </properties>
   </object>
   <object id="73" name="entrance_cutscene" type="event" x="16" y="672" width="288" height="16"/>
+  <object id="76" name="doFight" type="entity" x="128" y="128" width="16" height="16">
+   <properties>
+    <property name="behavior" value="guard_u"/>
+    <property name="monster" value="kobold"/>
+    <property name="sprite" value="sprites/monster_kobold.sprite"/>
+   </properties>
+  </object>
+  <object id="77" name="doFight" type="entity" x="144" y="64" width="16" height="16">
+   <properties>
+    <property name="behavior" value="guard_left"/>
+    <property name="monster" value="kobold"/>
+    <property name="sprite" value="sprites/monster_kobold.sprite"/>
+   </properties>
+  </object>
+  <object id="78" name="doFight" type="entity" x="288" y="112" width="16" height="16">
+   <properties>
+    <property name="behavior" value="guard_lef"/>
+    <property name="monster" value="kobold"/>
+    <property name="sprite" value="sprites/monster_kobold.sprite"/>
+   </properties>
+  </object>
+  <object id="79" name="doFight" type="entity" x="208" y="48" width="16" height="16">
+   <properties>
+    <property name="behavior" value="guard_down"/>
+    <property name="exclamation" value="You never find key!"/>
+    <property name="monster" value="kobold"/>
+    <property name="sprite" value="sprites/monster_kobold.sprite"/>
+   </properties>
+  </object>
+  <object id="80" name="doFight" type="entity" x="208" y="144" width="16" height="16">
+   <properties>
+    <property name="behavior" value="guard_up"/>
+    <property name="monster" value="kobold"/>
+    <property name="sprite" value="sprites/monster_kobold.sprite"/>
+   </properties>
+  </object>
+  <object id="81" name="doFight" type="entity" x="80" y="160" width="16" height="16">
+   <properties>
+    <property name="behavior" value="guard_wander"/>
+    <property name="monster" value="bat"/>
+    <property name="speed" value="20"/>
+    <property name="sprite" value="sprites/bat.sprite"/>
+   </properties>
+  </object>
+  <object id="82" name="doFight" type="entity" x="48" y="192" width="16" height="16">
+   <properties>
+    <property name="behavior" value="guard_wander"/>
+    <property name="monster" value="bat"/>
+    <property name="speed" value="20"/>
+    <property name="sprite" value="sprites/bat.sprite"/>
+   </properties>
+  </object>
+  <object id="83" name="doFight" type="entity" x="208" y="224" width="16" height="16">
+   <properties>
+    <property name="behavior" value="guard_wander"/>
+    <property name="monster" value="bat"/>
+    <property name="speed" value="20"/>
+    <property name="sprite" value="sprites/bat.sprite"/>
+   </properties>
+  </object>
+  <object id="84" name="doFight" type="entity" x="176" y="240" width="16" height="16">
+   <properties>
+    <property name="behavior" value="guard_wander"/>
+    <property name="monster" value="bat"/>
+    <property name="speed" value="20"/>
+    <property name="sprite" value="sprites/bat.sprite"/>
+   </properties>
+  </object>
+  <object id="85" name="doFight" type="entity" x="48" y="240" width="16" height="16">
+   <properties>
+    <property name="behavior" value="guard_wander"/>
+    <property name="monster" value="bat"/>
+    <property name="speed" value="20"/>
+    <property name="sprite" value="sprites/bat.sprite"/>
+   </properties>
+  </object>
+  <object id="86" name="doFight" type="entity" x="176" y="400" width="16" height="16">
+   <properties>
+    <property name="behavior" value="guard_wander"/>
+    <property name="monster" value="bat"/>
+    <property name="speed" value="20"/>
+    <property name="sprite" value="sprites/bat.sprite"/>
+   </properties>
+  </object>
+  <object id="87" name="doFight" type="entity" x="272" y="400" width="16" height="16">
+   <properties>
+    <property name="behavior" value="guard_wander"/>
+    <property name="monster" value="bat"/>
+    <property name="speed" value="20"/>
+    <property name="sprite" value="sprites/bat.sprite"/>
+   </properties>
+  </object>
+  <object id="88" name="doFight" type="entity" x="240" y="528" width="16" height="16">
+   <properties>
+    <property name="behavior" value="guard_wander"/>
+    <property name="monster" value="bat"/>
+    <property name="speed" value="20"/>
+    <property name="sprite" value="sprites/bat.sprite"/>
+   </properties>
+  </object>
+  <object id="89" name="doFight" type="entity" x="272" y="288" width="16" height="16">
+   <properties>
+    <property name="behavior" value="guard_wander"/>
+    <property name="monster" value="bat"/>
+    <property name="speed" value="20"/>
+    <property name="sprite" value="sprites/bat.sprite"/>
+   </properties>
+  </object>
+  <object id="90" name="doFight" type="entity" x="224" y="320" width="16" height="16">
+   <properties>
+    <property name="behavior" value="guard_wander"/>
+    <property name="monster" value="bat"/>
+    <property name="speed" value="20"/>
+    <property name="sprite" value="sprites/bat.sprite"/>
+   </properties>
+  </object>
+  <object id="91" name="doFight" type="entity" x="96" y="384" width="16" height="16">
+   <properties>
+    <property name="behavior" value="guard_wander"/>
+    <property name="monster" value="bat"/>
+    <property name="speed" value="20"/>
+    <property name="sprite" value="sprites/bat.sprite"/>
+   </properties>
+  </object>
+  <object id="92" type="event" x="160" y="432" width="16" height="16"/>
  </objectgroup>
 </map>

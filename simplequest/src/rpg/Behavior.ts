@@ -71,7 +71,7 @@ module RPG {
                     }
 
                     dist += framedist;
-                    
+
                     entity.move(framedist * dx, framedist * dy);
 
                     if (dx > 0 && entity.position.x > tx) entity.position.x = tx;
@@ -143,6 +143,85 @@ module RPG {
 
         export function *guard_up(entity:RPG.Entity) {
             yield *guard(entity, 270);
+        }
+
+        export function *guard_wander(entity:RPG.Entity) {
+            let direction = 4, dist = 0;
+            var map = <SimpleQuest.Map>RPG.map;
+            var visionDistance:number = entity.params.vision || 3;
+
+            while (true) {
+                let dt = yield;
+                var visionEnd:PIXI.Point = new PIXI.Point(
+                    entity.position.x + Math.cos(entity.dir * PIXI.DEG_TO_RAD) * visionDistance * map.tileSize.x,
+                    entity.position.y + Math.sin(entity.dir * PIXI.DEG_TO_RAD) * visionDistance * map.tileSize.y
+                );
+                if (Trig.distToSegment(RPG.player.position, entity.position, visionEnd) < RPG.player.radius) {
+                    let movement = [];
+                    _.times(visionDistance, () => movement.push(entity.dir));
+
+                    RPG.ControlStack.push(RPG.ControlMode.None);
+
+                    if (entity.params.notice && _.has(map, entity.params.notice)) {
+                        map[entity.params.notice]();
+                    } else {
+                        RPG.player.sprite.animation = 'stand';
+
+                        let exclamation = entity.params.exclamation || "Hey, you!";
+
+                        entity.emote("!");
+                        RPG.sfx['alert'].play();
+
+                        while (guardMutex) {
+                            dt = yield;
+                        }
+                        guardMutex = true;
+
+                        yield *Scene.waitEntityMove(entity, movement);
+                        yield *Scene.waitTextbox(null, [exclamation]);
+                        entity.clearEmote();
+
+                        yield *map.waitFight(entity);
+
+                        guardMutex = null;
+                        RPG.ControlStack.pop();
+                    }
+                } else {
+                    let x = entity.position.x, y = entity.position.y;
+                    switch(direction) {
+                        case 0: // N
+                            entity.move(0, -entity.speed * 2 * dt);
+                            break;
+                        case 1: // E
+                            entity.move(entity.speed * 2 * dt, 0)
+                            break;
+                        case 2: // S
+                            entity.move(0, entity.speed * 2 * dt);
+                            break;
+                        case 3: // W
+                            entity.move(-entity.speed * 2 * dt, 0);
+                            break;
+                        case 4: // wait
+                            entity.move(0, 0);
+                            break;
+                    }
+
+                    if (x - entity.position.x === 0 && y - entity.position.y === 0 && direction !== 4) {
+                        if (Math.random() < 0.5) {
+                            direction = 4;
+                        } else {
+                            dist = 0;
+                        }
+                    } else {
+                        dist -= (entity.speed * dt);
+                    }
+
+                    if (dist <= 0) {
+                        direction = Math.floor(Math.random() * 5);
+                        dist = (Math.random() * 3 + 1) * RPG.map.tileSize.x;
+                    }
+                }
+            }
         }
     }
 }
