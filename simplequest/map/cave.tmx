@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0.0" orientation="orthogonal" renderorder="right-down" width="20" height="45" tilewidth="16" tileheight="16" nextobjectid="70">
+<map version="1.0.0" orientation="orthogonal" renderorder="right-down" width="20" height="45" tilewidth="16" tileheight="16" nextobjectid="76">
  <properties>
   <property name="Name" value="Mount Danger"/>
  </properties>
@@ -243,5 +243,26 @@
    </properties>
   </object>
   <object id="69" name="smash_pot" type="trigger" x="256" y="80" width="16" height="16"/>
+  <object id="70" name="doFight" type="entity" x="48" y="320" width="16" height="16">
+   <properties>
+    <property name="behavior" value="guard_down"/>
+    <property name="monster" value="kobold"/>
+    <property name="sprite" value="sprites/monster_kobold.sprite"/>
+   </properties>
+  </object>
+  <object id="71" name="kobold_guardA" type="entity" x="144" y="592" width="16" height="16">
+   <properties>
+    <property name="direction" value="0"/>
+    <property name="sprite" value="sprites/monster_kobold.sprite"/>
+   </properties>
+  </object>
+  <object id="72" name="kobold_guardB" type="entity" x="176" y="592" width="16" height="16">
+   <properties>
+    <property name="direction" value="180"/>
+    <property name="monster" value="kobold"/>
+    <property name="sprite" value="sprites/monster_kobold.sprite"/>
+   </properties>
+  </object>
+  <object id="73" name="entrance_cutscene" type="event" x="16" y="672" width="288" height="16"/>
  </objectgroup>
 </map>

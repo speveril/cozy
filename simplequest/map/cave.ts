@@ -12,6 +12,71 @@ module SimpleQuest {
             this.fixSwitchDoor('switch_s', 'door_s');
             this.fixSwitchDoor('switch_n', 'door_n');
             this.fixKeyDoor('exit_door');
+
+            let koboldA = this.getAllEntitiesByName('kobold_guardA')[0];
+            let koboldB = this.getAllEntitiesByName('kobold_guardB')[0];
+            if (this.persisted('saw_cave_frontdoor_cutscene')) {
+                koboldA.destroy();
+                koboldB.destroy();
+            } else {
+                // TODO weird. why do I have to set both here?
+                koboldA.dir = 0;
+                koboldA.sprite.animation = "walk";
+                koboldB.dir = 180;
+                koboldB.sprite.animation = "walk";
+            }
+        }
+
+        entrance_cutscene() {
+            if (!this.persisted('saw_cave_frontdoor_cutscene')) {
+                let koboldA = this.getAllEntitiesByName('kobold_guardA')[0];
+                let koboldB = this.getAllEntitiesByName('kobold_guardB')[0];
+
+                this.persist('saw_cave_frontdoor_cutscene');
+                RPG.Scene.do(function*() {
+                    let target = { x: 160, y: 664 };
+                    let d = Trig.dist(RPG.player.position, target);
+                    RPG.player.behavior = RPG.Behavior['path'](RPG.player, [[Math.atan2(target.y - RPG.player.position.y, target.x - RPG.player.position.x) * PIXI.RAD_TO_DEG, d],[270,0]]);
+                    yield *RPG.Scene.waitTime(d / RPG.player.speed + 0.1);
+
+                    koboldA.hop(8);
+                    yield *RPG.Scene.waitTextbox("KOBOLD", ["When humans bring more tribute?"]);
+                    koboldB.hop(8);
+                    yield *RPG.Scene.waitTextbox("KOBOLD", ["Soon!", "Maybe!"]);
+                    koboldA.hop(8);
+                    yield *RPG.Scene.waitTextbox("KOBOLD", ["Humans! Can't trust with anything."]);
+                    koboldA.hop(8);
+                    yield *RPG.Scene.waitTime(0.2);
+                    koboldB.hop(8);
+                    yield *RPG.Scene.waitTextbox("KOBOLDS", ["Ho ho ho!"]);
+
+                    koboldA.dir = 90;
+                    koboldA.emote('!');
+                    koboldA.hop(8);
+                    yield *RPG.Scene.waitTextbox("KOBOLD", ["Wait! Human there!", "No tribute, think it's a hero!"]);
+
+                    koboldB.dir = 90;
+                    koboldB.emote('!');
+                    koboldB.hop(8);
+                    yield *RPG.Scene.waitTextbox("KOBOLD", ["!", "Run! Warn Lord Danger!"]);
+                    koboldA.clearEmote();
+                    koboldB.clearEmote();
+
+
+                    koboldA.behavior = RPG.Behavior['path'](koboldA, [[ 270, 9 * RPG.map.tileSize.y]]);
+                    koboldB.behavior = RPG.Behavior['path'](koboldB, [[ 180, 1.5 * RPG.map.tileSize.y], [ 90, 0]]);
+                    yield *RPG.Scene.waitTime((1.5 * RPG.map.tileSize.y) / koboldB.speed);
+
+                    koboldB.hop(8);
+                    yield *RPG.Scene.waitTextbox("KOBOLD", ["You die now!"]);
+                    koboldB.behavior = RPG.Behavior['path'](koboldB, [[ 90, 3 * RPG.map.tileSize.y]]);
+                    yield *RPG.Scene.waitTime((3 * RPG.map.tileSize.y) / koboldB.speed);
+
+                    yield *this.waitFight(koboldB);
+
+                    koboldA.destroy();
+                }.bind(this));
+            }
         }
 
         exit_overworld(args) {
