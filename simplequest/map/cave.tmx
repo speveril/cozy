@@ -266,7 +266,7 @@
   <object id="73" name="entrance_cutscene" type="event" x="16" y="672" width="288" height="16"/>
   <object id="76" name="doFight" type="entity" x="128" y="128" width="16" height="16">
    <properties>
-    <property name="behavior" value="guard_u"/>
+    <property name="behavior" value="guard_up"/>
     <property name="monster" value="kobold"/>
     <property name="sprite" value="sprites/monster_kobold.sprite"/>
    </properties>
@@ -280,7 +280,7 @@
   </object>
   <object id="78" name="doFight" type="entity" x="288" y="112" width="16" height="16">
    <properties>
-    <property name="behavior" value="guard_lef"/>
+    <property name="behavior" value="guard_left"/>
     <property name="monster" value="kobold"/>
     <property name="sprite" value="sprites/monster_kobold.sprite"/>
    </properties>

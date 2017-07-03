@@ -167,7 +167,7 @@ module RPG {
                     } else {
                         RPG.player.sprite.animation = 'stand';
 
-                        let exclamation = entity.params.exclamation || "Hey, you!";
+                        let exclamation = entity.params.exclamation || '';
 
                         entity.emote("!");
                         RPG.sfx['alert'].play();
@@ -177,8 +177,12 @@ module RPG {
                         }
                         guardMutex = true;
 
+                        entity.respectsObstructions = false;
+                        entity.speed = 100;
                         yield *Scene.waitEntityMove(entity, movement);
-                        yield *Scene.waitTextbox(null, [exclamation]);
+                        if (exclamation !== '') {
+                            yield *Scene.waitTextbox(null, [exclamation]);
+                        }
                         entity.clearEmote();
 
                         yield *map.waitFight(entity);
@@ -190,16 +194,16 @@ module RPG {
                     let x = entity.position.x, y = entity.position.y;
                     switch(direction) {
                         case 0: // N
-                            entity.move(0, -entity.speed * 2 * dt);
+                            entity.move(0, -entity.speed * dt);
                             break;
                         case 1: // E
-                            entity.move(entity.speed * 2 * dt, 0)
+                            entity.move(entity.speed * dt, 0)
                             break;
                         case 2: // S
-                            entity.move(0, entity.speed * 2 * dt);
+                            entity.move(0, entity.speed * dt);
                             break;
                         case 3: // W
-                            entity.move(-entity.speed * 2 * dt, 0);
+                            entity.move(-entity.speed * dt, 0);
                             break;
                         case 4: // wait
                             entity.move(0, 0);
