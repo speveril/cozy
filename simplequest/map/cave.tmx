@@ -152,7 +152,6 @@
 </data>
  </layer>
  <objectgroup name="#spritelayer">
-  <object id="1" x="0" y="720" width="240"/>
   <object id="2" type="camerabox" x="0" y="480" width="320" height="240" visible="0"/>
   <object id="4" x="0" y="704">
    <polyline points="0,0 16,0 16,-32 32,-32 32,-48 48,-48 48,-96 64,-96 64,-112 80,-112 80,-128 112,-128 112,-144 144,-144 144,-224"/>
