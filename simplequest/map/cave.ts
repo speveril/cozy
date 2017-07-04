@@ -117,10 +117,9 @@ module SimpleQuest {
         shopkeeper(args) {
             RPG.Scene.do(function*() {
                 if (!this.persisted('talked to cave shopkeeper')) {
-                    this.persist('talked to cave shopkeeper');
                     yield* RPG.Scene.waitTextbox('SHOPKEEPER', [
                         "I've been in here for hours! I keep hearing roars from the next room!",
-                        "Do you want to buy something?"
+                        "So, you wanna buy something?"
                     ]);
                 }
                 yield* this.waitShop({
@@ -132,6 +131,12 @@ module SimpleQuest {
                         'heater','helmet'
                     ]
                 });
+                if (!this.persisted('talked to cave shopkeeper')) {
+                    this.persist('talked to cave shopkeeper');
+                    yield* RPG.Scene.waitTextbox('SHOPKEEPER', [
+                        "I'm just going to wait here until it's safe.",
+                    ]);
+                }
             }.bind(this));
         }
     }
