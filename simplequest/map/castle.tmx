@@ -771,7 +771,7 @@
     <property name="vision" value="0"/>
    </properties>
   </object>
-  <object id="227" name="west_tower_skelwarrior" type="entity" x="432" y="352" width="16" height="16">
+  <object id="227" name="doFight" type="entity" x="432" y="352" width="16" height="16">
    <properties>
     <property name="behavior" value="guard_right"/>
     <property name="monster" value="skeletonwarrior"/>

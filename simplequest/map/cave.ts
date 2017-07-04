@@ -38,6 +38,7 @@ module SimpleQuest {
                     let d = Trig.dist(RPG.player.position, target);
                     RPG.player.behavior = RPG.Behavior['path'](RPG.player, [[Math.atan2(target.y - RPG.player.position.y, target.x - RPG.player.position.x) * PIXI.RAD_TO_DEG, d],[270,0]]);
                     yield *RPG.Scene.waitTime(d / RPG.player.speed + 0.1);
+                    RPG.player.sprite.animation = 'stand';
 
                     koboldA.hop(8);
                     yield *RPG.Scene.waitTextbox("KOBOLD", ["When humans bring more tribute?"]);

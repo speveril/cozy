@@ -145,6 +145,92 @@ module RPG {
             yield *guard(entity, 270);
         }
 
+        export function *fight_wander(entity:RPG.Entity) {
+            let direction = 4, dist = 0, dx, dy;
+            let map = <SimpleQuest.Map>RPG.map;
+            let visionDistance:number = (entity.params.vision || 2) * map.tileSize.x,
+                visionDistance2 = visionDistance * visionDistance;
+
+            while (true) {
+                let dt = yield;
+                if (Trig.dist2(RPG.player.position, entity.position) <= visionDistance2) {
+                    let movement = [];
+                    RPG.ControlStack.push(RPG.ControlMode.None);
+
+                    if (entity.params.notice && _.has(map, entity.params.notice)) {
+                        map[entity.params.notice]();
+                    } else {
+                        RPG.player.sprite.animation = 'stand';
+
+                        let exclamation = entity.params.exclamation || '';
+
+                        entity.emote("!");
+                        RPG.sfx['alert'].play();
+
+                        while (guardMutex) {
+                            dt = yield;
+                        }
+                        guardMutex = true;
+
+                        entity.respectsObstructions = false;
+                        entity.speed = 100;
+                        while (Trig.dist(RPG.player.position, entity.position) - RPG.player.radius - entity.radius > 0) {
+                            dt = yield;
+
+                            entity.dir = PIXI.RAD_TO_DEG * Math.atan2(RPG.player.position.y - entity.position.y, RPG.player.position.x - entity.position.x);
+                            dx = Math.cos(PIXI.DEG_TO_RAD * entity.dir) * entity.speed * dt;
+                            dy = Math.sin(PIXI.DEG_TO_RAD * entity.dir) * entity.speed * dt;
+                            entity.move(dx, dy);
+                        }
+
+                        if (exclamation !== '') {
+                            yield *Scene.waitTextbox(null, [exclamation]);
+                        }
+                        entity.clearEmote();
+
+                        yield *map.waitFight(entity);
+
+                        guardMutex = null;
+                        RPG.ControlStack.pop();
+                    }
+                } else {
+                    let x = entity.position.x, y = entity.position.y;
+                    switch(direction) {
+                        case 0: // N
+                            entity.move(0, -entity.speed * dt);
+                            break;
+                        case 1: // E
+                            entity.move(entity.speed * dt, 0)
+                            break;
+                        case 2: // S
+                            entity.move(0, entity.speed * dt);
+                            break;
+                        case 3: // W
+                            entity.move(-entity.speed * dt, 0);
+                            break;
+                        case 4: // wait
+                            entity.move(0, 0);
+                            break;
+                    }
+
+                    if (x - entity.position.x === 0 && y - entity.position.y === 0 && direction !== 4) {
+                        if (Math.random() < 0.5) {
+                            direction = 4;
+                        } else {
+                            dist = 0;
+                        }
+                    } else {
+                        dist -= (entity.speed * dt);
+                    }
+
+                    if (dist <= 0) {
+                        direction = Math.floor(Math.random() * 5);
+                        dist = (Math.random() * 3 + 1) * RPG.map.tileSize.x;
+                    }
+                }
+            }
+        }
+
         export function *guard_wander(entity:RPG.Entity) {
             let direction = 4, dist = 0;
             var map = <SimpleQuest.Map>RPG.map;
