@@ -113,5 +113,26 @@ module SimpleQuest {
         exit_boss(args) {
             RPG.startMap('boss', 11, 13);
         }
+
+        shopkeeper(args) {
+            RPG.Scene.do(function*() {
+                if (!this.persisted('talked to cave shopkeeper')) {
+                    this.persist('talked to cave shopkeeper');
+                    yield* RPG.Scene.waitTextbox('SHOPKEEPER', [
+                        "I've been in here for hours! I keep hearing roars from the next room!",
+                        "Do you want to buy something?"
+                    ]);
+                }
+                yield* this.waitShop({
+                    shopName: "Prison Shop",
+                    products: [
+                        'tonic','potion','elixir',
+                        'arming_sword','great_sword',
+                        'plate_armor',
+                        'heater','helmet'
+                    ]
+                });
+            }.bind(this));
+        }
     }
 }
