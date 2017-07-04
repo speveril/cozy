@@ -69,6 +69,10 @@ module RPG.Map {
             return _.where(this.triggers, { name: name });
         }
 
+        getEventsByName(name:string):MapEvent[] {
+            return _.where(this.events, { name: name });
+        }
+
         getObstructionsByName(name:string):MapObstruction[] {
             return _.where(this.obstructions, { name: name });
         }

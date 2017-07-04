@@ -8,6 +8,7 @@ module SimpleQuest {
         platform:any;
         platformHeight:number;
         dragon:any;
+        spawnspots:Array<Array<number>>;
 
         constructor() {
             super('map/boss.tmx');
@@ -178,6 +179,62 @@ module SimpleQuest {
             });
         }
 
+        *dropSlimes(count:number = 1) {
+            // TODO this is such a trainwreck
+            if (!this.spawnspots) {
+                this.spawnspots = [];
+                this.getAllEventsByName('slimespawn').forEach((e) => {
+                    for (let y = this.tileSize.y / 2; y < e.rect.height; y += this.tileSize.y) {
+                        for (let x = this.tileSize.x / 2; x < e.rect.width; x += this.tileSize.x) {
+                            this.spawnspots.push([e.rect.x + Math.floor(x), e.rect.y + Math.floor(y)]);
+                        }
+                    }
+                });
+            }
+
+            let lyr = this.layerLookup['#spritelayer'];
+            let slimes = [];
+
+            _.times(count, (i) => {
+                let e = new RPG.Entity({
+                    sprite: 'sprites/monster_lavaslime.sprite',
+                    monster: 'lavaslime',
+                    respectsObstructions: 'false',
+                    speed: 10,
+                    animation: 'stand'
+                });
+
+                let p = this.spawnspots[Math.floor(Math.random() * this.spawnspots.length)];
+                let v = 100;
+
+                e.place(p[0], p[1] - 240 + (i * 30), lyr);
+                e.dir = 90;
+                slimes.push([e,p[0],p[1],v]);
+            });
+
+            let done = false;
+            while (!done) {
+                let dt = yield;
+
+                done = true;
+                slimes.forEach((s) => {
+                    s[0].adjust(0, s[3] * dt);
+                    s[3] += dt * 250;
+
+                    if (s[0].position.y > s[2]) {
+                        s[0].place(s[1], s[2], lyr);
+                        s[0].respectsObstructions = true;
+                    } else {
+                        done = false;
+                    }
+                });
+            }
+
+            slimes.forEach((s) => {
+                s[0].behavior = RPG.Behavior['fight_wander'](s[0]);
+            });
+        }
+
         newSequence() {
             this.sequence = _.shuffle(['orange','blue','red','green']);
             this.sequence.pop();
@@ -192,9 +249,11 @@ module SimpleQuest {
                     var letter = letters[i];
                     this.layers[1].setTile(this.torches[letter].tx, this.torches[letter].ty, this.torchTiles.none);
                 }
+                yield *this.dropSlimes(3 + (3 - this.platformHeight));
+                RPG.sfx['dragon_roar'].play();
                 yield *RPG.Scene.waitTime(1.0);
 
-                this.dragon.sprite.animation = 'stand_d';
+                this.dragon.sprite.animation = 'stand';
 
                 var time = (3 - this.platformHeight) * 0.25;
                 for (var i = 0; i < letters.length; i++) {

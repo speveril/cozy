@@ -156,21 +156,24 @@ module RPG {
     export function centerCameraOn(pt:PIXI.Point, snap?:boolean) {
         var cx = pt.x;
         var cy = pt.y;
-        var cameraBox = _.find(map.cameraBoxes, (box) => box.contains(cx, cy));
 
-        if (cameraBox) {
-            if (cameraBox.width <= Cozy.config['width']) {
-                cx = cameraBox.x + cameraBox.width / 2;
-            } else {
-                cx = Math.max(cameraBox.x + cameraHalf.x, cx);
-                cx = Math.min(cameraBox.x + cameraBox.width - cameraHalf.x, cx);
-            }
+        if (map && map.cameraBoxes) {
+            let cameraBox = _.find(map.cameraBoxes, (box) => box.contains(cx, cy));
 
-            if (cameraBox.height <= Cozy.config['height']) {
-                cy = cameraBox.y + cameraBox.height / 2;
-            } else {
-                cy = Math.max(cameraBox.y + cameraHalf.y, cy);
-                cy = Math.min(cameraBox.y + cameraBox.height - cameraHalf.y, cy);
+            if (cameraBox) {
+                if (cameraBox.width <= Cozy.config['width']) {
+                    cx = cameraBox.x + cameraBox.width / 2;
+                } else {
+                    cx = Math.max(cameraBox.x + cameraHalf.x, cx);
+                    cx = Math.min(cameraBox.x + cameraBox.width - cameraHalf.x, cx);
+                }
+
+                if (cameraBox.height <= Cozy.config['height']) {
+                    cy = cameraBox.y + cameraBox.height / 2;
+                } else {
+                    cy = Math.max(cameraBox.y + cameraHalf.y, cy);
+                    cy = Math.min(cameraBox.y + cameraBox.height - cameraHalf.y, cy);
+                }
             }
         }
 

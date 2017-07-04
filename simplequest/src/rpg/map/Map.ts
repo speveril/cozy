@@ -165,6 +165,10 @@ module RPG.Map {
             return _.flatten(_.map(this.layers, (lyr) => lyr.getTriggersByName(name)));
         }
 
+        getAllEventsByName(name:string):MapEvent[] {
+            return _.flatten(_.map(this.layers, (lyr) => lyr.getEventsByName(name)));
+        }
+
         getAllObstructionsByName(name:string):MapObstruction[] {
             return _.flatten(_.map(this.layers, (lyr) => lyr.getObstructionsByName(name)));
         }

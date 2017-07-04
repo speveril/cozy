@@ -203,6 +203,7 @@ module RPG {
 
                     o = [];
                     for (i = 0; i < obstructions.length; i++) {
+                        // TODO uuuuuugh this is such a hack; there needs to be a better way to keep NPCs from wandering into doors etc
                         if (this === RPG.player && !obstructions[i].active) {
                             continue;
                         }

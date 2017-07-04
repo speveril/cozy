@@ -11,7 +11,7 @@
     },
     "lavaslime": { "name": "Lava Slime", "xp": 15,
         "hp": 100, "attributes": { "damage": 15, "critical": 2, "dodge": 2, "block": 5, "defense": 5 },
-        "image": "ui/battle/monster_placeholder.png",
+        "image": "ui/battle/monster_lavaslime.png",
         "treasure": { "money": "1d6 + 6" }
     },
     "ghost": { "name": "Ghost", "xp": 20,

@@ -154,8 +154,10 @@ module SimpleQuest {
             yield *RPG.Scene.waitTextbox(null, [
                 "With the dragon destroyed, I take my leave of Carp's Bend.",
                 "I do not know what they will think of me, or if they will understand what I've done for them.",
-                "I don't need applause. I don't need gold or gems. I just need to know they are safe.",
-                "In the end it was kind of a terrible town anyway so I'm glad to get out of here."
+                "I don't need applause. I don't need gold, or gems. I just need to know that I've done the right thing."
+            ]);
+            yield *RPG.Scene.waitTextbox(null, [
+                "It was kind of a terrible town anyway."
             ]);
 
             Cozy.Audio.currentMusic.stop(1.0);
