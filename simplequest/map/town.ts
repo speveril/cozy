@@ -69,7 +69,7 @@ module SimpleQuest {
                     shopName: "Equipment Shop",
                     products: [
                         'short_sword', 'arming_sword',
-                        'oak_shield'
+                        'buckler'
                     ]
                 });
             }.bind(this));

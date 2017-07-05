@@ -102,13 +102,13 @@
     },
 
     "iron_key": {
-        "name": "Iron Key", "sellable": false, "icon": "ui/item_icons.png", "icon_frame": [84,14], "description": "An iron key from the abandoned castle.", "sort": 95.00
+        "name": "Iron Key", "sellable": false, "icon": "ui/item_icons.png", "icon_frame": [84,14], "description": "An iron key taken from the cultists in the Dark Forest.", "sort": 95.00
     },
     "steel_key": {
-        "name": "Steel Key", "sellable": false, "icon": "ui/item_icons.png", "icon_frame": [98,14], "description": "A steel key from the abandoned castle.", "sort": 95.01
+        "name": "Steel Key", "sellable": false, "icon": "ui/item_icons.png", "icon_frame": [98,14], "description": "A steel key from the Haunted Castle.", "sort": 95.01
     },
     "gold_key": {
-        "name": "Gold Key", "sellable": false, "icon": "ui/item_icons.png", "icon_frame": [112,14], "description": "A golden key.", "sort": 95.02
+        "name": "Gold Key", "sellable": false, "icon": "ui/item_icons.png", "icon_frame": [112,14], "description": "A golden key to open the locked ruins in the Dark Forest.", "sort": 95.02
     },
     "massive_key": {
         "name": "Massive Key", "sellable": false, "icon": "ui/item_icons.png", "icon_frame": [126,14], "description": "A big, heavy key.", "sort": 95.02

@@ -81,6 +81,9 @@ module SimpleQuest {
                     yield* RPG.Scene.waitCameraMove(26.5 * RPG.map.tileSize.x, 18.5 * RPG.map.tileSize.y, 0.5);
 
                     cultLeader.bounce(8);
+                    cultistA.dir = 90;
+                    cultistC.dir = 0;
+
                     yield* RPG.Scene.waitTextbox("Cult Leader", ["The ritual is complete! We must move on through the ruins and to Mount Danger!"]);
                     cultistA.bounce(8);
                     yield* RPG.Scene.waitTextbox("Cultist", ["Uhhhh. About that."]);
@@ -103,7 +106,19 @@ module SimpleQuest {
                     cultLeader.bounce(8);
                     yield* RPG.Scene.waitTextbox("Cult Leader", [
                         "You buffoons! You know we need that Gold Key to open the door to the ruins! Now what are we supposed to do?!",
+                        "Well, at least I have a copy of the Iron Key in this chest here."
                     ]);
+                    cultistB.bounce(8);
+                    yield* RPG.Scene.waitTextbox("Cultist", ["The Iron Key, Master? The one that opens the door to the castle?"]);
+                    cultLeader.bounce(8);
+                    yield* RPG.Scene.waitTextbox("Cult Leader", ["Yes, of course!"]);
+                    cultistA.bounce(8);
+                    yield* RPG.Scene.waitTextbox("Cultist", ["Master, wouldn't it have made more sense to keep a copy of the Gold Key?"]);
+                    yield *RPG.Scene.waitTime(1.5);
+                    cultLeader.bounce(8);
+                    yield* RPG.Scene.waitTextbox("Cult Leader", ["Lord Danger's kobolds are always asking for extra sacrifices, you know."]);
+                    cultistA.bounce(8);
+                    yield* RPG.Scene.waitTextbox("Cultist", ["Understood! Please allow me to retract my previous question."]);
                     cultistC.bounce(8);
                     yield* RPG.Scene.waitTextbox("Cultist", ["Master, I just want it to be clear I had nothing to do with any of this!"]);
 
@@ -114,6 +129,9 @@ module SimpleQuest {
                     cultLeader.clearEmote();
 
                     yield* RPG.Scene.waitTextbox("Cult Leaver", ["Cease your prattling, we've been discovered!"]);
+                    cultistA.dir = 180;
+                    cultistC.dir = 270;
+
                     yield* RPG.Scene.waitCameraMove(RPG.player.position.x, RPG.player.position.y, 0.5);
                 }.bind(this));
             }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0.0" orientation="orthogonal" renderorder="right-down" width="20" height="45" tilewidth="16" tileheight="16" nextobjectid="95">
+<map version="1.0.0" orientation="orthogonal" renderorder="right-down" width="20" height="45" tilewidth="16" tileheight="16" nextobjectid="98">
  <properties>
   <property name="Name" value="Mount Danger"/>
  </properties>
@@ -95,11 +95,11 @@
 0,0,118,0,0,41,0,0,53,0,0,0,80,138,0,41,0,85,100,0,
 0,102,0,138,0,0,0,53,79,0,0,80,78,0,138,0,0,41,116,0,
 0,118,0,0,138,0,0,53,77,0,0,78,0,0,0,0,0,0,0,100,
-102,0,41,0,0,0,0,0,61,0,0,0,41,0,0,0,138,0,0,100,
+102,0,41,0,0,0,0,0,61,0,0,0,41,0,25,0,138,0,0,100,
 118,0,0,0,0,0,0,0,63,0,80,0,0,0,0,0,0,0,0,116,
 0,0,0,138,0,0,0,0,63,0,78,0,0,0,0,0,0,0,41,0,
-0,0,0,0,0,41,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,61,0,0,0,0,0,0,0,0,0,0,0,0
+0,0,25,0,0,41,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,61,0,0,0,0,0,0,0,0,0,25,0,0
 </data>
  </layer>
  <layer name="background++" width="20" height="45">
@@ -222,9 +222,17 @@
     <property name="contents" value="massive_key"/>
    </properties>
   </object>
-  <object id="54" name="open_chest" type="trigger" x="16" y="224" width="16" height="16"/>
+  <object id="54" name="open_chest" type="trigger" x="16" y="224" width="16" height="16">
+   <properties>
+    <property name="contents" value="arming_sword"/>
+   </properties>
+  </object>
   <object id="55" name="open_chest" type="trigger" x="32" y="400" width="16" height="16"/>
-  <object id="56" name="open_chest" type="trigger" x="256" y="560" width="16" height="16"/>
+  <object id="56" name="open_chest" type="trigger" x="256" y="560" width="16" height="16">
+   <properties>
+    <property name="contents" value="sun_shield"/>
+   </properties>
+  </object>
   <object id="57" name="switch_s" type="trigger" x="48" y="304" width="16" height="16"/>
   <object id="58" name="switch_n" type="trigger" x="208" y="160" width="16" height="16"/>
   <object id="59" name="door_n" type="trigger" x="288" y="96" width="16" height="16"/>
@@ -387,5 +395,14 @@
    </properties>
   </object>
   <object id="92" type="event" x="160" y="432" width="16" height="16"/>
+  <object id="95" x="32" y="688">
+   <polyline points="0,0 0,16 16,16 16,0 0,0"/>
+  </object>
+  <object id="96" x="224" y="640">
+   <polyline points="0,0 0,16 16,16 16,0 0,0"/>
+  </object>
+  <object id="97" x="272" y="704">
+   <polyline points="0,0 0,16 16,16 16,0 0,0"/>
+  </object>
  </objectgroup>
 </map>

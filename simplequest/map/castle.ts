@@ -170,5 +170,31 @@ module SimpleQuest {
                 yield *RPG.Scene.waitTextbox(null, ["It's some sort of cultist.", "The nametag on the robe says 'Jeff'."]);
             });
         }
+
+        ghost_east_tower_floor(args) {
+            RPG.Scene.do(function*() {
+                if (!this.persisted('talked to ghost shopkeeper')) {
+                    yield *RPG.Scene.waitTextbox('GHOST', [
+                        "I'm not supposed to talk about how exactly the afterlife works and all that...",
+                        "but let's just say I'm going to need some coin.",
+                        "You want to buy something?"
+                    ]);
+                }
+                yield* this.waitShop({
+                    shopName: "Ghost Shop",
+                    products: [
+                        'dart_scroll','firebolt_scroll',
+                        'iceshard_scroll','shock_scroll',
+                        'amulet'
+                    ]
+                });
+                if (!this.persisted('talked to ghost shopkeeper')) {
+                    this.persist('talked to ghost shopkeeper');
+                    yield *RPG.Scene.waitTextbox('GHOST', [
+                        "Come back if you need anything else. I'm not going anywhere, after all."
+                    ]);
+                }
+            }.bind(this));
+        }
     }
 }

@@ -51,8 +51,16 @@ module SimpleQuest {
                     koboldB.hop(8);
                     yield *RPG.Scene.waitTextbox("KOBOLDS", ["Ho ho ho!"]);
 
+                    koboldB.hop(8);
+                    yield *RPG.Scene.waitTime(0.3);
+                    koboldA.hop(8);
+                    yield *RPG.Scene.waitTextbox("KOBOLDS", ["Hoo hoo ha!"]);
+
+                    koboldB.hop(8);
                     koboldA.dir = 90;
                     koboldA.emote('!');
+                    yield *RPG.Scene.waitTextbox("KOBOLDS", ["Ha ha ho!"]);
+
                     koboldA.hop(8);
                     yield *RPG.Scene.waitTextbox("KOBOLD", ["Wait! Human there!", "No tribute, think it's a hero!"]);
 
