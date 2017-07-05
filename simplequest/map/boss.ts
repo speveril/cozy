@@ -196,9 +196,10 @@ module SimpleQuest {
             let slimes = [];
 
             _.times(count, (i) => {
+                let type = ['slime','blueslime','lavaslime'][(Math.random() * 3) | 0];
                 let e = new RPG.Entity({
-                    sprite: 'sprites/monster_lavaslime.sprite',
-                    monster: 'lavaslime',
+                    sprite: 'sprites/monster_' + type + '.sprite',
+                    monster: type,
                     respectsObstructions: 'false',
                     speed: 10,
                     animation: 'stand'
