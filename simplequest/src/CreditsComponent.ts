@@ -58,6 +58,7 @@ module SimpleQuest {
             <li>Juhani Junkala</li>
             <li>Michael Koenig</li>
             <li>Shamus Peveril</li>
+            <li>Sound Effect Lab</li>
         </ul>
 
         <h2></h2>

@@ -38,6 +38,17 @@ Some sound effects from Michael Koenig
 - http://soundbible.com/1165-Dinosaur-Roar.html
     - dinosaur_roar.wav
 
+Some sound effects by Sound Effect Lab
+- http://en.soundeffect-lab.info/
+    - magic-cure1.mp3
+    - magic-electron2.mp3
+    - magic-flame1.mp3
+    - magic-ice2.mp3
+    - qigong1.mp3
+    - sword-clash1.mp3
+    - sword-gesture2.mp3
+    - sword-slash3.wav
+
 Some sound effects by Juhani Junkala
 
 - http://opengameart.org/content/512-sound-effects-8-bit-style

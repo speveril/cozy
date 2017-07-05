@@ -175,8 +175,8 @@ module SimpleQuest {
                 var fight = yield *this.waitChoice("Fight Dr. Whatever?", {yes:"Yes", no:"No"});
                 if (fight === 'yes') {
                     yield *RPG.Battle.waitBattle({
-                        enemy: 'skellington',
-                        scene: 'ui/battle/scene_test.png'
+                        enemy: 'skeleton',
+                        scene: 'ui/battle/scene_dungeon.png'
                     });
                     yield *RPG.Scene.waitTextbox('Skeleton', [
                         "Capital! Good show."

@@ -1,32 +1,32 @@
 {
     "tonic": {
         "name": "Tonic", "price": 15, "icon": "ui/item_icons.png", "icon_frame": [0,14], "description": "A light healing potion. Restores 50 HP.", "sort": 0.01,
-        "canStack": true, "use": { "_target": "ally", "heal": [ 50 ] }
+        "canStack": true, "use": { "_target": "ally", "_sound":"effect_heal", "heal": [ 50 ] }
     },
     "potion": {
         "name": "Potion", "price": 50, "icon": "ui/item_icons.png", "icon_frame": [14,14], "description": "A healing potion. Restores 150 HP.", "sort": 0.02,
-        "canStack": true, "use": { "_target": "ally", "heal": [ 150 ] }
+        "canStack": true, "use": { "_target": "ally", "_sound":"effect_heal", "heal": [ 150 ] }
     },
     "elixir": {
         "name": "Elixir", "price": 200, "icon": "ui/item_icons.png", "icon_frame": [28,14], "description": "A powerful healing potion. Restores 500 HP.", "sort": 0.03,
-        "canStack": true, "use": { "_target": "ally", "heal": [ 500 ] }
+        "canStack": true, "use": { "_target": "ally", "_sound":"effect_heal", "heal": [ 500 ] }
     },
 
     "dart_scroll": {
         "name": "Magic Dart", "price": 150, "icon": "ui/item_icons.png", "icon_frame": [56,0], "description": "Strikes a monster with a magical dart of force.", "sort": 5.01,
-        "canStack": true, "use": { "_target": "enemy", "_context": "combat", "strike": [ "force", "3d10 + 35" ] }
+        "canStack": true, "use": { "_target": "enemy", "_context": "combat", "_sound":"effect_force", "strike": [ "force", "3d10 + 35" ] }
     },
     "firebolt_scroll": {
         "name": "Fire Bolt", "price": 150, "icon": "ui/item_icons.png", "icon_frame": [56,0], "description": "Strikes a monster with a magical dart of force.", "sort": 5.01,
-        "canStack": true, "use": { "_target": "enemy", "_context": "combat", "strike": [ "fire", "3d10 + 35" ] }
+        "canStack": true, "use": { "_target": "enemy", "_context": "combat", "_sound":"effect_fire", "strike": [ "fire", "3d10 + 35" ] }
     },
     "iceshard_scroll": {
         "name": "Ice Shard", "price": 150, "icon": "ui/item_icons.png", "icon_frame": [56,0], "description": "Strikes a monster with a magical dart of force.", "sort": 5.01,
-        "canStack": true, "use": { "_target": "enemy", "_context": "combat", "strike": [ "ice", "3d10 + 35" ] }
+        "canStack": true, "use": { "_target": "enemy", "_context": "combat", "_sound":"effect_ice", "strike": [ "ice", "3d10 + 35" ] }
     },
     "shock_scroll": {
         "name": "Shock", "price": 150, "icon": "ui/item_icons.png", "icon_frame": [56,0], "description": "Strikes a monster with a magical dart of force.", "sort": 5.01,
-        "canStack": true, "use": { "_target": "enemy", "_context": "combat", "strike": [ "lightning", "3d10 + 35" ] }
+        "canStack": true, "use": { "_target": "enemy", "_context": "combat", "_sound":"effect_lightning", "strike": [ "lightning", "3d10 + 35" ] }
     },
 
     "oak_sword": {

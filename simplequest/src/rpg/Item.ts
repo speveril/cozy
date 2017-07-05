@@ -132,7 +132,7 @@ namespace RPG {
             return true;
         }
 
-        activate(character:RPG.Character) {
+        activate(character:RPG.Character, opts:any={}) {
             if (!this.def.useEffect) return;
 
             var result:any = {};
@@ -146,6 +146,9 @@ namespace RPG {
             });
 
             if (result.success) {
+                if (!opts.silent && this.def.useEffect['_sound']) {
+                    RPG.sfx[this.def.useEffect['_sound']].play();
+                }
                 Party.inventory.remove(this);
             }
 

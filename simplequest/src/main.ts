@@ -46,7 +46,13 @@ module SimpleQuest {
 
                 'battle_playerhit':     'audio/sfx/sword-slash3.mp3',
                 'battle_playerweakhit': 'audio/sfx/sword-clash1.mp3',
-                'battle_playermiss':    'audio/sfx/sword-gesture2.mp3'
+                'battle_playermiss':    'audio/sfx/sword-gesture2.mp3',
+
+                'effect_fire':          'audio/sfx/magic-flame1.mp3',
+                'effect_ice':           'audio/sfx/magic-ice2.mp3',
+                'effect_lightning':     'audio/sfx/magic-electron2.mp3',
+                'effect_force':         'audio/sfx/qigong1.mp3',
+                'effect_heal':          'audio/sfx/magic-cure1.mp3'
             },
             music: {
                 'village':              { tracks: ["audio/music/1-01 Town of Wishes.ogg"] },
