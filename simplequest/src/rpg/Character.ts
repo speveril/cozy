@@ -7,12 +7,13 @@ module RPG {
 
         private _xp:number = 0;
         private _level:number = 1;
-        hp:number;
+        private _hp:number;
         maxhp:number;
         sprite:string;
         treasure:any;
         portrait:string;
         title:string;
+        traits:Array<string>;
 
         private baseAttribute:{ [key:string]:number } = {};
         private effectiveAttribute:{ [key:string]:number } = {};
@@ -29,6 +30,7 @@ module RPG {
             this.levels   = args.levels;
             this.portrait = args.portrait || '';
             this.title    = args.title || '';
+            this.traits   = args.traits ? _.clone(args.traits) : [];
 
             if (args.equipped) {
                 _.each(args.equipped, (itemKey:string, slotKey:string) => {
@@ -165,14 +167,48 @@ module RPG {
             return stats;
         }
 
+        hasTrait(key:string):boolean {
+            if (key.indexOf("*") === -1) {
+                return (this.traits.indexOf(key) !== -1);
+            }
+            // TODO add wildcard look up
+        }
+
+        modifiedDamage(amount:number, type:string):number {
+            let damage = amount;
+            if (this.hasTrait('vulnerable:' + type)) {
+                console.log("VULN", type);
+                damage *= 2;
+            }
+            if (this.hasTrait('resist:' + type)) {
+                console.log("RESIST", type);
+                damage *= 0.5;
+            }
+            if (this.hasTrait('immune:' + type)) {
+                console.log("IMMUNE", type);
+                damage = 0;
+            }
+            if (this.hasTrait('absorb:' + type)) {
+                console.log("ABSORB", type);
+                damage = -damage;
+            }
+            return Math.round(damage);
+        }
+
         get xp():number { return this._xp; }
         get level():number { return this._level; }
+        get hp():number { return this._hp; }
 
         set xp(n:number) {
             this._xp = n;
             while (this._xp >= this.levels[this.level]) {
                 this.levelUp(this.level + 1);
             }
+        }
+
+        set hp(n:number) {
+            // TODO events? then battle systems could just respond to those instead of checking all the time...
+            this._hp = Math.min(this.maxhp, Math.max(0, n));
         }
     }
 }

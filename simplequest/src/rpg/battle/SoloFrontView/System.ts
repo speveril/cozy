@@ -139,6 +139,7 @@ module RPG.BattleSystem.SoloFrontView {
                         }
                         break;
                     case 'item':
+                        // TODO item sfx!!
                         var item = battleScreen.menu.result.item;
                         this.output(`\nYou use ${item.iconHTML}${item.name}.`);
                         if (!item.def.useEffect) {
@@ -317,32 +318,9 @@ module RPG.BattleSystem.SoloFrontView {
                     result.damage *= this.curveRoll(2, 3); break;
             }
 
+            result.damage = defender.modifiedDamage(result.damage, 'physical');
             result.damage *= Math.min(1, Math.max(0, 1 - (defender.get('defense') / 100)));
-
             result.damage = Math.round(Math.max(0, result.damage));
-            //
-            //
-            // var attackRange:number = attacker.get('attack') + defender.get('dodge');
-            // var attackRoll:number = (Math.random() * attackRange) | 0;
-            //
-            // if (attackRoll >= defender.get('dodge')) {
-            //     var damageRange:number = attacker.get('critical') + attacker.get('damage') + defender.get('defense');
-            //     var damageRoll:number = (Math.random() * damageRange) | 0;
-            //
-            //     if (damageRoll >= defender.get('defense') + attacker.get('damage')) {
-            //         result.type = 'crit';
-            //         result.damage = Math.max(1, (attacker.get('damage') * (2.0 + Math.random())) | 0);
-            //     } else if (damageRoll >= defender.get('defense')) {
-            //         result.type = 'hit';
-            //         result.damage = Math.max(1, (attacker.get('damage') * (1.0 + Math.random() - 0.5)) | 0);
-            //     } else {
-            //         result.type = 'weak';
-            //         result.damage = (attacker.get('damage') * (Math.random() / 2)) | 0;
-            //     }
-            // } else {
-            //     result.type = 'miss';
-            //     result.damage = 0;
-            // }
 
             return result;
         }
@@ -355,27 +333,20 @@ module RPG.BattleSystem.SoloFrontView {
                 }
             } else {
                 if (_.has(result, 'hpChange')) {
-                    if (result.hpChange > 0) this.output(`\nThe ${target.name} gains ${result.hpChange} health!`);
-                    if (result.hpChange < 0) this.output(`\nThe ${target.name} takes ${-result.hpChange} damage!`);
+                    if (result.hpChange > 0) {
+                        this.bouncyComponent.show(result.hpChange.toString(), 'heal');
+                        this.output(`\nThe ${target.name} gains ${result.hpChange} health!`);
+                    }
+                    if (result.hpChange < 0) {
+                        this.bouncyComponent.show((-result.hpChange).toString());
+                        this.output(`\nThe ${target.name} takes ${-result.hpChange} damage!`);
+                    }
                 }
             }
         }
 
         resolveFlee(runner:Character, chaser:Character):any {
             return { success: (Math.random() < 0.6) };
-
-            // var result:any = {};
-            //
-            // var fleeRange:number = runner.get('dodge') + chaser.get('dodge') + 2;
-            // var fleeRoll:number = (Math.random() * fleeRange) | 0;
-            //
-            // if (fleeRoll >= chaser.get('dodge') + 1) {
-            //     result.success = true;
-            // } else {
-            //     result.success = false;
-            // }
-            //
-            // return result;
         }
 
         isCombatant(ch:Character):boolean {

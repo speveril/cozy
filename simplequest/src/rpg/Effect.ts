@@ -11,15 +11,14 @@ module RPG {
 
         static heal(source:any, target:any, amount:number):any {
             if (target.hp < target.maxhp) {
-                target.hp = Math.min(target.maxhp, target.hp + amount);
+                target.hp += amount;
                 return { success:true, hpChange:amount };
             }
             return { success: false };
         }
 
         static strike(source:any, target:any, type:string, damageRoll:string):any {
-            // TODO check elemental weaknesses
-            var damage = Dice.roll(source, damageRoll);
+            let damage = target.modifiedDamage(Dice.roll(source, damageRoll), type);
             target.hp -= damage;
             return { success:true, hpChange:-damage };
         }

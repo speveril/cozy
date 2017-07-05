@@ -20,11 +20,13 @@
     "ghost": { "name": "Ghost", "xp": 20,
         "hp": 100, "attributes": { "damage": 15, "critical": 2, "dodge": 2, "block": 5, "defense": 5 },
         "image": "ui/battle/monster_ghost.png",
+        "traits": ["resist:physical"],
         "treasure": { "money": "1d10 + 5" }
     },
     "skeleton": { "name": "Skeleton", "xp": 20,
         "hp": 100, "attributes": { "damage": 15, "critical": 2, "dodge": 2, "block": 5, "defense": 5 },
         "image": "ui/battle/monster_skeleton.png",
+        "traits": ["vulnerable:physical"],
         "treasure": { "money": "1d10 + 5" }
     },
     "skeletonwarrior": { "name": "Skeleton Warrior", "xp": 20,
@@ -35,6 +37,7 @@
     "lich": { "name": "Lich", "xp": 15,
         "hp": 100, "attributes": { "damage": 15, "critical": 2, "dodge": 2, "block": 5, "defense": 5 },
         "image": "ui/battle/monster_lich.png",
+        "traits": ["vulnerable:fire"],
         "treasure": { "money": "1d6 + 6" }
     },
     "goblin": { "name": "Goblin Stabber", "xp": 35,
@@ -45,6 +48,7 @@
     "bramblekin": { "name": "Bramblekin", "xp": 15,
         "hp": 100, "attributes": { "damage": 15, "critical": 2, "dodge": 2, "block": 5, "defense": 5 },
         "image": "ui/battle/monster_bramblekin.png",
+        "traits": ["vulnerable:fire"],
         "treasure": { "money": "1d6 + 6" }
     },
     "cultist": { "name": "Cultist", "xp": 5,
@@ -60,16 +64,19 @@
     "bat": { "name": "Bat", "xp": 15,
         "hp": 100, "attributes": { "damage": 15, "critical": 2, "dodge": 2, "block": 5, "defense": 5 },
         "image": "ui/battle/monster_bat.png",
+        "traits": ["vulnerable:lightning"],
         "treasure": { "money": "1d6 + 6" }
     },
     "firebat": { "name": "Fire Bat", "xp": 15,
         "hp": 100, "attributes": { "damage": 15, "critical": 2, "dodge": 2, "block": 5, "defense": 5 },
         "image": "ui/battle/monster_firebat.png",
+        "traits": ["vulnerable:ice","resist:fire","vulnerable:lightning"],
         "treasure": { "money": "1d6 + 6" }
     },
     "kobold": { "name": "Kobold Warrior", "xp": 15,
         "hp": 100, "attributes": { "damage": 15, "critical": 2, "dodge": 2, "block": 5, "defense": 5 },
         "image": "ui/battle/monster_koboldorange.png",
+        "traits": ["vulnerable:ice"],
         "treasure": { "money": "1d6 + 6" }
     }
 }

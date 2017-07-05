@@ -141,6 +141,10 @@
     transition: opacity 0.2s;
 }
 
+.bouncy .digit.heal {
+    color: #6DAA2C
+}
+
 .bouncy .digit.bouncing {
     animation-name: bounce;
     animation-duration: 1s;

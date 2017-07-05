@@ -7,11 +7,13 @@ module RPG {
             });
         }
 
-        show(s:string):void {
+        show(s:string, className:string=''):void {
+            console.log("BOUNCY", s, className);
             _.each(s, (ch, i) => {
                 let digit = document.createElement('span');
                 digit.className = 'digit';
                 digit.innerText = ch;
+                if (className !== '') digit.classList.add(className);
                 this.element.appendChild(digit);
 
                 window.setTimeout(() => {
