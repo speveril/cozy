@@ -14,6 +14,7 @@ module RPG {
         portrait:string;
         title:string;
         traits:Array<string>;
+        actions:Array<any>;
 
         private baseAttribute:{ [key:string]:number } = {};
         private effectiveAttribute:{ [key:string]:number } = {};

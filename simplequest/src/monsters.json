@@ -21,6 +21,11 @@
         "hp": 100, "attributes": { "damage": 15, "critical": 2, "dodge": 2, "block": 5, "defense": 5 },
         "image": "ui/battle/monster_ghost.png",
         "traits": ["resist:physical"],
+        "actions": [
+            { "_chance":45, "basicAttack":["force"] },
+            { "_chance":45, "doNothing":["The ghost hesitates..."] },
+            { "_chance":10, "_message":"The ghost wails painfully!", "strike":["dark", "3d8"] }
+        ],
         "treasure": { "money": "1d10 + 5" }
     },
     "skeleton": { "name": "Skeleton", "xp": 20,
@@ -38,6 +43,12 @@
         "hp": 100, "attributes": { "damage": 15, "critical": 2, "dodge": 2, "block": 5, "defense": 5 },
         "image": "ui/battle/monster_lich.png",
         "traits": ["vulnerable:fire"],
+        "actions": [
+            { "_chance":25, "basicAttack":["force"] },
+            { "_chance":25, "_message":"The lich casts Fire Bolt!", "_sound":"effect_fire", "strike":["fire", "3d10 + 35"] },
+            { "_chance":25, "_message":"The lich casts Shock!", "_sound":"effect_fire", "strike":["shock", "3d10 + 35"] },
+            { "_chance":25, "_message":"The lich casts Ice Shard!", "_sound":"effect_fire", "strike":["ice", "3d10 + 35"] }
+        ],
         "treasure": { "money": "1d6 + 6" }
     },
     "goblin": { "name": "Goblin Stabber", "xp": 35,

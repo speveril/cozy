@@ -41,6 +41,7 @@ module RPG.BattleSystem.SoloFrontView {
 
             var player = RPG.Party.members[0].character;
             var monster = new RPG.Character(this.monsters[args.enemy]);
+            var monsterActions = this.monsters[args.enemy].actions;
             this.combatants = [player, monster];
 
             var battleScreen = new uiBattleScreen(player, monster);
@@ -110,26 +111,26 @@ module RPG.BattleSystem.SoloFrontView {
 
                 switch(battleScreen.menu.result.action) {
                     case 'fight':
-                        result = this.resolveAttack(player, monster);
-                        monster.hp -= result.damage;
+                        // TODO the result should just pass back messages, somehow...
+                        result = RPG.Effect.do('basicAttack', player, monster, ['physical']);
                         switch (result.type) {
                             case 'crit':
                                 RPG.sfx['battle_playerhit'].play();
-                                this.output(`\nYou score a critical hit on the ${monster.name}! It takes ${result.damage} damage.`);
+                                this.output(`\nYou score a critical hit on the ${monster.name}! It takes ${(-result.hpChange)} damage.`);
                                 monsterSprite.quake(0.5, { x: 7, y: 2 }, { x: 14, y: 4 });
-                                this.bouncyComponent.show(result.damage.toString());
+                                this.bouncyComponent.show((-result.hpChange).toString());
                                 break;
                             case 'hit':
                                 RPG.sfx['battle_playerhit'].play();
-                                this.output(`\nYou hit the ${monster.name}! It takes ${result.damage} damage.`);
+                                this.output(`\nYou hit the ${monster.name}! It takes ${(-result.hpChange)} damage.`);
                                 monsterSprite.quake(0.5, { x: 5, y: 1 }, { x: 10, y: 2 });
-                                this.bouncyComponent.show(result.damage.toString());
+                                this.bouncyComponent.show((-result.hpChange).toString());
                                 break;
                             case 'weak':
-                                this.output(`\nYou hit the ${monster.name}, but it's a weak hit. It takes ${result.damage} damage.`);
+                                this.output(`\nYou hit the ${monster.name}, but it's a weak hit. It takes ${(-result.hpChange)} damage.`);
                                 RPG.sfx['battle_playerweakhit'].play();
                                 monsterSprite.quake(0.5, { x: 3, y: 0 }, { x: 6, y: 0 });
-                                this.bouncyComponent.show(result.damage.toString());
+                                this.bouncyComponent.show((-result.hpChange).toString());
                                 break;
                             case 'miss':
                                 RPG.sfx['battle_playermiss'].play();
@@ -139,7 +140,6 @@ module RPG.BattleSystem.SoloFrontView {
                         }
                         break;
                     case 'item':
-                        // TODO item sfx!!
                         var item = battleScreen.menu.result.item;
                         this.output(`\nYou use ${item.iconHTML}${item.name}.`);
                         if (!item.def.useEffect) {
@@ -148,7 +148,7 @@ module RPG.BattleSystem.SoloFrontView {
                             var target = item.def.useEffect._target === 'enemy' ? monster : player;
                             result = item.activate(target)
                             if (result.success) {
-                                this.outputItemResult(target, result);
+                                this.outputEffectResult(target, result);
                             } else {
                                 this.output(`\nIt doesn't seem to work.`);
                             }
@@ -169,40 +169,103 @@ module RPG.BattleSystem.SoloFrontView {
 
                 //// MONSTER ACTION PHASE
 
-                var monsterAction = this.monsterThink();
-                switch(monsterAction) {
-                    case 'fight':
-                        result = this.resolveAttack(monster, player);
-                        switch (result.type) {
-                            case 'crit':
-                                RPG.sfx['battle_playerhit'].play(); // TODO
-                                battleScreen.shake();
-                                this.output(`\nThe ${monster.name} scores a critical hit on you! You take ${result.damage} damage.`);
-                                break;
-                            case 'hit':
-                                RPG.sfx['battle_playerhit'].play(); // TODO
-                                battleScreen.shake();
-                                this.output(`\nThe ${monster.name} hits you! You take ${result.damage} damage.`);
-                                break;
-                            case 'weak':
-                                RPG.sfx['battle_playerweakhit'].play(); // TODO
-                                battleScreen.shake();
-                                this.output(`\nThe ${monster.name} hits you, but it's a weak hit. You take ${result.damage} damage.`);
-                                break;
-                            case 'miss':
-                                RPG.sfx['battle_playermiss'].play(); // TODO
-                                this.output(`\nThe ${monster.name} attacks, but misses you.`);
-                                break;
-                        }
-                        player.hp -= result.damage;
-                        break;
-                    case 'flee':
-                        this.output(`\nThe ${monster.name} tries to run away.`);
-                        result = this.resolveFlee(monster, player);
-                        if (result.success) battleOutcome = { monsterEscaped: true };
-                        else this.output(`\nIt doesn't get away!`);
-                        break;
+                var monsterAction = this.monsterThink(monsterActions, monster, player);
+
+                if (monsterAction._sound) {
+                    RPG.sfx[monsterAction._sound].play()
                 }
+                if (monsterAction._message) {
+                    this.output("\n" + monsterAction._message);
+                }
+
+                result = {};
+                _.each(monsterAction, (params:any, effect:string) => {
+                    if (effect[0] === '_') return;
+                    let r = RPG.Effect.do(effect, monster, player, params);
+                    _.each(r, (v, k:string) => {
+                        if (k === 'success') result[k] = result[k] || v;
+                        else result[k] = result[k] ? result[k] + v : v;
+                    });
+                });
+
+                if (result.sound) {
+                    RPG.sfx[result.sound].play();
+                }
+                if (result.message) {
+                    this.output("\n" + result.message);
+                }
+
+                if (monsterAction.basicAttack) {
+                    switch (result.type) {
+                        case 'crit':
+                            RPG.sfx['battle_playerhit'].play(); // TODO
+                            battleScreen.shake();
+                            this.output(`\nThe ${monster.name} scores a critical hit on you! You take ${(-result.hpChange)} damage.`);
+                            break;
+                        case 'hit':
+                            RPG.sfx['battle_playerhit'].play(); // TODO
+                            battleScreen.shake();
+                            this.output(`\nThe ${monster.name} hits you! You take ${(-result.hpChange)} damage.`);
+                            break;
+                        case 'weak':
+                            RPG.sfx['battle_playerweakhit'].play(); // TODO
+                            battleScreen.shake();
+                            this.output(`\nThe ${monster.name} hits you, but it's a weak hit. You take ${(-result.hpChange)} damage.`);
+                            break;
+                        case 'miss':
+                            RPG.sfx['battle_playermiss'].play(); // TODO
+                            this.output(`\nThe ${monster.name} attacks, but misses you.`);
+                            break;
+                    }
+                } else if (result.hpChange) {
+                    this.outputEffectResult(player, result);
+                }
+
+
+                if (monsterAction.flee) {
+                    this.output(`\nThe ${monster.name} tries to run away.`);
+                    result = this.resolveFlee(monster, player);
+                    if (result.success) battleOutcome = { monsterEscaped: true };
+                    else this.output(`\nIt doesn't get away!`);
+                }
+
+
+                // switch(monsterAction.type) {
+                //     case 'fight':
+                //         result = this.resolveAttack(monster, player);
+                //         switch (result.type) {
+                //             case 'crit':
+                //                 RPG.sfx['battle_playerhit'].play(); // TODO
+                //                 battleScreen.shake();
+                //                 this.output(`\nThe ${monster.name} scores a critical hit on you! You take ${(-result.hpChange)} damage.`);
+                //                 break;
+                //             case 'hit':
+                //                 RPG.sfx['battle_playerhit'].play(); // TODO
+                //                 battleScreen.shake();
+                //                 this.output(`\nThe ${monster.name} hits you! You take ${(-result.hpChange)} damage.`);
+                //                 break;
+                //             case 'weak':
+                //                 RPG.sfx['battle_playerweakhit'].play(); // TODO
+                //                 battleScreen.shake();
+                //                 this.output(`\nThe ${monster.name} hits you, but it's a weak hit. You take ${(-result.hpChange)} damage.`);
+                //                 break;
+                //             case 'miss':
+                //                 RPG.sfx['battle_playermiss'].play(); // TODO
+                //                 this.output(`\nThe ${monster.name} attacks, but misses you.`);
+                //                 break;
+                //         }
+                //         player.hp += result.hpChange;
+                //         break;
+                //     case 'flee':
+                //         this.output(`\nThe ${monster.name} tries to run away.`);
+                //         result = this.resolveFlee(monster, player);
+                //         if (result.success) battleOutcome = { monsterEscaped: true };
+                //         else this.output(`\nIt doesn't get away!`);
+                //         break;
+                //     default:
+                //
+                //         break;
+                // }
 
                 yield* RPG.Scene.waitTime(0.75);
 
@@ -269,63 +332,66 @@ module RPG.BattleSystem.SoloFrontView {
             RPG.Textbox.box.appendText(s);
         }
 
-        monsterThink() {
-            // TODO
-            return "fight";
-        }
-
-        statCheck(stat:number) {
-            return Math.random() < (stat / 100);
-        }
-
-        curveRoll(min:number, max:number) {
-            let curve = (a,b,c) => {
-                // median
-                let m = Math.max(a,b,c);
-                return (m === a ? Math.max(b,c) : (m === b ? Math.max(a,c) : Math.max(a,b)));
-                //average
-                // return (a+b+c) / 3;
+        monsterThink(actions:Array<any>, monster:Character, player:Character) {
+            if (!actions) {
+                return { 'basicAttack':['physical'] };
             }
-            let r = curve(Math.random(), Math.random(), Math.random());
-            return min + (max - min + 1) * r;
-        }
 
-        resolveAttack(attacker:Character, defender:Character):any {
-            var result:any = {
-                type: 'hit',
-                damage: attacker.get('damage')
-            };
+            let maxchance = _.reduce(actions, (x:number, act:any) => x + act._chance, 0);
+            console.log("<maxchance>", maxchance);
 
-            if (this.statCheck(defender.get('dodge'))) {
-                result.type = 'miss';
-            } else {
-                if (this.statCheck(defender.get('block'))) {
-                    result.type = 'weak';
-                }
-                if (this.statCheck(attacker.get('critical'))) {
-                    result.type = (result.type === 'weak' ? 'hit' : 'crit');
+            let roll = Math.random() * maxchance;
+            for (let i = 0; i < actions.length; i++) {
+                if (roll < actions[i]._chance) {
+                    return actions[i];
+                } else {
+                    roll -= actions[i]._chance;
                 }
             }
 
-            switch (result.type) {
-                case 'miss':
-                    result.damage *= 0; break;
-                case 'weak':
-                    result.damage *= this.curveRoll(0, 0.5); break;
-                case 'hit':
-                    result.damage *= this.curveRoll(0.75, 1.25); break;
-                case 'crit':
-                    result.damage *= this.curveRoll(2, 3); break;
-            }
-
-            result.damage = defender.modifiedDamage(result.damage, 'physical');
-            result.damage *= Math.min(1, Math.max(0, 1 - (defender.get('defense') / 100)));
-            result.damage = Math.round(Math.max(0, result.damage));
-
-            return result;
+            console.warn("ERROR: Somehow we got to the end of monsterThink without choosing an action.");
         }
 
-        outputItemResult(target:Character, result:any) {
+        // statCheck(stat:number) {
+        //     return Math.random() < (stat / 100);
+        // }
+        //
+        // resolveAttack(attacker:Character, defender:Character, element:string="physical"):any {
+        //     var result:any = {
+        //         type: 'hit',
+        //         damage: attacker.get('damage')
+        //     };
+        //
+        //     if (this.statCheck(defender.get('dodge'))) {
+        //         result.type = 'miss';
+        //     } else {
+        //         if (this.statCheck(defender.get('block'))) {
+        //             result.type = 'weak';
+        //         }
+        //         if (this.statCheck(attacker.get('critical'))) {
+        //             result.type = (result.type === 'weak' ? 'hit' : 'crit');
+        //         }
+        //     }
+        //
+        //     switch (result.type) {
+        //         case 'miss':
+        //             result.damage *= 0; break;
+        //         case 'weak':
+        //             result.damage *= this.curveRoll(0, 0.5); break;
+        //         case 'hit':
+        //             result.damage *= this.curveRoll(0.75, 1.25); break;
+        //         case 'crit':
+        //             result.damage *= this.curveRoll(2, 3); break;
+        //     }
+        //
+        //     result.damage = defender.modifiedDamage(result.damage, element);
+        //     result.damage *= Math.min(1, Math.max(0, 1 - (defender.get('defense') / 100)));
+        //     result.damage = Math.round(Math.max(0, result.damage));
+        //
+        //     return result;
+        // }
+
+        outputEffectResult(target:Character, result:any) {
             if (Party.isInParty(target)) {
                 if (_.has(result, 'hpChange')) {
                     if (result.hpChange > 0) this.output(`\nYou gain ${result.hpChange} health!`);
