@@ -1,24 +1,17 @@
 # Cozy
 
-A generic game engine. For now this is pretty hacked together. Things might get better in the future!
+A generic game engine.
 
-Currently this is only set up to work on Windows. It should be fairly straightforward to get it working on other platforms, but I don't have ready access to them.
+**Cozy is not currently released. If I do ever release it, it will be under a permissive license (probably something like MIT). If you've somehow gotten access to this repository, hopefully I've actually given it to you and you know what's up; if you'd like to use it just talk to me and I'll probably say "sure".**
 
-
-## Plans
-
-Do I look like someone who is planning things in advance?
-
-Really though, the plan is to take my hacked together pile of crap and make small games with them (the example games) to figure out what I actually need in the engine and how I actually want things to look and to work. Over time I will update and replace pieces as necessary. If you've somehow gotten access to this repository, hopefully I've actually given it to you and you know what's up.
-
-Ultimately the development is driven by what I want out of the engine. I have a lot of games I want to make at some point. I'd like to build myself the tools I need to build those games. If you (the hypothetical reader) have a use-case that I'm not meeting, then maybe in the future it will come up. For the time being though, it's more than likely you'll have to address that yourself.
+Cozy will currently work on Windows, "out of the box". It should be fairly straightforward to get it working on other platforms, it just hasn't happened yet.
 
 
 ## Usage
 
-Just run the Cozy shortcut (or `.engine/cozy.exe`). This will open the launcher/project manager.
+Just run the `cozy.bat`, which will simply run `.engine/cozy.exe`. This will open the launcher/project manager. I like to make a shortcut on my desktop to `.engine/cozy.exe` so I can find it easily. I hope to make this process less annoying in the future.
 
-If you want to work on the engine itself, you'll need to have NPM installed; run `npm install` in .engine/resources/app/.
+Right now, you will need to have npm installed, and to get up and running, you'll need to have NPM installed; run `npm install` in `.engine/resources/app/`. I plan to make this a requirement only if you intend to work on the engine, eventually.
 
 
 ## Current technologies
@@ -27,6 +20,28 @@ If you want to work on the engine itself, you'll need to have NPM installed; run
 - PIXI.js: <http://www.pixijs.com/>
 - Underscore: <http://underscorejs.org>
 - Typescript: <http://typescriptlang.org>
+
+
+## Plans
+
+I have a lot of games I want to make at some point and/or have been working on for more than a decade. I keep trying other engines and finding something distasteful about them; I figured if I made my own at least I couldn't blame anyone else. I could also build it with the tools that I am most familiar with and so afford me the most pleasant working environment -- as such the main basis of the engine are web technologies, like HTML and JS.
+
+If you want to use the engine have a use-case that I'm not meeting, we should talk. For the time being I'm focusing on what I need but maybe there's something I haven't thought of which would be great, or something I'm already planning that I could shuffle forward on the roadmap.
+
+
+## Examples
+
+- **SimpleQuest** - SimpleQuest, a small but complete RPG
+    - See simplequest/README.md for more information
+    - Currently still a work in progress
+- **vn** - VisualNovel, a barebones swipe at making a visual novel engine
+    - Will eventually form the basis of a VisualNovelKit
+    - Heavily uh, inspired, by [The Sagittarian](http://www.newgrounds.com/portal/view/560868) by [Hyptosis](http://www.lorestrome.com)
+- **examples/CozyInvaders** - A simple 2-player pong game
+- **examples/CozyPong** - A partial Space Invaders clone
+- **toys** - Random junk that demonstrates something
+
+To run the examples, simply click them in the game list in the launcher.
 
 
 ## Roadmap/"Plan"
@@ -123,21 +138,6 @@ Stuff I've thought of and would be nice, or might be useful. I may or may not ev
 - Other platforms
     - Browser
     - Mobile
-
-
-## Examples
-
-- **SimpleQuest** - SimpleQuest, a small but complete RPG
-    - See simplequest/README.md for more information
-    - Currently still a work in progress
-- **vn** - VisualNovel, a barebones swipe at making a visual novel engine
-    - Will eventually form the basis of a VisualNovelKit
-    - Heavily uh, inspired, by [The Sagittarian](http://www.newgrounds.com/portal/view/560868) by [Hyptosis](http://www.lorestrome.com)
-- **examples/CozyInvaders** - A simple 2-player pong game
-- **examples/CozyPong** - A partial Space Invaders clone
-- **toys** - Random junk that demonstrates something
-
-To run the examples, simply click them in the game list in the launcher.
 
 
 
