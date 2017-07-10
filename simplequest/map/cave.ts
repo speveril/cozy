@@ -62,7 +62,7 @@ module SimpleQuest {
                     yield *RPG.Scene.waitTextbox("KOBOLDS", ["Ha ha ho!"]);
 
                     koboldA.hop(8);
-                    yield *RPG.Scene.waitTextbox("KOBOLD", ["Wait! Human there!", "No tribute, think it's a hero!"]);
+                    yield *RPG.Scene.waitTextbox("KOBOLD", ["Wait! Human there!", "Has no tribute, think it's a hero!"]);
 
                     koboldB.dir = 90;
                     koboldB.emote('!');
@@ -72,8 +72,8 @@ module SimpleQuest {
                     koboldB.clearEmote();
 
 
-                    koboldA.behavior = RPG.Behavior['path'](koboldA, [[ 270, 9 * RPG.map.tileSize.y]]);
-                    koboldB.behavior = RPG.Behavior['path'](koboldB, [[ 180, 1.5 * RPG.map.tileSize.y], [ 90, 0]]);
+                    koboldA.behavior = RPG.Behavior['path'](koboldA, [[ 270, 9 * RPG.map.tileSize.y ]]);
+                    koboldB.behavior = RPG.Behavior['path'](koboldB, [[ 180, 1.5 * RPG.map.tileSize.y ], [ 90, 0]]);
                     yield *RPG.Scene.waitTime((1.5 * RPG.map.tileSize.y) / koboldB.speed);
 
                     koboldB.hop(8);

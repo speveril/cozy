@@ -312,7 +312,7 @@ module RPG.BattleSystem.SoloFrontView {
                         let it = Item.library[t.item];
                         let count = (t.count === undefined ? 1 : RPG.Dice.roll(null, t.count));
                         if (count > 0) {
-                            loot.push(`${it.iconHTML}${it.name}`);
+                            loot.push(`${it.iconHTML}${it.name}${count > 1 ? ' x' + count : ''}`);
                             Party.inventory.add(t.item, count);
                         }
                     }
