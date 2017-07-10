@@ -20,6 +20,7 @@ module RPG {
         }
 
         static strike(source:any, target:any, type:string, damageRoll:string):any {
+            // TODO allow a dodge?
             let damage = target.modifiedDamage(Dice.roll(source, damageRoll), type);
             target.hp -= damage;
             return { success:true, hpChange:-damage };

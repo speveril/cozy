@@ -40,10 +40,6 @@ module RPG {
                 });
             }
 
-            if (this.treasure && this.treasure['money']) {
-                this.treasure['money'] = new RPG.Dice(this.treasure['money']);
-            }
-
             Character.attributes.forEach((attribute) => this.baseAttribute[attribute] = 0);
             this.adjust(args.attributes);
 

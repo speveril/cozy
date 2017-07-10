@@ -298,11 +298,41 @@ module RPG.BattleSystem.SoloFrontView {
                 this.output(`\nYou gained ${monster.xp} XP!`);
                 Party.each(function(ch:Character) { ch.xp += monster.xp; }.bind(this));
 
-                var money = monster.treasure.money.resolve();
-                this.output(`\nYou found ${money} ${RPG.moneyName}!`);
-                Party.money += money;
+                let money = 0;
+                let loot = [];
+                _.each(monster.treasure, (t:any) => {
+                    if (t.chance && Math.random() > t.chance) {
+                        return;
+                    }
 
-                // TODO non-monetary treasure
+                    if (t.item === '_money') {
+                        money += RPG.Dice.roll(null, t.count);
+                        Party.money += money;
+                    } else {
+                        let it = Item.library[t.item];
+                        let count = (t.count === undefined ? 1 : RPG.Dice.roll(null, t.count));
+                        if (count > 0) {
+                            loot.push(`${it.iconHTML}${it.name}`);
+                            Party.inventory.add(t.item, count);
+                        }
+                    }
+                });
+
+                if (money > 0) {
+                    loot.push(`${money} ${RPG.moneyName}`);
+                }
+
+                if (loot.length > 0) {
+                    if (loot.length === 1) {
+                        this.output("\nYou found " + loot[0] + "!");
+                    } else {
+                        let extra = loot.pop();
+                        this.output("\nYou found " + loot.join(",") + " and " + extra + "!");
+                    }
+                } else {
+                    this.output(`\nYou didn't find anything.`);
+                }
+                yield* RPG.Scene.waitTime(1.5);
             } else if (battleOutcome.playerEscaped) {
                 // TODO sound
                 this.output(`\nYou escaped!`);
