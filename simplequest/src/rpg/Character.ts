@@ -6,7 +6,7 @@ module RPG {
         name:string = '';
 
         private _xp:number = 0;
-        private _level:number = 1;
+        private _level:number = 0;
         private _hp:number;
         maxhp:number;
         sprite:string;
@@ -19,19 +19,26 @@ module RPG {
         private baseAttribute:{ [key:string]:number } = {};
         private effectiveAttribute:{ [key:string]:number } = {};
 
-        levels:number[] = [];
+        levels:Array<any>;
         equipped:{ [key:string]: Item } = {};
 
         constructor(args:any) {
-            this.name     = args.name;
-            this.sprite   = args.sprite;
-            this.maxhp    = _.has(args, 'maxhp') ? args.maxhp : args.hp;
-            this.treasure = _.clone(args.treasure);
-            this.xp       = args.xp || 0;
-            this.levels   = args.levels;
-            this.portrait = args.portrait || '';
-            this.title    = args.title || '';
-            this.traits   = args.traits ? _.clone(args.traits) : [];
+            Character.attributes.forEach((attribute) => this.baseAttribute[attribute] = 0);
+
+            this.name        = args.name;
+            this.sprite      = args.sprite;
+            this.levels      = args.levels || [];
+            this.treasure    = _.clone(args.treasure);
+
+            if (args.levels && this.levels[0] !== null) { // correct for 1-based level table
+                this.levels.unshift(null);
+            }
+
+            this.maxhp       = _.has(args, 'maxhp') ? args.maxhp : args.hp;
+            this.xp          = args.xp || 0;
+            this.portrait    = args.portrait || '';
+            this.title       = args.title || '';
+            this.traits      = args.traits ? _.clone(args.traits) : [];
 
             if (args.equipped) {
                 _.each(args.equipped, (itemKey:string, slotKey:string) => {
@@ -40,8 +47,9 @@ module RPG {
                 });
             }
 
-            Character.attributes.forEach((attribute) => this.baseAttribute[attribute] = 0);
-            this.adjust(args.attributes);
+            if (args.attributes) {
+                this.adjust(args.attributes);
+            }
 
             this.hp = _.has(args, 'hp') ? args.hp : this.maxhp;
         }
@@ -116,6 +124,17 @@ module RPG {
 
         levelUp(level:number):void {
             this._level = level;
+
+            let lv = this.levels[this._level];
+            Character.attributes.forEach((attribute) => this.baseAttribute[attribute] = lv[attribute] || this.baseAttribute[attribute]);
+
+            if (lv.hp) {
+                let gain = lv.hp - this.maxhp;
+                this.maxhp = lv.hp;
+                this.hp += gain;
+            }
+
+            // TODO same way of gaining abilities, but SimpleQuest doesn't have them yet, so TBD
         }
 
         equipItem(item:Item, slot:string) {
@@ -174,19 +193,15 @@ module RPG {
         modifiedDamage(amount:number, type:string):number {
             let damage = amount;
             if (this.hasTrait('vulnerable:' + type)) {
-                console.log("VULN", type);
                 damage *= 2;
             }
             if (this.hasTrait('resist:' + type)) {
-                console.log("RESIST", type);
                 damage *= 0.5;
             }
             if (this.hasTrait('immune:' + type)) {
-                console.log("IMMUNE", type);
                 damage = 0;
             }
             if (this.hasTrait('absorb:' + type)) {
-                console.log("ABSORB", type);
                 damage = -damage;
             }
             return Math.round(damage);
@@ -198,7 +213,7 @@ module RPG {
 
         set xp(n:number) {
             this._xp = n;
-            while (this._xp >= this.levels[this.level]) {
+            while (this.levels[this.level + 1] && this._xp >= this.levels[this.level + 1].xp) {
                 this.levelUp(this.level + 1);
             }
         }

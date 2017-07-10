@@ -215,15 +215,17 @@ module SimpleQuest {
                     title: "Fighter",
                     portrait: "ui/portrait-hero.png",
                     sprite: "sprites/hero.sprite",
-                    attributes: {
-                        damage: 15,
-                        critical: 5,
-                        dodge: 5,
-                        block: 5,
-                        defense: 10,
-                    },
                     hp: 100,
-                    levels: [ 0, 100, 200, 500, 1000, 2000, 5000, 10000 ],
+                    levels: [
+                        { xp:    0, damage:10, critical: 5, dodge: 3, block: 5, defense: 5, hp: 100 },
+                        { xp:  100, damage:13, critical: 5, dodge: 5, block: 6, defense:10, hp: 125 },
+                        { xp:  200, damage:17, critical: 7, dodge: 8, block: 8, defense:15, hp: 150 },
+                        { xp:  500, damage:22, critical: 7, dodge:11, block:11, defense:20, hp: 200 },
+                        { xp: 1000, damage:28, critical:10, dodge:14, block:15, defense:25, hp: 250 },
+                        { xp: 2000, damage:35, critical:10, dodge:17, block:20, defense:30, hp: 300 },
+                        { xp: 5000, damage:45, critical:15, dodge:21, block:26, defense:35, hp: 400 },
+                        { xp:10000, damage:60, critical:33, dodge:25, block:33, defense:40, hp: 500 },
+                    ],
                     equipped: {
                         weapon: 'oak_sword',
                         armor:  'quilt_armor'
