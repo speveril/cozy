@@ -221,14 +221,12 @@ module RPG.BattleSystem.SoloFrontView {
                     this.outputEffectResult(player, result);
                 }
 
-
                 if (monsterAction.flee) {
                     this.output(`\nThe ${monster.name} tries to run away.`);
                     result = this.resolveFlee(monster, player);
                     if (result.success) battleOutcome = { monsterEscaped: true };
                     else this.output(`\nIt doesn't get away!`);
                 }
-
 
                 // switch(monsterAction.type) {
                 //     case 'fight':
@@ -368,8 +366,6 @@ module RPG.BattleSystem.SoloFrontView {
             }
 
             let maxchance = _.reduce(actions, (x:number, act:any) => x + act._chance, 0);
-            console.log("<maxchance>", maxchance);
-
             let roll = Math.random() * maxchance;
             for (let i = 0; i < actions.length; i++) {
                 if (roll < actions[i]._chance) {

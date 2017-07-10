@@ -4,11 +4,12 @@
         "hp":75,
         "treasure":[
             {
-                "count":"1d6+6",
+                "count":"2d8+20",
                 "item":"_money"
             },
             {
-                "item":"tonic"
+                "item":"dart_scroll",
+                "chance":25
             }
         ],
         "actions":[
@@ -51,11 +52,24 @@
         "hp":1000,
         "treasure":[
             {
-                "count":"1d6+6",
+                "count":"3d100+200",
                 "item":"_money"
             },
             {
-                "item":"tonic"
+                "count":2,
+                "item":"elixir"
+            },
+            {
+                "count":"2d3",
+                "item":"firebolt_scroll"
+            },
+            {
+                "count":"2d3",
+                "item":"iceshard_scroll"
+            },
+            {
+                "count":"2d3",
+                "item":"shock_scroll"
             }
         ],
         "actions":[
@@ -80,7 +94,7 @@
                     "3d10 + 35"
                 ],
                 "_chance":25,
-                "_sound":"effect_fire",
+                "_sound":"effect_lightning",
                 "_message":"The lich casts Shock!"
             },
             {
@@ -89,7 +103,7 @@
                     "3d10 + 35"
                 ],
                 "_chance":25,
-                "_sound":"effect_fire",
+                "_sound":"effect_ice",
                 "_message":"The lich casts Ice Shard!"
             }
         ],
@@ -109,15 +123,7 @@
     "bat":{
         "name":"Bat",
         "hp":25,
-        "treasure":[
-            {
-                "count":"1d6+6",
-                "item":"_money"
-            },
-            {
-                "item":"tonic"
-            }
-        ],
+        "treasure":[],
         "traits":[
             "vulnerable:lightning"
         ],
@@ -136,11 +142,16 @@
         "hp":100,
         "treasure":[
             {
-                "count":"1d6+6",
+                "count":"2d10+10",
                 "item":"_money"
             },
             {
-                "item":"tonic"
+                "item":"short_sword",
+                "chance":10
+            },
+            {
+                "item":"leather_coat",
+                "chance":5
             }
         ],
         "traits":[
@@ -159,15 +170,7 @@
     "firebat":{
         "name":"Fire Bat",
         "hp":300,
-        "treasure":[
-            {
-                "count":"1d6+6",
-                "item":"_money"
-            },
-            {
-                "item":"tonic"
-            }
-        ],
+        "treasure":[],
         "traits":[
             "vulnerable:ice",
             "resist:fire",
@@ -188,11 +191,12 @@
         "hp":250,
         "treasure":[
             {
-                "count":"1d6+6",
-                "item":"_money"
+                "item":"potion",
+                "chance":33
             },
             {
-                "item":"tonic"
+                "item":"iceshard_scroll",
+                "chance":20
             }
         ],
         "traits":[
@@ -213,11 +217,12 @@
         "hp":350,
         "treasure":[
             {
-                "count":"1d6+6",
-                "item":"_money"
+                "item":"potion",
+                "chance":33
             },
             {
-                "item":"tonic"
+                "item":"firebolt_scroll",
+                "chance":20
             }
         ],
         "traits":[
@@ -238,11 +243,58 @@
         "hp":600,
         "treasure":[
             {
-                "count":"1d6+6",
+                "count":"1d100+150",
                 "item":"_money"
             },
             {
-                "item":"tonic"
+                "item":"elixir"
+            },
+            {
+                "count":"1d3",
+                "item":"firebolt_scroll"
+            },
+            {
+                "count":"1d3",
+                "item":"iceshard_scroll"
+            },
+            {
+                "count":"1d3",
+                "item":"shock_scroll"
+            }
+        ],
+        "actions":[
+            {
+                "_chance":66,
+                "basicAttack":[
+                    "physical"
+                ]
+            },
+            {
+                "strike":[
+                    "fire",
+                    "2d10 + 25"
+                ],
+                "_chance":11,
+                "_sound":"effect_fire",
+                "_message":"The cult leader casts Fire Bolt!"
+            },
+            {
+                "strike":[
+                    "shock",
+                    "2d10 + 25"
+                ],
+                "_chance":11,
+                "_sound":"effect_lightning",
+                "_message":"The cult leader casts Shock!"
+            },
+            {
+                "strike":[
+                    "ice",
+                    "2d10 + 25"
+                ],
+                "_chance":11,
+                "_sound":"effect_ice",
+                "_message":"The cult leader casts Ice Shard!"
             }
         ],
         "attributes":{
@@ -260,11 +312,12 @@
         "hp":250,
         "treasure":[
             {
-                "count":"1d6+6",
-                "item":"_money"
+                "item":"potion",
+                "chance":33
             },
             {
-                "item":"tonic"
+                "item":"shock_scroll",
+                "chance":20
             }
         ],
         "traits":[
@@ -285,11 +338,12 @@
         "hp":50,
         "treasure":[
             {
-                "count":"1d6+6",
-                "item":"_money"
+                "item":"oak_sword",
+                "chance":15
             },
             {
-                "item":"tonic"
+                "item":"oak_shield",
+                "chance":10
             }
         ],
         "traits":[
@@ -310,11 +364,24 @@
         "hp":500,
         "treasure":[
             {
-                "count":"1d6+6",
+                "count":"4d20+50",
                 "item":"_money"
             },
             {
-                "item":"tonic"
+                "item":"tonic",
+                "chance":50
+            },
+            {
+                "item":"potion",
+                "chance":20
+            },
+            {
+                "item":"arming_sword",
+                "chance":7
+            },
+            {
+                "item":"breastplate",
+                "chance":7
             }
         ],
         "traits":[
@@ -335,11 +402,37 @@
         "hp":200,
         "treasure":[
             {
-                "count":"1d6+6",
+                "count":"6d20+5",
                 "item":"_money"
             },
             {
-                "item":"tonic"
+                "count":"1d4",
+                "item":"tonic",
+                "chance":50
+            },
+            {
+                "item":"potion",
+                "chance":10
+            },
+            {
+                "item":"short_sword",
+                "chance":10
+            },
+            {
+                "item":"chain_shirt",
+                "chance":5
+            }
+        ],
+        "actions":[
+            {
+                "_chance":75,
+                "basicAttack":[
+                    "physical"
+                ]
+            },
+            {
+                "flee":[],
+                "_chance":25
             }
         ],
         "attributes":{
@@ -357,11 +450,16 @@
         "hp":250,
         "treasure":[
             {
-                "count":"1d6+6",
+                "count":"3d12+30",
                 "item":"_money"
             },
             {
-                "item":"tonic"
+                "item":"arming_sword",
+                "chance":5
+            },
+            {
+                "item":"chain_shirt",
+                "chance":5
             }
         ],
         "attributes":{
@@ -383,7 +481,8 @@
                 "item":"_money"
             },
             {
-                "item":"tonic"
+                "item":"tonic",
+                "chance":33
             }
         ],
         "attributes":{

@@ -1,116 +1,482 @@
 {
-    "tonic": {
-        "name": "Tonic", "price": 15, "icon": "ui/item_icons.png", "icon_frame": [0,14], "description": "A light healing potion. Restores 50 HP.", "sort": 0.01,
-        "canStack": true, "use": { "_target": "ally", "_sound":"effect_heal", "heal": [ 50 ] }
+    "heater":{
+        "sort":"20.03",
+        "slot":"shield",
+        "icon_frame":[
+            112,
+            28
+        ],
+        "description":"A classic steel shield.",
+        "price":500,
+        "name":"Heater",
+        "equip":{
+            "attributes":{
+                "block":15
+            }
+        },
+        "icon":"ui/item_icons.png"
     },
-    "potion": {
-        "name": "Potion", "price": 50, "icon": "ui/item_icons.png", "icon_frame": [14,14], "description": "A healing potion. Restores 150 HP.", "sort": 0.02,
-        "canStack": true, "use": { "_target": "ally", "_sound":"effect_heal", "heal": [ 150 ] }
+    "shock_scroll":{
+        "sort":"5.02",
+        "use":{
+            "strike":[
+                "lightning",
+                "3d10 + 35"
+            ],
+            "_sound":"effect_lightning",
+            "_context":"combat",
+            "_target":"enemy"
+        },
+        "icon_frame":[
+            56,
+            0
+        ],
+        "description":"Strikes a monster with a bolt of magical lightning.",
+        "price":150,
+        "icon":"ui/item_icons.png",
+        "canStack":true,
+        "name":"Shock"
     },
-    "elixir": {
-        "name": "Elixir", "price": 200, "icon": "ui/item_icons.png", "icon_frame": [28,14], "description": "A powerful healing potion. Restores 500 HP.", "sort": 0.03,
-        "canStack": true, "use": { "_target": "ally", "_sound":"effect_heal", "heal": [ 500 ] }
+    "short_sword":{
+        "sort":"10.02",
+        "slot":"weapon",
+        "icon_frame":[
+            14,
+            0
+        ],
+        "description":"A small sword for stabbing. Easy on the budget.",
+        "price":100,
+        "name":"Short Sword",
+        "equip":{
+            "attributes":{
+                "critical":5,
+                "damage":15
+            }
+        },
+        "icon":"ui/item_icons.png"
     },
-
-    "dart_scroll": {
-        "name": "Magic Dart", "price": 150, "icon": "ui/item_icons.png", "icon_frame": [56,0], "description": "Strikes a monster with a magical dart of force.", "sort": 5.01,
-        "canStack": true, "use": { "_target": "enemy", "_context": "combat", "_sound":"effect_force", "strike": [ "force", "3d10 + 35" ] }
+    "dart_scroll":{
+        "sort":"5.01",
+        "use":{
+            "strike":[
+                "force",
+                "3d10 + 35"
+            ],
+            "_sound":"effect_force",
+            "_context":"combat",
+            "_target":"enemy"
+        },
+        "icon_frame":[
+            56,
+            0
+        ],
+        "description":"Strikes a monster with a magical dart of force.",
+        "price":150,
+        "icon":"ui/item_icons.png",
+        "canStack":true,
+        "name":"Magic Dart"
     },
-    "firebolt_scroll": {
-        "name": "Fire Bolt", "price": 150, "icon": "ui/item_icons.png", "icon_frame": [56,0], "description": "Strikes a monster with a magical dart of force.", "sort": 5.01,
-        "canStack": true, "use": { "_target": "enemy", "_context": "combat", "_sound":"effect_fire", "strike": [ "fire", "3d10 + 35" ] }
+    "steel_key":{
+        "sort":"95.02",
+        "icon_frame":[
+            98,
+            14
+        ],
+        "sellable":false,
+        "description":"A steel key from the Haunted Castle.",
+        "icon":"ui/item_icons.png",
+        "name":"Steel Key"
     },
-    "iceshard_scroll": {
-        "name": "Ice Shard", "price": 150, "icon": "ui/item_icons.png", "icon_frame": [56,0], "description": "Strikes a monster with a magical dart of force.", "sort": 5.01,
-        "canStack": true, "use": { "_target": "enemy", "_context": "combat", "_sound":"effect_ice", "strike": [ "ice", "3d10 + 35" ] }
+    "oak_shield":{
+        "sort":"20.02",
+        "slot":"shield",
+        "icon_frame":[
+            98,
+            28
+        ],
+        "description":"A stout wooden shield. Too small to make a good table.",
+        "price":150,
+        "name":"Oak Shield",
+        "equip":{
+            "attributes":{
+                "block":10
+            }
+        },
+        "icon":"ui/item_icons.png"
     },
-    "shock_scroll": {
-        "name": "Shock", "price": 150, "icon": "ui/item_icons.png", "icon_frame": [56,0], "description": "Strikes a monster with a magical dart of force.", "sort": 5.01,
-        "canStack": true, "use": { "_target": "enemy", "_context": "combat", "_sound":"effect_lightning", "strike": [ "lightning", "3d10 + 35" ] }
+    "helmet":{
+        "sort":"30.11",
+        "slot":"accessory",
+        "icon_frame":[
+            112,
+            42
+        ],
+        "description":"Covers your head. That seems important.",
+        "price":500,
+        "name":"Helmet",
+        "equip":{
+            "attributes":{
+                "defense":3
+            }
+        },
+        "icon":"ui/item_icons.png"
     },
-
-    "oak_sword": {
-        "name": "Oak Sword", "price": 5, "icon": "ui/item_icons.png", "icon_frame": [0,0], "description": "Made of wood. Might still hurt.", "sort": 10.00,
-        "slot": "weapon", "equip": { "attributes": { "critical": 0, "damage": 7 } }
+    "great_sword":{
+        "sort":"10.04",
+        "slot":"weapon",
+        "icon_frame":[
+            42,
+            0
+        ],
+        "description":"Probably the best sword you've ever seen.",
+        "price":1500,
+        "name":"Great Sword",
+        "equip":{
+            "attributes":{
+                "critical":15,
+                "damage":60
+            }
+        },
+        "icon":"ui/item_icons.png"
     },
-    "short_sword": {
-        "name": "Short Sword", "price": 100, "icon": "ui/item_icons.png", "icon_frame": [14,0], "description": "A small sword for stabbing. Easy on the budget.", "sort": 10.01,
-        "slot": "weapon", "equip": { "attributes": { "critical": 5, "damage": 15 } }
+    "quilt_armor":{
+        "sort":"15.01",
+        "slot":"armor",
+        "icon_frame":[
+            0,
+            28
+        ],
+        "description":"A very thick shirt. Better than nothing.",
+        "price":10,
+        "name":"Quilt Armor",
+        "equip":{
+            "attributes":{
+                "defense":1
+            }
+        },
+        "icon":"ui/item_icons.png"
     },
-    "arming_sword": {
-        "name": "Arming Sword", "price": 300, "icon": "ui/item_icons.png", "icon_frame": [28,0], "description": "A steel sword. Popular in fights the world over.", "sort": 10.02,
-        "slot": "weapon", "equip": { "attributes": { "critical": 10, "damage": 30 } }
+    "magic_armor":{
+        "sort":"15.06",
+        "slot":"armor",
+        "icon_frame":[
+            70,
+            28
+        ],
+        "description":"It's oh, so magical.",
+        "price":3000,
+        "name":"Magic Armor",
+        "equip":{
+            "attributes":{
+                "defense":35
+            }
+        },
+        "icon":"ui/item_icons.png"
     },
-    "great_sword": {
-        "name": "Great Sword", "price": 1500, "icon": "ui/item_icons.png", "icon_frame": [42,0], "description": "Probably the best sword you've ever seen.", "sort": 10.02,
-        "slot": "weapon", "equip": { "attributes": { "critical": 15, "damage": 60 } }
+    "iceshard_scroll":{
+        "sort":"5.02",
+        "use":{
+            "strike":[
+                "ice",
+                "3d10 + 35"
+            ],
+            "_sound":"effect_ice",
+            "_context":"combat",
+            "_target":"enemy"
+        },
+        "icon_frame":[
+            56,
+            0
+        ],
+        "description":"Strikes a monster with a shard of mystical ice.",
+        "price":150,
+        "icon":"ui/item_icons.png",
+        "canStack":true,
+        "name":"Ice Shard"
     },
-
-    "quilt_armor": {
-        "name": "Quilt Armor", "price": 10, "icon": "ui/item_icons.png", "icon_frame": [0,28], "description": "A very thick shirt. Better than nothing.", "sort": 15.00,
-        "slot": "armor", "equip": { "attributes": { "defense": 1 } }
+    "gold_key":{
+        "sort":"95.03",
+        "icon_frame":[
+            112,
+            14
+        ],
+        "sellable":false,
+        "description":"A golden key to open the locked ruins in the Dark Forest.",
+        "icon":"ui/item_icons.png",
+        "name":"Gold Key"
     },
-    "leather_coat": {
-        "name": "Leather Coat", "price": 100, "icon": "ui/item_icons.png", "icon_frame": [14,28], "description": "A leather coat. Some idiot has covered it in studs.", "sort": 15.01,
-        "slot": "armor", "equip": { "attributes": { "defense": 5 } }
+    "tonic":{
+        "sort":"0.01",
+        "use":{
+            "_sound":"effect_heal",
+            "heal":[
+                50
+            ],
+            "_target":"ally"
+        },
+        "icon_frame":[
+            0,
+            14
+        ],
+        "description":"A light healing potion. Restores 50 HP.",
+        "price":15,
+        "icon":"ui/item_icons.png",
+        "canStack":true,
+        "name":"Tonic"
     },
-    "chain_shirt": {
-        "name": "Chain Shirt", "price": 250, "icon": "ui/item_icons.png", "icon_frame": [28,28], "description": "A shirt of mail rings. Heavy, but excellent ventilation.", "sort": 15.02,
-        "slot": "armor", "equip": { "attributes": { "defense": 10 } }
+    "potion":{
+        "sort":"0.02",
+        "use":{
+            "_sound":"effect_heal",
+            "heal":[
+                150
+            ],
+            "_target":"ally"
+        },
+        "icon_frame":[
+            14,
+            14
+        ],
+        "description":"A healing potion. Restores 150 HP.",
+        "price":50,
+        "icon":"ui/item_icons.png",
+        "canStack":true,
+        "name":"Potion"
     },
-    "breastplate": {
-        "name": "Breastplate", "price": 750, "icon": "ui/item_icons.png", "icon_frame": [42,28], "description": "A metal breastplate. Makes your abs look great.", "sort": 15.03,
-        "slot": "armor", "equip": { "attributes": { "defense": 15 } }
+    "arming_sword":{
+        "sort":"10.03",
+        "slot":"weapon",
+        "icon_frame":[
+            28,
+            0
+        ],
+        "description":"A steel sword. Popular in fights the world over.",
+        "price":300,
+        "name":"Arming Sword",
+        "equip":{
+            "attributes":{
+                "critical":10,
+                "damage":30
+            }
+        },
+        "icon":"ui/item_icons.png"
     },
-    "plate_armor": {
-        "name": "Plate Armor", "price": 1500, "icon": "ui/item_icons.png", "icon_frame": [56,28], "description": "Armored plates over chain mail. The best in protection.", "sort": 15.04,
-        "slot": "armor", "equip": { "attributes": { "defense": 25 } }
+    "breastplate":{
+        "sort":"15.04",
+        "slot":"armor",
+        "icon_frame":[
+            42,
+            28
+        ],
+        "description":"A metal breastplate. Makes your abs look great.",
+        "price":750,
+        "name":"Breastplate",
+        "equip":{
+            "attributes":{
+                "defense":15
+            }
+        },
+        "icon":"ui/item_icons.png"
     },
-    "magic_armor": {
-        "name": "Magic Armor", "price": 3000, "icon": "ui/item_icons.png", "icon_frame": [70,28], "description": "It's oh, so magical.", "sort": 15.05,
-        "slot": "armor", "equip": { "attributes": { "defense": 35 } }
+    "horned_helm":{
+        "sort":"30.12",
+        "slot":"accessory",
+        "icon_frame":[
+            126,
+            42
+        ],
+        "description":"There are horns on this helmet. Sure, why not?",
+        "price":1500,
+        "name":"Horned Helm",
+        "equip":{
+            "attributes":{
+                "defense":5
+            }
+        },
+        "icon":"ui/item_icons.png"
     },
-
-    "buckler": {
-        "name": "Buckler", "price": 75, "icon": "ui/item_icons.png", "icon_frame": [84,28], "description": "A very small shield.", "sort": 20.00,
-        "slot": "shield", "equip": { "attributes": { "block": 5 } }
+    "leather_coat":{
+        "sort":"15.02",
+        "slot":"armor",
+        "icon_frame":[
+            14,
+            28
+        ],
+        "description":"A leather coat. Some idiot has covered it in studs.",
+        "price":100,
+        "name":"Leather Coat",
+        "equip":{
+            "attributes":{
+                "defense":5
+            }
+        },
+        "icon":"ui/item_icons.png"
     },
-    "oak_shield": {
-        "name": "Oak Shield", "price": 150, "icon": "ui/item_icons.png", "icon_frame": [98,28], "description": "A stout wooden shield. Too small to make a good table.", "sort": 20.01,
-        "slot": "shield", "equip": { "attributes": { "block": 10 } }
+    "amulet":{
+        "sort":"30.01",
+        "slot":"accessory",
+        "icon_frame":[
+            0,
+            42
+        ],
+        "description":"Feels a little bit lucky, whatever that means.",
+        "price":300,
+        "name":"Amulet",
+        "equip":{
+            "attributes":{
+                "dodge":1,
+                "critical":1,
+                "block":1
+            }
+        },
+        "icon":"ui/item_icons.png"
     },
-    "heater": {
-        "name": "Heater", "price": 500, "icon": "ui/item_icons.png", "icon_frame": [112,28], "description": "A classic steel shield.", "sort": 20.02,
-        "slot": "shield", "equip": { "attributes": { "block": 15 } }
+    "chain_shirt":{
+        "sort":"15.03",
+        "slot":"armor",
+        "icon_frame":[
+            28,
+            28
+        ],
+        "description":"A shirt of mail rings. Heavy, but excellent ventilation.",
+        "price":250,
+        "name":"Chain Shirt",
+        "equip":{
+            "attributes":{
+                "defense":10
+            }
+        },
+        "icon":"ui/item_icons.png"
     },
-    "sun_shield": {
-        "name": "Sun Shield", "price": 1500, "icon": "ui/item_icons.png", "icon_frame": [126,28], "description": "A heavy magical shield. Adorned with the sign of the sun.", "sort": 20.03,
-        "slot": "shield", "equip": { "attributes": { "block": 25 } }
+    "sun_shield":{
+        "sort":"20.04",
+        "slot":"shield",
+        "icon_frame":[
+            126,
+            28
+        ],
+        "description":"A heavy magical shield. Adorned with the sign of the sun.",
+        "price":1500,
+        "name":"Sun Shield",
+        "equip":{
+            "attributes":{
+                "block":25
+            }
+        },
+        "icon":"ui/item_icons.png"
     },
-
-    "amulet": {
-        "name": "Amulet", "price": 300, "icon": "ui/item_icons.png", "icon_frame": [0,42], "description": "Feels a little bit lucky, whatever that means.", "sort": 30.00,
-        "slot": "accessory", "equip": { "attributes": { "dodge": 1, "block": 1, "critical": 1 } }
+    "elixir":{
+        "sort":"0.03",
+        "use":{
+            "_sound":"effect_heal",
+            "heal":[
+                500
+            ],
+            "_target":"ally"
+        },
+        "icon_frame":[
+            28,
+            14
+        ],
+        "description":"A powerful healing potion. Restores 500 HP.",
+        "price":200,
+        "icon":"ui/item_icons.png",
+        "canStack":true,
+        "name":"Elixir"
     },
-    "helmet": {
-        "name": "Helmet", "price": 500, "icon": "ui/item_icons.png", "icon_frame": [112,42], "description": "Covers your head. That seems important.", "sort": 30.00,
-        "slot": "accessory", "equip": { "attributes": { "defense": 3 } }
+    "oak_sword":{
+        "sort":"10.01",
+        "slot":"weapon",
+        "icon_frame":[
+            0,
+            0
+        ],
+        "description":"Made of wood. Might still hurt.",
+        "price":5,
+        "name":"Oak Sword",
+        "equip":{
+            "attributes":{
+                "critical":0,
+                "damage":7
+            }
+        },
+        "icon":"ui/item_icons.png"
     },
-    "horned_helm": {
-        "name": "Horned Helm", "price": 1500, "icon": "ui/item_icons.png", "icon_frame": [126,42], "description": "There are horns on this helmet. Sure, why not?", "sort": 30.00,
-        "slot": "accessory", "equip": { "attributes": { "defense": 5 } }
+    "firebolt_scroll":{
+        "sort":"5.02",
+        "use":{
+            "strike":[
+                "fire",
+                "3d10 + 35"
+            ],
+            "_sound":"effect_fire",
+            "_context":"combat",
+            "_target":"enemy"
+        },
+        "icon_frame":[
+            56,
+            0
+        ],
+        "description":"Strikes a monster with a burst of arcane flame.",
+        "price":150,
+        "icon":"ui/item_icons.png",
+        "canStack":true,
+        "name":"Fire Bolt"
     },
-
-    "iron_key": {
-        "name": "Iron Key", "sellable": false, "icon": "ui/item_icons.png", "icon_frame": [84,14], "description": "An iron key taken from the cultists in the Dark Forest.", "sort": 95.00
+    "massive_key":{
+        "sort":"95.04",
+        "icon_frame":[
+            126,
+            14
+        ],
+        "sellable":false,
+        "description":"A big, heavy key.",
+        "icon":"ui/item_icons.png",
+        "name":"Massive Key"
     },
-    "steel_key": {
-        "name": "Steel Key", "sellable": false, "icon": "ui/item_icons.png", "icon_frame": [98,14], "description": "A steel key from the Haunted Castle.", "sort": 95.01
+    "iron_key":{
+        "sort":"95.01",
+        "icon_frame":[
+            84,
+            14
+        ],
+        "sellable":false,
+        "description":"An iron key taken from the cultists in the Dark Forest.",
+        "icon":"ui/item_icons.png",
+        "name":"Iron Key"
     },
-    "gold_key": {
-        "name": "Gold Key", "sellable": false, "icon": "ui/item_icons.png", "icon_frame": [112,14], "description": "A golden key to open the locked ruins in the Dark Forest.", "sort": 95.02
+    "buckler":{
+        "sort":"20.01",
+        "slot":"shield",
+        "icon_frame":[
+            84,
+            28
+        ],
+        "description":"A very small shield.",
+        "price":75,
+        "name":"Buckler",
+        "equip":{
+            "attributes":{
+                "block":5
+            }
+        },
+        "icon":"ui/item_icons.png"
     },
-    "massive_key": {
-        "name": "Massive Key", "sellable": false, "icon": "ui/item_icons.png", "icon_frame": [126,14], "description": "A big, heavy key.", "sort": 95.02
+    "plate_armor":{
+        "sort":"15.05",
+        "slot":"armor",
+        "icon_frame":[
+            56,
+            28
+        ],
+        "description":"Armored plates over chain mail. The best in protection.",
+        "price":1500,
+        "name":"Plate Armor",
+        "equip":{
+            "attributes":{
+                "defense":25
+            }
+        },
+        "icon":"ui/item_icons.png"
     }
 }
