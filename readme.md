@@ -29,16 +29,11 @@ If you want to work on the engine itself, you'll need to have NPM installed; run
 - Typescript: <http://typescriptlang.org>
 
 
-## Roadmap
-
-This is stuff I intend to do, and/or am actively working on. I'm trying to keep this up to date with my commits.
+## Roadmap/"Plan"
 
 - Simple Quest/RPGKit specific
-    - Flesh out rest of world
-        - "story" sequences
-        - monsters, fights
-    - ? add a way to get the outcome of a battle so that code may respond to it differently -- victory vs. flee vs. defeat
-    - ? allow to lose a battle without a game over
+    - Figure out what to do when player flees
+    - Double check licensing and attributions
     - ? hide debug map better
 - Bugs/Unsorted
     - Engine loading screen
@@ -46,20 +41,24 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
         - In-game input config
         - Defaults in project config.json
 - Exporting
-    - Make glob.js easier to recreate
     - Split config.json into necessary game setup vs. player configuration (bake non-player config into game setup on export, leave config as only player config, or play config should be in userdataDir)
-- Double check licensing and attributions for Simple Quest
-- **=== RELEASE 0.1 - SIMPLEQUEST, RPGKIT, BASIC FUNCTIONALITY ===**
+
+
+- **=== MILESTONE v0.1: SIMPLEQUEST RELEASE ===**
+
+- Figure out next milestone :|
 - Bugs/Unsorted
     - Move "ControlStack" idea into core
     - Allow crossfading music
     - Don't use <reference>, use imports etc. and something like webpack to generate the output
+    - Figure out seamless upgrades
 - Project Manager
     - Use an SVG library
     - Make browser NOT close the currently active game
         - or just revisit the whole browser interface in general
     - Manager should only run one game at a time, or at least only one copy of a particular game
 - Infrastructure
+    - Make glob.js easier to recreate
     - If a project has a `build.js`/`build.ts`, run it after TS compilation
     - Should be able to refresh/reset; the way the message waiting works, this doesn't work the way it should
 - Cozy.Sprite
@@ -69,7 +68,7 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
         - Do I need/want a true hierarchy, or just layers?
     - Support a 'keep' direction or something on sprite animation angles -- just keep playing the same direction as before
 - Testing
-    - Investigate this
+    - Investigate unit tests
 - Data Editor
     - Manage .json files; top level is an object with a ".schemas" key plus "tables" of typed objects
 - Reconcile File stuff
@@ -77,9 +76,6 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
 - Other platforms
     - Mac OS
     - Linux
-- **=== RELEASE 0.2 - GRAB THE GEMS, ACTIONADVENTUREKIT, QUALITY OF LIFE IMPROVEMENTS ===**
-- Bugs/Unsorted
-    - Figure out seamless upgrades
 - RPGKit
     - SavedGame should write a version number, and have upgrade functions; when loading a SavedGame, run through each necessary upgrade before returning it
     - Add scripted movement for entities on the map
@@ -91,6 +87,8 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
     - Menus need some polish
         - Menu should have .menu and .active; selection container should have .selections, and it should just get added by setupSelections
         - Need to provide a better way for menus to return a value to a previous menu -- promises?
+    - Allow to lose a battle without a game over
+    - Be able to get the outcome of a battle so that code may respond to it differently -- victory vs. flee vs. defeat
 - Documentation
     - Better docs on core functions
     - Higher level intro, etc
@@ -102,7 +100,9 @@ This is stuff I intend to do, and/or am actively working on. I'm trying to keep 
         - This is irrelevant for games once exported; they'll be packaged with the version they were used to create it
 - Testing
     - Don't ship without tests on engine core; lets me keep track of breaking changes, etc.
-- **=== RELEASE 1.0 - READY FOR PRIMETIME ===**
+
+
+- **=== RELEASE 1.0 ===**
 
 ## Wish list/Ideas (some day maybe):
 
