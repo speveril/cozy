@@ -46,6 +46,8 @@ To run the examples, simply click them in the game list in the launcher.
 
 ## Roadmap/"Plan"
 
+### `>>> PRERELEASE`
+
 - Simple Quest/RPGKit specific
     - Figure out what to do when player flees
     - Double check licensing and attributions
@@ -58,8 +60,7 @@ To run the examples, simply click them in the game list in the launcher.
 - Exporting
     - Split config.json into necessary game setup vs. player configuration (bake non-player config into game setup on export, leave config as only player config, or play config should be in userdataDir)
 
-
-- **=== MILESTONE v0.1: SIMPLEQUEST RELEASE ===**
+### `>>> MILESTONE v0.1: SIMPLEQUEST RELEASE`
 
 - Figure out next milestone :|
 - Bugs/Unsorted
@@ -117,7 +118,7 @@ To run the examples, simply click them in the game list in the launcher.
     - Don't ship without tests on engine core; lets me keep track of breaking changes, etc.
 
 
-- **=== RELEASE 1.0 ===**
+### `>>> RELEASE 1.0`
 
 ## Wish list/Ideas (some day maybe):
 
