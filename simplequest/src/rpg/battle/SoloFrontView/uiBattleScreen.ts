@@ -5,7 +5,7 @@ module RPG.BattleSystem.SoloFrontView {
         private monster:Character;
         private prevAttributes:any;
 
-        constructor(player, monster) {
+        constructor(player, monster, opts) {
             super({
                 className: 'battle-screen hide',
                 html: `
@@ -21,7 +21,7 @@ module RPG.BattleSystem.SoloFrontView {
 
             this.player = player;
             this.monster = monster;
-            this.actionMenu = new uiActionMenu(player, monster);
+            this.actionMenu = new uiActionMenu(player, monster, opts);
             this.addChild(this.actionMenu, '.right-sidebar');
             this.prevAttributes = {};
         }
@@ -56,16 +56,20 @@ module RPG.BattleSystem.SoloFrontView {
         private monster:Character;
         private _result:any;
 
-        constructor(player, monster) {
+        constructor(player, monster, opts) {
             super({
                 className: 'menu action-menu selections',
                 tagName: 'ul',
                 html: `
                     <li data-menu="fight">Fight</li>
                     <li data-menu="item">Item</li>
-                    <li data-menu="flee">Flee</li>
+                    <li data-menu="flee" class="flee">Flee</li>
                 `
             });
+
+            if (opts.noFlee) {
+                this.find('.flee').setAttribute('data-menu', '@disabled');
+            }
 
             this._result = {};
             this.player = player;

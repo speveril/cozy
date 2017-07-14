@@ -44,7 +44,12 @@ module RPG.BattleSystem.SoloFrontView {
             var monsterActions = this.monsters[args.enemy].actions;
             this.combatants = [player, monster];
 
-            var battleScreen = new uiBattleScreen(player, monster);
+            let opts = {};
+            if (args['noFlee']) {
+                opts['noFlee'] = true;
+            }
+
+            var battleScreen = new uiBattleScreen(player, monster, opts);
             this.uiPlane.addChild(battleScreen);
 
             let monsterLayer = this.renderPlane.addRenderLayer();

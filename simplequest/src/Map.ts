@@ -64,7 +64,8 @@ module SimpleQuest {
 
             let result = yield *RPG.Battle.waitBattle({
                 enemy: entity.params.monster,
-                scene: scene
+                scene: scene,
+                noFlee: (entity.params.noFlee === 'true')
             });
 
             if (result.playerEscaped) {
