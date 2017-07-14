@@ -10,16 +10,17 @@ module RPG {
         static start(args):Promise<any> {
             return new Promise((resolve, reject) => {
                 RPG.Scene.do(function *() {
-                    yield *Battle.waitBattle(args);
-                    resolve();
+                    let result = yield *Battle.waitBattle(args);
+                    resolve(result);
                 });
             });
         }
 
         static *waitBattle(args) {
             Battle.active = true;
-            yield *RPG.battleSystem.start(args);
+            let result = yield *RPG.battleSystem.start(args);
             Battle.active = false;
+            return result;
         }
 
         static isCombatant(ch:RPG.Character):boolean {

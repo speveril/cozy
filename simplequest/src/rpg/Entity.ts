@@ -23,6 +23,11 @@ module RPG {
         public solid:boolean;
 
         public spawn:PIXI.Point;
+        private _destroyed:boolean;
+
+        get destroyed():boolean {
+            return this._destroyed;
+        }
 
         get dir():number {
             return this.sprite.direction;
@@ -123,16 +128,15 @@ module RPG {
         }
 
         destroy() {
+            this._destroyed = true;
             var index = this.layer.entities.indexOf(this);
             this.layer.entities.splice(index, 1);
             this.sprite.layer.remove(this.sprite);
         }
 
         update(dt:number) {
-            // if (this.emoteSprite) {
-            //     this.emoteSprite.position = this.position;
-            // }
-
+            if (this._destroyed) return;
+            
             if (!this.paused) {
                 if (this.bouncing) {
                     this.bouncing.y += this.bouncing.vy * dt - (BOUNCE_GRAVITY * dt * dt) / 2;

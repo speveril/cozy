@@ -62,12 +62,14 @@ module SimpleQuest {
 
             var scene = this.battleScene || 'ui/battle/scene_placeholder.png';
 
-            yield *RPG.Battle.waitBattle({
+            let result = yield *RPG.Battle.waitBattle({
                 enemy: entity.params.monster,
                 scene: scene
             });
-            // TODO what if the player fled the battle?
-            if (!opts.leaveEntity) {
+
+            if (result.playerEscaped) {
+                entity.behavior = RPG.Behavior.stun(entity, 2, entity.behavior);
+            } else if (!opts.leaveEntity) {
                 entity.destroy();
             }
         }

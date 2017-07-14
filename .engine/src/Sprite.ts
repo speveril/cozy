@@ -19,6 +19,7 @@ module Cozy {
         currentAnimation: Array<any>;
         animationScratch: {};
         currentQuake: {};
+        currentFlashing: {};
 
         /**
             constructor args: {
@@ -163,6 +164,21 @@ module Cozy {
             };
         }
 
+        flash(freq:number):void {
+            if (!freq) {
+                this.currentFlashing = {
+                    clear: true
+                };
+            } else {
+                this.currentFlashing = {
+                    frequency: freq,
+                    counter: 0,
+                    framelength: 0.5/freq,
+                    hidden: false
+                };
+            }
+        }
+
         update(dt):void {
             if (this.currentAnimation) {
                 var f = this.animationScratch['currentFrame'] || 0;
@@ -203,6 +219,20 @@ module Cozy {
                     }
                 }
                 this.positionInnerSprite();
+            }
+
+            if (this.currentFlashing) {
+                if (this.currentFlashing['clear']) {
+                    this.currentFlashing = null;
+                    this.innerSprite.visible = true;
+                } else {
+                    this.currentFlashing['counter'] += dt;
+                    while (this.currentFlashing['counter'] > this.currentFlashing['framelength']) {
+                        this.currentFlashing['hidden'] = !this.currentFlashing['hidden'];
+                        this.currentFlashing['counter'] -= this.currentFlashing['framelength'];
+                    }
+                    this.innerSprite.visible = !this.currentFlashing['hidden'];
+                }
             }
         }
 

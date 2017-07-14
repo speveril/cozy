@@ -228,43 +228,6 @@ module RPG.BattleSystem.SoloFrontView {
                     else this.output(`\nIt doesn't get away!`);
                 }
 
-                // switch(monsterAction.type) {
-                //     case 'fight':
-                //         result = this.resolveAttack(monster, player);
-                //         switch (result.type) {
-                //             case 'crit':
-                //                 RPG.sfx['battle_playerhit'].play(); // TODO
-                //                 battleScreen.shake();
-                //                 this.output(`\nThe ${monster.name} scores a critical hit on you! You take ${(-result.hpChange)} damage.`);
-                //                 break;
-                //             case 'hit':
-                //                 RPG.sfx['battle_playerhit'].play(); // TODO
-                //                 battleScreen.shake();
-                //                 this.output(`\nThe ${monster.name} hits you! You take ${(-result.hpChange)} damage.`);
-                //                 break;
-                //             case 'weak':
-                //                 RPG.sfx['battle_playerweakhit'].play(); // TODO
-                //                 battleScreen.shake();
-                //                 this.output(`\nThe ${monster.name} hits you, but it's a weak hit. You take ${(-result.hpChange)} damage.`);
-                //                 break;
-                //             case 'miss':
-                //                 RPG.sfx['battle_playermiss'].play(); // TODO
-                //                 this.output(`\nThe ${monster.name} attacks, but misses you.`);
-                //                 break;
-                //         }
-                //         player.hp += result.hpChange;
-                //         break;
-                //     case 'flee':
-                //         this.output(`\nThe ${monster.name} tries to run away.`);
-                //         result = this.resolveFlee(monster, player);
-                //         if (result.success) battleOutcome = { monsterEscaped: true };
-                //         else this.output(`\nIt doesn't get away!`);
-                //         break;
-                //     default:
-                //
-                //         break;
-                // }
-
                 yield* RPG.Scene.waitTime(0.75);
 
                 if (player.hp < 1) battleOutcome = { defeat: true };
@@ -286,7 +249,7 @@ module RPG.BattleSystem.SoloFrontView {
 
                 this.gameOver();
                 yield;
-                return;
+                return battleOutcome;
             } else if (battleOutcome.victory) {
                 if (this.victoryMusic) this.victoryMusic.start();
 
@@ -354,6 +317,8 @@ module RPG.BattleSystem.SoloFrontView {
             this.renderPlane.clear();
 
             RPG.Textbox.hide();
+
+            return battleOutcome;
         }
 
         output(s) {
@@ -377,45 +342,6 @@ module RPG.BattleSystem.SoloFrontView {
 
             console.warn("ERROR: Somehow we got to the end of monsterThink without choosing an action.");
         }
-
-        // statCheck(stat:number) {
-        //     return Math.random() < (stat / 100);
-        // }
-        //
-        // resolveAttack(attacker:Character, defender:Character, element:string="physical"):any {
-        //     var result:any = {
-        //         type: 'hit',
-        //         damage: attacker.get('damage')
-        //     };
-        //
-        //     if (this.statCheck(defender.get('dodge'))) {
-        //         result.type = 'miss';
-        //     } else {
-        //         if (this.statCheck(defender.get('block'))) {
-        //             result.type = 'weak';
-        //         }
-        //         if (this.statCheck(attacker.get('critical'))) {
-        //             result.type = (result.type === 'weak' ? 'hit' : 'crit');
-        //         }
-        //     }
-        //
-        //     switch (result.type) {
-        //         case 'miss':
-        //             result.damage *= 0; break;
-        //         case 'weak':
-        //             result.damage *= this.curveRoll(0, 0.5); break;
-        //         case 'hit':
-        //             result.damage *= this.curveRoll(0.75, 1.25); break;
-        //         case 'crit':
-        //             result.damage *= this.curveRoll(2, 3); break;
-        //     }
-        //
-        //     result.damage = defender.modifiedDamage(result.damage, element);
-        //     result.damage *= Math.min(1, Math.max(0, 1 - (defender.get('defense') / 100)));
-        //     result.damage = Math.round(Math.max(0, result.damage));
-        //
-        //     return result;
-        // }
 
         outputEffectResult(target:Character, result:any) {
             if (Party.isInParty(target)) {

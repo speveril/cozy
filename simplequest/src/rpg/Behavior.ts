@@ -1,5 +1,19 @@
 module RPG {
     export module Behavior {
+        export function *stun(entity:RPG.Entity, time:number, returnBehavior:any = null) {
+            let behavior = returnBehavior || entity.behavior;
+            let counter = 0;
+            entity.sprite.flash(3);
+
+            while (counter < time) {
+                let dt = yield;
+                counter += dt;
+            }
+
+            entity.sprite.flash(0);
+            return behavior;
+        }
+
         export function *wander(entity:RPG.Entity) {
             var direction, dist = 0;
 
@@ -42,6 +56,7 @@ module RPG {
         }
 
         export function *path(entity:RPG.Entity, path:Array<any>) {
+            console.log("PATH>", entity, path);
             let dt:number;
             let dx:number, dy:number;
             let tx:number, ty:number;
@@ -87,6 +102,8 @@ module RPG {
             entity.dir = direction;
             entity.sprite.animation = 'stand';
 
+            let origin = {x:entity.position.x, y:entity.position.y, d:entity.dir};
+
             var map = <SimpleQuest.Map>RPG.map;
             var visionDistance:number = entity.params.vision || 3;
             var visionEnd:PIXI.Point = new PIXI.Point(
@@ -106,7 +123,7 @@ module RPG {
                     } else {
                         RPG.player.sprite.animation = 'stand';
 
-                        let exclamation = entity.params.exclamation || "Hey, you!";
+                        let exclamation = entity.params.exclamation || '';
 
                         entity.emote("!");
                         RPG.sfx['alert'].play();
@@ -117,13 +134,23 @@ module RPG {
                         guardMutex = true;
 
                         yield *Scene.waitEntityMove(entity, movement);
-                        yield *Scene.waitTextbox(null, [exclamation]);
+                        if (exclamation !== '') {
+                            yield *Scene.waitTextbox(null, [exclamation]);
+                        }
                         entity.clearEmote();
 
                         yield *map.waitFight(entity);
-
                         guardMutex = null;
                         RPG.ControlStack.pop();
+
+                        if (!entity.destroyed) {
+                            console.log("returning entity to its place...");
+                            let dist = Trig.dist(origin, entity.position);
+                            let dir = Math.atan2(origin.y - entity.position.y, origin.x - entity.position.x) * PIXI.RAD_TO_DEG;
+                            yield *Behavior.path(entity, [ [dir,dist] ]);
+                            entity.sprite.animation = 'stand';
+                            entity.dir = origin.d;
+                        }
                     }
                 }
             }

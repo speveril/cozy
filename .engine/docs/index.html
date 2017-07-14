@@ -65,15 +65,12 @@
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
 				<h1 id="cozy">Cozy</h1>
-				<p>A generic game engine. For now this is pretty hacked together. Things might get better in the future!</p>
-				<p>Currently this is only set up to work on Windows. It should be fairly straightforward to get it working on other platforms, but I don&#39;t have ready access to them.</p>
-				<h2 id="plans">Plans</h2>
-				<p>Do I look like someone who is planning things in advance?</p>
-				<p>Really though, the plan is to take my hacked together pile of crap and make small games with them (the example games) to figure out what I actually need in the engine and how I actually want things to look and to work. Over time I will update and replace pieces as necessary. If you&#39;ve somehow gotten access to this repository, hopefully I&#39;ve actually given it to you and you know what&#39;s up.</p>
-				<p>Ultimately the development is driven by what I want out of the engine. I have a lot of games I want to make at some point. I&#39;d like to build myself the tools I need to build those games. If you (the hypothetical reader) have a use-case that I&#39;m not meeting, then maybe in the future it will come up. For the time being though, it&#39;s more than likely you&#39;ll have to address that yourself.</p>
+				<p>A generic game engine.</p>
+				<p><strong>Cozy is not currently released. If I do ever release it, it will be under a permissive license (probably something like MIT). If you&#39;ve somehow gotten access to this repository, hopefully I&#39;ve actually given it to you and you know what&#39;s up; if you&#39;d like to use it just talk to me and I&#39;ll probably say &quot;sure&quot;.</strong></p>
+				<p>Cozy will currently work on Windows, &quot;out of the box&quot;. It should be fairly straightforward to get it working on other platforms, it just hasn&#39;t happened yet.</p>
 				<h2 id="usage">Usage</h2>
-				<p>Just run the Cozy shortcut (or <code>.engine/cozy.exe</code>). This will open the launcher/project manager.</p>
-				<p>If you want to work on the engine itself, you&#39;ll need to have NPM installed; run <code>npm install</code> in .engine/resources/app/.</p>
+				<p>Just run the <code>cozy.bat</code>, which will simply run <code>.engine/cozy.exe</code>. This will open the launcher/project manager. I like to make a shortcut on my desktop to <code>.engine/cozy.exe</code> so I can find it easily. I hope to make this process less annoying in the future.</p>
+				<p>Right now, you will need to have npm installed, and to get up and running, you&#39;ll need to have NPM installed; run <code>npm install</code> in <code>.engine/resources/app/</code>. I plan to make this a requirement only if you intend to work on the engine, eventually.</p>
 				<h2 id="current-technologies">Current technologies</h2>
 				<ul>
 					<li>Electron: <a href="https://github.com/atom/electron">https://github.com/atom/electron</a></li>
@@ -81,17 +78,32 @@
 					<li>Underscore: <a href="http://underscorejs.org">http://underscorejs.org</a></li>
 					<li>Typescript: <a href="http://typescriptlang.org">http://typescriptlang.org</a></li>
 				</ul>
-				<h2 id="roadmap">Roadmap</h2>
-				<p>This is stuff I intend to do, and/or am actively working on. I&#39;m trying to keep this up to date with my commits.</p>
+				<h2 id="plans">Plans</h2>
+				<p>I have a lot of games I want to make at some point and/or have been working on for more than a decade. I keep trying other engines and finding something distasteful about them; I figured if I made my own at least I couldn&#39;t blame anyone else. I could also build it with the tools that I am most familiar with and so afford me the most pleasant working environment -- as such the main basis of the engine are web technologies, like HTML and JS.</p>
+				<p>If you want to use the engine have a use-case that I&#39;m not meeting, we should talk. For the time being I&#39;m focusing on what I need but maybe there&#39;s something I haven&#39;t thought of which would be great, or something I&#39;m already planning that I could shuffle forward on the roadmap.</p>
+				<h2 id="examples">Examples</h2>
+				<ul>
+					<li><strong>SimpleQuest</strong> - SimpleQuest, a small but complete RPG<ul>
+							<li>See simplequest/README.md for more information</li>
+							<li>Currently still a work in progress</li>
+						</ul>
+					</li>
+					<li><strong>vn</strong> - VisualNovel, a barebones swipe at making a visual novel engine<ul>
+							<li>Will eventually form the basis of a VisualNovelKit</li>
+							<li>Heavily uh, inspired, by <a href="http://www.newgrounds.com/portal/view/560868">The Sagittarian</a> by <a href="http://www.lorestrome.com">Hyptosis</a></li>
+						</ul>
+					</li>
+					<li><strong>examples/CozyInvaders</strong> - A simple 2-player pong game</li>
+					<li><strong>examples/CozyPong</strong> - A partial Space Invaders clone</li>
+					<li><strong>toys</strong> - Random junk that demonstrates something</li>
+				</ul>
+				<p>To run the examples, simply click them in the game list in the launcher.</p>
+				<h2 id="roadmap-plan-">Roadmap/&quot;Plan&quot;</h2>
+				<h3 id="-prerelease-"><code>&gt;&gt;&gt; PRERELEASE</code></h3>
 				<ul>
 					<li>Simple Quest/RPGKit specific<ul>
-							<li>Flesh out rest of world<ul>
-									<li>&quot;story&quot; sequences</li>
-									<li>monsters, fights</li>
-								</ul>
-							</li>
-							<li>? add a way to get the outcome of a battle so that code may respond to it differently -- victory vs. flee vs. defeat</li>
-							<li>? allow to lose a battle without a game over</li>
+							<li>Figure out what to do when player flees</li>
+							<li>Double check licensing and attributions</li>
 							<li>? hide debug map better</li>
 						</ul>
 					</li>
@@ -105,16 +117,18 @@
 						</ul>
 					</li>
 					<li>Exporting<ul>
-							<li>Make glob.js easier to recreate</li>
 							<li>Split config.json into necessary game setup vs. player configuration (bake non-player config into game setup on export, leave config as only player config, or play config should be in userdataDir)</li>
 						</ul>
 					</li>
-					<li>Double check licensing and attributions for Simple Quest</li>
-					<li><strong>=== RELEASE 0.1 - SIMPLEQUEST, RPGKIT, BASIC FUNCTIONALITY ===</strong></li>
+				</ul>
+				<h3 id="-milestone-v0-1-simplequest-release-"><code>&gt;&gt;&gt; MILESTONE v0.1: SIMPLEQUEST RELEASE</code></h3>
+				<ul>
+					<li>Figure out next milestone :|</li>
 					<li>Bugs/Unsorted<ul>
 							<li>Move &quot;ControlStack&quot; idea into core</li>
 							<li>Allow crossfading music</li>
 							<li>Don&#39;t use <reference>, use imports etc. and something like webpack to generate the output</li>
+							<li>Figure out seamless upgrades</li>
 						</ul>
 					</li>
 					<li>Project Manager<ul>
@@ -127,6 +141,7 @@
 						</ul>
 					</li>
 					<li>Infrastructure<ul>
+							<li>Make glob.js easier to recreate</li>
 							<li>If a project has a <code>build.js</code>/<code>build.ts</code>, run it after TS compilation</li>
 							<li>Should be able to refresh/reset; the way the message waiting works, this doesn&#39;t work the way it should</li>
 						</ul>
@@ -142,7 +157,7 @@
 						</ul>
 					</li>
 					<li>Testing<ul>
-							<li>Investigate this</li>
+							<li>Investigate unit tests</li>
 						</ul>
 					</li>
 					<li>Data Editor<ul>
@@ -158,11 +173,6 @@
 							<li>Linux</li>
 						</ul>
 					</li>
-					<li><strong>=== RELEASE 0.2 - GRAB THE GEMS, ACTIONADVENTUREKIT, QUALITY OF LIFE IMPROVEMENTS ===</strong></li>
-					<li>Bugs/Unsorted<ul>
-							<li>Figure out seamless upgrades</li>
-						</ul>
-					</li>
 					<li>RPGKit<ul>
 							<li>SavedGame should write a version number, and have upgrade functions; when loading a SavedGame, run through each necessary upgrade before returning it</li>
 							<li>Add scripted movement for entities on the map</li>
@@ -176,6 +186,8 @@
 									<li>Need to provide a better way for menus to return a value to a previous menu -- promises?</li>
 								</ul>
 							</li>
+							<li>Allow to lose a battle without a game over</li>
+							<li>Be able to get the outcome of a battle so that code may respond to it differently -- victory vs. flee vs. defeat</li>
 						</ul>
 					</li>
 					<li>Documentation<ul>
@@ -197,8 +209,8 @@
 							<li>Don&#39;t ship without tests on engine core; lets me keep track of breaking changes, etc.</li>
 						</ul>
 					</li>
-					<li><strong>=== RELEASE 1.0 - READY FOR PRIMETIME ===</strong></li>
 				</ul>
+				<h3 id="-release-1-0-"><code>&gt;&gt;&gt; RELEASE 1.0</code></h3>
 				<h2 id="wish-list-ideas-some-day-maybe-">Wish list/Ideas (some day maybe):</h2>
 				<p>Stuff I&#39;ve thought of and would be nice, or might be useful. I may or may not ever get around to these or consider them worthwhile.</p>
 				<ul>
@@ -226,23 +238,6 @@
 						</ul>
 					</li>
 				</ul>
-				<h2 id="examples">Examples</h2>
-				<ul>
-					<li><strong>SimpleQuest</strong> - SimpleQuest, a small but complete RPG<ul>
-							<li>See simplequest/README.md for more information</li>
-							<li>Currently still a work in progress</li>
-						</ul>
-					</li>
-					<li><strong>vn</strong> - VisualNovel, a barebones swipe at making a visual novel engine<ul>
-							<li>Will eventually form the basis of a VisualNovelKit</li>
-							<li>Heavily uh, inspired, by <a href="http://www.newgrounds.com/portal/view/560868">The Sagittarian</a> by <a href="http://www.lorestrome.com">Hyptosis</a></li>
-						</ul>
-					</li>
-					<li><strong>examples/CozyInvaders</strong> - A simple 2-player pong game</li>
-					<li><strong>examples/CozyPong</strong> - A partial Space Invaders clone</li>
-					<li><strong>toys</strong> - Random junk that demonstrates something</li>
-				</ul>
-				<p>To run the examples, simply click them in the game list in the launcher.</p>
 				<h2 id="who-is-responsible-for-this-mess">Who is responsible for this mess</h2>
 				<p><a href="http://shamuspeveril.com">Shamus Peveril</a> -- architect, lead (only) developer, example maker</p>
 			</div>
