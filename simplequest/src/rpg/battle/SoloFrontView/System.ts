@@ -267,7 +267,7 @@ module RPG.BattleSystem.SoloFrontView {
                 let money = 0;
                 let loot = [];
                 _.each(monster.treasure, (t:any) => {
-                    if (t.chance && Math.random() > t.chance) {
+                    if (t.chance && Math.random()*100 > t.chance) {
                         return;
                     }
 
