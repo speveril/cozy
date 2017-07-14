@@ -173,6 +173,7 @@ module SimpleQuest {
 
         ghost_east_tower_floor(args) {
             RPG.Scene.do(function*() {
+                args.target.pause();
                 if (!this.persisted('talked to ghost shopkeeper')) {
                     yield *RPG.Scene.waitTextbox('GHOST', [
                         "I'm not supposed to talk about how exactly the afterlife works and all that...",
@@ -194,6 +195,7 @@ module SimpleQuest {
                         "Come back if you need anything else. I'm not going anywhere, after all."
                     ]);
                 }
+                args.target.unpause();
             }.bind(this));
         }
     }
