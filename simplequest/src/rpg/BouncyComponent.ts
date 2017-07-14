@@ -8,7 +8,6 @@ module RPG {
         }
 
         show(s:string, className:string=''):void {
-            console.log("BOUNCY", s, className);
             _.each(s, (ch, i) => {
                 let digit = document.createElement('span');
                 digit.className = 'digit';
