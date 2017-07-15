@@ -16,7 +16,7 @@
 
     "fullscreen": false,
     "volume": {
-        "sfx": 0.25,
-        "music": 0.5
+        "sfx": 0.1,
+        "music": 0.3
     }
 }

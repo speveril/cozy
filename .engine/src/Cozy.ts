@@ -73,6 +73,12 @@ module Cozy {
         }
         this.userdataDir = new Cozy.Directory(userdataStem).subdir(this.config.userdata, true);
 
+        let userconfig = this.userdataDir.file('config.json');
+        if (userconfig.exists) {
+            let data = JSON.parse(userconfig.read());
+            this.config = _.extend(this.config, data);
+        }
+
         this.textures = {};
         this.paused = true;
     }
@@ -281,6 +287,11 @@ module Cozy {
         var file = Cozy.userdataDir.subdir('screenshots', true).file(filename);
         file.write(image.toPng(), 'binary');
         return file;
+    }
+
+    export function writeUserConfig(data:any) {
+        let f = this.userdataDir.file('config.json');
+        f.write(data, 'json');
     }
 
     /**
