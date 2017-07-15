@@ -1,4 +1,5 @@
 ///<reference path="Boot-Load.ts"/>
+///<reference path="Boot-Options.ts"/>
 
 module SimpleQuest {
     export module Menu {
@@ -14,7 +15,7 @@ module SimpleQuest {
                             <li class="loadLast"  data-menu="loadLast">Continue</li>
                             <li class="new"       data-menu="newGame">New Game</li>
                             <li class="load"      data-menu="loadGame">Load Game</li>
-                            <li class="options"   data-menu="@disabled">Options</li>
+                            <li class="options"   data-menu="options">Options</li>
                             <li class="credits"   data-menu="credits">Credits</li>
                             <li class="exit"      data-menu="exit">Exit</li>
                         </ul>
@@ -71,7 +72,9 @@ module SimpleQuest {
             }
 
             options() {
-                alert("TODO open options menu");
+                this.submenu = new Boot_Options();
+                this.addChild(this.submenu);
+                RPG.Menu.push(this.submenu);
             }
 
             exit() {

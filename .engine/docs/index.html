@@ -102,17 +102,15 @@
 				<h3 id="-prerelease-"><code>&gt;&gt;&gt; PRERELEASE</code></h3>
 				<ul>
 					<li>Simple Quest/RPGKit specific<ul>
+							<li>Make options screen look nicer</li>
+							<li>Add dialog to ghosts in castle</li>
+							<li>Add notification when player levels up</li>
 							<li>Double check licensing and attributions</li>
 							<li>? hide debug map better</li>
 						</ul>
 					</li>
 					<li>Bugs/Unsorted<ul>
 							<li>Engine loading screen</li>
-							<li>userconfig.json in userdatadir<ul>
-									<li>In-game input config</li>
-									<li>Defaults in project config.json</li>
-								</ul>
-							</li>
 						</ul>
 					</li>
 					<li>Exporting<ul>
@@ -125,7 +123,6 @@
 					<li>Figure out next milestone :|</li>
 					<li>Bugs/Unsorted<ul>
 							<li>Move &quot;ControlStack&quot; idea into core</li>
-							<li>Allow crossfading music</li>
 							<li>Don&#39;t use <reference>, use imports etc. and something like webpack to generate the output</li>
 							<li>Figure out seamless upgrades</li>
 						</ul>
@@ -155,6 +152,12 @@
 							<li>Support a &#39;keep&#39; direction or something on sprite animation angles -- just keep playing the same direction as before</li>
 						</ul>
 					</li>
+					<li>Audio<ul>
+							<li>Support not looping music</li>
+							<li>Allow crossfading music</li>
+							<li>Music files that are sequences of tracks, with timing/looping/etc information</li>
+						</ul>
+					</li>
 					<li>Testing<ul>
 							<li>Investigate unit tests</li>
 						</ul>
@@ -173,6 +176,7 @@
 						</ul>
 					</li>
 					<li>RPGKit<ul>
+							<li>In-game input config</li>
 							<li>SavedGame should write a version number, and have upgrade functions; when loading a SavedGame, run through each necessary upgrade before returning it</li>
 							<li>Add scripted movement for entities on the map</li>
 							<li>Add Scene.waitAll() which takes multiple generator functions and waits for them all to finish</li>

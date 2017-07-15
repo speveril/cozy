@@ -1,0 +1,29 @@
+	sort	slot	icon_frame	description	price	equip	icon	name	use	canStack	sellable
+tonic	0.01		[0, 14]	A light healing potion. Restores 50 HP.	15		ui/item_icons.png	Tonic	{"_sound": "effect_heal", "heal": [50], "_target": "ally"}	TRUE	
+potion	0.02		[14, 14]	A healing potion. Restores 150 HP.	50		ui/item_icons.png	Potion	{"_sound": "effect_heal", "heal": [150], "_target": "ally"}	TRUE	
+elixir	0.03		[28, 14]	A powerful healing potion. Restores 500 HP.	200		ui/item_icons.png	Elixir	{"_sound": "effect_heal", "heal": [500], "_target": "ally"}	TRUE	
+dart_scroll	5.01		[56, 0]	Strikes a monster with a magical dart of force.	150		ui/item_icons.png	Magic Dart	{"strike": ["force", "3d10 + 35"], "_sound": "effect_force", "_context": "combat", "_target": "enemy"}	TRUE	
+shock_scroll	5.02		[56, 0]	Strikes a monster with a bolt of magical lightning.	150		ui/item_icons.png	Shock	{"strike": ["lightning", "3d10 + 35"], "_sound": "effect_lightning", "_context": "combat", "_target": "enemy"}	TRUE	
+iceshard_scroll	5.02		[56, 0]	Strikes a monster with a shard of mystical ice.	150		ui/item_icons.png	Ice Shard	{"strike": ["ice", "3d10 + 35"], "_sound": "effect_ice", "_context": "combat", "_target": "enemy"}	TRUE	
+firebolt_scroll	5.02		[56, 0]	Strikes a monster with a burst of arcane flame.	150		ui/item_icons.png	Fire Bolt	{"strike": ["fire", "3d10 + 35"], "_sound": "effect_fire", "_context": "combat", "_target": "enemy"}	TRUE	
+oak_sword	10.01	weapon	[0, 0]	Made of wood. Might still hurt.	5	{"attributes": {"critical": 0, "damage": 7}}	ui/item_icons.png	Oak Sword			
+short_sword	10.02	weapon	[14, 0]	A small sword for stabbing. Easy on the budget.	100	{"attributes": {"critical": 5, "damage": 15}}	ui/item_icons.png	Short Sword			
+arming_sword	10.03	weapon	[28, 0]	A steel sword. Popular in fights the world over.	300	{"attributes": {"critical": 10, "damage": 30}}	ui/item_icons.png	Arming Sword			
+great_sword	10.04	weapon	[42, 0]	Probably the best sword you've ever seen.	1500	{"attributes": {"critical": 15, "damage": 60}}	ui/item_icons.png	Great Sword			
+quilt_armor	15.01	armor	[0, 28]	A very thick shirt. Better than nothing.	10	{"attributes": {"defense": 1}}	ui/item_icons.png	Quilt Armor			
+leather_coat	15.02	armor	[14, 28]	A leather coat. Some idiot has covered it in studs.	100	{"attributes": {"defense": 5}}	ui/item_icons.png	Leather Coat			
+chain_shirt	15.03	armor	[28, 28]	A shirt of mail rings. Heavy, but excellent ventilation.	250	{"attributes": {"defense": 10}}	ui/item_icons.png	Chain Shirt			
+breastplate	15.04	armor	[42, 28]	A metal breastplate. Makes your abs look great.	750	{"attributes": {"defense": 15}}	ui/item_icons.png	Breastplate			
+plate_armor	15.05	armor	[56, 28]	Armored plates over chain mail. The best in protection.	1500	{"attributes": {"defense": 25}}	ui/item_icons.png	Plate Armor			
+magic_armor	15.06	armor	[70, 28]	It's oh, so magical.	3000	{"attributes": {"defense": 35}}	ui/item_icons.png	Magic Armor			
+buckler	20.01	shield	[84, 28]	A very small shield.	75	{"attributes": {"block": 5}}	ui/item_icons.png	Buckler			
+oak_shield	20.02	shield	[98, 28]	A stout wooden shield. Too small to make a good table.	150	{"attributes": {"block": 10}}	ui/item_icons.png	Oak Shield			
+heater	20.03	shield	[112, 28]	A classic steel shield.	500	{"attributes": {"block": 15}}	ui/item_icons.png	Heater			
+sun_shield	20.04	shield	[126, 28]	A heavy magical shield. Adorned with the sign of the sun.	1500	{"attributes": {"block": 25}}	ui/item_icons.png	Sun Shield			
+amulet	30.01	accessory	[0, 42]	Feels a little bit lucky, whatever that means.	300	{"attributes": {"dodge": 1, "critical": 1, "block": 1}}	ui/item_icons.png	Amulet			
+helmet	30.11	accessory	[112, 42]	Covers your head. That seems important.	500	{"attributes": {"defense": 3}}	ui/item_icons.png	Helmet			
+horned_helm	30.12	accessory	[126, 42]	There are horns on this helmet. Sure, why not?	1500	{"attributes": {"defense": 5}}	ui/item_icons.png	Horned Helm			
+iron_key	95.01		[84, 14]	An iron key taken from the cultists in the Dark Forest.			ui/item_icons.png	Iron Key			FALSE
+steel_key	95.02		[98, 14]	A steel key from the Haunted Castle.			ui/item_icons.png	Steel Key			FALSE
+gold_key	95.03		[112, 14]	A golden key to open the locked ruins in the Dark Forest.			ui/item_icons.png	Gold Key			FALSE
+massive_key	95.04		[126, 14]	A big, heavy key.			ui/item_icons.png	Massive Key			FALSE

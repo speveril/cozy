@@ -19,27 +19,43 @@ module RPG {
             }, this);
 
             Cozy.Input.on('up.down vertical-.down', (info) => {
-                if (!Menu.currentMenu || Menu.currentMenu.paused || Menu.currentMenu.direction === MenuDirection.HORIZONTAL) return;
+                if (!Menu.currentMenu || Menu.currentMenu.paused) return;
                 Cozy.Input.debounce(info.button, 0.2);
-                if (Menu.currentMenu.moveSelection(-1, MenuDirection.VERTICAL) && Menu.blip) Menu.blip.play();
+                if (Menu.currentMenu.direction === MenuDirection.HORIZONTAL) {
+                    Menu.currentMenu.secondaryAxisChange(-1);
+                } else {
+                    if (Menu.currentMenu.moveSelection(-1, MenuDirection.VERTICAL) && Menu.blip) Menu.blip.play();
+                }
             }, this);
 
             Cozy.Input.on('down.down vertical+.down', (info) => {
-                if (!Menu.currentMenu || Menu.currentMenu.paused || Menu.currentMenu.direction === MenuDirection.HORIZONTAL) return;
+                if (!Menu.currentMenu || Menu.currentMenu.paused) return;
                 Cozy.Input.debounce(info.button, 0.2);
-                if (Menu.currentMenu.moveSelection(+1, MenuDirection.VERTICAL) && Menu.blip) Menu.blip.play();
+                if (Menu.currentMenu.direction === MenuDirection.HORIZONTAL) {
+                    Menu.currentMenu.secondaryAxisChange(+1);
+                } else {
+                    if (Menu.currentMenu.moveSelection(+1, MenuDirection.VERTICAL) && Menu.blip) Menu.blip.play();
+                }
             }, this);
 
             Cozy.Input.on('left.down horizontal-.down', (info) => {
-                if (!Menu.currentMenu || Menu.currentMenu.paused || Menu.currentMenu.direction === MenuDirection.VERTICAL) return;
+                if (!Menu.currentMenu || Menu.currentMenu.paused) return;
                 Cozy.Input.debounce(info.button, 0.2);
-                if (Menu.currentMenu.moveSelection(-1, MenuDirection.HORIZONTAL) && Menu.blip) Menu.blip.play();
+                if (Menu.currentMenu.direction === MenuDirection.VERTICAL) {
+                    Menu.currentMenu.secondaryAxisChange(-1);
+                } else {
+                    if (Menu.currentMenu.moveSelection(-1, MenuDirection.HORIZONTAL) && Menu.blip) Menu.blip.play();
+                }
             }, this);
 
             Cozy.Input.on('right.down horizontal+.down', (info) => {
-                if (!Menu.currentMenu || Menu.currentMenu.paused || Menu.currentMenu.direction === MenuDirection.VERTICAL) return;
+                if (!Menu.currentMenu || Menu.currentMenu.paused) return;
                 Cozy.Input.debounce(info.button, 0.2);
-                if (Menu.currentMenu.moveSelection(+1, MenuDirection.HORIZONTAL) && Menu.blip) Menu.blip.play();
+                if (Menu.currentMenu.direction === MenuDirection.VERTICAL) {
+                    Menu.currentMenu.secondaryAxisChange(+1);
+                } else {
+                    if (Menu.currentMenu.moveSelection(+1, MenuDirection.HORIZONTAL) && Menu.blip) Menu.blip.play();
+                }
             }, this);
 
             Cozy.Input.on('confirm.down', (info) => {
@@ -209,6 +225,17 @@ module RPG {
             } else if (this[currentMenuSelection]) {
                 var playSound = this[currentMenuSelection](this.selections[this.selectionIndex]);
                 if (playSound !== false && Menu.choose) {
+                    Menu.choose.play();
+                }
+            }
+        }
+
+        secondaryAxisChange(dir:number) {
+            if (this.selections.length < 1) return;
+            var currentMenuSelection = this.selections[this.selectionIndex].getAttribute('data-menu');
+            if (this[currentMenuSelection + '_adjust']) {
+                var playSound = this[currentMenuSelection + '_adjust'](dir);
+                if (playSound !== false) {
                     Menu.choose.play();
                 }
             }

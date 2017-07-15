@@ -28,7 +28,7 @@
     margin-bottom: 0.25em;
 }
 
-.boot-load-menu {
+.boot-load-menu, .boot-options-menu {
     width: 255px;
     height: 238px;
     position: absolute;
@@ -39,7 +39,7 @@
     flex-direction: column;
 }
 
-.boot-load-menu .title {
+.boot-load-menu .title, .boot-options-menu .title {
     flex: 0 0 20px;
     text-align: center;
     justify-content: center;
@@ -51,4 +51,26 @@
     flex: 1 0;
     overflow: hidden;
     position: relative;
+}
+
+.boot-options-menu .selections {
+    flex: 1 0;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding: 15px;
+}
+
+.boot-options-menu .selections li {
+    flex: 0 0;
+    padding: 5px;
+}
+
+.boot-options-menu .selections li.divider {
+    flex: 1 0;
+}
+
+.boot-options-menu .selections li.foot {
+    text-align: center;
+    padding: 2px;
 }

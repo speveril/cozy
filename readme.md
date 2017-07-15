@@ -49,13 +49,13 @@ To run the examples, simply click them in the game list in the launcher.
 ### `>>> PRERELEASE`
 
 - Simple Quest/RPGKit specific
+    - Make options screen look nicer
+    - Add dialog to ghosts in castle
+    - Add notification when player levels up
     - Double check licensing and attributions
     - ? hide debug map better
 - Bugs/Unsorted
     - Engine loading screen
-    - userconfig.json in userdatadir
-        - In-game input config
-        - Defaults in project config.json
 - Exporting
     - Split config.json into necessary game setup vs. player configuration (bake non-player config into game setup on export, leave config as only player config, or play config should be in userdataDir)
 
@@ -64,7 +64,6 @@ To run the examples, simply click them in the game list in the launcher.
 - Figure out next milestone :|
 - Bugs/Unsorted
     - Move "ControlStack" idea into core
-    - Allow crossfading music
     - Don't use <reference>, use imports etc. and something like webpack to generate the output
     - Figure out seamless upgrades
 - Project Manager
@@ -82,6 +81,10 @@ To run the examples, simply click them in the game list in the launcher.
         - Give Sprite a Container, put itself in the container and add THAT to the layer's container, then all children sprites can go in there afterward
         - Do I need/want a true hierarchy, or just layers?
     - Support a 'keep' direction or something on sprite animation angles -- just keep playing the same direction as before
+- Audio
+    - Support not looping music
+    - Allow crossfading music
+    - Music files that are sequences of tracks, with timing/looping/etc information
 - Testing
     - Investigate unit tests
 - Data Editor
@@ -92,6 +95,7 @@ To run the examples, simply click them in the game list in the launcher.
     - Mac OS
     - Linux
 - RPGKit
+    - In-game input config
     - SavedGame should write a version number, and have upgrade functions; when loading a SavedGame, run through each necessary upgrade before returning it
     - Add scripted movement for entities on the map
     - Add Scene.waitAll() which takes multiple generator functions and waits for them all to finish
