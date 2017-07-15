@@ -49,7 +49,6 @@ To run the examples, simply click them in the game list in the launcher.
 ### `>>> PRERELEASE`
 
 - Simple Quest/RPGKit specific
-    - Disallow fleeing from cutscene fights (lich lackeys, kobold guards)
     - Double check licensing and attributions
     - ? hide debug map better
 - Bugs/Unsorted
