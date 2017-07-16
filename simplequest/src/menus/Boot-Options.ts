@@ -12,6 +12,8 @@ module SimpleQuest {
                     html: `
                         <div class="title">Options</div>
                         <ul class="selections">
+                            <li class="divider"></li>
+
                             <li class="sfx" data-menu="sfx">
                                 <div class="label">Sound Volume</div>
                                 <div class="value"><meter max="100"></meter></div>

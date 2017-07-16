@@ -62,10 +62,10 @@
 }
 
 .boot-options-menu .selections li {
-    flex: 0 0;
+    flex: 0 0 auto;
     display: flex;
     flex-direction: row;
-    margin: 5px;
+    margin: 2px;
 }
 
 .boot-options-menu .selections li meter {
@@ -82,13 +82,17 @@
 
 
 .boot-options-menu .selections li > div {
-    flex: 0 0;
+    flex: 0 0 auto;
     white-space: nowrap
 }
 
 .boot-options-menu .selections li > div.value {
     flex: 1 0;
     text-align: right;
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .boot-options-menu .selections li.divider {
@@ -97,5 +101,5 @@
 
 .boot-options-menu .selections li.foot {
     text-align: center;
-    padding: 2px;
+    padding-left: 10px;
 }
