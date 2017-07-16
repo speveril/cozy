@@ -39,6 +39,7 @@
 
 .battle-screen .left-sidebar meter.hp::-webkit-meter-bar {
     background: #442434;
+    background-clip: padding-box;
 }
 
 .battle-screen .left-sidebar meter.hp::-webkit-meter-optimum-value {
