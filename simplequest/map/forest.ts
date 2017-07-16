@@ -128,7 +128,7 @@ module SimpleQuest {
                     yield *RPG.Scene.waitTime(1);
                     cultLeader.clearEmote();
 
-                    yield* RPG.Scene.waitTextbox("Cult Leaver", ["Cease your prattling, we've been discovered!"]);
+                    yield* RPG.Scene.waitTextbox("CULT LEADER", ["Cease your prattling, we've been discovered!"]);
                     cultistA.dir = 180;
                     cultistC.dir = 270;
 

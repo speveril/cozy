@@ -469,7 +469,7 @@
    <properties>
     <property name="behavior" value="guard_right"/>
     <property name="monster" value="bramblekin"/>
-    <property name="sprite" value="sprites/monster_goblin.sprite"/>
+    <property name="sprite" value="sprites/monster_bramblekin.sprite"/>
    </properties>
   </object>
   <object id="171" name="doFight" type="entity" x="368" y="80" width="16" height="16">
