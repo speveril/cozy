@@ -128,6 +128,7 @@ module SimpleQuest {
     }
 
     export function gameOverSequence() {
+        RPG.ControlStack.cleanup();
         let gameOverMenu = new Menu.GameOver();
         RPG.uiPlane.addChild(gameOverMenu);
         RPG.Scene.do(function*() {
