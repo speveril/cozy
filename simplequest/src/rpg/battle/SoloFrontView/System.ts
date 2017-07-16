@@ -262,7 +262,40 @@ module RPG.BattleSystem.SoloFrontView {
                 yield* RPG.Scene.waitTime(0.75);
 
                 this.output(`\nYou gained ${monster.xp} XP!`);
-                Party.each(function(ch:Character) { ch.xp += monster.xp; }.bind(this));
+
+                for (let partyIdx = 0; partyIdx < Party.members.length; partyIdx++) {
+                    let ch = Party.members[partyIdx].character;
+                    let lv = ch.level;
+                    ch.xp += monster.xp;
+                    while (lv < ch.level) {
+                        lv++;
+
+                        let thisLevel = ch.levels[lv];
+                        let lastLevel = ch.levels[lv - 1];
+
+                        this.output(`\nYou are now level ${lv}!`);
+                        let changes = [];
+                        let diff;
+
+                        diff = thisLevel.hp - lastLevel.hp;
+                        if (diff !== 0) {
+                            changes.push(`${diff < 0 ? '' : '+'}${diff} HP`);
+                        }
+                        _.each(Character.attributes, (attr, idx) => {
+                            diff = thisLevel[attr] - lastLevel[attr];
+                            if (diff !== 0) {
+                                changes.push(`${diff < 0 ? '' : '+'}${diff} ${Character.attributeAbbr[idx]}`);
+                            }
+                        });
+
+                        if (changes.length > 0) {
+                            this.output(`\nYou gain ${changes.join(", ")}.`);
+                        }
+
+                        yield *RPG.Scene.waitButton('confirm');
+                        Cozy.Input.debounce('confirm');
+                    }
+                }
 
                 let money = 0;
                 let loot = [];

@@ -50,7 +50,6 @@ To run the examples, simply click them in the game list in the launcher.
 
 - Simple Quest/RPGKit specific
     - Add dialog to ghosts in castle
-    - Add notification when player levels up
     - Double check licensing and attributions
     - ? hide debug map better
 - Bugs/Unsorted
