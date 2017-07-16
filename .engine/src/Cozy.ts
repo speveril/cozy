@@ -60,8 +60,8 @@ module Cozy {
         }
 
         // see
-        //    http://stackoverflow.com/a/26227660
-        //    https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html
+        //  http://stackoverflow.com/a/26227660
+        //  https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html
         var userdataStem = process.env.APPDATA + '\\' || (process.platform == 'darwin' ? process.env.HOME + 'Library/Application Support/' : process.env.HOME + "/.");
 
         this.engineDir = new Cozy.Directory(path.join(process.cwd(), opts.enginePath, "resources", "app"));
@@ -82,8 +82,6 @@ module Cozy {
         if (overrides) {
             this.config = _.extend(this.config, overrides);
         }
-
-        console.log(overrides, this.config);
 
         this.textures = {};
         this.paused = true;

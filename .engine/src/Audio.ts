@@ -149,13 +149,13 @@ module Cozy {
 
                 if (this.musicFade.progress < 0) {
                     this.musicFade = null;
-                    this.musicGain.gain.value = this.musicVolume;
+                    if (!this.NOMUSIC) this.musicGain.gain.value = this.musicVolume;
                     this.currentMusic.stop();
                 } else if (this.musicFade.progress > 1) {
                     this.musicFade = null;
-                    this.musicGain.gain.value = this.musicVolume;
+                    if (!this.NOMUSIC) this.musicGain.gain.value = this.musicVolume;
                 } else {
-                    this.musicGain.gain.value = this.musicVolume * this.musicFade.progress;
+                    if (!this.NOMUSIC) this.musicGain.gain.value = this.musicVolume * this.musicFade.progress;
                 }
             }
         }
