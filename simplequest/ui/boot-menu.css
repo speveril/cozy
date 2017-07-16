@@ -63,7 +63,32 @@
 
 .boot-options-menu .selections li {
     flex: 0 0;
-    padding: 5px;
+    display: flex;
+    flex-direction: row;
+    margin: 5px;
+}
+
+.boot-options-menu .selections li meter {
+    height: 8px;
+}
+
+.boot-options-menu .selections li meter::-webkit-meter-bar {
+    background-color: #30346D;
+}
+
+.boot-options-menu .selections li meter::-webkit-meter-optimum-value {
+    background: #6daa2c;
+}
+
+
+.boot-options-menu .selections li > div {
+    flex: 0 0;
+    white-space: nowrap
+}
+
+.boot-options-menu .selections li > div.value {
+    flex: 1 0;
+    text-align: right;
 }
 
 .boot-options-menu .selections li.divider {

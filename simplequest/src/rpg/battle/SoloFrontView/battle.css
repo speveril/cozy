@@ -34,6 +34,7 @@
 .battle-screen .left-sidebar meter {
     width: 100%;
     height: 6px;
+    border: 0;
 }
 
 .battle-screen .left-sidebar meter.hp::-webkit-meter-bar {

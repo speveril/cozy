@@ -73,15 +73,6 @@ function play(path, override, debug) {
             reject(e);
         }
 
-        for (var k in override) {
-            if (k === 'sfx' || k === 'music') {
-                params['volume'] = params['volume'] || {};
-                params['volume'][k] = override[k];
-            } else {
-                params[k] = override[k];
-            }
-        }
-
         output("<span style='color:white'>[ Launching " + (params.title || path) + " ]</span>");
 
         var window = new Electron.BrowserWindow({
@@ -110,7 +101,7 @@ function play(path, override, debug) {
         window.loadURL("file://" + __dirname + "/game.html");
 
         window.webContents.once('did-finish-load', () => {
-            window.webContents.send('start', params);
+            window.webContents.send('start', params, override);
         });
     });
 }

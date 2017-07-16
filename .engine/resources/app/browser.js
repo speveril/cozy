@@ -91,12 +91,12 @@ var Browser = {
                 case 'newgame':
                     this.newGame();
                     break;
-                case 'sfx':
-                case 'music':
+                case 'NOSFX':
+                case 'NOMUSIC':
                     if (target.classList.contains('off')) {
                         this.setOverride(action, null);
                     } else {
-                        this.setOverride(action, 0.0);
+                        this.setOverride(action, true);
                     }
                     break;
                 default:
@@ -153,8 +153,8 @@ var Browser = {
         // reconcile UI
         var el;
         switch (k) {
-            case 'music':
-            case 'sfx':
+            case 'NOMUSIC':
+            case 'NOSFX':
                 el = document.querySelector('#controls button[data-action=' + k + ']');
                 v === null ? el.classList.remove('off') : el.classList.add('off');
                 break;

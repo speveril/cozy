@@ -120,7 +120,10 @@ module Cozy {
         static musicVolume:number;
         static sfxVolume:number;
 
-        static init():void {
+        static NOSFX:boolean;
+        static NOMUSIC:boolean;
+
+        static init(opts?:any):void {
             this.context = new AudioContext();
 
             this.musicFade = null;
@@ -130,6 +133,10 @@ module Cozy {
 
             this.sfxGain = this.context.createGain();
             this.sfxGain.connect(this.context.destination);
+
+            console.log(opts);
+            if (opts.NOSFX) this.NOSFX = true;
+            if (opts.NOMUSIC) this.NOMUSIC = true;
 
             this.musicVolume = 0.5;
             this.sfxVolume = 0.5;
@@ -159,8 +166,16 @@ module Cozy {
         }
 
         static unmute() {
-            this.musicGain.gain.value = this.musicVolume;
-            this.sfxGain.gain.value = this.sfxVolume;
+            if (!this.NOMUSIC) {
+                this.musicGain.gain.value = this.musicVolume;
+            } else {
+                this.musicGain.gain.value = 0;
+            }
+            if (!this.NOSFX){
+                this.sfxGain.gain.value = this.sfxVolume;
+            } else {
+                this.sfxGain.gain.value = 0;
+            }
         }
 
         static setSFXVolume(v:number) {

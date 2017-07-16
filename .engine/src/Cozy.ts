@@ -42,7 +42,7 @@ module Cozy {
     var sizeMultiplier:Number;
     var lastTime: number;
 
-    export function setup(opts:any) {
+    export function setup(opts:any, overrides?:any) {
         console.log("Creating Cozy Object...", opts);
 
         this.config = opts;
@@ -79,6 +79,12 @@ module Cozy {
             this.config = _.extend(this.config, data);
         }
 
+        if (overrides) {
+            this.config = _.extend(this.config, overrides);
+        }
+
+        console.log(overrides, this.config);
+
         this.textures = {};
         this.paused = true;
     }
@@ -111,7 +117,10 @@ module Cozy {
         planes = [];
 
         // set up audio
-        Cozy.Audio.init();
+        Cozy.Audio.init({
+            NOSFX:      Cozy.config['NOSFX'],
+            NOMUSIC:    Cozy.config['NOMUSIC']
+        });
         if (Cozy.config['volume']) {
             if (Cozy.config['volume']['sfx'] !== undefined) {
                 Audio.setSFXVolume(Cozy.config['volume']['sfx']);

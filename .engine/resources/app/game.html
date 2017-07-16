@@ -10,8 +10,8 @@
         <script>
 (function() {
     const Electron = require('electron');
-    Electron.ipcRenderer.on('start', function(event, arg) {
-        Cozy.setup(arg);
+    Electron.ipcRenderer.on('start', function(event, arg, overrides) {
+        Cozy.setup(arg, overrides);
         Cozy.run();
     });
 })();

@@ -20,6 +20,9 @@ body {
 
 meter {
     box-sizing: border-box;
+}
+meter::-webkit-meter-bar {
+    background-clip: padding-box;
     border-style: solid;
     border-image: url(../../ui/box.png) 2 2 fill repeat;
     border-width: 2px;
