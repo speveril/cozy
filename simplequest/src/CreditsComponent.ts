@@ -14,7 +14,7 @@ module SimpleQuest {
         <h1>Simple Quest</h1>
 
         <p class="centered">
-            A Cozy Engine example game<br>
+            built with Cozy Engine<br>
             https://cozyengine.com/
         </p>
 
