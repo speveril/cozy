@@ -49,7 +49,6 @@ To run the examples, simply click them in the game list in the launcher.
 ### `>>> PRERELEASE`
 
 - Simple Quest/RPGKit specific
-    - Fix "hold indicator" and cancelling in credits
     - Add dialog to ghosts in castle
     - Add notification when player levels up
     - Double check licensing and attributions

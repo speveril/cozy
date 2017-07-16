@@ -63,11 +63,13 @@ module SimpleQuest {
             }
 
             credits() {
+                this.pause();
                 RPG.Scene.do(function*() {
                     this.element.style.display = 'none';
                     yield *SimpleQuest.waitOnCredits();
                     this.element.style.display = '';
                     RPG.music['overworld'].start();
+                    this.unpause();
                 }.bind(this));
             }
 

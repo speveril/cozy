@@ -60,7 +60,7 @@ module RPG {
                 RPG.cameraFollow(RPG.player);
             }
 
-            console.log("PUSHSCENE>", wrapper);
+            // console.log("PUSHSCENE>", wrapper);
             this.scenes.push([wrapper.call(this)]);
             this.currentScene[1] = this.currentScene[0].next(0);
         }
@@ -72,7 +72,7 @@ module RPG {
                     if (this.scenes.length === 1) {
                         this.fadeLayer.style.opacity = '0';
                     }
-                    console.log("PUSHSCENE<", this.currentScene);
+                    // console.log("POPSCENE<", this.currentScene);
                     RPG.ControlStack.pop();
                     this.scenes.pop();
                 }
