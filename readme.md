@@ -37,8 +37,8 @@ If you want to use the engine have a use-case that I'm not meeting, we should ta
 - **vn** - VisualNovel, a barebones swipe at making a visual novel engine
     - Will eventually form the basis of a VisualNovelKit
     - Heavily uh, inspired, by [The Sagittarian](http://www.newgrounds.com/portal/view/560868) by [Hyptosis](http://www.lorestrome.com)
-- **examples/CozyInvaders** - A simple 2-player pong game
-- **examples/CozyPong** - A partial Space Invaders clone
+- **examples/CozyInvaders** - A partial Space Invaders clone
+- **examples/CozyPong** - A simple 2-player pong game
 - **toys** - Random junk that demonstrates something
 
 To run the examples, simply click them in the game list in the launcher.
