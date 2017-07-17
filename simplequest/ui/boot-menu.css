@@ -90,9 +90,32 @@
     flex: 1 0;
     text-align: right;
     display: flex;
-    align-items: flex-end;
-    flex-direction: column;
-    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.boot-options-menu .selections li > div.value .indicator {
+    flex: 0 0 auto;
+    padding-left: 18px;
+    color: #4E4A4E;
+    position: relative;
+}
+
+.boot-options-menu .selections li > div.value.false .indicator.false,
+.boot-options-menu .selections li > div.value.true .indicator.true {
+    color: #DEEED6;
+}
+
+.boot-options-menu .selections li > div.value.false .indicator.false::before,
+.boot-options-menu .selections li > div.value.true .indicator.true::before {
+    content: "";
+    position: absolute;
+    background-image: url("ui_icons.png");
+    background-position: -14px -14px;
+    width: 14px;
+    height: 14px;
+    left: 4px;
 }
 
 .boot-options-menu .selections li.divider {

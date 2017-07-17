@@ -81,7 +81,7 @@ function play(path, override, debug) {
             'width':              params['width'],
             'height':             params['height'],
             'title':              params['title'] || 'Cozy',
-            'fullscreen':         params['fullscreen'] || false,
+            'fullscreen':         false,
             'icon':               params['icon'] ? Path.join(process.cwd(), path, params['icon']) : undefined,
             'autoHideMenuBar':    true,
             'useContentSize':     true

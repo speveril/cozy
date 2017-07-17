@@ -101,6 +101,10 @@ module Cozy {
 
         window.addEventListener('resize', (e) => this.onResize(e));
 
+        if (this.config.fullscreen) {
+            this.setFullScreen(true);
+        }
+
         // debugging
         if (this.debug) { // ~ key, opens console
             window.addEventListener('onkeydown', (e) => {
@@ -299,6 +303,14 @@ module Cozy {
     export function writeUserConfig(data:any) {
         let f = this.userdataDir.file('config.json');
         f.write(data, 'json');
+    }
+
+    export function getFullScreen():boolean {
+        return this.browserWindow.isFullScreen();
+    }
+
+    export function setFullScreen(f:boolean):void {
+        this.browserWindow.setFullScreen(f);
     }
 
     /**

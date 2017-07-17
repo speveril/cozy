@@ -205,6 +205,7 @@ module SimpleQuest {
 
         RPG.music['endcredits'].stop(2);
         yield *RPG.Scene.waitFadeOut(2.0);
+        creditScroll.remove();
     }
 
     export function newGameData() {

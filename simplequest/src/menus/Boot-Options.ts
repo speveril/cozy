@@ -3,6 +3,7 @@ module SimpleQuest {
         export class Boot_Options extends RPG.Menu {
             savedSFXVolume:number;
             savedMusicVolume:number;
+            savedFullScreen:boolean;
 
             constructor() {
                 super({
@@ -22,6 +23,13 @@ module SimpleQuest {
                                 <div class="label">Music Volume</div>
                                 <div class="value"><meter max="100"></meter></div>
                             </li>
+                            <li class="fullscreen" data-menu="fullscreen">
+                                <div class="label">Full Screen</div>
+                                <div class="value">
+                                    <div class="indicator true">Yes</div>
+                                    <div class="indicator false">No</div>
+                                </div>
+                            </li>
 
                             <li class="divider"></li>
 
@@ -37,8 +45,10 @@ module SimpleQuest {
 
                 this.savedSFXVolume = Cozy.Audio.sfxVolume;
                 this.savedMusicVolume = Cozy.Audio.musicVolume;
+                this.savedFullScreen = Cozy.getFullScreen();
 
                 this.updateMeters();
+                this.find('.fullscreen .value').classList.add(Cozy.getFullScreen().toString());
                 this.setupSelections(this.find('ul.selections'));
             }
 
@@ -63,8 +73,23 @@ module SimpleQuest {
                 return false;
             }
 
+            fullscreen() {
+                Cozy.setFullScreen(!Cozy.getFullScreen());
+                this.find('.fullscreen .value').classList.remove('true','false');
+                this.find('.fullscreen .value').classList.add(Cozy.getFullScreen().toString());
+            }
+
+            fullscreen_adjust(d:number) {
+                if ((d < 0 && !Cozy.getFullScreen()) || (d > 0 && Cozy.getFullScreen())) {
+                    this.fullscreen();
+                } else {
+                    return false;
+                }
+            }
+
             accept() {
                 Cozy.writeUserConfig({
+                    fullscreen: Cozy.getFullScreen(),
                     volume: {
                         sfx: Cozy.Audio.sfxVolume,
                         music: Cozy.Audio.musicVolume
@@ -76,6 +101,7 @@ module SimpleQuest {
             cancel() {
                 Cozy.Audio.setSFXVolume(this.savedSFXVolume);
                 Cozy.Audio.setMusicVolume(this.savedMusicVolume);
+                Cozy.setFullScreen(this.savedFullScreen);
                 RPG.Menu.pop();
             }
         }
