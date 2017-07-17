@@ -253,8 +253,7 @@ module RPG.BattleSystem.SoloFrontView {
                 RPG.Textbox.hide();
 
                 this.gameOver();
-                yield;
-                return battleOutcome;
+                while (true) yield;
             } else if (battleOutcome.victory) {
                 if (this.victoryMusic) this.victoryMusic.start();
 

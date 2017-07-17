@@ -1,5 +1,5 @@
 module RPG {
-    const CONTROLSTACKDEBUG = false;
+    const CONTROLSTACKDEBUG = true;
     export enum ControlMode { None, Scene, Menu, Map, Battle };
     let controlModeNames = ["none","scene","menu","map","battle"];
 
