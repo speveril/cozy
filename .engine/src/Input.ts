@@ -27,6 +27,7 @@ module Cozy {
         // override for each device
         getButtonState():{[name:string]:number} { return {}; }
         getAxisState():{[name:string]:number} { return {}; }
+        clear():void { /* override */ }
     }
 
     class KeyboardDevice extends Device {
@@ -74,6 +75,10 @@ module Cozy {
             return _.mapObject(this.pressed, () => {
                 return 1.0;
             });
+        }
+
+        clear() {
+            this.pressed = {};
         }
     }
 
@@ -144,6 +149,12 @@ module Cozy {
                     this.addGamepad(gamepad.index);
                 }
             });
+            _.each(navigator.getGamepads(), (gamepad) => {
+                console.log("PRE-CONNECTED ->", gamepad);
+                if (gamepad && gamepad.connected && gamepad.id.match(/XInput STANDARD GAMEPAD/)) {
+                    this.addGamepad(gamepad.index);
+                }
+            });
 
             window.addEventListener('gamepaddisconnected', (evt) => {
                 var gamepad = evt['gamepad'];
@@ -194,8 +205,10 @@ module Cozy {
                     clearTimeout(this.buttonTimeouts[b]);
                 }
             });
+        }
 
-
+        static clear() {
+            _.each(this.devices, (d) => d.clear());
         }
 
         static on(eventName, cb, ctx) {
