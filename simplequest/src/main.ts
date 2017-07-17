@@ -116,7 +116,8 @@ module SimpleQuest {
         RPG.Scene.do(function*() {
             yield *RPG.Scene.waitFadeIn(1.0);
             yield *RPG.Scene.waitTextbox(null, [
-                "My name is 'Hero'. Great expectations were thrust upon me at birth.",
+                "My name is 'Hero'.",
+                "Great expectations were thrust upon me at birth.",
                 "I've been wandering for most of my life, trying to figure out how to fulfill those expectations.",
                 "Or how to escape them."
             ]);
@@ -163,12 +164,21 @@ module SimpleQuest {
 
             yield *RPG.Scene.waitFadeIn(1.0);
             yield *RPG.Scene.waitTextbox(null, [
-                "With the dragon destroyed, I take my leave of Carp's Bend.",
-                "I do not know what they will think of me, or if they will understand what I've done for them.",
-                "I don't need applause. I don't need gold, or gems. I just need to know that I've done the right thing."
+                "With the dragon destroyed, I decide that I will not return to Carp's Bend.",
+                "I do not know what they will think of me, or if they will understand what I've done for them."
             ]);
             yield *RPG.Scene.waitTextbox(null, [
-                "It was kind of a terrible town anyway."
+                "During this journey, however, I have realized, finally, what it is that I have been searching for.",
+                "I don't need recognition.",
+                "I don't need lavish feasts or celebrations.",
+                "I don't even need gold, or gems."
+            ]);
+            yield *RPG.Scene.waitTextbox(null, [
+                "I just need to know that I've done the right thing."
+            ]);
+            yield *RPG.Scene.waitTextbox(null, [
+                "Also it was kind of a terrible town.",
+                "Good riddance."
             ]);
 
             Cozy.Audio.currentMusic.stop(1.0);
