@@ -49,6 +49,7 @@ To run the examples, simply click them in the game list in the launcher.
 ### `>>> PRERELEASE`
 
 - Simple Quest/RPGKit specific
+    - Playtesting, balancing
     - Double check licensing and attributions
     - ? hide debug map better
 
