@@ -49,7 +49,6 @@ To run the examples, simply click them in the game list in the launcher.
 ### `>>> PRERELEASE`
 
 - Simple Quest/RPGKit specific
-    - Add dialog to ghosts in castle
     - Double check licensing and attributions
     - ? hide debug map better
 - Bugs/Unsorted

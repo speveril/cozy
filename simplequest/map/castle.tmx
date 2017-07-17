@@ -468,7 +468,7 @@
     <property name="sprite" value="sprites/ghost.sprite"/>
    </properties>
   </object>
-  <object id="139" name="ghost_east_tower" type="entity" x="384" y="880" width="16" height="16">
+  <object id="139" name="ghost_east_tower_B" type="entity" x="384" y="880" width="16" height="16">
    <properties>
     <property name="behavior" value="wander"/>
     <property name="solid" value="false"/>
@@ -724,7 +724,7 @@
     <property name="sprite" value="sprites/ghost.sprite"/>
    </properties>
   </object>
-  <object id="214" name="ghost_east_tower" type="entity" x="400" y="784" width="16" height="16">
+  <object id="214" name="ghost_east_tower_A" type="entity" x="400" y="784" width="16" height="16">
    <properties>
     <property name="behavior" value="wander"/>
     <property name="solid" value="false"/>

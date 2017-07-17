@@ -14,6 +14,14 @@ module SimpleQuest {
             this.fixSwitchDoor('trigger_blue_castle_switch', 'blue_door');
             this.fixKeyDoor('castle_door_A');
             this.fixKeyDoor('castle_door_B');
+
+            if (this.persisted('saw_lich_cutscene')) {
+                this.getAllEntitiesByName('lich')[0].destroy();
+                this.getAllEntitiesByName('lackeyA')[0].destroy();
+                this.getAllEntitiesByName('lackeyB')[0].destroy();
+                this.getAllEntitiesByName('lackeyC')[0].destroy();
+                this.getAllEntitiesByName('lackeyD')[0].destroy();
+            }
         }
 
         exit_castle(args) {
@@ -173,7 +181,7 @@ module SimpleQuest {
 
         ghost_east_tower_floor(args) {
             RPG.Scene.do(function*() {
-                args.target.pause();
+                this.entityFacePlayerAndPause(args.target);
                 if (!this.persisted('talked to ghost shopkeeper')) {
                     yield *RPG.Scene.waitTextbox('GHOST', [
                         "I'm not supposed to talk about how exactly the afterlife works and all that...",
@@ -196,6 +204,108 @@ module SimpleQuest {
                     ]);
                 }
                 args.target.unpause();
+            }.bind(this));
+        }
+
+        ghost_courtyard(args) {
+            RPG.Scene.do(function*() {
+                this.entityFacePlayerAndPause(args.target);
+                yield *RPG.Scene.waitTextbox('GHOST', [
+                    "Welcome, Warm One.",
+                    "I'm sorry you've found the castle in such an inhospitable state."
+                ]);
+            }.bind(this));
+        }
+
+        ghost_west_tower_floor(args) {
+            RPG.Scene.do(function*() {
+                this.entityFacePlayerAndPause(args.target);
+                yield *RPG.Scene.waitTextbox('GHOST', [
+                    "The Pretender King wished us to join him, but I refused."
+                ]);
+            }.bind(this));
+        }
+
+        ghost_west_treasure(args) {
+            RPG.Scene.do(function*() {
+                this.entityFacePlayerAndPause(args.target);
+                yield *RPG.Scene.waitTextbox('GHOST', [
+                    "When I was alive, this statue always brought me peace, but...",
+                    "It couldn't protect me, in the end."
+                ]);
+            }.bind(this));
+        }
+
+        ghost_west_tower_A(args) {
+            RPG.Scene.do(function*() {
+                this.entityFacePlayerAndPause(args.target);
+                yield *RPG.Scene.waitTextbox('GHOST', [
+                    "The door is open, but the iron bars are not what have kept me here.",
+                    "I appreciate the thought, though."
+                ]);
+            }.bind(this));
+        }
+
+        ghost_west_tower_B(args) {
+            RPG.Scene.do(function*() {
+                this.entityFacePlayerAndPause(args.target);
+                yield *RPG.Scene.waitTextbox('GHOST', [
+                    "Pots. I love pots. Pots are my friends.",
+                    "Pots pots pots."
+                ]);
+            }.bind(this));
+        }
+
+        ghost_midarea(args) {
+            RPG.Scene.do(function*() {
+                this.entityFacePlayerAndPause(args.target);
+                if (this.persisted('saw_lich_cutscene')) {
+                    yield *RPG.Scene.waitTextbox('GHOST', [
+                        "Nothing has changed, it seems, since the Pretender King's demise.",
+                        "Go, Warm One. There is nothing for you here."
+                    ]);
+                } else {
+                    yield *RPG.Scene.waitTextbox('GHOST', [
+                        "We've been watching your progress through the castle, Warm One.",
+                        "Do you mean to defeat the Pretender King?"
+                    ]);
+                }
+            }.bind(this));
+        }
+
+        ghost_throne_antechamber(args) {
+            RPG.Scene.do(function*() {
+                this.entityFacePlayerAndPause(args.target);
+                if (this.persisted('saw_lich_cutscene')) {
+                    yield *RPG.Scene.waitTextbox('GHOST', [
+                        "The Pretender King is destroyed. Perhaps now we can find peace?"
+                    ]);
+                } else {
+                    yield *RPG.Scene.waitTextbox('GHOST', [
+                        "The Pretender King lies beyond these doors.",
+                        "Are you ready, Warm One?"
+                    ]);
+                }
+            }.bind(this));
+        }
+
+        ghost_east_tower_A(args) {
+            RPG.Scene.do(function*() {
+                this.entityFacePlayerAndPause(args.target);
+                yield *RPG.Scene.waitTextbox('GHOST', [
+                    "The Pretender King makes so many promises. I don't trust him.",
+                    "... but he has cheated death. Maybe he knows what he's talking about?"
+                ]);
+            }.bind(this));
+        }
+
+        ghost_east_tower_B(args) {
+            RPG.Scene.do(function*() {
+                this.entityFacePlayerAndPause(args.target);
+                yield *RPG.Scene.waitTextbox('GHOST', [
+                    "I never did understand why the King, the real King, loved his levers and doors so much.",
+                    "I guess when you're king you need to have hobbies."
+                ]);
             }.bind(this));
         }
     }
