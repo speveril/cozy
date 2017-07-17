@@ -51,13 +51,12 @@ To run the examples, simply click them in the game list in the launcher.
 - Simple Quest/RPGKit specific
     - Double check licensing and attributions
     - ? hide debug map better
-- Bugs/Unsorted
-    - Engine loading screen
 
 ### `>>> MILESTONE v0.1: SIMPLEQUEST RELEASE`
 
 - Figure out next milestone :|
 - Bugs/Unsorted
+    - Engine loading screen
     - Move "ControlStack" idea into core
     - Don't use <reference>, use imports etc. and something like webpack to generate the output
     - Figure out seamless upgrades
