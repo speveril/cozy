@@ -53,8 +53,6 @@ To run the examples, simply click them in the game list in the launcher.
     - ? hide debug map better
 - Bugs/Unsorted
     - Engine loading screen
-- Exporting
-    - Split config.json into necessary game setup vs. player configuration (bake non-player config into game setup on export, leave config as only player config, or play config should be in userdataDir)
 
 ### `>>> MILESTONE v0.1: SIMPLEQUEST RELEASE`
 

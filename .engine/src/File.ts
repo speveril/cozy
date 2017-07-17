@@ -1,4 +1,4 @@
-var fs = require('fs-extra');
+var fs = require('fs');
 var path = require('path');
 
 module Cozy {
@@ -43,8 +43,17 @@ module Cozy {
         }
 
         subdir(p:string, createIfDoesNotExist?:boolean):Directory {
-            var fullpath = path.join(this.root, p);
-            if (createIfDoesNotExist) fs.mkdirsSync(fullpath);
+            var fullpath = path.normalize(path.join(this.root, p));
+            if (createIfDoesNotExist && !fs.existsSync(fullpath)) {
+                let pathPieces = fullpath.split(path.sep);
+                let p = pathPieces[0];
+                for (let i = 1; i < pathPieces.length; i++) {
+                    p += path.sep + pathPieces[i];
+                    if (!fs.existsSync(p)) {
+                        fs.mkdirSync(p);
+                    }
+                }
+            }
             return new Directory(path.join(this.root, p));
         }
 

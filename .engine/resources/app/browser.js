@@ -489,6 +489,9 @@ var Browser = {
     export: function(srcPath, outPath) {
         var config = JSON.parse(FS.readFileSync(Path.join(srcPath, "config.json")));
         var exportConfig = config.export || {};
+
+        delete config.export;
+
         var displayName = scrub(config.title ? `${config.title} (${srcPath})` : srcPath);
 
         return new Promise((resolve, reject) => {
@@ -503,7 +506,7 @@ var Browser = {
                 } catch (e) {
                     this.output(e);
                     this.output("<span style='color:red'>[ FAILURE ]</span>\n");
-                    reject(error);
+                    reject(e);
                 }
             }
 
@@ -550,8 +553,23 @@ var Browser = {
 
             files.forEach((f) => cp(Path.join(appPath, f), Path.join(outAppPath, f.replace(".min.", "."))));
 
-            cp(Path.join(appPath, 'x_launch.js'), Path.join(outAppPath, 'launch.js'));
+            // TODO put stuff into the package information; name, version, etc
             cp(Path.join(appPath, 'x_package.json'), Path.join(outAppPath, 'package.json'));
+
+            try {
+                config['width'] = config['width'] || 320;
+                config['height'] = config['height'] || 240;
+                config['title'] = config['title'] || 'Cozy';
+                config['fullscreen'] = config['fullscreen'] || false;
+
+                let launchJS = FS.readFileSync(Path.join(appPath, 'x_launch.js')).toString();
+                launchJS = launchJS.replace('$$_PARAMS_$$', JSON.stringify(config));
+                FS.writeFileSync(Path.join(outAppPath, 'launch.js'), launchJS);
+            } catch(e) {
+                this.output(e);
+                this.output("<span style='color:red'>[ FAILURE ]</span>\n");
+                reject(e);
+            }
 
             var exclude = exportConfig.exclude || [];
             exclude.push(".ts$", ".js.map$");

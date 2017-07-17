@@ -9,13 +9,13 @@ var window;
 
 Electron.app.on('ready', () => {
     var path = Path.join("resources", "app", "g");
-    var params = JSON.parse(FS.readFileSync(Path.join(path, "config.json")));
+    var params = $$_PARAMS_$$;
 
     window = new Electron.BrowserWindow({
         'width':              params['width'],
         'height':             params['height'],
-        'title':              params['title'] || 'Cozy',
-        'fullscreen':         params['fullscreen'] || false,
+        'title':              params['title'],
+        'fullscreen':         params['fullscreen'],
         'autoHideMenuBar':    true,
         'useContentSize':     true
     });
@@ -26,13 +26,10 @@ Electron.app.on('ready', () => {
 
     params['game'] = path;
     params['enginePath'] = '.';
-    params['width'] = params['width'] || 320;
-    params['height'] = params['height'] || 240;
     params['debug'] = false;
 
     window.loadURL("file://" + __dirname + "/game.html");
     window.webContents.once('did-finish-load', () => {
-        console.log("did-finish-load");
         window.webContents.send('start', params);
     });
 });
