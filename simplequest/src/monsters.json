@@ -264,7 +264,7 @@
         ],
         "actions":[
             {
-                "_chance":66,
+                "_chance":50,
                 "basicAttack":[
                     "physical"
                 ]
@@ -272,27 +272,27 @@
             {
                 "strike":[
                     "fire",
-                    "2d10 + 25"
+                    "2d10 + 10"
                 ],
-                "_chance":11,
+                "_chance":15,
                 "_sound":"effect_fire",
                 "_message":"The cult leader casts Fire Bolt!"
             },
             {
                 "strike":[
                     "shock",
-                    "2d10 + 25"
+                    "2d10 + 10"
                 ],
-                "_chance":11,
+                "_chance":15,
                 "_sound":"effect_lightning",
                 "_message":"The cult leader casts Shock!"
             },
             {
                 "strike":[
                     "ice",
-                    "2d10 + 25"
+                    "2d10 + 10"
                 ],
-                "_chance":11,
+                "_chance":15,
                 "_sound":"effect_ice",
                 "_message":"The cult leader casts Ice Shard!"
             }
@@ -301,7 +301,7 @@
             "dodge":20,
             "critical":20,
             "defense":25,
-            "damage":30,
+            "damage":20,
             "block":15
         },
         "xp":1000,
@@ -335,7 +335,7 @@
     },
     "bramblekin":{
         "name":"Bramblekin",
-        "hp":50,
+        "hp":80,
         "treasure":[
             {
                 "item":"oak_sword",
@@ -474,7 +474,7 @@
     },
     "cultist":{
         "name":"Cultist",
-        "hp":25,
+        "hp":65,
         "treasure":[
             {
                 "count":"1d6+6",
