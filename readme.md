@@ -49,7 +49,12 @@ To run the examples, simply click them in the game list in the launcher.
 ### `>>> PRERELEASE`
 
 - Simple Quest/RPGKit specific
-    - Playtesting, balancing
+    - Stuff isn't getting cleaned up correctly on game over
+    - Long fights start to lose FPS drastically
+    - When selling a non-stacking(?) item hitting left/right sets count to 0, won't let you change it back
+    - Save games should save the state of the map (tile changes, entity changes, etc) and restore them on load
+    - Selling interface kind of sucks
+    - Playtesting, balancing, bug fixes...
     - Double check licensing and attributions
     - ? hide debug map better
 
@@ -63,6 +68,7 @@ To run the examples, simply click them in the game list in the launcher.
     - Figure out seamless upgrades
 - Project Manager
     - Use an SVG library
+    - Choose directory(ies) for project library
     - Make browser NOT close the currently active game
         - or just revisit the whole browser interface in general
     - Manager should only run one game at a time, or at least only one copy of a particular game

@@ -240,7 +240,7 @@
     },
     "cultleader":{
         "name":"Cult Leader",
-        "hp":600,
+        "hp":400,
         "treasure":[
             {
                 "count":"1d100+150",
@@ -335,7 +335,7 @@
     },
     "bramblekin":{
         "name":"Bramblekin",
-        "hp":80,
+        "hp":65,
         "treasure":[
             {
                 "item":"oak_sword",
@@ -474,7 +474,7 @@
     },
     "cultist":{
         "name":"Cultist",
-        "hp":65,
+        "hp":50,
         "treasure":[
             {
                 "count":"1d6+6",

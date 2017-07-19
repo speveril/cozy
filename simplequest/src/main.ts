@@ -98,6 +98,7 @@ module SimpleQuest {
     export function startGame(game:RPG.SavedGame) {
         Cozy.pause();
         game.applyToState();
+        RPG.Behavior._cleanup();
 
         Cozy.unpause();
 
@@ -250,7 +251,8 @@ module SimpleQuest {
             },
             party: {
                 members: ['hero'],
-                inventory: ['tonic','tonic','oak_sword','quilt_armor']
+                inventory: ['tonic','tonic','oak_sword','quilt_armor'],
+                money: '0'
             }
         });
     }

@@ -1,5 +1,11 @@
 module RPG {
     export module Behavior {
+        let guardMutex = null;
+        
+        export function _cleanup() {
+            guardMutex = null;
+        }
+
         export function *stun(entity:RPG.Entity, time:number, returnBehavior:any = null) {
             let behavior = returnBehavior || entity.behavior;
             let counter = 0;
@@ -97,7 +103,6 @@ module RPG {
             }
         }
 
-        let guardMutex = null;
         export function *guard(entity:RPG.Entity, direction:number) {
             entity.dir = direction;
             entity.sprite.animation = 'stand';
