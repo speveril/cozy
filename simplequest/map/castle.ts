@@ -214,6 +214,7 @@ module SimpleQuest {
                     "Welcome, Warm One.",
                     "I'm sorry you've found the castle in such an inhospitable state."
                 ]);
+                args.target.unpause();
             }.bind(this));
         }
 
@@ -223,6 +224,7 @@ module SimpleQuest {
                 yield *RPG.Scene.waitTextbox('GHOST', [
                     "The Pretender King wished us to join him, but I refused."
                 ]);
+                args.target.unpause();
             }.bind(this));
         }
 
@@ -233,6 +235,7 @@ module SimpleQuest {
                     "When I was alive, this statue always brought me peace, but...",
                     "It couldn't protect me, in the end."
                 ]);
+                args.target.unpause();
             }.bind(this));
         }
 
@@ -243,6 +246,7 @@ module SimpleQuest {
                     "The door is open, but the iron bars are not what have kept me here.",
                     "I appreciate the thought, though."
                 ]);
+                args.target.unpause();
             }.bind(this));
         }
 
@@ -253,6 +257,7 @@ module SimpleQuest {
                     "Pots. I love pots. Pots are my friends.",
                     "Pots pots pots."
                 ]);
+                args.target.unpause();
             }.bind(this));
         }
 
@@ -270,6 +275,7 @@ module SimpleQuest {
                         "Do you mean to defeat the Pretender King?"
                     ]);
                 }
+                args.target.unpause();
             }.bind(this));
         }
 
@@ -286,6 +292,7 @@ module SimpleQuest {
                         "Are you ready, Warm One?"
                     ]);
                 }
+                args.target.unpause();
             }.bind(this));
         }
 
@@ -296,6 +303,7 @@ module SimpleQuest {
                     "The Pretender King makes so many promises. I don't trust him.",
                     "... but he has cheated death. Maybe he knows what he's talking about?"
                 ]);
+                args.target.unpause();
             }.bind(this));
         }
 
@@ -306,6 +314,7 @@ module SimpleQuest {
                     "I never did understand why the King, the real King, loved his levers and doors so much.",
                     "I guess when you're king you need to have hobbies."
                 ]);
+                args.target.unpause();
             }.bind(this));
         }
     }

@@ -106,7 +106,7 @@ module SimpleQuest {
                     cultLeader.bounce(8);
                     yield* RPG.Scene.waitTextbox("Cult Leader", [
                         "You buffoons! You know we need that Gold Key to open the door to the ruins! Now what are we supposed to do?!",
-                        "Well, at least I have a copy of the Iron Key in this chest here."
+                        "You're all very lucky that I keep a copy of the Iron Key in this chest here."
                     ]);
                     cultistB.bounce(8);
                     yield* RPG.Scene.waitTextbox("Cultist", ["The Iron Key, Master? The one that opens the door to the castle?"]);
