@@ -345,7 +345,7 @@
   </object>
   <object id="85" name="open_chest" type="trigger" x="48" y="752" width="16" height="16">
    <properties>
-    <property name="contents" value="firedart_scroll"/>
+    <property name="contents" value="firebolt_scroll"/>
     <property name="count" value="2"/>
    </properties>
   </object>

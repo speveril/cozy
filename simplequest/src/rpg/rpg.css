@@ -56,9 +56,13 @@ meter::-webkit-meter-bar {
     display: relative;
 }
 
-.inner-text .cursor ~ * {
+.inner-text .__ch, .inner-text .__ws {
     visibility: hidden;
 }
+
+/*.inner-text .cursor ~ * {
+    visibility: hidden;
+}*/
 
 .inner-text .__c {
     width: 100%;
