@@ -103,7 +103,7 @@ module SimpleQuest {
                 } else {
                     yield* RPG.Scene.waitTextbox("MAYOR JOAN", [
                         "Mount Danger is north of Carp's Bend, through the Dark Forest.",
-                        "Thanks for your help!"
+                        "Thank you for your help!"
                     ]);
                 }
             }.bind(this));
