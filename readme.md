@@ -49,76 +49,77 @@ To run the examples, simply click them in the game list in the launcher.
 ### `>>> PRERELEASE`
 
 - Simple Quest/RPGKit specific
-    - [...] Playtesting, balancing, bug fixes...
-    - [...] Go through TODOs in engine and simplequest
-    - [BUG] Save game thumbnails include any letterboxing the window has
-    - [ + ] Save games should save the state of the map (tile changes, entity changes, etc) and restore them on load
-    - [ + ] Selling interface kind of sucks
-    - [???] hide debug map better
-    - Double check licensing and attributions
+    - `[...]` Playtesting, balancing, bug fixes...
+    - `[...]` Go through TODOs in engine and simplequest
+    - `[BUG]` Save game thumbnails include any letterboxing the window has
+    - `[ + ]` Save games should save the state of the map (tile changes, entity changes, etc) and restore them on load
+    - `[ + ]` Selling interface kind of sucks
+    - `[???]` hide debug map better
+    - `[...]` Double check licensing and attributions
 
 ### `>>> MILESTONE v0.1: SIMPLEQUEST RELEASE`
 
 - Figure out next milestone :|
 - Bugs/Unsorted
-    - [???] Engine loading screen
-    - Move "ControlStack" idea into core
-    - Don't use <reference>, use imports etc. and something like webpack to generate the output
-    - Figure out seamless upgrades
+    - `[ + ]` Switch over to `let` instead of `var` in most(all?) places
+    - `[ + ]` Move "ControlStack" idea into core
+    - `[ + ]` Don't use <reference>, use imports etc. and something like webpack to generate the output
+    - `[COM]` Engine loading screen
+    - `[COM]` Figure out seamless upgrades
 - Project Manager
-    - Use an SVG library
-    - Choose directory(ies) for project library
-    - Make browser NOT close the currently active game
+    - `[ + ]` Use an SVG library
+    - `[ + ]` Choose directory(ies) for project library
+    - `[ + ]` Make browser NOT close the currently active game
         - or just revisit the whole browser interface in general
-    - Manager should only run one game at a time, or at least only one copy of a particular game
+    - `[ + ]`  Manager should only run one game at a time, or at least only one copy of a particular game
 - Infrastructure
-    - Make glob.js easier to recreate
-    - If a project has a `build.js`/`build.ts`, run it after TS compilation
-    - Should be able to refresh/reset; the way the message waiting works, this doesn't work the way it should
+    - `[ + ]` Make glob.js easier to recreate
+    - `[ + ]` If a project has a `build.js`/`build.ts`, run it after TS compilation
+    - `[ + ]` Should be able to refresh/reset; the way the message waiting works, this doesn't work the way it should
 - Cozy.Sprite
-    - change Sprite direction accessors to have degree and radian variants, reading/writing a single internal format and converting as necessary
-    - Need to figure out hierarchical/multilayer sprites
+    - `[ + ]` change Sprite direction accessors to have degree and radian variants, reading/writing a single internal format and converting as necessary
+    - `[ + ]` Need to figure out hierarchical/multilayer sprites
         - Give Sprite a Container, put itself in the container and add THAT to the layer's container, then all children sprites can go in there afterward
         - Do I need/want a true hierarchy, or just layers?
-    - Support a 'keep' direction or something on sprite animation angles -- just keep playing the same direction as before
+    - `[ + ]` Support a 'keep' direction or something on sprite animation angles -- just keep playing the same direction as before
 - Audio
-    - Support not looping music
-    - Allow crossfading music
-    - Music files that are sequences of tracks, with timing/looping/etc information
-- Testing
-    - Investigate unit tests
+    - `[ + ]` Support not looping music
+    - `[ + ]` Allow crossfading music
+    - `[ + ]` Music files that are sequences of tracks, with timing/looping/etc information
 - Data Editor
-    - Manage .json files; top level is an object with a ".schemas" key plus "tables" of typed objects
+    - `[ + ]` Manage .json files; top level is an object with a ".schemas" key plus "tables" of typed objects
 - Reconcile File stuff
-    - Don't make it required that the current working directory is actually the gamepath
+    - `[ + ]` Don't make it required that the current working directory is actually the gamepath
 - Other platforms
-    - Mac OS
-    - Linux
+    - `[ + ]` Mac OS
+    - `[ + ]` Linux
 - RPGKit
-    - In-game input config
-    - SavedGame should write a version number, and have upgrade functions; when loading a SavedGame, run through each necessary upgrade before returning it
-    - Add scripted movement for entities on the map
-    - Add Scene.waitAll() which takes multiple generator functions and waits for them all to finish
-    - Need a way to chain from another scene, e.g. wait for a door to finish and THEN do another scene function
-    - Can I just slurp in all of the map .ts files automatically instead of having to reference each one?
-    - It'd be nice if the persistent stuff in map was easier to use in general
-    - Zones (large polygons that can be checked, but don't necessarily fire an event when crossing the threshold) ???
-    - Menus need some polish
-        - Menu should have .menu and .active; selection container should have .selections, and it should just get added by setupSelections
-        - Need to provide a better way for menus to return a value to a previous menu -- promises?
-    - Allow to lose a battle without a game over
-    - Be able to get the outcome of a battle so that code may respond to it differently -- victory vs. flee vs. defeat
+    - `[ + ]` In-game input config
+    - `[ + ]` SavedGame should write a version number, and have upgrade functions; when loading a SavedGame, run through each necessary upgrade before returning it
+    - `[ + ]` Add scripted movement for entities on the map
+        - This is half there with the `path` Behavior
+    - `[ + ]` Add Scene.waitAll() which takes multiple generator functions and waits for them all to finish
+    - `[ + ]` Need a way to chain from another scene, e.g. wait for a door to finish and THEN do another scene function
+    - `[ + ]` Can I just slurp in all of the map .ts files automatically instead of having to reference each one?
+    - `[???]` It'd be nice if the persistent stuff in map was easier to use in general
+    - `[???]` Zones (large polygons that can be checked, but don't necessarily fire an event when crossing the threshold)
+    - `[...]` Menus need some polish
+        - `[ + ]` Menu should have .menu and .active; selection container should have .selections, and it should just get added by setupSelections
+        - `[ + ]` Need to provide a better way for menus to return a value to a previous menu -- promises?
+    - `[ + ]` Allow to lose a battle without a game over
+    - `[ + ]` Be able to get the outcome of a battle so that code may respond to it differently -- victory vs. flee vs. defeat
 - Documentation
-    - Better docs on core functions
-    - Higher level intro, etc
-    - Tutorials
+    - `[COM]` Better docs on core functions
+    - `[COM]` Higher level intro, etc
+    - `[COM]` Tutorials
 - Release stuff
-    - Check if `.engine/src` exists and do not do core watch or compiles if it doesn't
-    - config.json should be able to define an expected version, Cozy should be smart enough to do the right thing
+    - `[COM]` Check if `.engine/src` exists and do not do core watch or compiles if it doesn't
+    - `[COM]` config.json should be able to define an expected version, Cozy should be smart enough to do the right thing
         - I think this means "shipping" compiled .js blobs of previous versions along with the engine, and having the player select the right one
         - This is irrelevant for games once exported; they'll be packaged with the version they were used to create it
 - Testing
-    - Don't ship without tests on engine core; lets me keep track of breaking changes, etc.
+    - `[ + ]` Investigate unit tests
+    - `[ + ]` Don't ship without tests on engine core; lets me keep track of breaking changes, etc.
 
 
 ### `>>> RELEASE 1.0`
