@@ -49,18 +49,19 @@ To run the examples, simply click them in the game list in the launcher.
 ### `>>> PRERELEASE`
 
 - Simple Quest/RPGKit specific
-    - When selling a non-stacking(?) item hitting left/right sets count to 0, won't let you change it back
-    - Save games should save the state of the map (tile changes, entity changes, etc) and restore them on load
-    - Selling interface kind of sucks
-    - Playtesting, balancing, bug fixes...
+    - [...] Playtesting, balancing, bug fixes...
+    - [BUG] Save games still aren't recording/loading money
+    - [BUG] Save game thumbnails include any letterboxing the window has
+    - [ + ] Save games should save the state of the map (tile changes, entity changes, etc) and restore them on load
+    - [ + ] Selling interface kind of sucks
+    - [???] hide debug map better
     - Double check licensing and attributions
-    - ? hide debug map better
 
 ### `>>> MILESTONE v0.1: SIMPLEQUEST RELEASE`
 
 - Figure out next milestone :|
 - Bugs/Unsorted
-    - Engine loading screen
+    - [???] Engine loading screen
     - Move "ControlStack" idea into core
     - Don't use <reference>, use imports etc. and something like webpack to generate the output
     - Figure out seamless upgrades

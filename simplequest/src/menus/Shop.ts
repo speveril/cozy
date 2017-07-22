@@ -220,7 +220,7 @@ module SimpleQuest {
                 super({
                     className: 'menu confirm-sell-menu',
                     cancelable: true,
-                    direction: RPG.MenuDirection.GRID,
+                    direction: RPG.MenuDirection.VERTICAL,
                     selectionContainer: '.selections',
                     html: `
                         <div class="item-container"></div>
@@ -253,14 +253,15 @@ module SimpleQuest {
                 this.addChild(this.itemComponent, this.find('.item-container'));
 
                 this.owned = this.stack.length;
-                this.count = 1;
 
                 if (!this.stack[0].equipSlot) {
                     this.find('.equipped-container').style.display = 'none';
                     this.equipped = 0;
                 } else {
-                    this.equipped = _.reduce(this.stack, (n:number, item:RPG.Item) => n += (item.location === RPG.Party.inventory ? 1 : 0), 0);
+                    this.equipped = _.reduce(this.stack, (n:number, item:RPG.Item) => n += (item.location === RPG.Party.inventory ? 0 : 1), 0);
                 }
+
+                this.count = 1;
             }
 
             // TODO: make this pattern easier?
@@ -289,16 +290,13 @@ module SimpleQuest {
                 this.find('.equipped-container .count').innerText = x.toString();
             }
 
-            moveSelection(delta:number, direction:RPG.MenuDirection) {
-                var d = delta;
-                if (direction === RPG.MenuDirection.VERTICAL) d *= -10;
-                this.count = Math.max(0, Math.min(this.owned - this.equipped, this.count + d));
-                return true;
-            }
-
             stop() {
                 super.stop();
                 this.remove();
+            }
+
+            confirm_adjust(d:number) {
+                this.count = Math.max(0, Math.min(this.owned - this.equipped, this.count + d));
             }
 
             confirm() {
