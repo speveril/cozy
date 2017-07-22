@@ -26,7 +26,7 @@ Right now, you will need to have npm installed, and to get up and running, you'l
 
 I have a lot of games I want to make at some point and/or have been working on for more than a decade. I keep trying other engines and finding something distasteful about them; I figured if I made my own at least I couldn't blame anyone else. I could also build it with the tools that I am most familiar with and so afford me the most pleasant working environment -- as such the main basis of the engine are web technologies, like HTML and JS.
 
-If you want to use the engine have a use-case that I'm not meeting, we should talk. For the time being I'm focusing on what I need but maybe there's something I haven't thought of which would be great, or something I'm already planning that I could shuffle forward on the roadmap.
+If you want to use the engine and have a use-case that I'm not meeting, we should talk. For the time being I'm focusing on what I need but maybe there's something I haven't thought of which would be great, or something I'm already planning that I could shuffle forward on the roadmap.
 
 
 ## Examples
