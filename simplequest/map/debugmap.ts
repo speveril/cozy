@@ -72,7 +72,7 @@ module SimpleQuest {
                 yield* this.waitShop({
                     shopName: "Ye Olde Test Shoppe",
                     priceMultiplier: 1,
-                    products: _.keys(RPG.Item.library)
+                    products: _.keys(RPG.Item.library).sort((a,b) => RPG.Item.library[a].sort - RPG.Item.library[b].sort)
                 });
             }.bind(this));
         }
