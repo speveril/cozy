@@ -1,7 +1,7 @@
 module RPG {
     export module Behavior {
         let guardMutex = null;
-        
+
         export function _cleanup() {
             guardMutex = null;
         }
@@ -108,6 +108,7 @@ module RPG {
             entity.sprite.animation = 'stand';
 
             let origin = {x:entity.position.x, y:entity.position.y, d:entity.dir};
+            let dist = 0, dx, dy;
 
             var map = <SimpleQuest.Map>RPG.map;
             var visionDistance:number = entity.params.vision || 3;
@@ -138,24 +139,35 @@ module RPG {
                         }
                         guardMutex = true;
 
-                        yield *Scene.waitEntityMove(entity, movement);
+                        entity.respectsObstructions = false;
+                        entity.speed = 100;
+                        while (Trig.dist(RPG.player.position, entity.position) - RPG.player.radius - entity.radius > 0) {
+                            dt = yield;
+
+                            entity.dir = PIXI.RAD_TO_DEG * Math.atan2(RPG.player.position.y - entity.position.y, RPG.player.position.x - entity.position.x);
+                            dx = Math.cos(PIXI.DEG_TO_RAD * entity.dir) * entity.speed * dt;
+                            dy = Math.sin(PIXI.DEG_TO_RAD * entity.dir) * entity.speed * dt;
+                            entity.move(dx, dy);
+                        }
+
                         if (exclamation !== '') {
                             yield *Scene.waitTextbox(null, [exclamation]);
                         }
                         entity.clearEmote();
 
                         yield *map.waitFight(entity);
+
                         guardMutex = null;
                         RPG.ControlStack.pop();
 
                         if (!entity.destroyed) {
-                            console.log("returning entity to its place...");
                             let dist = Trig.dist(origin, entity.position);
                             let dir = Math.atan2(origin.y - entity.position.y, origin.x - entity.position.x) * PIXI.RAD_TO_DEG;
                             yield *Behavior.path(entity, [ [dir,dist] ]);
                             entity.sprite.animation = 'stand';
                             entity.dir = origin.d;
                         }
+
                     }
                 }
             }

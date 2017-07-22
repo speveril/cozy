@@ -49,7 +49,6 @@ To run the examples, simply click them in the game list in the launcher.
 ### `>>> PRERELEASE`
 
 - Simple Quest/RPGKit specific
-    - Skeleton warrior in west tower runs through the player
     - When selling a non-stacking(?) item hitting left/right sets count to 0, won't let you change it back
     - Save games should save the state of the map (tile changes, entity changes, etc) and restore them on load
     - Selling interface kind of sucks

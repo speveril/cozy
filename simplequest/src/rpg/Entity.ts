@@ -136,7 +136,7 @@ module RPG {
 
         update(dt:number) {
             if (this._destroyed) return;
-            
+
             if (!this.paused) {
                 if (this.bouncing) {
                     this.bouncing.y += this.bouncing.vy * dt - (BOUNCE_GRAVITY * dt * dt) / 2;
@@ -188,6 +188,9 @@ module RPG {
 
                 if (!this.respectsObstructions) {
                     this.sprite.adjustPosition(dx, dy);
+                    if (this.emoteSprite) {
+                        this.emoteSprite.setPosition(this.sprite.position.x, this.sprite.position.y + 0.1);
+                    }
                     return;
                 }
 
