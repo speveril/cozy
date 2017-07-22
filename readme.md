@@ -50,7 +50,6 @@ To run the examples, simply click them in the game list in the launcher.
 
 - Simple Quest/RPGKit specific
     - [...] Playtesting, balancing, bug fixes...
-    - [BUG] Save games still aren't recording/loading money
     - [BUG] Save game thumbnails include any letterboxing the window has
     - [ + ] Save games should save the state of the map (tile changes, entity changes, etc) and restore them on load
     - [ + ] Selling interface kind of sucks
