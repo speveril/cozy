@@ -282,9 +282,17 @@ module Cozy {
     }
 
     export function captureScreenshot(width?:number, height?:number):Promise<any> {
+        let winSize = this.browserWindow.getContentSize();
+        let rect:GitHubElectron.Rectangle = {};
+
+        rect.width = this.config['width'] * this.sizeMultiplier;
+        rect.height = this.config['height'] * this.sizeMultiplier;
+        rect.x = (winSize[0] - rect.width) / 2;
+        rect.y = (winSize[1] - rect.height) / 2;
+
         return new Promise((resolve, reject) => {
-            this.browserWindow.capturePage((image) => {
-                var opts = {
+            this.browserWindow.capturePage(rect, (image) => {
+                let opts = {
                     quality: "best"
                 };
                 if (width !== undefined) opts['width'] = width;

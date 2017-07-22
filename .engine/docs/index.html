@@ -80,7 +80,7 @@
 				</ul>
 				<h2 id="plans">Plans</h2>
 				<p>I have a lot of games I want to make at some point and/or have been working on for more than a decade. I keep trying other engines and finding something distasteful about them; I figured if I made my own at least I couldn&#39;t blame anyone else. I could also build it with the tools that I am most familiar with and so afford me the most pleasant working environment -- as such the main basis of the engine are web technologies, like HTML and JS.</p>
-				<p>If you want to use the engine have a use-case that I&#39;m not meeting, we should talk. For the time being I&#39;m focusing on what I need but maybe there&#39;s something I haven&#39;t thought of which would be great, or something I&#39;m already planning that I could shuffle forward on the roadmap.</p>
+				<p>If you want to use the engine and have a use-case that I&#39;m not meeting, we should talk. For the time being I&#39;m focusing on what I need but maybe there&#39;s something I haven&#39;t thought of which would be great, or something I&#39;m already planning that I could shuffle forward on the roadmap.</p>
 				<h2 id="examples">Examples</h2>
 				<ul>
 					<li><strong>SimpleQuest</strong> - SimpleQuest, a small but complete RPG<ul>
@@ -93,8 +93,8 @@
 							<li>Heavily uh, inspired, by <a href="http://www.newgrounds.com/portal/view/560868">The Sagittarian</a> by <a href="http://www.lorestrome.com">Hyptosis</a></li>
 						</ul>
 					</li>
-					<li><strong>examples/CozyInvaders</strong> - A simple 2-player pong game</li>
-					<li><strong>examples/CozyPong</strong> - A partial Space Invaders clone</li>
+					<li><strong>examples/CozyInvaders</strong> - A partial Space Invaders clone</li>
+					<li><strong>examples/CozyPong</strong> - A simple 2-player pong game</li>
 					<li><strong>toys</strong> - Random junk that demonstrates something</li>
 				</ul>
 				<p>To run the examples, simply click them in the game list in the launcher.</p>
@@ -102,8 +102,13 @@
 				<h3 id="-prerelease-"><code>&gt;&gt;&gt; PRERELEASE</code></h3>
 				<ul>
 					<li>Simple Quest/RPGKit specific<ul>
-							<li>Double check licensing and attributions</li>
-							<li>? hide debug map better</li>
+							<li><code>[...]</code> Playtesting, balancing, bug fixes...</li>
+							<li><code>[...]</code> Go through TODOs in engine and simplequest</li>
+							<li><code>[BUG]</code> Save game thumbnails include any letterboxing the window has</li>
+							<li><code>[ + ]</code> Save games should save the state of the map (tile changes, entity changes, etc) and restore them on load</li>
+							<li><code>[ + ]</code> Selling interface kind of sucks</li>
+							<li><code>[???]</code> hide debug map better</li>
+							<li><code>[...]</code> Double check licensing and attributions</li>
 						</ul>
 					</li>
 				</ul>
@@ -111,87 +116,88 @@
 				<ul>
 					<li>Figure out next milestone :|</li>
 					<li>Bugs/Unsorted<ul>
-							<li>Engine loading screen</li>
-							<li>Move &quot;ControlStack&quot; idea into core</li>
-							<li>Don&#39;t use <reference>, use imports etc. and something like webpack to generate the output</li>
-							<li>Figure out seamless upgrades</li>
+							<li><code>[ + ]</code> Switch over to <code>let</code> instead of <code>var</code> in most(all?) places</li>
+							<li><code>[ + ]</code> Move &quot;ControlStack&quot; idea into core</li>
+							<li><code>[ + ]</code> Don&#39;t use <reference>, use imports etc. and something like webpack to generate the output</li>
+							<li><code>[COM]</code> Engine loading screen</li>
+							<li><code>[COM]</code> Figure out seamless upgrades</li>
 						</ul>
 					</li>
 					<li>Project Manager<ul>
-							<li>Use an SVG library</li>
-							<li>Make browser NOT close the currently active game<ul>
+							<li><code>[ + ]</code> Use an SVG library</li>
+							<li><code>[ + ]</code> Choose directory(ies) for project library</li>
+							<li><code>[ + ]</code> Make browser NOT close the currently active game<ul>
 									<li>or just revisit the whole browser interface in general</li>
 								</ul>
 							</li>
-							<li>Manager should only run one game at a time, or at least only one copy of a particular game</li>
+							<li><code>[ + ]</code>  Manager should only run one game at a time, or at least only one copy of a particular game</li>
 						</ul>
 					</li>
 					<li>Infrastructure<ul>
-							<li>Make glob.js easier to recreate</li>
-							<li>If a project has a <code>build.js</code>/<code>build.ts</code>, run it after TS compilation</li>
-							<li>Should be able to refresh/reset; the way the message waiting works, this doesn&#39;t work the way it should</li>
+							<li><code>[ + ]</code> Make glob.js easier to recreate</li>
+							<li><code>[ + ]</code> If a project has a <code>build.js</code>/<code>build.ts</code>, run it after TS compilation</li>
+							<li><code>[ + ]</code> Should be able to refresh/reset; the way the message waiting works, this doesn&#39;t work the way it should</li>
 						</ul>
 					</li>
 					<li>Cozy.Sprite<ul>
-							<li>change Sprite direction accessors to have degree and radian variants, reading/writing a single internal format and converting as necessary</li>
-							<li>Need to figure out hierarchical/multilayer sprites<ul>
+							<li><code>[ + ]</code> change Sprite direction accessors to have degree and radian variants, reading/writing a single internal format and converting as necessary</li>
+							<li><code>[ + ]</code> Need to figure out hierarchical/multilayer sprites<ul>
 									<li>Give Sprite a Container, put itself in the container and add THAT to the layer&#39;s container, then all children sprites can go in there afterward</li>
 									<li>Do I need/want a true hierarchy, or just layers?</li>
 								</ul>
 							</li>
-							<li>Support a &#39;keep&#39; direction or something on sprite animation angles -- just keep playing the same direction as before</li>
+							<li><code>[ + ]</code> Support a &#39;keep&#39; direction or something on sprite animation angles -- just keep playing the same direction as before</li>
 						</ul>
 					</li>
 					<li>Audio<ul>
-							<li>Support not looping music</li>
-							<li>Allow crossfading music</li>
-							<li>Music files that are sequences of tracks, with timing/looping/etc information</li>
-						</ul>
-					</li>
-					<li>Testing<ul>
-							<li>Investigate unit tests</li>
+							<li><code>[ + ]</code> Support not looping music</li>
+							<li><code>[ + ]</code> Allow crossfading music</li>
+							<li><code>[ + ]</code> Music files that are sequences of tracks, with timing/looping/etc information</li>
 						</ul>
 					</li>
 					<li>Data Editor<ul>
-							<li>Manage .json files; top level is an object with a &quot;.schemas&quot; key plus &quot;tables&quot; of typed objects</li>
+							<li><code>[ + ]</code> Manage .json files; top level is an object with a &quot;.schemas&quot; key plus &quot;tables&quot; of typed objects</li>
 						</ul>
 					</li>
 					<li>Reconcile File stuff<ul>
-							<li>Don&#39;t make it required that the current working directory is actually the gamepath</li>
+							<li><code>[ + ]</code> Don&#39;t make it required that the current working directory is actually the gamepath</li>
 						</ul>
 					</li>
 					<li>Other platforms<ul>
-							<li>Mac OS</li>
-							<li>Linux</li>
+							<li><code>[ + ]</code> Mac OS</li>
+							<li><code>[ + ]</code> Linux</li>
 						</ul>
 					</li>
 					<li>RPGKit<ul>
-							<li>In-game input config</li>
-							<li>SavedGame should write a version number, and have upgrade functions; when loading a SavedGame, run through each necessary upgrade before returning it</li>
-							<li>Add scripted movement for entities on the map</li>
-							<li>Add Scene.waitAll() which takes multiple generator functions and waits for them all to finish</li>
-							<li>Need a way to chain from another scene, e.g. wait for a door to finish and THEN do another scene function</li>
-							<li>Can I just slurp in all of the map .ts files automatically instead of having to reference each one?</li>
-							<li>It&#39;d be nice if the persistent stuff in map was easier to use in general</li>
-							<li>Zones (large polygons that can be checked, but don&#39;t necessarily fire an event when crossing the threshold) ???</li>
-							<li>Menus need some polish<ul>
-									<li>Menu should have .menu and .active; selection container should have .selections, and it should just get added by setupSelections</li>
-									<li>Need to provide a better way for menus to return a value to a previous menu -- promises?</li>
+							<li><code>[ + ]</code> In-game input config</li>
+							<li><code>[ + ]</code> SavedGame should write a version number, and have upgrade functions; when loading a SavedGame, run through each necessary upgrade before returning it</li>
+							<li><code>[ + ]</code> Add scripted movement for entities on the map<ul>
+									<li>This is half there with the <code>path</code> Behavior</li>
 								</ul>
 							</li>
-							<li>Allow to lose a battle without a game over</li>
-							<li>Be able to get the outcome of a battle so that code may respond to it differently -- victory vs. flee vs. defeat</li>
+							<li><code>[ + ]</code> Add Scene.waitAll() which takes multiple generator functions and waits for them all to finish</li>
+							<li><code>[ + ]</code> Need a way to chain from another scene, e.g. wait for a door to finish and THEN do another scene function</li>
+							<li><code>[ + ]</code> Can I just slurp in all of the map .ts files automatically instead of having to reference each one?</li>
+							<li><code>[???]</code> It&#39;d be nice if the persistent stuff in map was easier to use in general</li>
+							<li><code>[???]</code> Zones (large polygons that can be checked, but don&#39;t necessarily fire an event when crossing the threshold)</li>
+							<li><code>[...]</code> Menus need some polish<ul>
+									<li><code>[ + ]</code> Menu should have .menu and .active; selection container should have .selections, and it should just get added by setupSelections</li>
+									<li><code>[ + ]</code> Need to provide a better way for menus to return a value to a previous menu -- promises?</li>
+								</ul>
+							</li>
+							<li><code>[ + ]</code> Allow to lose a battle without a game over</li>
+							<li><code>[ + ]</code> Be able to get the outcome of a battle so that code may respond to it differently -- victory vs. flee vs. defeat</li>
 						</ul>
 					</li>
 					<li>Documentation<ul>
-							<li>Better docs on core functions</li>
-							<li>Higher level intro, etc</li>
-							<li>Tutorials</li>
+							<li><code>[COM]</code> Better docs on core functions</li>
+							<li><code>[COM]</code> Higher level intro, etc</li>
+							<li><code>[COM]</code> Tutorials</li>
 						</ul>
 					</li>
 					<li>Release stuff<ul>
-							<li>Check if <code>.engine/src</code> exists and do not do core watch or compiles if it doesn&#39;t</li>
-							<li>config.json should be able to define an expected version, Cozy should be smart enough to do the right thing<ul>
+							<li><code>[COM]</code> Check if <code>.engine/src</code> exists and do not do core watch or compiles if it doesn&#39;t</li>
+							<li><code>[COM]</code> config.json should be able to define an expected version, Cozy should be smart enough to do the right thing<ul>
 									<li>I think this means &quot;shipping&quot; compiled .js blobs of previous versions along with the engine, and having the player select the right one</li>
 									<li>This is irrelevant for games once exported; they&#39;ll be packaged with the version they were used to create it</li>
 								</ul>
@@ -199,7 +205,8 @@
 						</ul>
 					</li>
 					<li>Testing<ul>
-							<li>Don&#39;t ship without tests on engine core; lets me keep track of breaking changes, etc.</li>
+							<li><code>[ + ]</code> Investigate unit tests</li>
+							<li><code>[ + ]</code> Don&#39;t ship without tests on engine core; lets me keep track of breaking changes, etc.</li>
 						</ul>
 					</li>
 				</ul>
