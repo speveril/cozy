@@ -118,7 +118,7 @@ module SimpleQuest {
             yield *RPG.Scene.waitFadeIn(1.0);
             yield *RPG.Scene.waitTextbox(null, [
                 "My name is 'Hero'.",
-                "Great expectations were thrust upon me at birth.",
+                "With a name like that, great expectations follow you everywhere.",
                 "I've been wandering for most of my life, trying to figure out how to fulfill those expectations.",
                 "Or how to escape them."
             ]);
@@ -252,7 +252,7 @@ module SimpleQuest {
             party: {
                 members: ['hero'],
                 inventory: ['tonic','tonic','oak_sword','quilt_armor'],
-                money: '0'
+                money: 0
             }
         });
     }

@@ -51,9 +51,11 @@ To run the examples, simply click them in the game list in the launcher.
 - Simple Quest/RPGKit specific
     - `[...]` Playtesting, balancing, bug fixes...
     - `[...]` Go through TODOs in engine and simplequest
+    - `[ + ]` Show XP to next level in menu
     - `[ + ]` Save games should save the state of the map (tile changes, entity changes, etc) and restore them on load
     - `[ + ]` Selling interface kind of sucks
-    - `[???]` hide debug map better
+    - `[???]` Corners/full edging for red brick tiles
+    - `[???]` Hide debug map better
     - `[...]` Double check licensing and attributions
 
 ### `>>> MILESTONE v0.1: SIMPLEQUEST RELEASE`

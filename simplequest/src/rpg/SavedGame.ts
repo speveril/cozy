@@ -84,7 +84,7 @@ module RPG {
             _.each(this.data.party.inventory, (k:string) => RPG.Party.inventory.add(k));
             RPG.characters = _.mapObject(this.data.characters, (def) => new Character(def));
             _.each(this.data.party.members, (k:string) => RPG.Party.add(RPG.characters[k]));
-            RPG.Party.money = this.data.party.money || 0;
+            RPG.Party.money = parseInt(this.data.party.money, 10) || 0;
 
             RPG.player = RPG.Party.members[0].makeEntity();
 

@@ -87,17 +87,25 @@ module SimpleQuest {
 
         villager_mayor(args) {
             RPG.Scene.do(function*() {
-                this.persist('talked to mayor');
-                yield* RPG.Scene.waitTextbox("MAYOR JOAN", [
-                    "Welcome to Carp's Bend.",
-                    "Do you happen to have any experience in slaying dragons?",
-                    "We've been having trouble with a dragon that lives up north on Mount Danger."
-                ]);
-                yield* RPG.Scene.waitTextbox("HERO", ["..."]);
-                yield* RPG.Scene.waitTextbox("MAYOR JOAN", [
-                    "You would do us a great service by defeating this dragon...",
-                    "Your name would probably be remembered in song for... days! Probably!"
-                ]);
+                if (!this.persisted('talked to mayor')) {
+                    this.persist('talked to mayor');
+                    yield* RPG.Scene.waitTextbox("MAYOR JOAN", [
+                        "Welcome to Carp's Bend.",
+                        "Do you happen to have any experience in slaying dragons?",
+                        "We've been having trouble with a dragon that lives up north on Mount Danger."
+                    ]);
+                    yield* RPG.Scene.waitTextbox("HERO", ["..."]);
+                    yield* RPG.Scene.waitTextbox("MAYOR JOAN", [
+                        "You would do us a great service by defeating this dragon...",
+                        "Your name would be remembered in song for... days!",
+                        "Probably!"
+                    ]);
+                } else {
+                    yield* RPG.Scene.waitTextbox("MAYOR JOAN", [
+                        "Mount Danger is north of Carp's Bend, through the Dark Forest.",
+                        "Thanks for your help!"
+                    ]);
+                }
             }.bind(this));
         }
 
