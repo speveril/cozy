@@ -22,6 +22,7 @@ module RPG {
         static strike(source:any, target:any, type:string, damageRoll:string):any {
             // TODO allow a dodge?
             let damage = target.modifiedDamage(Dice.roll(source, damageRoll), type);
+            if (source.hasTrait('double_magic')) damage *= 2;
             target.hp -= damage;
             return { success:true, hpChange:-damage };
         }

@@ -227,7 +227,12 @@
     <property name="contents" value="arming_sword"/>
    </properties>
   </object>
-  <object id="55" name="open_chest" type="trigger" x="32" y="400" width="16" height="16"/>
+  <object id="55" name="open_chest" type="trigger" x="32" y="400" width="16" height="16">
+   <properties>
+    <property name="contents" value="potion"/>
+    <property name="count" value="3"/>
+   </properties>
+  </object>
   <object id="56" name="open_chest" type="trigger" x="256" y="560" width="16" height="16">
    <properties>
     <property name="contents" value="sun_shield"/>
@@ -238,7 +243,12 @@
   <object id="59" name="door_n" type="trigger" x="288" y="96" width="16" height="16"/>
   <object id="60" name="door_s" type="trigger" x="96" y="224" width="16" height="16"/>
   <object id="61" name="exit_door" type="trigger" x="208" y="16" width="16" height="16"/>
-  <object id="63" name="open_chest" type="trigger" x="48" y="400" width="16" height="16"/>
+  <object id="63" name="open_chest" type="trigger" x="48" y="400" width="16" height="16">
+   <properties>
+    <property name="contents" value="#money"/>
+    <property name="count" value="700"/>
+   </properties>
+  </object>
   <object id="64" x="272" y="352">
    <polyline points="0,0 0,16 16,16 16,48 32,48 32,80 16,80 16,160 0,160 0,192 16,192 16,240 0,240 0,224 -32,224"/>
   </object>

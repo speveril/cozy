@@ -151,7 +151,7 @@ module RPG.BattleSystem.SoloFrontView {
                             this.output(`\nYou can't use that!`);
                         } else {
                             var target = item.def.useEffect._target === 'enemy' ? monster : player;
-                            result = item.activate(target)
+                            result = item.activate(target, { source: player })
                             if (result.success) {
                                 this.outputEffectResult(target, result);
                             } else {

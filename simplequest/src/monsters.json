@@ -155,7 +155,7 @@
             }
         ],
         "traits":[
-            "vulnerable:physical"
+            "vulnerable:force"
         ],
         "attributes":{
             "dodge":0,
@@ -461,6 +461,9 @@
                 "item":"chain_shirt",
                 "chance":5
             }
+        ],
+        "traits":[
+            "vulnerable:force"
         ],
         "attributes":{
             "dodge":0,

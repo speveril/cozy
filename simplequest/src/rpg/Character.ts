@@ -13,18 +13,18 @@ module RPG {
         treasure:any;
         portrait:string;
         title:string;
-        traits:Array<string>;
         actions:Array<any>;
 
         private baseAttribute:{ [key:string]:number } = {};
         private effectiveAttribute:{ [key:string]:number } = {};
+        private traits:Array<string> = [];
+        private effectiveTraits:Array<string> = [];
 
         levels:Array<any>;
         equipped:{ [key:string]: Item } = {};
 
         constructor(args:any) {
             Character.attributes.forEach((attribute) => this.baseAttribute[attribute] = 0);
-            this.recalcAttributes();
 
             this.name        = args.name;
             this.sprite      = args.sprite;
@@ -40,6 +40,8 @@ module RPG {
             this.portrait    = args.portrait || '';
             this.title       = args.title || '';
             this.traits      = args.traits ? _.clone(args.traits) : [];
+
+            this.recalcAttributes();
 
             if (args.equipped) {
                 _.each(args.equipped, (itemKey:string, slotKey:string) => {
@@ -115,6 +117,9 @@ module RPG {
                             throw new Error("Tried to adjust bad attribute '" + k + "'");
                         }
                     });
+                    _.each(item.equipEffect.traits, (t:string) => {
+                        this.effectiveTraits.push(t);
+                    })
                 }
             })
         }
@@ -130,6 +135,8 @@ module RPG {
                 this.maxhp = lv.hp;
                 this.hp += gain;
             }
+
+            this.recalcAttributes();
 
             // TODO same way of gaining abilities, but SimpleQuest doesn't have them yet, so TBD
         }
@@ -182,7 +189,7 @@ module RPG {
 
         hasTrait(key:string):boolean {
             if (key.indexOf("*") === -1) {
-                return (this.traits.indexOf(key) !== -1);
+                return (this.effectiveTraits.indexOf(key) !== -1);
             }
             // TODO add wildcard look up
         }

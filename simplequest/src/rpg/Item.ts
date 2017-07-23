@@ -138,7 +138,7 @@ namespace RPG {
             var result:any = {};
             _.each(this.def.useEffect, (params:any, effect:string) => {
                 if (effect[0] === '_') return;
-                var r = RPG.Effect.do(effect, this, character, params);
+                var r = RPG.Effect.do(effect, opts.source || this, character, params);
                 _.each(r, (v, k:string) => {
                     if (k === 'success') result[k] = result[k] || v;
                     else result[k] = result[k] ? result[k] + v : v;

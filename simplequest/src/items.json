@@ -28,7 +28,7 @@
             "_target":"enemy"
         },
         "icon_frame":[
-            56,
+            98,
             0
         ],
         "description":"Strikes a monster with a bolt of magical lightning.",
@@ -67,7 +67,7 @@
             "_target":"enemy"
         },
         "icon_frame":[
-            56,
+            70,
             0
         ],
         "description":"Strikes a monster with a magical dart of force.",
@@ -121,20 +121,57 @@
         },
         "icon":"ui/item_icons.png"
     },
+    "wizardhat":{
+        "sort":"30.21",
+        "slot":"accessory",
+        "icon_frame":[
+            98,
+            42
+        ],
+        "description":"A wizard hat. Makes you better at using scrolls.",
+        "price":3000,
+        "name":"Wizard Hat",
+        "equip":{
+            "attributes":{
+                "defense":1,
+                "dodge":3
+            },
+            "traits": ["double_magic"]
+        },
+        "icon":"ui/item_icons.png"
+    },
     "great_sword":{
+        "sort":"10.05",
+        "slot":"weapon",
+        "icon_frame":[
+            56,
+            0
+        ],
+        "description":"Probably the best sword you've ever seen.",
+        "price":3500,
+        "name":"Great Sword",
+        "equip":{
+            "attributes":{
+                "critical":12,
+                "damage":75
+            }
+        },
+        "icon":"ui/item_icons.png"
+    },
+    "broad_blade":{
         "sort":"10.04",
         "slot":"weapon",
         "icon_frame":[
             42,
             0
         ],
-        "description":"Probably the best sword you've ever seen.",
+        "description":"A sword with an unusually wide blade.",
         "price":1500,
-        "name":"Great Sword",
+        "name":"Broadblade",
         "equip":{
             "attributes":{
                 "critical":15,
-                "damage":60
+                "damage":50
             }
         },
         "icon":"ui/item_icons.png"
@@ -185,7 +222,7 @@
             "_target":"enemy"
         },
         "icon_frame":[
-            56,
+            112,
             0
         ],
         "description":"Strikes a monster with a shard of mystical ice.",
@@ -251,7 +288,7 @@
             0
         ],
         "description":"A steel sword. Popular in fights the world over.",
-        "price":300,
+        "price":700,
         "name":"Arming Sword",
         "equip":{
             "attributes":{
@@ -324,9 +361,9 @@
         "name":"Amulet",
         "equip":{
             "attributes":{
-                "dodge":1,
-                "critical":1,
-                "block":1
+                "dodge":2,
+                "critical":2,
+                "block":2
             }
         },
         "icon":"ui/item_icons.png"
@@ -414,7 +451,7 @@
             "_target":"enemy"
         },
         "icon_frame":[
-            56,
+            84,
             0
         ],
         "description":"Strikes a monster with a burst of arcane flame.",

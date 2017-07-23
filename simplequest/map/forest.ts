@@ -34,7 +34,10 @@ module SimpleQuest {
             this.doKeyDoor('forest_door_A', 'gold_key');
             if (this.persisted('plateau cutscene') && !this.persisted('forest_door_A__opened')) {
                 RPG.Scene.do(function*() {
-                    yield* RPG.Scene.waitTextbox("Hero", ["Those cultists said they needed a Gold Key for this door."]);
+                    yield* RPG.Scene.waitTextbox("Hero", [
+                        "Those cultists said they left the Gold Key for this door in the haunted castle to the west.",
+                        "I should check there."
+                    ]);
                 }.bind(this));
             }
         }
