@@ -309,7 +309,7 @@
   </object>
   <object id="79" name="open_chest" type="trigger" x="64" y="400" width="16" height="16">
    <properties>
-    <property name="contents" value="icehsard_scroll"/>
+    <property name="contents" value="iceshard_scroll"/>
     <property name="count" value="2"/>
    </properties>
   </object>
