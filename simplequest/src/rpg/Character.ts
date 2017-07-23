@@ -24,6 +24,7 @@ module RPG {
 
         constructor(args:any) {
             Character.attributes.forEach((attribute) => this.baseAttribute[attribute] = 0);
+            this.recalcAttributes();
 
             this.name        = args.name;
             this.sprite      = args.sprite;
@@ -45,10 +46,6 @@ module RPG {
                     var itm = RPG.Party.inventory.has(itemKey);
                     this.equipItem(itm, slotKey);
                 });
-            }
-
-            if (args.attributes) {
-                this.adjust(args.attributes);
             }
 
             this.hp = _.has(args, 'hp') ? args.hp : this.maxhp;

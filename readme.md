@@ -51,6 +51,13 @@ To run the examples, simply click them in the game list in the launcher.
 - Simple Quest/RPGKit specific
     - `[...]` Playtesting, balancing, bug fixes...
     - `[...]` Go through TODOs in engine and simplequest
+    - `[BUG]` Leveling up might be causing math issues with stats
+    - `[BUG]` "Cultists said they need a gold key for this door" dialog seems to require an extra button press to move again, and should add a note to say "it was in the western castle"
+    - `[BUG]` Item menu in combat is off center and not tall enough for two-line descriptions
+    - `[ + ]` Eastern part of the castle ground floor, two skeleton warrior fights without any chest/reward is lame
+    - `[???]` Short sword in castle loot seems pretty weak
+    - `[???]` Make skeletons weak to force damage rather than physical
+    - `[???]` Might want another weapon or two
     - `[ + ]` Show XP to next level in menu
     - `[ + ]` Save games should save the state of the map (tile changes, entity changes, etc) and restore them on load
     - `[ + ]` Selling interface kind of sucks
