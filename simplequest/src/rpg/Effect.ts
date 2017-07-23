@@ -36,6 +36,7 @@ module RPG {
                 type: 'hit',
                 hpChange: attacker.get('damage')
             };
+            console.log("Damage:", result.hpChange);
 
             if (Effect.statCheck(defender.get('dodge'))) {
                 result.type = 'miss';
@@ -58,10 +59,14 @@ module RPG {
                 case 'crit':
                     result.hpChange *= Effect.curveRoll(2, 3); break;
             }
+            console.log(">>", result.hpChange);
 
             result.hpChange = defender.modifiedDamage(result.hpChange, element);
+            console.log(">>", result.hpChange);
             result.hpChange *= Math.min(1, Math.max(0, 1 - (defender.get('defense') / 100)));
+            console.log(">>", result.hpChange);
             result.hpChange = -Math.round(Math.max(0, result.hpChange));
+            console.log(">>", result.hpChange);
 
             defender.hp += result.hpChange;
 

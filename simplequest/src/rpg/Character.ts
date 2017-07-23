@@ -24,12 +24,15 @@ module RPG {
         equipped:{ [key:string]: Item } = {};
 
         constructor(args:any) {
-            Character.attributes.forEach((attribute) => this.baseAttribute[attribute] = 0);
-
             this.name        = args.name;
             this.sprite      = args.sprite;
             this.levels      = args.levels || [];
             this.treasure    = _.clone(args.treasure);
+
+            Character.attributes.forEach((attribute) => this.baseAttribute[attribute] = 0);
+            if (_.has(args, 'attributes')) {
+                this.adjust(args.attributes);
+            }
 
             if (args.levels && this.levels[0] !== null) { // correct for 1-based level table
                 this.levels.unshift(null);
@@ -103,9 +106,11 @@ module RPG {
         }
 
         private recalcAttributes():void {
+            console.log("RECALC FOR " + this.name + ":", this.baseAttribute);
             Character.attributes.forEach((attribute) => {
                 this.effectiveAttribute[attribute] = this.baseAttribute[attribute];
             });
+            console.log("   ", this.effectiveAttribute);
             _.each(this.equipped, (item:Item, slot:string) => {
                 if (!item) return;
 
@@ -113,6 +118,7 @@ module RPG {
                     _.each(item.equipEffect.attributes, (v:number, k:string) => {
                         if (Character.attributes.indexOf(k) !== -1) {
                             this.effectiveAttribute[k] += v;
+                            console.log("   ", item.name, k, v);
                         } else {
                             throw new Error("Tried to adjust bad attribute '" + k + "'");
                         }
@@ -121,7 +127,8 @@ module RPG {
                         this.effectiveTraits.push(t);
                     })
                 }
-            })
+            });
+            console.log("==>", this.effectiveAttribute);
         }
 
         levelUp(level:number):void {
