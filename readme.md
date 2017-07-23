@@ -11,7 +11,7 @@ Cozy will currently work on Windows, "out of the box". It should be fairly strai
 
 Just run the `cozy.bat`, which will simply run `.engine/cozy.exe`. This will open the launcher/project manager. I like to make a shortcut on my desktop to `.engine/cozy.exe` so I can find it easily. I hope to make this process less annoying in the future.
 
-Right now, you will need to have npm installed, and to get up and running, you'll need to have NPM installed; run `npm install` in `.engine/resources/app/`. I plan to make this a requirement only if you intend to work on the engine, eventually.
+Right now, to get up and running you'll need to have NPM installed; run `npm install` in `.engine/resources/app/`. I plan to make this a requirement only if you intend to work on the engine, eventually.
 
 
 ## Current technologies
