@@ -106,11 +106,10 @@ module RPG {
         }
 
         private recalcAttributes():void {
-            console.log("RECALC FOR " + this.name + ":", this.baseAttribute);
             Character.attributes.forEach((attribute) => {
                 this.effectiveAttribute[attribute] = this.baseAttribute[attribute];
             });
-            console.log("   ", this.effectiveAttribute);
+            this.effectiveTraits = _.clone(this.traits);
             _.each(this.equipped, (item:Item, slot:string) => {
                 if (!item) return;
 
@@ -128,7 +127,6 @@ module RPG {
                     })
                 }
             });
-            console.log("==>", this.effectiveAttribute);
         }
 
         levelUp(level:number):void {
