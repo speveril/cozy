@@ -51,7 +51,6 @@ To run the examples, simply click them in the game list in the launcher.
 - Simple Quest/RPGKit specific
     - `[...]` Playtesting, balancing, bug fixes...
     - `[...]` Go through TODOs in engine and simplequest
-    - `[BUG]` Item menu in combat is off center and not tall enough for two-line descriptions
     - `[???]` Short sword in castle loot seems pretty weak
     - `[???]` Might want another weapon or two
     - `[ + ]` Show XP to next level in menu
