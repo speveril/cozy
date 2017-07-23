@@ -151,7 +151,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup name="#spritelayer" visible="0">
+ <objectgroup name="#spritelayer">
   <object id="13" x="128" y="720">
    <polyline points="0,0 0,-48 16,-48 32,-64 16,-80 16,-96 0,-96"/>
   </object>
@@ -189,7 +189,7 @@
   <object id="29" name="exit_forest" type="event" x="512" y="0" width="16" height="16"/>
   <object id="31" name="open_chest" type="trigger" x="336" y="64" width="16" height="16">
    <properties>
-    <property name="contents" value="buckler"/>
+    <property name="contents" value="oak_shield"/>
    </properties>
   </object>
   <object id="33" name="open_chest" type="trigger" x="128" y="96" width="16" height="16">
