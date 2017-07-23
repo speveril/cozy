@@ -80,13 +80,17 @@
 .battle-screen .item-menu {
     position: absolute;
     left: auto;
-    right: 30%;
+    right: 37px;
     top: -5px;
     width: 200px;
     height: 150px;
     display: flex;
     flex-direction: column;
     padding: 5px;
+}
+
+.battle-screen .item-menu .title {
+    flex: 0 0 15px;
 }
 
 .battle-screen .item-menu .selections {
@@ -100,9 +104,14 @@
     text-align: left;
 }
 
+.battle-screen .item-menu .selections li.active::before {
+    left: -14px !important;
+}
+
 .battle-screen .item-row {
     display: flex;
     flex-direction: row;
+    margin: 2px 16px;
 }
 
 .battle-screen .item-row .item-icon {

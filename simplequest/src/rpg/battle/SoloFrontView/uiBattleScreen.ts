@@ -112,7 +112,7 @@ module RPG.BattleSystem.SoloFrontView {
                 cancelable: true,
                 html: `
                     <div class="title">Choose an item...</div>
-                    <ul class="selections"></ul>
+                    <ul class="selections scrollable"></ul>
                     <div class="description"></div>
                 `
             });
