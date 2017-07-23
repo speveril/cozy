@@ -111,6 +111,7 @@ To run the examples, simply click them in the game list in the launcher.
         - `[ + ]` Need to provide a better way for menus to return a value to a previous menu -- promises?
     - `[ + ]` Allow to lose a battle without a game over
     - `[ + ]` Be able to get the outcome of a battle so that code may respond to it differently -- victory vs. flee vs. defeat
+    - `[ + ]` Investigate vector sprites and other graphics, including "paper doll" style animation
 - Documentation
     - `[COM]` Better docs on core functions
     - `[COM]` Higher level intro, etc
