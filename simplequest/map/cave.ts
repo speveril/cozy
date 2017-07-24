@@ -134,9 +134,9 @@ module SimpleQuest {
                     shopName: "Prison Shop",
                     products: [
                         'tonic','potion','elixir',
-                        'arming_sword','great_sword',
-                        'plate_armor',
-                        'heater','helmet'
+                        'arming_sword','broad_blade','great_sword',
+                        'breastplate','plate_armor',
+                        'heater','helmet','horned_helmet'
                     ]
                 });
                 if (!this.persisted('talked to cave shopkeeper')) {
