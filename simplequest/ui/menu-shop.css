@@ -68,6 +68,10 @@
     display:flex;
 }
 
+.shop-menu .confirm-sell-menu .sell-info .sell-container {
+    margin-top: 0.5em;
+}
+
 .shop-menu .confirm-sell-menu .sell-info .sell-container li {
     display:flex;
 }
@@ -107,13 +111,11 @@
 
 .shop-menu .confirm-sell-menu .sell-info .sell-container li .count,
 .shop-menu .confirm-sell-menu .sell-info .total-container .total {
-    flex-basis: 2em;
     text-align: right;
     position: relative;
 }
 
 .shop-menu .confirm-sell-menu .sell-info .total-container {
-    margin-top: 0.5em;
     padding-left: 1.5em;
     display: flex;
 }

@@ -233,7 +233,7 @@ module SimpleQuest {
                             </div>
 
                             <ul class="sell-container selections">
-                                <li data-menu="confirm"><span class="label">Sell</span> <span class="count"></span></li>
+                                <li data-menu="confirm"><span class="label">Number to sell...</span> <span class="count"></span></li>
                             </ul>
                             <div class="total-container">
                                 <span class="label">Total</span> <span class="total"></span>
