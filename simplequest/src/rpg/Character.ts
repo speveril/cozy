@@ -217,6 +217,7 @@ module RPG {
         }
 
         get xp():number { return this._xp; }
+        get xpnext():number { return this.levels[this.level + 1] ? this.levels[this.level + 1].xp : '-'; }
         get level():number { return this._level; }
         get hp():number { return this._hp; }
 

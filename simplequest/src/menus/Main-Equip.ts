@@ -14,7 +14,7 @@ module SimpleQuest {
                     cancelable: true,
                     className: 'panel equip-submenu layout-column',
                     html: `
-                        <section class="layout-row title-row">Equip</section>
+                        <section class="layout-row title-row">Equipment</section>
                         <section class="layout-row equip-info-row">
                             <section class="layout-column stats-column">
                                 <section class="layout-row" data-stat="damage">

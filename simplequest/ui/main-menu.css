@@ -95,10 +95,8 @@
     height: 70px;
 }
 
-.main-menu .main-area .panel .title-row {
-    flex-grow: 0;
-    flex-shrink: 0;
-    flex-basis: 20px;
+.main-menu .main-area .panel .main-status-row {
+    margin-bottom: 8px;
 }
 
 .main-menu .main-area .panel .equip-info-row {
@@ -196,9 +194,11 @@
     flex-direction: column;
 }
 
+.main-menu .main-area .panel .title-row,
 .main-menu .main-area .panel.exit .title,
 .main-menu .main-area .panel.save .title {
     flex: 0 0 20px;
+    height: 20px;
     text-align: center;
     justify-content: center;
     display: flex;
