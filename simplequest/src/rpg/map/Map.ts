@@ -66,14 +66,15 @@ module RPG.Map {
     export class Map {
         public static persistent = { global: {} };
 
-        size:PIXI.Point                   = null;
-        tileSize:PIXI.Point               = null;
-        filename:string                   = null;
-        layers:Array<MapLayer>            = [];
-        tilesets:Array<MapTileset>        = [];
-        cameraBoxes:Array<PIXI.Rectangle> = [];
-        layerLookup:Dict<MapLayer>        = {};
-        displayName:string                = '';
+        size:PIXI.Point                     = null;
+        tileSize:PIXI.Point                 = null;
+        filename:string                     = null;
+        layers:Array<MapLayer>              = [];
+        tilesets:Array<MapTileset>          = [];
+        cameraBoxes:Array<PIXI.Rectangle>   = [];
+        layerLookup:Dict<MapLayer>          = {};
+        entityLookup:Dict<Entity>           = {};
+        displayName:string                  = '';
 
         constructor(args) {
             if (typeof args === 'string') {

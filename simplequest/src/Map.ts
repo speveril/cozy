@@ -45,10 +45,20 @@ module SimpleQuest {
                 }.bind(this));
             }.bind(this));
 
+            Map.persistent[this.filename].completedFights = Map.persistent[this.filename].completedFights || [];
+            _.each(Map.persistent[this.filename].completedFights, (mapID:string) => {
+                this.entityLookup[mapID].destroy();
+            });
+
             if (this.music && this.music !== Cozy.Audio.currentMusic) {
                 Cozy.Audio.currentMusic.stop();
                 this.music.start();
             }
+        }
+
+        finish() {
+            super.finish();
+            Map.persistent[this.filename].completedFights = [];
         }
 
         doFight(args) {
@@ -71,6 +81,7 @@ module SimpleQuest {
             if (result.playerEscaped) {
                 entity.behavior = RPG.Behavior.stun(entity, 2, entity.behavior);
             } else if (!opts.leaveEntity) {
+                Map.persistent[this.filename].completedFights.push(entity.mapID);
                 entity.destroy();
             }
         }

@@ -23,7 +23,12 @@ module RPG {
         public solid:boolean;
 
         public spawn:PIXI.Point;
+        private _mapID:string;
         private _destroyed:boolean;
+
+        get mapID():string {
+            return this._mapID;
+        }
 
         get destroyed():boolean {
             return this._destroyed;
@@ -52,6 +57,7 @@ module RPG {
             this.paused = false;
             this.bouncing = false;
             this.solid = !(args.solid === 'false');
+            this._mapID = args.id;
             this.params = _.clone(args);
         }
 
@@ -100,6 +106,7 @@ module RPG {
         place(x:number, y:number, lyr:Map.MapLayer):void {
             if (this.sprite) {
                 this.layer.displayLayer.remove(this.sprite);
+                delete this.layer.map.entityLookup[this._mapID];
             } else {
                 this.sprite = new Cozy.Sprite(this.spriteDef);
             }
@@ -117,6 +124,8 @@ module RPG {
             if (!_.contains(this.layer.entities, this)) {
                 this.layer.entities.push(this);
             }
+
+            this.layer.map.entityLookup[this._mapID] = this;
         }
 
         adjust(dx:number, dy:number):void {
@@ -131,6 +140,7 @@ module RPG {
             this._destroyed = true;
             var index = this.layer.entities.indexOf(this);
             this.layer.entities.splice(index, 1);
+            delete this.layer.map.entityLookup[this._mapID];
             this.sprite.layer.remove(this.sprite);
         }
 

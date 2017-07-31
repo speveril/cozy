@@ -133,6 +133,7 @@ module RPG.Map.Loader {
                             case "entity":
                                 var propertiesEl = <HTMLElement>objectEl.getElementsByTagName('properties')[0],
                                     args = {
+                                        id: objectEl.getAttribute('id'),
                                         name: objectEl.getAttribute('name')
                                     };
                                 x += parseInt(objectEl.getAttribute('width'), 10) / 2;

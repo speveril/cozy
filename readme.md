@@ -53,7 +53,6 @@ To run the examples, simply click them in the game list in the launcher.
     - `[...]` Go through TODOs in engine and simplequest
     - `[???]` Short sword in castle loot seems pretty weak
     - `[ + ]` Show XP to next level in menu
-    - `[ + ]` Save games should save the state of the map (tile changes, entity changes, etc) and restore them on load
     - `[ + ]` Selling interface kind of sucks
     - `[???]` Corners/full edging for red brick tiles
     - `[???]` Hide debug map better
