@@ -58,6 +58,8 @@ To run the examples, simply click them in the game list in the launcher.
 ### `>>> MILESTONE v0.1: SIMPLEQUEST`
 
 - Figure out next milestone :|
+- Move to a real issue tracker
+- Build the next game in its own repository
 - Bugs/Unsorted
     - `[ + ]` Switch over to `let` instead of `var` in most(all?) places
     - `[ + ]` Move "ControlStack" idea into core
