@@ -51,12 +51,11 @@ To run the examples, simply click them in the game list in the launcher.
 - Simple Quest/RPGKit specific
     - `[...]` Playtesting, balancing, bug fixes...
     - `[...]` Go through TODOs in engine and simplequest
-    - `[???]` Short sword in castle loot seems pretty weak
     - `[???]` Corners/full edging for red brick tiles
     - `[???]` Hide debug map better
     - `[...]` Double check licensing and attributions
 
-### `>>> MILESTONE v0.1: SIMPLEQUEST RELEASE`
+### `>>> MILESTONE v0.1: SIMPLEQUEST`
 
 - Figure out next milestone :|
 - Bugs/Unsorted

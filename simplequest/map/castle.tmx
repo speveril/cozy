@@ -314,7 +314,7 @@
   </object>
   <object id="80" name="open_chest" type="trigger" x="64" y="272" width="16" height="16">
    <properties>
-    <property name="contents" value="short_sword"/>
+    <property name="contents" value="arming_sword"/>
     <property name="count" value="1"/>
    </properties>
   </object>
@@ -566,7 +566,7 @@
   <object id="167" name="open_door" type="event" x="208" y="384" width="16" height="16"/>
   <object id="168" name="smash_pot" type="trigger" x="592" y="656" width="16" height="16"/>
   <object id="169" x="304" y="720">
-   <polyline points="0,0 0,-32 -256,-32 -256,-48 -272,-48 -272,-64 -288,-64 -288,-80 -272,-80 -272,-96 -288,-96 -288,-112 -272,-112 -272,-128 -240,-128 -240,-144 -272,-144 -256,-160 -240,-160 -240,-176 -272,-176 -272,-224 -256,-224 -256,-240"/>
+   <polyline points="0,0 0,-32 -256,-32 -256,-48 -272,-48 -272,-64 -288,-64 -288,-80 -272,-80 -272,-96 -288,-96 -288,-112 -272,-112 -272,-128 -240,-128 -240,-144 -256,-144 -256,-160 -240,-160 -240,-176 -272,-176 -272,-224 -256,-224 -256,-240"/>
   </object>
   <object id="170" x="48" y="480">
    <polyline points="0,0 0,-32 -16,-32 -16,-80 0,-80 0,-64 16,-64 16,-80 32,-80 32,-32 16,-32 16,0"/>
