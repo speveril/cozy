@@ -180,7 +180,6 @@ module SimpleQuest {
         }
 
         *dropSlimes(count:number = 1) {
-            // TODO this is such a trainwreck
             if (!this.spawnspots) {
                 this.spawnspots = [];
                 this.getAllEventsByName('slimespawn').forEach((e) => {

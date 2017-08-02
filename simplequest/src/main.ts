@@ -74,12 +74,15 @@ module SimpleQuest {
                 'cave':                 [ Map_Cave ],
                 'boss':                 [ Map_Boss ],
                 'debug':                [ Map_Debug ]
+            },
+            menuConfig: {
+                sfx: {
+                    blip:       'menu_move',
+                    choose:     'menu_choose',
+                    sfxBad:     'menu_bad'
+                }
             }
         }).then(function() {
-            // TODO this stuff could go into a menuConfig key?
-            RPG.Menu.blip   = RPG.sfx['menu_move'];
-            RPG.Menu.choose = RPG.sfx['menu_choose'];
-            RPG.Menu.sfxBad = RPG.sfx['menu_bad'];
             SimpleQuest.bootSequence();
         }.bind(this));
     }
@@ -226,7 +229,6 @@ module SimpleQuest {
     export function newGameData() {
         return new RPG.SavedGame(null, {
             characters: {
-                 // TODO move to json data somewhere
                 hero: {
                     name: "Hero",
                     title: "Fighter",

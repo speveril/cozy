@@ -264,7 +264,6 @@ module SimpleQuest {
                 this.count = 1;
             }
 
-            // TODO: make this pattern easier?
             get count():number { return this.count_; }
             set count(x:number) {
                 this.count_ = x;

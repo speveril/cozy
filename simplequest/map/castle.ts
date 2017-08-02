@@ -131,7 +131,6 @@ module SimpleQuest {
                 lackeyC.behavior = RPG.Behavior['path'](lackeyC, [[ 90, 2 * RPG.map.tileSize.y],[ 90, 0]]);
                 lackeyD.behavior = RPG.Behavior['path'](lackeyD, [[ 90, 5 * RPG.map.tileSize.y],[180, 0]]);
 
-                // TODO there should be a better way to wait for some number of movements to finish
                 yield *RPG.Scene.waitTime(5 * RPG.map.tileSize.x / lackeyA.speed);
 
                 lackeyB.hop(8);

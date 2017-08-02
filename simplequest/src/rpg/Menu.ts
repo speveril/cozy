@@ -119,7 +119,6 @@ module RPG {
         selectionIndex:number;
         selectionContainer:HTMLElement;
         selections:HTMLElement[];
-        confirmCallback:any; // TODO this is a function, set the right type for it
 
         private firstScrollFix:boolean = false;
 
@@ -128,7 +127,7 @@ module RPG {
 
             this.direction = args.direction === undefined ? MenuDirection.VERTICAL : args.direction;
             this.cancelable = !!args.cancelable;
-            this.element.classList.add("menu"); // TODO should actually be 'menu'
+            this.element.classList.add("menu");
             this.setupSelections(args.selectionContainer ? this.find(args.selectionContainer) : this.element);
         }
 

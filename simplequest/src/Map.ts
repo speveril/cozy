@@ -203,8 +203,6 @@ module SimpleQuest {
         }
 
         *waitChoice(topic, choices:string[]|{[key:string]: string}) {
-            // TODO this is kinda gross; if I want to do this I should make it easier to create simple menus without
-            //      making a new class
             var choicesHTML = _.reduce(choices, (str, ch, index) => str + `<li data-menu="choose" data-index="${index}">${ch}</li>`, '');
             var m = new RPG.Menu({
                 className: '__ch inline-choice menu selections scrollable',

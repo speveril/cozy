@@ -57,9 +57,18 @@ module RPG {
         if (config.battleSystem) {
             this.battleSystem = new config.battleSystem['System'](config.battleSystemConfig || {});
         }
+        if (config.menuConfig) {
+            if (config.menuConfig.sfx) {
+                RPG.Menu.blip = RPG.sfx[config.menuConfig.sfx.blip];
+                RPG.Menu.choose = RPG.sfx[config.menuConfig.sfx.choose];
+                RPG.Menu.sfxBad = RPG.sfx[config.menuConfig.sfx.sfxBad];
+            }
+        }
+
         this.loadSkip             = config.loadSkip || [];
         this.mainMenuClass        = config.mainMenuClass || null;
         this.mapLookup            = config.maps || {};
+
 
         RPG.Item.load(config.items || {});
 

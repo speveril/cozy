@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="20" height="45" tilewidth="16" tileheight="16" nextobjectid="98">
+<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="20" height="45" tilewidth="16" tileheight="16" nextobjectid="98">
  <properties>
   <property name="Name" value="Mount Danger"/>
  </properties>
@@ -268,12 +268,14 @@
   </object>
   <object id="71" name="kobold_guardA" type="entity" x="144" y="592" width="16" height="16">
    <properties>
+    <property name="animation" value="walk"/>
     <property name="direction" value="0"/>
     <property name="sprite" value="sprites/monster_kobold.sprite"/>
    </properties>
   </object>
   <object id="72" name="kobold_guardB" type="entity" x="176" y="592" width="16" height="16">
    <properties>
+    <property name="animation" value="walk"/>
     <property name="direction" value="180"/>
     <property name="monster" value="kobold"/>
     <property name="noFlee" value="true"/>

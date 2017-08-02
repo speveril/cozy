@@ -50,7 +50,6 @@ To run the examples, simply click them in the game list in the launcher.
 
 - Simple Quest/RPGKit specific
     - `[...]` Playtesting, balancing, bug fixes...
-    - `[...]` Go through TODOs in engine and simplequest
     - `[???]` Hide debug map better
     - `[...]` Double check licensing and attributions
     - `[...]` Package up and upload all of the unreleased assets to opengameart
@@ -63,6 +62,7 @@ To run the examples, simply click them in the game list in the launcher.
     - `[ + ]` Switch over to `let` instead of `var` in most(all?) places
     - `[ + ]` Move "ControlStack" idea into core
     - `[ + ]` Don't use <reference>, use imports etc. and something like webpack to generate the output
+    - `[ + ]` Can I make a simple easy to re-use pattern for making a setter/getter pair where set does some extra work (or doesn't exist) and get just returns the value
     - `[COM]` Engine loading screen
     - `[COM]` Figure out seamless upgrades
 - Project Manager
@@ -85,6 +85,8 @@ To run the examples, simply click them in the game list in the launcher.
     - `[ + ]` Support not looping music
     - `[ + ]` Allow crossfading music
     - `[ + ]` Music files that are sequences of tracks, with timing/looping/etc information
+    - `[ + ]` Integrate libopenmpt -- https://wiki.openmpt.org/Libopenmpt
+        - in particular look at MO3 files, they may give me the control I want
 - Data Editor
     - `[ + ]` Manage .json files; top level is an object with a ".schemas" key plus "tables" of typed objects
 - Reconcile File stuff
@@ -97,11 +99,14 @@ To run the examples, simply click them in the game list in the launcher.
     - `[ + ]` SavedGame should write a version number, and have upgrade functions; when loading a SavedGame, run through each necessary upgrade before returning it
     - `[ + ]` Add scripted movement for entities on the map
         - This is half there with the `path` Behavior
+    - `[ + ]` Make a way to spawn a simple menus without having to make a whole new class for them
+    - `[ + ]` Should be able to spawn an entity with direction+animation
     - `[ + ]` Add Scene.waitAll() which takes multiple generator functions and waits for them all to finish
     - `[ + ]` Need a way to chain from another scene, e.g. wait for a door to finish and THEN do another scene function
     - `[ + ]` Can I just slurp in all of the map .ts files automatically instead of having to reference each one?
     - `[???]` It'd be nice if the persistent stuff in map was easier to use in general
     - `[???]` Zones (large polygons that can be checked, but don't necessarily fire an event when crossing the threshold)
+        - Allow "pick a random spot in the zone", or something similar
     - `[...]` Menus need some polish
         - `[ + ]` Menu should have .menu and .active; selection container should have .selections, and it should just get added by setupSelections
         - `[ + ]` Need to provide a better way for menus to return a value to a previous menu -- promises?

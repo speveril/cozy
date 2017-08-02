@@ -19,7 +19,6 @@ module SimpleQuest {
                 koboldA.destroy();
                 koboldB.destroy();
             } else {
-                // TODO weird. why do I have to set both here?
                 koboldA.dir = 0;
                 koboldA.sprite.animation = "walk";
                 koboldB.dir = 180;
