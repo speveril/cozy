@@ -51,9 +51,10 @@ To run the examples, simply click them in the game list in the launcher.
 - Simple Quest/RPGKit specific
     - `[...]` Playtesting, balancing, bug fixes...
     - `[...]` Go through TODOs in engine and simplequest
-    - `[???]` Corners/full edging for red brick tiles
     - `[???]` Hide debug map better
     - `[...]` Double check licensing and attributions
+    - `[...]` Package up and upload all of the unreleased assets to opengameart
+        - Reorganize the tileset
 
 ### `>>> MILESTONE v0.1: SIMPLEQUEST`
 
