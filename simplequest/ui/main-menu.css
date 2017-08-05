@@ -81,10 +81,6 @@
     height: 70px;
 }
 
-.main-menu .main-area .panel.status .member.template {
-    display: none;
-}
-
 .main-menu .main-area .panel.status .member .portrait-container {
     flex-basis: 70px;
     flex-grow: 0;
@@ -97,6 +93,40 @@
 
 .main-menu .main-area .panel .main-status-row {
     margin-bottom: 8px;
+}
+
+.main-menu .main-area .panel .main-status-row span[data-field=title] {
+    flex: 1;
+}
+
+.main-menu .main-area .panel .main-status-row meter {
+    position: absolute;
+    right: -3px;
+    top: -2px;
+    height: 16px;
+    width: 125px;
+}
+.main-menu .main-area .panel .main-status-row meter::-webkit-meter-bar {
+    background: #442434;
+    background-clip: padding-box;
+}
+
+.main-menu .main-area .panel .main-status-row meter[data-field=hp]::-webkit-meter-optimum-value {
+    background: #6daa2c;
+}
+
+.main-menu .main-area .panel .main-status-row meter[data-field=xp]::-webkit-meter-optimum-value {
+    background: #757161;
+}
+
+.main-menu .main-area .panel .main-status-row .value {
+    flex: 1;
+    text-align: right;
+    z-index: 1;
+}
+
+.main-menu .main-area .panel .main-status-row.class-level .value {
+    flex: 0 0 1em;
 }
 
 .main-menu .main-area .panel .equip-info-row {

@@ -15,20 +15,20 @@ module SimpleQuest {
                             <section class="layout-row">
                                 <span data-field="name"></span>
                             </section>
-                            <section class="layout-row">
+                            <section class="layout-row class-level">
                                 <span data-field="title"></span>
-                            </section>
-                            <section class="layout-row">
                                 <section class="label">Level</section>
                                 <section class="value"><span data-field="level"></span></section>
                             </section>
                             <section class="layout-row">
+                                <meter data-field="xp"></meter>
                                 <section class="label">XP</section>
                                 <section class="value">
-                                    <span data-field="xp"></span>/<span data-field="xpnext"></span>
+                                    <span data-field="xp"></span>
                                 </section>
                             </section>
                             <section class="layout-row">
+                                <meter data-field="hp"></meter>
                                 <section class="label">HP</section>
                                 <section class="value">
                                     <span data-field="hp"></span>/<span data-field="maxhp"></span>
@@ -88,13 +88,28 @@ module SimpleQuest {
                 } else {
                     console.warn("Couldn't find a field span for " + fieldName + ".");
                 }
+
+                // hack update meters too
+                if (fieldName === 'hp') {
+                    let meter = this.find('meter[data-field=hp]');
+                    meter.setAttribute('value', (this.member.character.hp / this.member.character.maxhp).toString());
+                } else if (fieldName === 'xp') {
+                    let meter = this.find('meter[data-field=xp]');
+                    meter.setAttribute('value', (this.member.character.xpnext === null ? 1 : this.member.character.xp / this.member.character.xpnext).toString());
+                }
             }
 
             render() {
                 this.element.setAttribute('data-member', this.index.toString());
 
-                ['name','title','level','hp','maxhp','xp','xpnext'].forEach((f) => this.setField(f, this.member.character[f]));
+                ['name','title','level','hp','maxhp',].forEach((f) => this.setField(f, this.member.character[f]));
                 ['damage','critical','dodge','block','defense'].forEach((f) => this.setField(f, this.member.character.get(f)));
+
+                if (this.member.character.xpnext) {
+                    this.setField('xp', `${this.member.character.xp}/${this.member.character.xpnext}`);
+                } else {
+                    this.setField('xp', 'MAX');
+                }
 
                 var portraitField = this.find('img.portrait');
                 if (this.member.character['portrait']) {
