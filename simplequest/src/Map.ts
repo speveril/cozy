@@ -116,6 +116,12 @@ module SimpleQuest {
         }
 
         doKeyDoor(name, keyName, message?) {
+            RPG.Scene.do(function*() {
+                yield *this.waitKeyDoor(name, keyName, message);
+            })
+        }
+
+        *waitKeyDoor(name, keyName, message?) {
             if (!keyName) {
                 this.doDoor(name);
             }
@@ -124,15 +130,11 @@ module SimpleQuest {
 
             var key = RPG.Party.inventory.has(keyName);
             if (key) {
-                RPG.Scene.do(function*() {
-                    Map.persistent[this.filename][name + "__opened"] = true;
-                    yield* this.waitCenteredTextbox(`Used ${key.iconHTML}${key.name}.`);
-                    this.doDoor(name)
-                }.bind(this));
+                Map.persistent[this.filename][name + "__opened"] = true;
+                yield* this.waitCenteredTextbox(`Used ${key.iconHTML}${key.name}.`);
+                this.doDoor(name)
             } else {
-                RPG.Scene.do(function*() {
-                    yield* RPG.Scene.waitTextbox(null, [message || "This door is locked, and you don't have the key."]);
-                }.bind(this));
+                yield* RPG.Scene.waitTextbox(null, [message || "This door is locked, and you don't have the key."]);
             }
         }
 

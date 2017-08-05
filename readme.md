@@ -61,6 +61,7 @@ To run the examples, simply click them in the game list in the launcher.
 - Move to a real issue tracker
 - Build the next game in its own repository
 - Bugs/Unsorted
+    - `[ + ]` requestAnimationFrame may already get a high-res dt, may not need to do it myself?
     - `[ + ]` Switch over to `let` instead of `var` in most(all?) places
     - `[ + ]` Move "ControlStack" idea into core
     - `[ + ]` Don't use <reference>, use imports etc. and something like webpack to generate the output

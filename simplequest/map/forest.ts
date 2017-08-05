@@ -31,15 +31,15 @@ module SimpleQuest {
         }
 
         forest_door_A(args) {
-            this.doKeyDoor('forest_door_A', 'gold_key');
-            if (this.persisted('plateau cutscene') && !this.persisted('forest_door_A__opened')) {
-                RPG.Scene.do(function*() {
+            RPG.Scene.do(function*() {
+                yield *this.waitKeyDoor('forest_door_A', 'gold_key');
+                if (this.persisted('plateau cutscene') && !this.persisted('forest_door_A__opened')) {
                     yield* RPG.Scene.waitTextbox("Hero", [
                         "Those cultists said they left the Gold Key for this door in the haunted castle to the west.",
                         "I should check there."
                     ]);
-                }.bind(this));
-            }
+                }
+            }.bind(this));
         }
 
         forest_door_B(args) {

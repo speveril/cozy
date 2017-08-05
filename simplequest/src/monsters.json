@@ -352,8 +352,8 @@
         "attributes":{
             "dodge":0,
             "critical":1,
-            "defense":15,
-            "damage":20,
+            "defense":12,
+            "damage":17,
             "block":15
         },
         "xp":25,
@@ -495,7 +495,7 @@
             "damage":10,
             "block":1
         },
-        "xp":15,
+        "xp":20,
         "image":"ui/battle/monster_cultist.png"
     }
 }

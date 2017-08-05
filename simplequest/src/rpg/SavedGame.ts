@@ -35,33 +35,40 @@ module RPG {
 
         static fromState():Promise<SavedGame> {
             RPG.uiPlane.hide();
-            return Cozy.captureScreenshot(64)
-                .then((image) => {
-                    RPG.uiPlane.show();
+            let resolve = null;
+            let p = new Promise((_res, _rej) => resolve = _res);
 
-                    var next = 1;
-                    _.each(SavedGame.directory.read(), (f:Cozy.File) => {
-                        var m = f.name.match(/save-(\d+)/);
-                        var i = parseInt(m[1], 10);
-                        if (i >= next) next = i + 1;
+            window.requestAnimationFrame(() => {
+                Cozy.captureScreenshot(64)
+                    .then((image) => {
+                        RPG.uiPlane.show();
+
+                        var next = 1;
+                        _.each(SavedGame.directory.read(), (f:Cozy.File) => {
+                            var m = f.name.match(/save-(\d+)/);
+                            var i = parseInt(m[1], 10);
+                            if (i >= next) next = i + 1;
+                        });
+
+                        var file = SavedGame.directory.file("save-" + next.toString() + ".json");
+                        var data = {
+                            image:          image.toDataURL(),
+                            name:           RPG.map.displayName,
+                            map:            RPG.mapkey,
+                            mapPersistent:  RPG.Map.Map.persistent,
+                            party:          RPG.Party.serialize(),
+                            characters:     _.mapObject(RPG.characters, (ch) => ch.serialize()),
+                            playerLocation: {
+                                x:   (RPG.player.position.x / RPG.map.tileSize.x) | 0,
+                                y:   (RPG.player.position.y / RPG.map.tileSize.y) | 0,
+                                lyr: RPG.player.layer.name
+                            }
+                        };
+                        resolve(new SavedGame(file, data));
                     });
+            });
 
-                    var file = SavedGame.directory.file("save-" + next.toString() + ".json");
-                    var data = {
-                        image:          image.toDataURL(),
-                        name:           RPG.map.displayName,
-                        map:            RPG.mapkey,
-                        mapPersistent:  RPG.Map.Map.persistent,
-                        party:          RPG.Party.serialize(),
-                        characters:     _.mapObject(RPG.characters, (ch) => ch.serialize()),
-                        playerLocation: {
-                            x:   (RPG.player.position.x / RPG.map.tileSize.x) | 0,
-                            y:   (RPG.player.position.y / RPG.map.tileSize.y) | 0,
-                            lyr: RPG.player.layer.name
-                        }
-                    };
-                    return new SavedGame(file, data);
-                });
+            return p;
         }
 
         // ---
