@@ -1,7 +1,7 @@
 {
   "name": "cozy",
   "productName": "Cozy Development Environment and Engine",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "main": "launch.js",
   "dependencies": {
     "browserify": "^13.1.0",
