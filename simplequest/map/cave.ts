@@ -17,12 +17,14 @@ module SimpleQuest {
             let koboldB = this.getAllEntitiesByName('kobold_guardB')[0];
             if (this.persisted('saw_cave_frontdoor_cutscene')) {
                 koboldA.destroy();
-                koboldB.destroy();
+                if (koboldB) koboldB.destroy();
             } else {
                 koboldA.dir = 0;
                 koboldA.sprite.animation = "walk";
-                koboldB.dir = 180;
-                koboldB.sprite.animation = "walk";
+                if (koboldB) {
+                    koboldB.dir = 180;
+                    koboldB.sprite.animation = "walk";
+                }
             }
         }
 
@@ -135,7 +137,7 @@ module SimpleQuest {
                         'tonic','potion','elixir',
                         'arming_sword','broad_blade','great_sword',
                         'breastplate','plate_armor',
-                        'heater','helmet','horned_helmet'
+                        'heater','helmet','horned_helm'
                     ]
                 });
                 if (!this.persisted('talked to cave shopkeeper')) {

@@ -118,7 +118,7 @@ module SimpleQuest {
         doKeyDoor(name, keyName, message?) {
             RPG.Scene.do(function*() {
                 yield *this.waitKeyDoor(name, keyName, message);
-            })
+            }.bind(this));
         }
 
         *waitKeyDoor(name, keyName, message?) {

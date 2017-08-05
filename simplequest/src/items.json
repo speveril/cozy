@@ -21,7 +21,7 @@
         "use":{
             "strike":[
                 "lightning",
-                "3d10 + 35"
+                "3d12 + 40"
             ],
             "_sound":"effect_lightning",
             "_context":"combat",
@@ -60,7 +60,7 @@
         "use":{
             "strike":[
                 "force",
-                "3d10 + 35"
+                "3d12 + 40"
             ],
             "_sound":"effect_force",
             "_context":"combat",
@@ -215,7 +215,7 @@
         "use":{
             "strike":[
                 "ice",
-                "3d10 + 35"
+                "3d12 + 40"
             ],
             "_sound":"effect_ice",
             "_context":"combat",
@@ -327,7 +327,8 @@
         "name":"Horned Helm",
         "equip":{
             "attributes":{
-                "defense":5
+                "defense":5,
+                "damage":2
             }
         },
         "icon":"ui/item_icons.png"
@@ -444,7 +445,7 @@
         "use":{
             "strike":[
                 "fire",
-                "3d10 + 35"
+                "3d12 + 40"
             ],
             "_sound":"effect_fire",
             "_context":"combat",

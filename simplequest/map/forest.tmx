@@ -385,6 +385,7 @@
     <property name="monster" value="bat"/>
     <property name="speed" value="10"/>
     <property name="sprite" value="sprites/bat.sprite"/>
+    <property name="vision" value="1"/>
    </properties>
   </object>
   <object id="159" name="doFight" type="entity" x="192" y="544" width="16" height="16">
@@ -502,6 +503,7 @@
     <property name="monster" value="bat"/>
     <property name="speed" value="10"/>
     <property name="sprite" value="sprites/bat.sprite"/>
+    <property name="vision" value="1"/>
    </properties>
   </object>
   <object id="189" name="doFight" type="entity" x="352" y="528" width="16" height="16">
@@ -510,6 +512,7 @@
     <property name="monster" value="bat"/>
     <property name="speed" value="10"/>
     <property name="sprite" value="sprites/bat.sprite"/>
+    <property name="vision" value="1"/>
    </properties>
   </object>
   <object id="193" name="open_chest" type="trigger" x="464" y="288" width="16" height="16">
@@ -567,7 +570,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup name="#spritelayer-upper" visible="0">
+ <objectgroup name="#spritelayer-upper">
   <object id="72" x="464" y="448">
    <polyline points="0,0 80,0"/>
   </object>
@@ -602,6 +605,7 @@
     <property name="monster" value="bat"/>
     <property name="speed" value="10"/>
     <property name="sprite" value="sprites/bat.sprite"/>
+    <property name="vision" value="1"/>
    </properties>
   </object>
   <object id="188" name="doFight" type="entity" x="368" y="384" width="16" height="16">
@@ -610,6 +614,7 @@
     <property name="monster" value="bat"/>
     <property name="speed" value="10"/>
     <property name="sprite" value="sprites/bat.sprite"/>
+    <property name="vision" value="1"/>
    </properties>
   </object>
   <object id="191" name="doFight" type="entity" x="576" y="448" width="16" height="16">
@@ -618,6 +623,7 @@
     <property name="monster" value="bat"/>
     <property name="speed" value="10"/>
     <property name="sprite" value="sprites/bat.sprite"/>
+    <property name="vision" value="1"/>
    </properties>
   </object>
   <object id="192" name="doFight" type="entity" x="560" y="416" width="16" height="16">
@@ -626,6 +632,7 @@
     <property name="monster" value="bat"/>
     <property name="speed" value="10"/>
     <property name="sprite" value="sprites/bat.sprite"/>
+    <property name="vision" value="1"/>
    </properties>
   </object>
  </objectgroup>

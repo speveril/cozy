@@ -31,6 +31,11 @@ module RPG {
             return { success:true, message:message };
         }
 
+        static flee():any {
+            // should actually do the calcluation in here rather than resolveFlee() in System
+            return {};
+        }
+
         static basicAttack(attacker:Character, defender:Character, element:string="physical"):any {
             var result:any = {
                 type: 'hit',
