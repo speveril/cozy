@@ -61,6 +61,10 @@
     padding: 15px;
 }
 
+.boot-options-menu .version {
+    text-align: center;
+}
+
 .boot-options-menu .selections li {
     flex: 0 0 auto;
     display: flex;

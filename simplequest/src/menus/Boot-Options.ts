@@ -39,6 +39,10 @@ module SimpleQuest {
                             <li class="foot" data-menu="cancel">
                                 <div>Cancel</div>
                             </li>
+
+                            <li class="divider"></li>
+                            
+                            <div class="version"></div>
                         </ul>
                     `
                 });
@@ -46,6 +50,10 @@ module SimpleQuest {
                 this.savedSFXVolume = Cozy.Audio.sfxVolume;
                 this.savedMusicVolume = Cozy.Audio.musicVolume;
                 this.savedFullScreen = Cozy.getFullScreen();
+
+                if (Cozy.config['version']) {
+                    this.find('div.version').innerText = 'v.' + Cozy.config['version'];
+                }
 
                 this.updateMeters();
                 this.find('.fullscreen .value').classList.add(Cozy.getFullScreen().toString());
