@@ -22,9 +22,9 @@ module SimpleQuest {
 
         goto_debug(args) {
             RPG.Scene.do(function*() {
-                var choices = ["Yeah okay.", "What, no"];
+                var choices = ["What, no", "Yeah okay."];
                 var choice = yield* this.waitChoice("Go to the debug map?", choices);
-                if (choice == 0) {
+                if (choice == 1) {
                     RPG.startMap('debug', 9, 7);
                 }
             }.bind(this));
