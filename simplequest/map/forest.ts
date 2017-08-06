@@ -12,6 +12,8 @@ module SimpleQuest {
             this.fixSwitchDoor('trigger_forest_door_switch', 'locked_door');
             this.fixKeyDoor('forest_door_A');
             this.fixKeyDoor('forest_door_B');
+
+
         }
 
         exit_forest(args) {

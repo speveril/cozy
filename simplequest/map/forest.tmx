@@ -350,6 +350,7 @@
     <property name="behavior" value="guard_up"/>
     <property name="exclamation" value="I can't believe I joined a cult for this!"/>
     <property name="monster" value="cultist"/>
+    <property name="onetimeFight" value="true"/>
     <property name="sprite" value="sprites/cultist.sprite"/>
    </properties>
   </object>
@@ -358,6 +359,7 @@
     <property name="behavior" value="guard_up"/>
     <property name="exclamation" value="I never liked that Jeff!"/>
     <property name="monster" value="cultist"/>
+    <property name="onetimeFight" value="true"/>
     <property name="sprite" value="sprites/cultist.sprite"/>
    </properties>
   </object>
@@ -366,6 +368,7 @@
     <property name="behavior" value="guard_left"/>
     <property name="exclamation" value="This is all Jeff's fault!"/>
     <property name="monster" value="cultist"/>
+    <property name="onetimeFight" value="true"/>
     <property name="sprite" value="sprites/cultist.sprite"/>
    </properties>
   </object>
@@ -375,6 +378,7 @@
     <property name="exclamation" value="Hahaha! Another third-rate hero to feed to the Dragon!"/>
     <property name="monster" value="cultleader"/>
     <property name="noFlee" value="true"/>
+    <property name="onetimeFight" value="true"/>
     <property name="sprite" value="sprites/cultist_leader.sprite"/>
     <property name="vision" value="1"/>
    </properties>

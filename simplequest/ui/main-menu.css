@@ -95,8 +95,11 @@
     margin-bottom: 8px;
 }
 
-.main-menu .main-area .panel .main-status-row span[data-field=title] {
+.main-menu .main-area .panel .main-status-row .class-level span[data-field=title] {
     flex: 1;
+}
+.main-menu .main-area .panel .main-status-row .class-level .value {
+    flex: 0 0 0.5em;
 }
 
 .main-menu .main-area .panel .main-status-row meter {
