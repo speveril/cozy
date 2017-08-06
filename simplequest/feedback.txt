@@ -1,5 +1,5 @@
 - to do or consider
-x don't do it
+x won't do it
 @ done
 
 [ from Sarah ]
@@ -12,14 +12,11 @@ x don't do it
 [ from Kyle ]
  -  if you start a battle by activating the monster, the guard mutex isn't captured, so wander guards will still attack, and the battles will "stack"
  -  The animation for moving vertically or horizontally is smooth, but the animation for moving diagonally is not. It seems to be rendering individual frames for the horizontal and vertical components, processing them independently rather than as a single input!
- -  You can slam the spacebar during the "You Died" screen and it makes menu noises.
  -  I missed eleventy times in a row so I died to the leader. going back for the arming sword made a ton of difference, so I wonder if it would be too much trouble for him to make fun of you for fighting with a stick, to cue the player to go buy an actual weapon.
- -  at the end, when the hero realizes they don't need to live up to anyone's expectations but their own.
-    you should have them decide to rename themselves.
-    and end the game with a "name your character" prompt
- -  also: consider a musical/sound cue for the torches and switches
-    so that colorblind people can finish the game
+ -  at the end, when the hero realizes they don't need to live up to anyone's expectations but their own. you should have them decide to rename themselves. and end the game with a "name your character" prompt
+ -  also: consider a musical/sound cue for the torches and switches so that colorblind people can finish the game
  -  the wooden crates looked kinda like stairs the first time I saw them
+ @  You can slam the spacebar during the "You Died" screen and it makes menu noises.
  @  the credits stutter. The scrolling effect should move them one pixel at a time, preferably. [[ this is tough. it's hard to make something that scrolls smoothly that isn't an integer number of pixels every frame, which is way too fast. I've set it to scroll 0.16 pixels per frame, which is roughly what it was before (dt * 10) but should be a bit more stable ]]
  @  The debug map should default to "What, no" instead of yes, because I just mash the space bar al     l              t          he                          ti    me
  x  the pot friend does not defend his friend pots, and that makes me sad
