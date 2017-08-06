@@ -50,7 +50,7 @@ module SimpleQuest {
         }
 
         green_door(args) {
-            this.doSwitchDoor('green_door');
+            this.doSwitchDoor('trigger_green_castle_switch');
         }
 
         trigger_red_castle_switch(args) {
@@ -58,7 +58,7 @@ module SimpleQuest {
         }
 
         red_door(args) {
-            this.doSwitchDoor('red_door');
+            this.doSwitchDoor('trigger_red_castle_switch');
         }
 
         trigger_blue_castle_switch(args) {
@@ -66,7 +66,7 @@ module SimpleQuest {
         }
 
         blue_door(args) {
-            this.doSwitchDoor('blue_door');
+            this.doSwitchDoor('trigger_blue_castle_switch');
         }
 
         ghost_frontgate(args) {

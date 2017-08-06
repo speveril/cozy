@@ -25,8 +25,9 @@ x won't do it
  x  You can't kill the tonic thief. I wanna kill the tonic thief, then drop him in the healing well so I can kill him again.
 
 [ from me ]
- -  activating an open lever-door still says you can't figure out how to open it
- -  reduce XP for cult leader, make him tougher
- -  reduce XP for lich (?)
- -  chest on middle platforms in forest is still empty
+ -  cut back total amount of money
  -  monsters can notice you and attack while you have the menu open
+ @  chest on middle platforms in forest is still empty
+ @  reduce XP for cult leader, make him tougher
+ @  reduce XP for lich (?)
+ @  activating an open lever-door still says you can't figure out how to open it

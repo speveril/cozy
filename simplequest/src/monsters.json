@@ -117,7 +117,7 @@
             "damage":60,
             "block":10
         },
-        "xp":2500,
+        "xp":1000,
         "image":"ui/battle/monster_lich.png"
     },
     "bat":{
@@ -272,7 +272,7 @@
             {
                 "strike":[
                     "fire",
-                    "2d10 + 10"
+                    "3d10 + 10"
                 ],
                 "_chance":15,
                 "_sound":"effect_fire",
@@ -281,7 +281,7 @@
             {
                 "strike":[
                     "shock",
-                    "2d10 + 10"
+                    "3d10 + 10"
                 ],
                 "_chance":15,
                 "_sound":"effect_lightning",
@@ -290,7 +290,7 @@
             {
                 "strike":[
                     "ice",
-                    "2d10 + 10"
+                    "3d10 + 10"
                 ],
                 "_chance":15,
                 "_sound":"effect_ice",
@@ -301,10 +301,10 @@
             "dodge":20,
             "critical":20,
             "defense":25,
-            "damage":20,
+            "damage":25,
             "block":15
         },
-        "xp":1000,
+        "xp":500,
         "image":"ui/battle/monster_cultleader.png"
     },
     "blueslime":{

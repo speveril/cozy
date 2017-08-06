@@ -597,7 +597,7 @@
   <object id="88" name="switch_layers" type="event" x="576" y="496" width="16" height="16"/>
   <object id="113" name="open_chest" type="trigger" x="448" y="400" width="16" height="16">
    <properties>
-    <property name="conents" value="potion"/>
+    <property name="contents" value="potion"/>
    </properties>
   </object>
   <object id="114" name="smash_pot" type="trigger" x="576" y="400" width="16" height="16"/>
