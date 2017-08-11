@@ -11,12 +11,14 @@
     z-index: 1;
 }
 
-.saved-game .confirmation {
+.saved-game .confirmation,
+.saved-game .confirmation-new {
     display: none;
     padding-left: 16px;
 }
 
-.saved-game.confirm .confirmation {
+.saved-game.confirm:not([data-id="@new"]) .confirmation,
+.saved-game.confirm[data-id="@new"] .confirmation-new {
     display: block;
 }
 .saved-game.confirm .game-time {
