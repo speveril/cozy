@@ -189,17 +189,12 @@ module RPG {
         }
 
         move(dx:number, dy:number):void {
+            let tx = Math.floor(this.position.x / this.layer.map.tileSize.x),
+                ty = Math.floor(this.position.y / this.layer.map.tileSize.y);
             if (dy !== 0 || dx !== 0) {
                 let newDirection = (Math.atan2(dy, dx) * (180 / Math.PI));
-                // if (this.sprite.direction !== newDirection) {
-                //     this.position.x = Math.floor(this.position.x);
-                //     this.position.y = Math.floor(this.position.y);
-                // }
                 this.sprite.direction = newDirection;
                 this.sprite.animation = 'walk';
-
-                var tx = Math.floor(this.position.x / this.layer.map.tileSize.x),
-                    ty = Math.floor(this.position.y / this.layer.map.tileSize.y);
 
                 if (!this.respectsObstructions) {
                     this.sprite.adjustPosition(dx, dy);
