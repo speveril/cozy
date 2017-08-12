@@ -393,18 +393,12 @@ module SimpleQuest {
             }
         }
 
-        switch_layers(args) {
-            var spriteLayer = RPG.player.layer;
+        layerswitch_to_upper(args) {
+            RPG.player.place(RPG.player.position.x, RPG.player.position.y, this.getLayerByName("#spritelayer-upper"));
+        }
 
-            if (RPG.player.dir > 180) {
-                spriteLayer = this.getLayerByName("#spritelayer-upper");
-            } else {
-                spriteLayer = this.getLayerByName("#spritelayer");
-            }
-
-            if (spriteLayer !== RPG.player.layer) {
-                RPG.player.place(RPG.player.position.x, RPG.player.position.y, spriteLayer);
-            }
+        layerswitch_to_lower(args) {
+            RPG.player.place(RPG.player.position.x, RPG.player.position.y, this.getLayerByName("#spritelayer"));
         }
     }
 }
