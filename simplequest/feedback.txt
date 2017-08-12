@@ -12,22 +12,27 @@ x also why is there a bed in the mayor's office
 
     [ from Kyle ]
 - The animation for moving vertically or horizontally is smooth, but the animation for moving diagonally is not. It seems to be rendering individual frames for the horizontal and vertical components, processing them independently rather than as a single input!
-- I missed eleventy times in a row so I died to the leader. going back for the arming sword made a ton of difference, so I wonder if it would be too much trouble for him to make fun of you for fighting with a stick, to cue the player to go buy an actual weapon.
-- the wooden crates looked kinda like stairs the first time I saw them
-- at the end, when the hero realizes they don't need to live up to anyone's expectations but their own. you should have them decide to rename themselves. and end the game with a "name your character" prompt
 ? also: consider a musical/sound cue for the torches and switches so that colorblind people can finish the game
 @ "Save over this slot" dialogue appears for new save games
 @ if you start a battle by activating the monster, the guard mutex isn't captured, so wander guards will still attack, and the battles will "stack"
 @ You can slam the spacebar during the "You Died" screen and it makes menu noises.
 @ the credits stutter. The scrolling effect should move them one pixel at a time, preferably. [[ this is tough. it's hard to make something that scrolls smoothly that isn't an integer number of pixels every frame, which is way too fast. I've set it to scroll 0.16 pixels per frame, which is roughly what it was before (dt * 10) but should be a bit more stable ]]
 @ The debug map should default to "What, no" instead of yes, because I just mash the space bar al   l       t     he             ti  me
+x I missed eleventy times in a row so I died to the leader. going back for the arming sword made a ton of difference, so I wonder if it would be too much trouble for him to make fun of you for fighting with a stick, to cue the player to go buy an actual weapon.
+x the wooden crates looked kinda like stairs the first time I saw them
+x at the end, when the hero realizes they don't need to live up to anyone's expectations but their own. you should have them decide to rename themselves. and end the game with a "name your character" prompt
 x the pot friend does not defend his friend pots, and that makes me sad
 x I went back to taunt the pot friend. Feature Request: Pot Weapon miniboss.
 x I see why there's no Inn now--there's a healing well! I wonder if the townspeople are as tired as the futurefolk from Chrono Trigger are hungry.
 x You can't kill the tonic thief. I wanna kill the tonic thief, then drop him in the healing well so I can kill him again.
 
     [ from me ]
-- cut back total amount of money
+- stairs were teleporting back and forth for west tower?
+@ make skeletons tougher
+@ make slimes tougher
+@ cut back critical rate
+@ cut back item drop rate
+@ cut back total amount of money
 @ monsters can notice you and attack while you have the menu open
 @ chest on middle platforms in forest is still empty
 @ reduce XP for cult leader, make him tougher
