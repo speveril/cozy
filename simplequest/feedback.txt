@@ -38,3 +38,12 @@ x You can't kill the tonic thief. I wanna kill the tonic thief, then drop him in
 @ reduce XP for cult leader, make him tougher
 @ reduce XP for lich (?)
 @ activating an open lever-door still says you can't figure out how to open it
+
+---- 0.9.1 ----
+
+    [from Eliot]
+- hide the mouse on input (or just... always)
+- minimize when alt-tabbing out when in full screen
+@ drop shadow kind of makes the text hard to read (he was kind of on the fence about that one)
+
+    [from Tim]
