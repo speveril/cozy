@@ -70,7 +70,7 @@
 				<p>Cozy will currently work on Windows, &quot;out of the box&quot;. It should be fairly straightforward to get it working on other platforms, it just hasn&#39;t happened yet.</p>
 				<h2 id="usage">Usage</h2>
 				<p>Just run the <code>cozy.bat</code>, which will simply run <code>.engine/cozy.exe</code>. This will open the launcher/project manager. I like to make a shortcut on my desktop to <code>.engine/cozy.exe</code> so I can find it easily. I hope to make this process less annoying in the future.</p>
-				<p>Right now, you will need to have npm installed, and to get up and running, you&#39;ll need to have NPM installed; run <code>npm install</code> in <code>.engine/resources/app/</code>. I plan to make this a requirement only if you intend to work on the engine, eventually.</p>
+				<p>Right now, to get up and running you&#39;ll need to have NPM installed; run <code>npm install</code> in <code>.engine/resources/app/</code>. I plan to make this a requirement only if you intend to work on the engine, eventually.</p>
 				<h2 id="current-technologies">Current technologies</h2>
 				<ul>
 					<li>Electron: <a href="https://github.com/atom/electron">https://github.com/atom/electron</a></li>
@@ -103,26 +103,27 @@
 				<ul>
 					<li>Simple Quest/RPGKit specific<ul>
 							<li><code>[...]</code> Playtesting, balancing, bug fixes...</li>
-							<li><code>[...]</code> Go through TODOs in engine and simplequest</li>
-							<li><code>[BUG]</code> Item menu in combat is off center and not tall enough for two-line descriptions</li>
-							<li><code>[???]</code> Short sword in castle loot seems pretty weak</li>
-							<li><code>[???]</code> Might want another weapon or two</li>
-							<li><code>[ + ]</code> Show XP to next level in menu</li>
-							<li><code>[ + ]</code> Save games should save the state of the map (tile changes, entity changes, etc) and restore them on load</li>
-							<li><code>[ + ]</code> Selling interface kind of sucks</li>
-							<li><code>[???]</code> Corners/full edging for red brick tiles</li>
+							<li><code>[BUG]</code> During a fight with a fire bat, got noticed by another fire bat, got into a bad controls state</li>
 							<li><code>[???]</code> Hide debug map better</li>
 							<li><code>[...]</code> Double check licensing and attributions</li>
+							<li><code>[...]</code> Package up and upload all of the unreleased assets to opengameart<ul>
+									<li>Reorganize the tileset</li>
+								</ul>
+							</li>
 						</ul>
 					</li>
 				</ul>
-				<h3 id="-milestone-v0-1-simplequest-release-"><code>&gt;&gt;&gt; MILESTONE v0.1: SIMPLEQUEST RELEASE</code></h3>
+				<h3 id="-milestone-v0-1-simplequest-"><code>&gt;&gt;&gt; MILESTONE v0.1: SIMPLEQUEST</code></h3>
 				<ul>
 					<li>Figure out next milestone :|</li>
+					<li>Move to a real issue tracker</li>
+					<li>Build the next game in its own repository</li>
 					<li>Bugs/Unsorted<ul>
+							<li><code>[ + ]</code> requestAnimationFrame may already get a high-res dt, may not need to do it myself?</li>
 							<li><code>[ + ]</code> Switch over to <code>let</code> instead of <code>var</code> in most(all?) places</li>
 							<li><code>[ + ]</code> Move &quot;ControlStack&quot; idea into core</li>
 							<li><code>[ + ]</code> Don&#39;t use <reference>, use imports etc. and something like webpack to generate the output</li>
+							<li><code>[ + ]</code> Can I make a simple easy to re-use pattern for making a setter/getter pair where set does some extra work (or doesn&#39;t exist) and get just returns the value</li>
 							<li><code>[COM]</code> Engine loading screen</li>
 							<li><code>[COM]</code> Figure out seamless upgrades</li>
 						</ul>
@@ -157,6 +158,10 @@
 							<li><code>[ + ]</code> Support not looping music</li>
 							<li><code>[ + ]</code> Allow crossfading music</li>
 							<li><code>[ + ]</code> Music files that are sequences of tracks, with timing/looping/etc information</li>
+							<li><code>[ + ]</code> Integrate libopenmpt -- <a href="https://wiki.openmpt.org/Libopenmpt">https://wiki.openmpt.org/Libopenmpt</a><ul>
+									<li>in particular look at MO3 files, they may give me the control I want</li>
+								</ul>
+							</li>
 						</ul>
 					</li>
 					<li>Data Editor<ul>
@@ -179,11 +184,16 @@
 									<li>This is half there with the <code>path</code> Behavior</li>
 								</ul>
 							</li>
+							<li><code>[ + ]</code> Make a way to spawn a simple menus without having to make a whole new class for them</li>
+							<li><code>[ + ]</code> Should be able to spawn an entity with direction+animation</li>
 							<li><code>[ + ]</code> Add Scene.waitAll() which takes multiple generator functions and waits for them all to finish</li>
 							<li><code>[ + ]</code> Need a way to chain from another scene, e.g. wait for a door to finish and THEN do another scene function</li>
 							<li><code>[ + ]</code> Can I just slurp in all of the map .ts files automatically instead of having to reference each one?</li>
 							<li><code>[???]</code> It&#39;d be nice if the persistent stuff in map was easier to use in general</li>
-							<li><code>[???]</code> Zones (large polygons that can be checked, but don&#39;t necessarily fire an event when crossing the threshold)</li>
+							<li><code>[???]</code> Zones (large polygons that can be checked, but don&#39;t necessarily fire an event when crossing the threshold)<ul>
+									<li>Allow &quot;pick a random spot in the zone&quot;, or something similar</li>
+								</ul>
+							</li>
 							<li><code>[...]</code> Menus need some polish<ul>
 									<li><code>[ + ]</code> Menu should have .menu and .active; selection container should have .selections, and it should just get added by setupSelections</li>
 									<li><code>[ + ]</code> Need to provide a better way for menus to return a value to a previous menu -- promises?</li>
@@ -191,6 +201,7 @@
 							</li>
 							<li><code>[ + ]</code> Allow to lose a battle without a game over</li>
 							<li><code>[ + ]</code> Be able to get the outcome of a battle so that code may respond to it differently -- victory vs. flee vs. defeat</li>
+							<li><code>[ + ]</code> Investigate vector sprites and other graphics, including &quot;paper doll&quot; style animation</li>
 						</ul>
 					</li>
 					<li>Documentation<ul>

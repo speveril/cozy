@@ -100,7 +100,14 @@ module Cozy {
         this.browserWindow.center();
 
         window.addEventListener('resize', (e) => this.onResize(e));
-        window.addEventListener('focus', (e) => Input.clear());
+        window.addEventListener('blur', (e) => {
+            if (this.getFullScreen()) {
+                browserWindow.minimize();
+            }
+        });
+        window.addEventListener('focus', (e) => {
+            Input.clear();
+        });
 
         if (this.config.fullscreen) {
             this.setFullScreen(true);
