@@ -42,8 +42,8 @@ x You can't kill the tonic thief. I wanna kill the tonic thief, then drop him in
 ---- 0.9.1 ----
 
     [from Eliot]
-- hide the mouse on input (or just... always)
 - minimize when alt-tabbing out when in full screen
+@ hide the mouse on input (or just... always)
 @ drop shadow kind of makes the text hard to read (he was kind of on the fence about that one)
 
     [from Tim]
