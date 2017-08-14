@@ -24,7 +24,11 @@ module SimpleQuest {
             RPG.Scene.do(function*() {
                 yield* RPG.Scene.waitTextbox("MAYOR JOAN", ["Oh no, no, we don't sleep in beds here."]);
                 yield* RPG.Scene.waitTextbox("HERO", ["..."]);
-                yield* RPG.Scene.waitTextbox("MAYOR JOAN", ["We do not."]);
+                yield* RPG.Scene.waitTextbox("MAYOR JOAN", [
+                    "We.",
+                    "Do.",
+                    "Not."
+                ]);
             });
         }
 
