@@ -278,8 +278,7 @@
   <object id="73" name="smash_pot" type="trigger" x="560" y="752" width="16" height="16"/>
   <object id="74" name="open_chest" type="trigger" x="192" y="432" width="16" height="16">
    <properties>
-    <property name="contents" value="tonic"/>
-    <property name="count" value="2"/>
+    <property name="contents" value="wizardhat"/>
    </properties>
   </object>
   <object id="75" name="open_chest" type="trigger" x="224" y="416" width="16" height="16">

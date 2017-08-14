@@ -11,7 +11,7 @@ module RPG {
         makeEntity() {
             return new RPG.Entity({
                 sprite: this.character.sprite,
-                speed: 64,
+                speed: 80,
                 triggersEvents: true,
                 respectsObstructions: 'true'
             });

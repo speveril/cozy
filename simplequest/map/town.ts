@@ -20,6 +20,20 @@ module SimpleQuest {
             }
         }
 
+        examine_bed(args) {
+            RPG.Scene.do(function*() {
+                yield* RPG.Scene.waitTextbox("MAYOR JOAN", ["Oh no, no, we don't sleep in beds here."]);
+                yield* RPG.Scene.waitTextbox("HERO", ["..."]);
+                yield* RPG.Scene.waitTextbox("MAYOR JOAN", ["We do not."]);
+            });
+        }
+
+        examine_bedB(args) {
+            RPG.Scene.do(function*() {
+                yield* RPG.Scene.waitTextbox("VILLAGER", ["Uh, please leave that alone. S'my bed."]);
+            });
+        }
+
         goto_debug(args) {
             RPG.Scene.do(function*() {
                 var choices = ["What, no", "Yeah okay."];

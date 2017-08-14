@@ -255,13 +255,13 @@ module SimpleQuest {
 
                 this.dragon.sprite.animation = 'stand';
 
-                var time = (3 - this.platformHeight) * 0.25;
+                var time = 0.5 + (this.platformHeight * 0.25);
                 for (var i = 0; i < letters.length; i++) {
                     var letter = letters[i];
 
                     RPG.sfx['chnk'].play();
                     this.layers[1].setTile(this.torches[letter].tx, this.torches[letter].ty, this.torchTiles[this.sequence[i]]);
-                    yield* RPG.Scene.waitTime(0.5);
+                    yield* RPG.Scene.waitTime(time);
 
                     this.layers[1].setTile(this.torches[letter].tx, this.torches[letter].ty, this.torchTiles.none);
                 }
