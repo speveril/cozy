@@ -1,7 +1,7 @@
 {
     "title": "SimpleQuest",
     "author": "Shamus Peveril <http://shamuspeveril.com>",
-    "version": "beta-20170813a",
+    "version": "beta-20170815a",
     "icon": "icon.ico",
     "main": "src/main.ts",
     "width": 320,
