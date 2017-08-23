@@ -21,7 +21,7 @@
         "use":{
             "strike":[
                 "lightning",
-                "10d20 + 90"
+                "3d20 + 120"
             ],
             "_sound":"effect_lightning",
             "_context":"combat",
@@ -60,7 +60,7 @@
         "use":{
             "strike":[
                 "force",
-                "10d20 + 90"
+                "3d20 + 120"
             ],
             "_sound":"effect_force",
             "_context":"combat",
@@ -215,7 +215,7 @@
         "use":{
             "strike":[
                 "ice",
-                "10d20 + 90"
+                "3d20 + 120"
             ],
             "_sound":"effect_ice",
             "_context":"combat",
@@ -445,7 +445,7 @@
         "use":{
             "strike":[
                 "fire",
-                "10d20 + 90"
+                "3d20 + 120"
             ],
             "_sound":"effect_fire",
             "_context":"combat",
