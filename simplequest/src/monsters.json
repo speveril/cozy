@@ -139,7 +139,7 @@
     },
     "skeleton":{
         "name":"Skeleton",
-        "hp":200,
+        "hp":175,
         "treasure":[
             {
                 "count":"2d10+10",
@@ -352,11 +352,11 @@
         "attributes":{
             "dodge":0,
             "critical":1,
-            "defense":12,
-            "damage":17,
+            "defense":10,
+            "damage":15,
             "block":15
         },
-        "xp":25,
+        "xp":30,
         "image":"ui/battle/monster_bramblekin.png"
     },
     "kobold":{
@@ -469,7 +469,7 @@
             "dodge":0,
             "critical":15,
             "defense":10,
-            "damage":50,
+            "damage":45,
             "block":20
         },
         "xp":100,
