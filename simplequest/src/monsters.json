@@ -188,7 +188,7 @@
     },
     "lavaslime":{
         "name":"Lava Slime",
-        "hp":600,
+        "hp":500,
         "treasure":[
             {
                 "item":"potion",
@@ -214,7 +214,7 @@
     },
     "slime":{
         "name":"Slime",
-        "hp":600,
+        "hp":500,
         "treasure":[
             {
                 "item":"potion",
@@ -309,7 +309,7 @@
     },
     "blueslime":{
         "name":"Blue Slime",
-        "hp":600,
+        "hp":500,
         "treasure":[
             {
                 "item":"potion",
