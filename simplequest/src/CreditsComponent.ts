@@ -41,15 +41,15 @@ module SimpleQuest {
         <h2>Music</h2>
 
         <ul>
-            <li>Otto Halmén</li>
-            <li>Joseph Gilbert</li>
-            <li>Jasprelao</li>
-            <li>Subaru</li>
             <li>800 M.P.H.</li>
-            <li>Snowy Fox</li>
-            <li>Tarranon</li>
+            <li>Jasprelao</li>
             <li>Jeremiah George</li>
+            <li>Joseph Gilbert</li>
+            <li>Otto Halmén</li>
             <li>remaxim</li>
+            <li>Snowy Fox</li>
+            <li>Subaru</li>
+            <li>Tarranon</li>
         </ul>
 
 
