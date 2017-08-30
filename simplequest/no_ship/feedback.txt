@@ -61,6 +61,6 @@ x Bosses are basically just "did you bring enough of the best healing items avai
 ---- 0.9.3 ----
 
     [ from Sarah ]
-- the skeleton warriors are way more intense, all the skeletons, really
-x oh. i used a fire thing and then a shock thing and defeated the lich in 2 hits. poor guy must have been having an off day
+@ the skeleton warriors are way more intense, all the skeletons, really
+@ oh. i used a fire thing and then a shock thing and defeated the lich in 2 hits. poor guy must have been having an off day
 x also i'm not sure if this was something you were planning to fix but the cultists at the ruins are still respawning every time i enter that area [[ this was just the non-cutscene cultists ]]
