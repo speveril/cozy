@@ -4,6 +4,10 @@ Unless otherwise noted in this file or other licenses, this work is available un
 
 https://creativecommons.org/licenses/by/3.0/
 
+## The Cozy Engine
+
+SimpleQuest was built using a pre-release version of the Cozy engine, a generic game engine based on web technologies. For more information please visit https://cozyengine.com/.
+
 ## Credits
 
 ### Development, Writing, Design
