@@ -89,12 +89,6 @@ body {
     cursor: pointer;
 }
 
-#game-list footer {
-    margin: 1em 0;
-    padding: 0.5em 0;
-    cursor: pointer;
-}
-
 #game-list ul {
     width: 100%;
     padding-left: none;

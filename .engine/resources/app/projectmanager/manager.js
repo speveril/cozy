@@ -28,7 +28,6 @@ window.Manager = {
 
         this.controls = $('#controls');
         this.gameList = $('#game-list ul');
-        this.newGameFooter = $('#game-list footer');
         this.outputContainer = $('#output');
         this.dialogContainer = $('#dialogs');
         this.recompileInterval = null;
@@ -128,9 +127,7 @@ window.Manager = {
             }
         }
 
-        document.querySelector('#game-list header .force-refresh').onclick = (e) => this.rebuildGameList();
-
-        this.newGameFooter.onclick = () => this.newGame();
+        $('#game-list header .force-refresh').onclick = (e) => this.rebuildGameList();
 
         this.output("Cozy project Manager loaded.\n");
     },
@@ -156,7 +153,7 @@ window.Manager = {
         switch (k) {
             case 'NOMUSIC':
             case 'NOSFX':
-                el = document.querySelector('#controls button[data-action=' + k + ']');
+                el = $('#controls button[data-action=' + k + ']');
                 v === null ? el.classList.remove('off') : el.classList.add('off');
                 break;
             default:
