@@ -1,0 +1,72 @@
+#engine-status {
+    cursor: pointer;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    background: #333;
+    border-radius: 5px;
+    align-self: flex-end;
+    position: relative;
+}
+
+#engine-status span {
+    display: inline-block;
+    height: 2.5em;
+    margin-left: 1.0em;
+    line-height: 2.5em;
+}
+
+#engine-status span:last-child {
+    margin-right: 1.0em;
+}
+
+#engine-status .icon {
+    width: 1.5em;
+    height: 2.5em;
+    text-align: center;
+}
+
+#engine-status .message {
+    overflow: hidden;
+    transition: 0.5s;
+}
+
+#engine-status.ready .message {
+    width: 0;
+    margin: 0;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    } to {
+        transform: rotate(359deg);
+    }
+}
+
+#engine-status.ready { color: #afa; }
+#engine-status.ready .icon::after { content: '\2713'; }
+
+#engine-status.dirty { color: #cc5; }
+#engine-status.dirty .icon::after { content: '\1F503'; }
+
+#engine-status.compiling { color: #ddd; }
+#engine-status.compiling .icon::after {
+    content: '\1F503';
+    animation-name: spin;
+    animation-duration: 1000ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+#engine-status.checking { color: #ddd; }
+#engine-status.checking .icon::after {
+    content: '\1F503';
+    animation-name: spin;
+    animation-duration: 1000ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+#engine-status.error { color: #f33; }
+#engine-status.error .icon::after { content: '\2718'; }

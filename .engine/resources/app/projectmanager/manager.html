@@ -1,0 +1,53 @@
+<html>
+
+<head>
+    <title>Cozy Project Manager</title>
+    <script src="../util.js"></script>
+</head>
+
+<body>
+    <section class="layer" id="main-layer">
+        <section id="controls">
+            <section>
+                <button data-action="newgame" title="Create a new game">&#65291;</button>
+                <button data-action="docs" title="View documentation">&#128464;</button>
+                <button data-action="NOSFX" title="Toggle SFX">S</button>
+                <button data-action="NOMUSIC" title="Toggle music">M</button>
+            </section>
+            <div class="spacer"></div>
+        </section>
+
+        <section id="content-area">
+            <section id="game-list">
+                <header>Available Games <span class="force-refresh">&#128259;</header>
+                <ul></ul>
+                <footer>+ Create a new game</footer>
+            </section>
+
+            <section id="output"></section>
+        </section>
+    </section>
+
+    <section class="layer" id="dialogs"></section>
+</body>
+
+<script>
+    require('./manager')
+    const Electron = require('electron');
+
+    document.onkeydown = (e) => {
+        var keyCode = e.which;
+        if (keyCode === 192 || keyCode === 122) { // ~ key or f11, opens console
+            Electron.remote.getCurrentWindow().toggleDevTools();
+        }
+    };
+
+    Electron.ipcRenderer.on('start', (event) => {
+        Manager.start();
+    });
+    Electron.ipcRenderer.on('output', (event, arg) => {
+        Manager.output(arg);
+    });
+</script>
+
+</html>

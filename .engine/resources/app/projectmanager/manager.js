@@ -1,4 +1,6 @@
 'use strict';
+
+
 const FS = require('fs-extra');
 const Child = require('child_process');
 const Path = require('path');
@@ -7,34 +9,28 @@ const Process = require('process');
 const GAMELIBDIRS = ['.'];
 const ENGINEDIR = '.engine'
 
-const $ = (q) => {
-    return document.querySelectorAll(q);
-}
-
 const statusText = {
-    'ready': "Engine is ready",
-    'dirty': "Engine needs to be recompiled.",
-    'compiling': "Engine is compiling...",
-    'error': "Engine compilation failed. See output above for details."
+    'checking':     "Checking engine state...",
+    'ready':        "Engine is ready",
+    'dirty':        "Engine needs to be recompiled.",
+    'compiling':    "Engine is compiling...",
+    'error':        "Engine compilation failed. See output for details."
 }
 
-function scrub(text) {
-    var scrubber = document.createElement('span');
-    scrubber.innerText = text;
-    var s = scrubber.innerHTML;
-    s = s.replace('"', '&quot;');
-    s = s.replace("'", '&apos;');
-    return s;
-}
+const EngineStatus = require('./EngineStatus');
 
-var Browser = {
+window.Manager = {
     start: function() {
-        this.controls = $('#controls')[0];
-        this.gameList = $('#game-list ul')[0];
-        this.newGameFooter = $('#game-list footer')[0];
-        this.outputContainer = $('#output')[0];
-        this.engineStatus = $('#engine-status')[0];
-        this.dialogContainer = $('#dialogs')[0];
+        css('manager.css');
+
+        let controlsArea = $('#controls');
+        this.engineStatus = EngineStatus.add(controlsArea);
+
+        this.controls = $('#controls');
+        this.gameList = $('#game-list ul');
+        this.newGameFooter = $('#game-list footer');
+        this.outputContainer = $('#output');
+        this.dialogContainer = $('#dialogs');
         this.recompileInterval = null;
         this.activeGame = null;
         this.override = null;
@@ -42,7 +38,7 @@ var Browser = {
         this.loadOverrides();
         this.rebuildGameList();
 
-        this.setEngineStatus('ready');
+        this.setEngineStatus('checking');
 
         var lastCompilation = 0;
         var cozyJS = Path.join(ENGINEDIR, "resources", "app", "Cozy.js")
@@ -51,6 +47,7 @@ var Browser = {
         }
         var srcFiles = [ Path.join(ENGINEDIR, "src") ];
         var f, stat;
+        let recompileNeeded = false;
         while(srcFiles.length > 0) {
             f = srcFiles.shift();
             stat = FS.statSync(f);
@@ -60,10 +57,16 @@ var Browser = {
                 });
             } else {
                 if (stat.mtime.getTime() > lastCompilation) {
-                    this.recompileEngine();
+                    this.recompileNeeded = true;
                     break;
                 }
             }
+        }
+
+        if (this.recompileNeeded) {
+            this.recompileEngine();
+        } else {
+            this.setEngineStatus('ready');
         }
 
         FS.watch(Path.join(ENGINEDIR, "src"), { persistent: true, recursive: true }, (e, filename) => {
@@ -99,8 +102,6 @@ var Browser = {
                         this.setOverride(action, true);
                     }
                     break;
-                default:
-                    this.output("Unknown control action", action);
             }
         };
 
@@ -131,7 +132,7 @@ var Browser = {
 
         this.newGameFooter.onclick = () => this.newGame();
 
-        this.output("Cozy project browser loaded.\n");
+        this.output("Cozy project Manager loaded.\n");
     },
 
     loadOverrides: function() {
@@ -380,11 +381,19 @@ var Browser = {
         return ul;
     },
 
-    output: function(/* ... */) {
+    output: function(...args) {
         var s = '';
-        for (let i in arguments) {
+        for (let i in args) {
             if (i > 0) s += " ";
-            s += arguments[i].toString();
+            if (args[i] === null) {
+                s += "<null>";
+            } else if (args[i] === undefined) {
+                s += "<undefined>";
+            } else if (typeof args[i] === "Object") {
+                s += JSON.stringify(args[i]);
+            } else {
+                s += args[i].toString();
+            }
         }
         s = s + "\n";
         this.outputContainer.innerHTML = (this.outputContainer.innerHTML || "") + s;
@@ -409,6 +418,7 @@ var Browser = {
                     this.setEngineStatus('dirty');
                 } else {
                     this.setEngineStatus('error');
+                    return Promise.reject();
                 }
             })
             .then(() => {
@@ -467,21 +477,27 @@ var Browser = {
     buildEngine: function() {
         var params = [
             '--project', Path.join(ENGINEDIR, "src"),
-            '--out', Path.join(ENGINEDIR, 'resources', 'app', 'Cozy.js')
+            '--out', Path.join(ENGINEDIR, 'resources', 'app', 'cozy-build.js')
         ];
 
         this.output("<hr>\n<span style='color:white'>[ Building core engine ]</span>")
         return this.build(params)
             .then(() => {
+                FS.renameSync(Path.join(ENGINEDIR, 'resources', 'app', 'cozy-build.js'), Path.join(ENGINEDIR, 'resources', 'app', 'Cozy.js'))
+                FS.renameSync(Path.join(ENGINEDIR, 'resources', 'app', 'cozy-build.js.map'), Path.join(ENGINEDIR, 'resources', 'app', 'Cozy.js.map'))
+                FS.renameSync(Path.join(ENGINEDIR, 'resources', 'app', 'cozy-build.d.ts'), Path.join(ENGINEDIR, 'resources', 'app', 'Cozy.d.ts'))
                 this.output(" - Built engine");
                 this.output("<span style='color:#0f0'>[ Success ]</span>\n");
             }, (code) => {
+                FS.unlinkSync(Path.join(ENGINEDIR, 'resources', 'app', 'cozy-build.js'));
+                FS.unlinkSync(Path.join(ENGINEDIR, 'resources', 'app', 'cozy-build.js.map'));
+                FS.unlinkSync(Path.join(ENGINEDIR, 'resources', 'app', 'cozy-build.d.ts'));
                 this.output("<span style='color:red'>[ BUILD FAILURE (code: " + code + ") ]</span>\n");
                 return Promise.reject();
             });
     },
 
-    build: function(buildParams) { //buildPath, outputFile) {
+    build: function(buildParams) {
         buildParams.push('--target', 'ES6');
         return this.fork(Path.join(ENGINEDIR, 'resources', 'app', 'node_modules', 'typescript', 'bin', 'tsc'), buildParams);
     },

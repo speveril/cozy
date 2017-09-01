@@ -7,53 +7,28 @@ body {
     font-family: Helvetica, Calibri, sans-serif;
     font-size: 10pt;
 
+}
+
+.layer {
+    position: fixed;
+    margin: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     display: flex;
     flex-direction: column;
 }
 
-body > section {
+#content-area {
+    flex: 1 0;
+    display: flex;
+    flex-direction: column;
+}
+
+#content-area > section {
     padding: 1em 1.5em;
 }
-
-#engine-status {
-    background: #333;
-    cursor: pointer;
-}
-
-#engine-status span {
-    display: inline-block;
-}
-#engine-status .icon {
-    width: 1.2em;
-    height: 1.2em;
-    text-align: center;
-}
-
-@keyframes spin {
-    from {
-        transform: rotate(0deg);
-    } to {
-        transform: rotate(359deg);
-    }
-}
-
-#engine-status.ready { color: #afa; }
-#engine-status.ready .icon::after { content: '\2713'; }
-
-#engine-status.dirty { color: #cc5; }
-#engine-status.dirty .icon::after { content: '\1F503'; }
-
-#engine-status.compiling { color: #ddd; }
-#engine-status.compiling .icon::after {
-    content: '\1F503';
-    animation-name: spin;
-    animation-duration: 1000ms;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
-}
-
-#engine-status.error { color: #f33; }
-#engine-status.error .icon::after { content: '\2718'; }
 
 #controls {
     padding: 0.5em;
@@ -62,8 +37,12 @@ body > section {
     flex-direction: row;
 }
 
-#controls > section:not(:last-child) {
-    border-right: 1px solid #888;
+#controls > section:not(:first-child) {
+    border-left: 1px solid #888;
+}
+
+#controls > .spacer {
+    flex: 1 0;
 }
 
 #controls button {
@@ -261,13 +240,7 @@ body > section {
 }
 
 #dialogs {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
     background: rgba(0, 0, 0, 0.7);
-    display: flex;
     justify-content: center;
     align-items: center;
 }

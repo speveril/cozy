@@ -55,7 +55,7 @@ function setup() {
         }
     });
 
-    mainWindow.loadURL("file://" + __dirname + "/browser.html");
+    mainWindow.loadURL("file://" + __dirname + "/projectmanager/manager.html");
     // mainWindow.toggleDevTools();
 }
 

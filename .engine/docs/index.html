@@ -65,12 +65,15 @@
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
 				<h1 id="cozy">Cozy</h1>
-				<p>A generic game engine.</p>
-				<p><strong>Cozy is not currently released. If I do ever release it, it will be under a permissive license (probably something like MIT). If you&#39;ve somehow gotten access to this repository, hopefully I&#39;ve actually given it to you and you know what&#39;s up; if you&#39;d like to use it just talk to me and I&#39;ll probably say &quot;sure&quot;.</strong></p>
-				<p>Cozy will currently work on Windows, &quot;out of the box&quot;. It should be fairly straightforward to get it working on other platforms, it just hasn&#39;t happened yet.</p>
+				<h2 id="a-generic-2d-game-engine-">A generic 2d game engine.</h2>
+				<p><a href="https://cozyengine.com/">https://cozyengine.com/</a></p>
+				<p><strong>Cozy is not currently released.</strong> If you&#39;ve somehow gotten access to this repository, hopefully I&#39;ve actually given it to you and you know what&#39;s up. When/if I do ever release it, it will be under a permissive license (probably something like MIT).</p>
+				<p>I have a lot of games I want to make at some point and/or have been working on for more than a decade. I keep trying other engines and finding something distasteful about them; I figured if I made my own at least I couldn&#39;t blame anyone else. I could also build it with the tools that I am most familiar with and so afford me the most pleasant working environment -- as such the main basis of the engine are web technologies, like HTML and JS.</p>
+				<p>The engine&#39;s development is driven entirely by my needs of it. That said, if you are using the engine and have a use-case that I&#39;m not meeting, we should talk -- maybe there&#39;s something I haven&#39;t thought of which would be great, or something I&#39;m already planning that I could shuffle forward on the roadmap.</p>
+				<p>Cozy (the development environment and the games it creates) currently works on Windows. It should be fairly straightforward to get it working on other platforms, it just hasn&#39;t happened yet.</p>
 				<h2 id="usage">Usage</h2>
-				<p>Just run the <code>cozy.bat</code>, which will simply run <code>.engine/cozy.exe</code>. This will open the launcher/project manager. I like to make a shortcut on my desktop to <code>.engine/cozy.exe</code> so I can find it easily. I hope to make this process less annoying in the future.</p>
-				<p>Right now, you will need to have npm installed, and to get up and running, you&#39;ll need to have NPM installed; run <code>npm install</code> in <code>.engine/resources/app/</code>. I plan to make this a requirement only if you intend to work on the engine, eventually.</p>
+				<p>Run <code>.engine/cozy.exe</code>. This will open the launcher/project manager. I like to make a shortcut on my desktop to <code>.engine/cozy.exe</code> so I can find it easily. I hope to make this process less annoying in the future.</p>
+				<p>Unfortunately, <strong>to get up and running you&#39;ll need to have NPM installed</strong>; run <code>npm install</code> in <code>.engine/resources/app/</code>. I plan to make this a requirement only if you intend to work on the engine, eventually.</p>
 				<h2 id="current-technologies">Current technologies</h2>
 				<ul>
 					<li>Electron: <a href="https://github.com/atom/electron">https://github.com/atom/electron</a></li>
@@ -78,9 +81,6 @@
 					<li>Underscore: <a href="http://underscorejs.org">http://underscorejs.org</a></li>
 					<li>Typescript: <a href="http://typescriptlang.org">http://typescriptlang.org</a></li>
 				</ul>
-				<h2 id="plans">Plans</h2>
-				<p>I have a lot of games I want to make at some point and/or have been working on for more than a decade. I keep trying other engines and finding something distasteful about them; I figured if I made my own at least I couldn&#39;t blame anyone else. I could also build it with the tools that I am most familiar with and so afford me the most pleasant working environment -- as such the main basis of the engine are web technologies, like HTML and JS.</p>
-				<p>If you want to use the engine and have a use-case that I&#39;m not meeting, we should talk. For the time being I&#39;m focusing on what I need but maybe there&#39;s something I haven&#39;t thought of which would be great, or something I&#39;m already planning that I could shuffle forward on the roadmap.</p>
 				<h2 id="examples">Examples</h2>
 				<ul>
 					<li><strong>SimpleQuest</strong> - SimpleQuest, a small but complete RPG<ul>
@@ -98,150 +98,10 @@
 					<li><strong>toys</strong> - Random junk that demonstrates something</li>
 				</ul>
 				<p>To run the examples, simply click them in the game list in the launcher.</p>
-				<h2 id="roadmap-plan-">Roadmap/&quot;Plan&quot;</h2>
-				<h3 id="-prerelease-"><code>&gt;&gt;&gt; PRERELEASE</code></h3>
-				<ul>
-					<li>Simple Quest/RPGKit specific<ul>
-							<li><code>[...]</code> Playtesting, balancing, bug fixes...</li>
-							<li><code>[...]</code> Go through TODOs in engine and simplequest</li>
-							<li><code>[BUG]</code> Item menu in combat is off center and not tall enough for two-line descriptions</li>
-							<li><code>[???]</code> Short sword in castle loot seems pretty weak</li>
-							<li><code>[???]</code> Might want another weapon or two</li>
-							<li><code>[ + ]</code> Show XP to next level in menu</li>
-							<li><code>[ + ]</code> Save games should save the state of the map (tile changes, entity changes, etc) and restore them on load</li>
-							<li><code>[ + ]</code> Selling interface kind of sucks</li>
-							<li><code>[???]</code> Corners/full edging for red brick tiles</li>
-							<li><code>[???]</code> Hide debug map better</li>
-							<li><code>[...]</code> Double check licensing and attributions</li>
-						</ul>
-					</li>
-				</ul>
-				<h3 id="-milestone-v0-1-simplequest-release-"><code>&gt;&gt;&gt; MILESTONE v0.1: SIMPLEQUEST RELEASE</code></h3>
-				<ul>
-					<li>Figure out next milestone :|</li>
-					<li>Bugs/Unsorted<ul>
-							<li><code>[ + ]</code> Switch over to <code>let</code> instead of <code>var</code> in most(all?) places</li>
-							<li><code>[ + ]</code> Move &quot;ControlStack&quot; idea into core</li>
-							<li><code>[ + ]</code> Don&#39;t use <reference>, use imports etc. and something like webpack to generate the output</li>
-							<li><code>[COM]</code> Engine loading screen</li>
-							<li><code>[COM]</code> Figure out seamless upgrades</li>
-						</ul>
-					</li>
-					<li>Project Manager<ul>
-							<li><code>[ + ]</code> Use an SVG library</li>
-							<li><code>[ + ]</code> Choose directory(ies) for project library</li>
-							<li><code>[ + ]</code> Make browser NOT close the currently active game<ul>
-									<li>or just revisit the whole browser interface in general</li>
-								</ul>
-							</li>
-							<li><code>[ + ]</code>  Manager should only run one game at a time, or at least only one copy of a particular game</li>
-						</ul>
-					</li>
-					<li>Infrastructure<ul>
-							<li><code>[ + ]</code> Make glob.js easier to recreate</li>
-							<li><code>[ + ]</code> If a project has a <code>build.js</code>/<code>build.ts</code>, run it after TS compilation</li>
-							<li><code>[ + ]</code> Should be able to refresh/reset; the way the message waiting works, this doesn&#39;t work the way it should</li>
-						</ul>
-					</li>
-					<li>Cozy.Sprite<ul>
-							<li><code>[ + ]</code> change Sprite direction accessors to have degree and radian variants, reading/writing a single internal format and converting as necessary</li>
-							<li><code>[ + ]</code> Need to figure out hierarchical/multilayer sprites<ul>
-									<li>Give Sprite a Container, put itself in the container and add THAT to the layer&#39;s container, then all children sprites can go in there afterward</li>
-									<li>Do I need/want a true hierarchy, or just layers?</li>
-								</ul>
-							</li>
-							<li><code>[ + ]</code> Support a &#39;keep&#39; direction or something on sprite animation angles -- just keep playing the same direction as before</li>
-						</ul>
-					</li>
-					<li>Audio<ul>
-							<li><code>[ + ]</code> Support not looping music</li>
-							<li><code>[ + ]</code> Allow crossfading music</li>
-							<li><code>[ + ]</code> Music files that are sequences of tracks, with timing/looping/etc information</li>
-						</ul>
-					</li>
-					<li>Data Editor<ul>
-							<li><code>[ + ]</code> Manage .json files; top level is an object with a &quot;.schemas&quot; key plus &quot;tables&quot; of typed objects</li>
-						</ul>
-					</li>
-					<li>Reconcile File stuff<ul>
-							<li><code>[ + ]</code> Don&#39;t make it required that the current working directory is actually the gamepath</li>
-						</ul>
-					</li>
-					<li>Other platforms<ul>
-							<li><code>[ + ]</code> Mac OS</li>
-							<li><code>[ + ]</code> Linux</li>
-						</ul>
-					</li>
-					<li>RPGKit<ul>
-							<li><code>[ + ]</code> In-game input config</li>
-							<li><code>[ + ]</code> SavedGame should write a version number, and have upgrade functions; when loading a SavedGame, run through each necessary upgrade before returning it</li>
-							<li><code>[ + ]</code> Add scripted movement for entities on the map<ul>
-									<li>This is half there with the <code>path</code> Behavior</li>
-								</ul>
-							</li>
-							<li><code>[ + ]</code> Add Scene.waitAll() which takes multiple generator functions and waits for them all to finish</li>
-							<li><code>[ + ]</code> Need a way to chain from another scene, e.g. wait for a door to finish and THEN do another scene function</li>
-							<li><code>[ + ]</code> Can I just slurp in all of the map .ts files automatically instead of having to reference each one?</li>
-							<li><code>[???]</code> It&#39;d be nice if the persistent stuff in map was easier to use in general</li>
-							<li><code>[???]</code> Zones (large polygons that can be checked, but don&#39;t necessarily fire an event when crossing the threshold)</li>
-							<li><code>[...]</code> Menus need some polish<ul>
-									<li><code>[ + ]</code> Menu should have .menu and .active; selection container should have .selections, and it should just get added by setupSelections</li>
-									<li><code>[ + ]</code> Need to provide a better way for menus to return a value to a previous menu -- promises?</li>
-								</ul>
-							</li>
-							<li><code>[ + ]</code> Allow to lose a battle without a game over</li>
-							<li><code>[ + ]</code> Be able to get the outcome of a battle so that code may respond to it differently -- victory vs. flee vs. defeat</li>
-						</ul>
-					</li>
-					<li>Documentation<ul>
-							<li><code>[COM]</code> Better docs on core functions</li>
-							<li><code>[COM]</code> Higher level intro, etc</li>
-							<li><code>[COM]</code> Tutorials</li>
-						</ul>
-					</li>
-					<li>Release stuff<ul>
-							<li><code>[COM]</code> Check if <code>.engine/src</code> exists and do not do core watch or compiles if it doesn&#39;t</li>
-							<li><code>[COM]</code> config.json should be able to define an expected version, Cozy should be smart enough to do the right thing<ul>
-									<li>I think this means &quot;shipping&quot; compiled .js blobs of previous versions along with the engine, and having the player select the right one</li>
-									<li>This is irrelevant for games once exported; they&#39;ll be packaged with the version they were used to create it</li>
-								</ul>
-							</li>
-						</ul>
-					</li>
-					<li>Testing<ul>
-							<li><code>[ + ]</code> Investigate unit tests</li>
-							<li><code>[ + ]</code> Don&#39;t ship without tests on engine core; lets me keep track of breaking changes, etc.</li>
-						</ul>
-					</li>
-				</ul>
-				<h3 id="-release-1-0-"><code>&gt;&gt;&gt; RELEASE 1.0</code></h3>
-				<h2 id="wish-list-ideas-some-day-maybe-">Wish list/Ideas (some day maybe):</h2>
-				<p>Stuff I&#39;ve thought of and would be nice, or might be useful. I may or may not ever get around to these or consider them worthwhile.</p>
-				<ul>
-					<li>Other Kits<ul>
-							<li>Beef up the Kit system to make it easier to share/use them</li>
-							<li>PlatformerKit (for Metroidvania type games)</li>
-							<li>ActionAdventureKit (for Zelda type games)</li>
-							<li>etc.</li>
-						</ul>
-					</li>
-					<li>More complex songs -- intros, loops, multiple tracks that you can control separately</li>
-					<li>Slim down Electron so the executable isn&#39;t so huge</li>
-					<li>Replace rendering engine with something native<ul>
-							<li>SDL? OpenGL?</li>
-						</ul>
-					</li>
-					<li>Post-process filters, scaling filters (CRT emulation?)<ul>
-							<li><a href="http://chadaustin.me/2015/11/crts-pixels-and-video-games/">http://chadaustin.me/2015/11/crts-pixels-and-video-games/</a></li>
-						</ul>
-					</li>
-					<li>Integrate SCSS? ReactJS?</li>
-					<li>Other platforms<ul>
-							<li>Browser</li>
-							<li>Mobile</li>
-						</ul>
-					</li>
-				</ul>
+				<h2 id="feature-roadmap">Feature Roadmap</h2>
+				<p>The roadmap/tasklist is now on Quire:</p>
+				<p><a href="https://quire.io/w/CozyEngine/">https://quire.io/w/CozyEngine/</a></p>
+				<p>If you need access, talk to Shamus.</p>
 				<h2 id="who-is-responsible-for-this-mess">Who is responsible for this mess</h2>
 				<p><a href="http://shamuspeveril.com">Shamus Peveril</a> -- architect, lead (only) developer, example maker</p>
 			</div>
