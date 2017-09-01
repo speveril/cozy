@@ -49,6 +49,11 @@ module SimpleQuest {
             _.each(Map.persistent[this.filename].completedFights, (mapID:string) => {
                 this.entityLookup[mapID].destroy();
             });
+            Map.persistent[this.filename].onetimeFights = Map.persistent[this.filename].onetimeFights || [];
+            console.log("==>>", Map.persistent[this.filename].onetimeFights);
+            _.each(Map.persistent[this.filename].onetimeFights, (mapID:string) => {
+                this.entityLookup[mapID].destroy();
+            });
 
             if (this.music && this.music !== Cozy.Audio.currentMusic) {
                 Cozy.Audio.currentMusic.stop();
@@ -81,7 +86,11 @@ module SimpleQuest {
             if (result.playerEscaped) {
                 entity.behavior = RPG.Behavior.stun(entity, 2, entity.behavior);
             } else if (!opts.leaveEntity) {
-                Map.persistent[this.filename].completedFights.push(entity.mapID);
+                if (entity.params.onetimeFight === 'true') {
+                    Map.persistent[this.filename].onetimeFights.push(entity.mapID);
+                } else {
+                    Map.persistent[this.filename].completedFights.push(entity.mapID);
+                }
                 entity.destroy();
             }
         }
@@ -384,18 +393,12 @@ module SimpleQuest {
             }
         }
 
-        switch_layers(args) {
-            var spriteLayer = RPG.player.layer;
+        layerswitch_to_upper(args) {
+            RPG.player.place(RPG.player.position.x, RPG.player.position.y, this.getLayerByName("#spritelayer-upper"));
+        }
 
-            if (RPG.player.dir > 180) {
-                spriteLayer = this.getLayerByName("#spritelayer-upper");
-            } else {
-                spriteLayer = this.getLayerByName("#spritelayer");
-            }
-
-            if (spriteLayer !== RPG.player.layer) {
-                RPG.player.place(RPG.player.position.x, RPG.player.position.y, spriteLayer);
-            }
+        layerswitch_to_lower(args) {
+            RPG.player.place(RPG.player.position.x, RPG.player.position.y, this.getLayerByName("#spritelayer"));
         }
     }
 }

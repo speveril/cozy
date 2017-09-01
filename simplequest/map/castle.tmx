@@ -278,50 +278,45 @@
   <object id="73" name="smash_pot" type="trigger" x="560" y="752" width="16" height="16"/>
   <object id="74" name="open_chest" type="trigger" x="192" y="432" width="16" height="16">
    <properties>
-    <property name="contents" value="tonic"/>
-    <property name="count" value="3"/>
+    <property name="contents" value="wizardhat"/>
    </properties>
   </object>
   <object id="75" name="open_chest" type="trigger" x="224" y="416" width="16" height="16">
    <properties>
     <property name="contents" value="#money"/>
-    <property name="count" value="250"/>
+    <property name="count" value="150"/>
    </properties>
   </object>
   <object id="76" name="open_chest" type="trigger" x="208" y="432" width="16" height="16">
    <properties>
     <property name="contents" value="potion"/>
-    <property name="count" value="1"/>
    </properties>
   </object>
   <object id="77" name="open_chest" type="trigger" x="96" y="272" width="16" height="16">
    <properties>
     <property name="contents" value="#money"/>
-    <property name="count" value="300"/>
+    <property name="count" value="100"/>
    </properties>
   </object>
   <object id="78" name="open_chest" type="trigger" x="32" y="400" width="16" height="16">
    <properties>
     <property name="contents" value="shock_scroll"/>
-    <property name="count" value="2"/>
    </properties>
   </object>
   <object id="79" name="open_chest" type="trigger" x="64" y="400" width="16" height="16">
    <properties>
     <property name="contents" value="iceshard_scroll"/>
-    <property name="count" value="2"/>
    </properties>
   </object>
   <object id="80" name="open_chest" type="trigger" x="64" y="272" width="16" height="16">
    <properties>
     <property name="contents" value="arming_sword"/>
-    <property name="count" value="1"/>
    </properties>
   </object>
   <object id="81" name="open_chest" type="trigger" x="480" y="336" width="16" height="16">
    <properties>
     <property name="contents" value="#money"/>
-    <property name="count" value="500"/>
+    <property name="count" value="200"/>
    </properties>
   </object>
   <object id="82" name="open_chest" type="trigger" x="560" y="544" width="16" height="16">
@@ -406,13 +401,11 @@
   <object id="119" name="open_chest" type="trigger" x="192" y="64" width="16" height="16">
    <properties>
     <property name="contents" value="potion"/>
-    <property name="count" value=""/>
    </properties>
   </object>
   <object id="120" name="open_chest" type="trigger" x="208" y="48" width="16" height="16">
    <properties>
     <property name="contents" value="helmet"/>
-    <property name="count" value=""/>
    </properties>
   </object>
   <object id="121" name="open_chest" type="trigger" x="368" y="32" width="16" height="16">
@@ -423,7 +416,7 @@
   <object id="122" name="open_chest" type="trigger" x="432" y="144" width="16" height="16">
    <properties>
     <property name="contents" value="#money"/>
-    <property name="count" value="650"/>
+    <property name="count" value="100"/>
    </properties>
   </object>
   <object id="126" name="ghost_frontgate" type="entity" x="304" y="656" width="16" height="16">
@@ -546,20 +539,18 @@
   <object id="162" name="open_door" type="event" x="144" y="336" width="16" height="16"/>
   <object id="163" name="open_chest" type="trigger" x="448" y="304" width="16" height="16">
    <properties>
-    <property name="contents" value="elixir"/>
-    <property name="count" value="1"/>
+    <property name="contents" value="potion"/>
    </properties>
   </object>
   <object id="164" name="open_chest" type="trigger" x="448" y="272" width="16" height="16">
    <properties>
     <property name="contents" value="#money"/>
-    <property name="count" value="700"/>
+    <property name="count" value="150"/>
    </properties>
   </object>
   <object id="165" name="open_chest" type="trigger" x="224" y="400" width="16" height="16">
    <properties>
     <property name="contents" value="leather_coat"/>
-    <property name="count" value="1"/>
    </properties>
   </object>
   <object id="166" name="smash_pot" type="trigger" x="416" y="464" width="16" height="16"/>
@@ -897,7 +888,6 @@
   <object id="245" name="open_chest" type="trigger" x="464" y="576" width="16" height="16">
    <properties>
     <property name="contents" value="heater"/>
-    <property name="count" value="1"/>
    </properties>
   </object>
  </objectgroup>

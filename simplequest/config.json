@@ -1,16 +1,18 @@
 {
     "title": "SimpleQuest",
     "author": "Shamus Peveril <http://shamuspeveril.com>",
-    "version": "alpha-20170805a",
-    "icon": "icon.ico",
+    "version": "1.0.0",
+    "icon": "src_image/icon.ico",
     "main": "src/main.ts",
     "width": 320,
     "height": 240,
     "css": [ "**/*.css" ],
     "export": {
         "executable": "SimpleQuest",
+        "copyright": "(c) 2017 Shamus Peveril and others, see README.txt for more information",
         "exclude": [
-            "src_image.*"
+            "src_image.*",
+            "no_ship.*"
         ]
     },
     "userdata": "Simple Quest",

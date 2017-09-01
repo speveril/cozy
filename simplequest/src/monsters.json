@@ -9,7 +9,7 @@
             },
             {
                 "item":"dart_scroll",
-                "chance":25
+                "chance":10
             }
         ],
         "actions":[
@@ -117,7 +117,7 @@
             "damage":60,
             "block":10
         },
-        "xp":2500,
+        "xp":1000,
         "image":"ui/battle/monster_lich.png"
     },
     "bat":{
@@ -131,7 +131,7 @@
             "dodge":20,
             "critical":10,
             "defense":10,
-            "damage":25,
+            "damage":35,
             "block":0
         },
         "xp":100,
@@ -139,7 +139,7 @@
     },
     "skeleton":{
         "name":"Skeleton",
-        "hp":100,
+        "hp":175,
         "treasure":[
             {
                 "count":"2d10+10",
@@ -147,11 +147,11 @@
             },
             {
                 "item":"short_sword",
-                "chance":10
+                "chance":5
             },
             {
                 "item":"leather_coat",
-                "chance":5
+                "chance":2
             }
         ],
         "traits":[
@@ -188,15 +188,15 @@
     },
     "lavaslime":{
         "name":"Lava Slime",
-        "hp":400,
+        "hp":500,
         "treasure":[
             {
                 "item":"potion",
-                "chance":33
+                "chance":15
             },
             {
                 "item":"iceshard_scroll",
-                "chance":20
+                "chance":5
             }
         ],
         "traits":[
@@ -214,15 +214,15 @@
     },
     "slime":{
         "name":"Slime",
-        "hp":400,
+        "hp":500,
         "treasure":[
             {
                 "item":"potion",
-                "chance":33
+                "chance":15
             },
             {
                 "item":"firebolt_scroll",
-                "chance":20
+                "chance":5
             }
         ],
         "traits":[
@@ -272,7 +272,7 @@
             {
                 "strike":[
                     "fire",
-                    "2d10 + 10"
+                    "3d10 + 10"
                 ],
                 "_chance":15,
                 "_sound":"effect_fire",
@@ -281,7 +281,7 @@
             {
                 "strike":[
                     "shock",
-                    "2d10 + 10"
+                    "3d10 + 10"
                 ],
                 "_chance":15,
                 "_sound":"effect_lightning",
@@ -290,7 +290,7 @@
             {
                 "strike":[
                     "ice",
-                    "2d10 + 10"
+                    "3d10 + 10"
                 ],
                 "_chance":15,
                 "_sound":"effect_ice",
@@ -301,23 +301,23 @@
             "dodge":20,
             "critical":20,
             "defense":25,
-            "damage":20,
+            "damage":25,
             "block":15
         },
-        "xp":1000,
+        "xp":500,
         "image":"ui/battle/monster_cultleader.png"
     },
     "blueslime":{
         "name":"Blue Slime",
-        "hp":400,
+        "hp":500,
         "treasure":[
             {
                 "item":"potion",
-                "chance":33
+                "chance":15
             },
             {
                 "item":"shock_scroll",
-                "chance":20
+                "chance":5
             }
         ],
         "traits":[
@@ -339,11 +339,11 @@
         "treasure":[
             {
                 "item":"oak_sword",
-                "chance":15
+                "chance":7
             },
             {
                 "item":"oak_shield",
-                "chance":10
+                "chance":3
             }
         ],
         "traits":[
@@ -352,16 +352,16 @@
         "attributes":{
             "dodge":0,
             "critical":1,
-            "defense":12,
-            "damage":17,
+            "defense":10,
+            "damage":15,
             "block":15
         },
-        "xp":25,
+        "xp":30,
         "image":"ui/battle/monster_bramblekin.png"
     },
     "kobold":{
         "name":"Kobold Warrior",
-        "hp":500,
+        "hp":600,
         "treasure":[
             {
                 "count":"4d20+50",
@@ -369,19 +369,19 @@
             },
             {
                 "item":"tonic",
-                "chance":50
+                "chance":15
             },
             {
                 "item":"potion",
-                "chance":20
+                "chance":5
             },
             {
                 "item":"arming_sword",
-                "chance":7
+                "chance":2
             },
             {
                 "item":"breastplate",
-                "chance":7
+                "chance":3
             }
         ],
         "traits":[
@@ -412,15 +412,15 @@
             },
             {
                 "item":"potion",
-                "chance":10
+                "chance":2
             },
             {
                 "item":"short_sword",
-                "chance":10
+                "chance":2
             },
             {
                 "item":"chain_shirt",
-                "chance":5
+                "chance":1
             }
         ],
         "actions":[
@@ -455,11 +455,11 @@
             },
             {
                 "item":"arming_sword",
-                "chance":5
+                "chance":2
             },
             {
                 "item":"chain_shirt",
-                "chance":5
+                "chance":2
             }
         ],
         "traits":[
@@ -469,7 +469,7 @@
             "dodge":0,
             "critical":15,
             "defense":10,
-            "damage":50,
+            "damage":45,
             "block":20
         },
         "xp":100,
@@ -485,7 +485,7 @@
             },
             {
                 "item":"tonic",
-                "chance":33
+                "chance":7
             }
         ],
         "attributes":{

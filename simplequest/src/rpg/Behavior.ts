@@ -26,6 +26,9 @@ module RPG {
             while (true) {
                 while (dist > 0) {
                     var dt = yield;
+                    while (ControlStack.top() !== RPG.ControlMode.Map) {
+                        dt = yield;
+                    }
                     var x = entity.position.x, y = entity.position.y;
                     switch(direction) {
                         case 0: // N
@@ -197,6 +200,10 @@ module RPG {
 
             while (true) {
                 let dt = yield;
+                while (RPG.ControlStack.top() !== RPG.ControlMode.Map) {
+                    dt = yield;
+                }
+
                 if (Trig.dist2(RPG.player.position, entity.position) <= visionDistance2) {
                     let movement = [];
                     RPG.ControlStack.push(RPG.ControlMode.None);

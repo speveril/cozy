@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="16" tileheight="16" nextobjectid="77">
+<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="16" tileheight="16" nextobjectid="79">
  <properties>
   <property name="Name" value="Carp's Bend"/>
  </properties>
@@ -37,7 +37,7 @@
 127,127,0,0,0,0,53,79,0,80,0,0,173,0,0,0,0,79,0,127,
 127,127,0,0,0,0,0,0,0,0,0,0,5,0,52,0,0,0,127,127,
 127,127,41,0,0,172,0,0,0,0,0,0,0,0,68,0,0,127,127,127,
-127,127,127,41,0,0,0,0,172,0,0,0,0,0,53,0,233,127,127,127,
+127,127,127,41,0,0,0,0,172,0,0,0,0,0,53,0,0,127,127,127,
 127,127,127,127,127,70,127,127,70,127,127,0,0,0,0,0,127,127,127,127,
 127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127
 </data>
@@ -61,7 +61,7 @@
 0,0,0,0,0,0,0,0,0,0,0,85,85,85,85,85,0,0,0,0
 </data>
  </layer>
- <objectgroup name="#spritelayer" visible="0">
+ <objectgroup name="#spritelayer">
   <object id="1" x="80" y="64">
    <polyline points="0,0 0,16 -48,16 -48,64"/>
   </object>
@@ -131,7 +131,8 @@
     <property name="contents" value="amulet"/>
    </properties>
   </object>
-  <object id="69" name="goto_debug" type="event" x="256" y="192" width="16" height="16"/>
   <object id="73" name="keep_NPCs_out_of_doorway" type="event" x="64" y="80" width="48" height="16"/>
+  <object id="77" name="examine_bed" type="trigger" x="96" y="32" width="16" height="16"/>
+  <object id="78" name="examine_bedB" type="trigger" x="224" y="176" width="16" height="16"/>
  </objectgroup>
 </map>

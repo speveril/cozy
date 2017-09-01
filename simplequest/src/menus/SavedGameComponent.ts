@@ -13,6 +13,7 @@ module SimpleQuest {
                             <div class="game-name">${args.name}</div>
                             <div class="game-time">${args.time}</div>
                             <div class="confirmation">Save over this slot?</div>
+                            <div class="confirmation-new">Save new game?</div>
                         </div>
                     `
                 });

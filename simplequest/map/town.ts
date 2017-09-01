@@ -20,11 +20,29 @@ module SimpleQuest {
             }
         }
 
+        examine_bed(args) {
+            RPG.Scene.do(function*() {
+                yield* RPG.Scene.waitTextbox("MAYOR JOAN", ["Oh no, no, we don't sleep in beds here."]);
+                yield* RPG.Scene.waitTextbox("HERO", ["..."]);
+                yield* RPG.Scene.waitTextbox("MAYOR JOAN", [
+                    "We.",
+                    "Do.",
+                    "Not."
+                ]);
+            });
+        }
+
+        examine_bedB(args) {
+            RPG.Scene.do(function*() {
+                yield* RPG.Scene.waitTextbox("VILLAGER", ["Uh, please leave that alone. S'my bed."]);
+            });
+        }
+
         goto_debug(args) {
             RPG.Scene.do(function*() {
-                var choices = ["Yeah okay.", "What, no"];
+                var choices = ["What, no", "Yeah okay."];
                 var choice = yield* this.waitChoice("Go to the debug map?", choices);
-                if (choice == 0) {
+                if (choice == 1) {
                     RPG.startMap('debug', 9, 7);
                 }
             }.bind(this));

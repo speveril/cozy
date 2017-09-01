@@ -28,26 +28,28 @@ module SimpleQuest {
         <h2>Art</h2>
 
         <ul>
+            <li>Grimfist</li>
             <li>Hyptosis</li>
             <li>Jerom</li>
             <li>Lanea Zimmerman</li>
             <li>PriorBlue</li>
             <li>Shamus Peveril</li>
+            <li>William Thompson</li>
         </ul>
 
 
         <h2>Music</h2>
 
         <ul>
-            <li>Otto Halmén</li>
-            <li>Joseph Gilbert</li>
-            <li>Jasprelao</li>
-            <li>Subaru</li>
             <li>800 M.P.H.</li>
-            <li>Snowy Fox</li>
-            <li>Tarranon</li>
+            <li>Jasprelao</li>
             <li>Jeremiah George</li>
+            <li>Joseph Gilbert</li>
+            <li>Otto Halmén</li>
             <li>remaxim</li>
+            <li>Snowy Fox</li>
+            <li>Subaru</li>
+            <li>Tarranon</li>
         </ul>
 
 
@@ -61,10 +63,19 @@ module SimpleQuest {
             <li>Sound Effect Lab</li>
         </ul>
 
+        <h2>Early Feedback</h2>
+
+        <ul>
+            <li>Eliot</li>
+            <li>Kyle</li>
+            <li>Sarah</li>
+            <li>Tim</li>
+        </ul>
+
         <h2></h2>
 
         <p class="centered">
-            More complete details available in README.md
+            More complete details (including license information) available in README.txt
         </p>
 
 

@@ -21,7 +21,7 @@
         "use":{
             "strike":[
                 "lightning",
-                "3d12 + 40"
+                "3d20 + 120"
             ],
             "_sound":"effect_lightning",
             "_context":"combat",
@@ -60,7 +60,7 @@
         "use":{
             "strike":[
                 "force",
-                "3d12 + 40"
+                "3d20 + 120"
             ],
             "_sound":"effect_force",
             "_context":"combat",
@@ -128,7 +128,7 @@
             98,
             42
         ],
-        "description":"A wizard hat. Makes you better at using scrolls.",
+        "description":"A wizard hat. Makes your scrolls stronger.",
         "price":3000,
         "name":"Wizard Hat",
         "equip":{
@@ -215,7 +215,7 @@
         "use":{
             "strike":[
                 "ice",
-                "3d12 + 40"
+                "3d20 + 120"
             ],
             "_sound":"effect_ice",
             "_context":"combat",
@@ -445,7 +445,7 @@
         "use":{
             "strike":[
                 "fire",
-                "3d12 + 40"
+                "3d20 + 120"
             ],
             "_sound":"effect_fire",
             "_context":"combat",

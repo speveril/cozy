@@ -208,7 +208,7 @@ module SimpleQuest {
 
         while (creditScroll.scrolled < len) {
             let dt = yield;
-            creditScroll.scroll(dt * 10);
+            creditScroll.scroll(0.16); // roughly dt * 10, assuming 60 fps, but
 
             if (Cozy.Input.pressed('confirm')) {
                 hold += dt;
@@ -236,14 +236,27 @@ module SimpleQuest {
                     sprite: "sprites/hero.sprite",
                     hp: 100,
                     levels: [
-                        { xp:    0, damage:10, critical: 5, dodge: 3, block: 5, defense: 5, hp: 100 },
-                        { xp:  100, damage:13, critical: 5, dodge: 5, block: 6, defense:10, hp: 125 },
-                        { xp:  200, damage:17, critical: 7, dodge: 8, block: 8, defense:15, hp: 150 },
-                        { xp:  500, damage:22, critical: 7, dodge:11, block:11, defense:20, hp: 200 },
-                        { xp: 1000, damage:28, critical:10, dodge:14, block:15, defense:25, hp: 250 },
-                        { xp: 2000, damage:35, critical:10, dodge:17, block:20, defense:30, hp: 300 },
-                        { xp: 5000, damage:45, critical:15, dodge:21, block:26, defense:35, hp: 400 },
-                        { xp:10000, damage:60, critical:33, dodge:25, block:33, defense:40, hp: 500 },
+                        { xp:    0, damage:10, critical: 1, dodge: 3, block: 2, defense: 5, hp: 100 },
+                        { xp:  100, damage:12, critical: 1, dodge: 4, block: 3, defense: 6, hp: 120 },
+                        { xp:  225, damage:15, critical: 2, dodge: 5, block: 3, defense: 8, hp: 140 },
+                        { xp:  380, damage:17, critical: 2, dodge: 6, block: 4, defense:10, hp: 160 },
+                        { xp:  570, damage:20, critical: 3, dodge: 7, block: 4, defense:12, hp: 180 },
+                        { xp:  820, damage:22, critical: 3, dodge: 8, block: 5, defense:13, hp: 200 },
+                        { xp: 1120, damage:25, critical: 4, dodge: 9, block: 5, defense:15, hp: 220 },
+                        { xp: 1500, damage:27, critical: 4, dodge:10, block: 6, defense:17, hp: 240 },
+                        { xp: 2000, damage:30, critical: 5, dodge:11, block: 6, defense:19, hp: 260 },
+                        { xp: 2500, damage:32, critical: 5, dodge:12, block: 7, defense:20, hp: 280 },
+                        { xp: 3300, damage:35, critical: 6, dodge:14, block: 7, defense:22, hp: 300 },
+                        { xp: 4200, damage:37, critical: 6, dodge:15, block: 8, defense:24, hp: 320 },
+                        { xp: 5400, damage:40, critical: 7, dodge:16, block: 8, defense:26, hp: 340 },
+                        { xp: 6800, damage:42, critical: 7, dodge:17, block: 9, defense:27, hp: 360 },
+                        { xp: 8600, damage:45, critical: 8, dodge:18, block: 9, defense:29, hp: 380 },
+                        { xp:11000, damage:47, critical: 8, dodge:19, block:10, defense:31, hp: 400 },
+                        { xp:14000, damage:50, critical: 9, dodge:20, block:11, defense:33, hp: 420 },
+                        { xp:17000, damage:52, critical: 9, dodge:21, block:12, defense:34, hp: 440 },
+                        { xp:22000, damage:55, critical:10, dodge:22, block:13, defense:36, hp: 460 },
+                        { xp:27000, damage:57, critical:10, dodge:23, block:14, defense:38, hp: 480 },
+                        { xp:34000, damage:60, critical:10, dodge:25, block:15, defense:40, hp: 500 }
                     ],
                     equipped: {
                         weapon: 'oak_sword',
