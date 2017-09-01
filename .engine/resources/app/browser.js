@@ -495,6 +495,13 @@ var Browser = {
         var displayName = scrub(config.title ? `${config.title} (${srcPath})` : srcPath);
 
         return new Promise((resolve, reject) => {
+            let fail = (e) => {
+                this.output(e);
+                this.output("<span style='color:red'>[ FAILURE ]</span>\n");
+                reject(e);
+                throw e;
+            }
+
             var cp = (src, dest, filt) => {
                 this.output(`Copy ${src} -> ${dest}`);
                 try {
@@ -504,9 +511,7 @@ var Browser = {
                         filter: filt
                     });
                 } catch (e) {
-                    this.output(e);
-                    this.output("<span style='color:red'>[ FAILURE ]</span>\n");
-                    reject(e);
+                    fail(e);
                 }
             }
 
@@ -566,9 +571,7 @@ var Browser = {
                 launchJS = launchJS.replace('$$_PARAMS_$$', JSON.stringify(config));
                 FS.writeFileSync(Path.join(outAppPath, 'launch.js'), launchJS);
             } catch(e) {
-                this.output(e);
-                this.output("<span style='color:red'>[ FAILURE ]</span>\n");
-                reject(e);
+                fail(e);
             }
 
             var exclude = exportConfig.exclude || [];
@@ -591,32 +594,49 @@ var Browser = {
             //  - concat css
             //  - definable steps
 
-            var rceditParams = [
-                Path.join(outPath, exportConfig.executable ? exportConfig.executable + '.exe' : 'cozy.exe')
+            let gameexec = (exportConfig.executable ? exportConfig.executable : 'cozy') + '.exe';
+            let editcommands = [
+                ['--set-version-string', '"OriginalFilename"', `"${gameexec}"`]
             ];
 
-            if (config.icon) rceditParams.push('--set-icon', Path.join(outAppPath, 'g', config.icon));
-            if (config.title) rceditParams.push('--set-version-string', 'FileDescription', config.title);
-
-            if (rceditParams.length < 2) {
-                this.output("<span style='color:#0f0'>[ Success ]</span>\n");
-                resolve();
-                return;
+            if (config.icon) editcommands.push(['--set-icon', Path.join(srcPath, config.icon)]);
+            if (exportConfig.copyright) editcommands.push(['--set-version-string', '"LegalCopyright"', `"${exportConfig.copyright}"`]);
+            if (config.title) {
+                editcommands.push(['--set-version-string', '"ProductName"', `"${config.title}"`]);
+                editcommands.push(['--set-version-string', '"FileDescription"', `"${config.title}"`]);
+            }
+            if (config.version) {
+                editcommands.push(['--set-product-version', `"${config.version}"`]);
+                editcommands.push(['--set-file-version', `"${config.version}"`]);
             }
 
-            this.output(`\n$ ${Path.join(ENGINEDIR, 'tool', 'rcedit.exe')} ${rceditParams.join(' ')}`);
-            Child.execFile(Path.join(ENGINEDIR, 'tool', 'rcedit.exe'), rceditParams, (error, stdout, stderr) => {
-                if (stdout) this.output(stdout);
-                if (stderr) this.output(stderr);
-                if (!error) {
+
+            let gameexecpath = Path.join(outPath, gameexec);
+            let rcedit = Path.join(ENGINEDIR, 'tool', 'rcedit.exe');
+            let command = 0;
+
+            // I'd use execFileSync but you can't capture stderr with that because everything is garbage.
+            let doNext = () => {
+                if (command >= editcommands.length) {
                     this.output("<span style='color:#0f0'>[ Success ]</span>\n");
                     resolve();
-                } else {
-                    this.output("<span style='color:red'>[ FAILURE ]</span>\n");
-                    reject(error);
+                    return;
                 }
-            });
-        })
+
+                let params = editcommands[command++];
+                this.output(`\n> ${rcedit} "${gameexecpath}" ${params.join(' ')}`);
+                Child.exec(`"${rcedit}" "${gameexecpath}" ${params.join(' ')}`, (error, stdout, stderr) => {
+                    if (stdout) this.output(stdout);
+                    if (stderr) this.output(stderr);
+                    if (!error) {
+                        doNext();
+                    } else {
+                        fail(error);
+                    }
+                });
+            };
+            doNext();
+        });
     },
 
     doc: function(srcPath, outputPath) {

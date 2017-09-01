@@ -46,6 +46,10 @@ To run the examples, simply click them in the game list in the launcher.
 
 ## Roadmap/"Plan"
 
+### `>>> PRERELEASE`
+
+- SimpleQuest 1.0.0 released 2017-08-30
+
 ### `>>> MILESTONE v0.1: SIMPLEQUEST`
 
 - Figure out next milestone :|
