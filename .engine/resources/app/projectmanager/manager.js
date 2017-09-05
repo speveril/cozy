@@ -6,7 +6,7 @@ const Child = require('child_process');
 const Path = require('path');
 const Process = require('process');
 
-const GAMELIBDIRS = ['.'];
+let gameLibraries = JSON.parse(localStorage.getItem('gameLibraries')) || []; // [Process.cwd(), Path.join(Process.cwd(), '..', 'examples')]; // TODO pull from LocalStorage or something!
 const ENGINEDIR = '.engine'
 
 const statusText = {
@@ -18,6 +18,7 @@ const statusText = {
 }
 
 const EngineStatus = require('./EngineStatus');
+const Library = require('./Library');
 
 window.Manager = {
     start: function() {
@@ -27,7 +28,7 @@ window.Manager = {
         this.engineStatus = EngineStatus.add(controlsArea);
 
         this.controls = $('#controls');
-        this.gameList = $('#game-list ul');
+        this.gameList = $('#game-list');
         this.outputContainer = $('#output');
         this.dialogContainer = $('#dialogs');
         this.recompileInterval = null;
@@ -35,7 +36,7 @@ window.Manager = {
         this.override = null;
 
         this.loadOverrides();
-        this.rebuildGameList();
+        // this.rebuildGameList();
 
         this.setEngineStatus('checking');
 
@@ -77,9 +78,7 @@ window.Manager = {
             }
             this.recompileInterval = setInterval(() => this.recompileEngine(), 3000);
         });
-        FS.watch(".", { persistent: true, recursive: false }, (e, filename) => {
-            this.rebuildGameList();
-        });
+
 
         this.engineStatus.onclick = () => this.recompileEngine();
 
@@ -93,6 +92,9 @@ window.Manager = {
                 case 'newgame':
                     this.newGame();
                     break;
+                case 'addlibrary':
+                    this.addLibrary();
+                    break;
                 case 'NOSFX':
                 case 'NOMUSIC':
                     if (target.classList.contains('off')) {
@@ -104,12 +106,28 @@ window.Manager = {
             }
         };
 
+        gameLibraries.forEach((d) => {
+            let lib = new Library(d);
+            this.gameList.appendChild(lib.getEl());
+        });
+        if (gameLibraries.length === 0) {
+            let el = $create(`
+                <div class="no-libraries">
+                    <p>You haven't added any game libraries yet!</p>
+                    <p>Click here to add one!</p>
+                </div>
+            `);
+            el.onclick = () => this.addLibrary();
+            this.gameList.appendChild(el);
+        }
+
+        // TODO move into Library.js
         this.gameList.onclick = (e) => {
             var target = e.target;
-            while (target && target.tagName.toLowerCase() !== 'li') {
+            while (target && target !== this.gameList && target.tagName.toLowerCase() !== 'li') {
                 target = target.parentNode;
             }
-            if (!target) return;
+            if (!target || target === this.gameList) return;
 
             if (target.parentNode.parentNode.classList.contains('folder') && target.previousSibling === null) {
                 target.parentNode.parentNode.classList.toggle('closed');
@@ -127,9 +145,28 @@ window.Manager = {
             }
         }
 
-        $('#game-list header .force-refresh').onclick = (e) => this.rebuildGameList();
-
         this.output("Cozy project Manager loaded.\n");
+    },
+
+    addLibrary: function() {
+        let dp = $create('<input class="directory-picker hidden" type="file" webkitdirectory>');
+        dp.onchange = () => {
+            let newpath = dp.files[0].path;
+            if (gameLibraries.indexOf(newpath) !== -1) {
+                alert("You've already got that library loaded!");
+                return;
+            }
+            gameLibraries.push(newpath);
+            localStorage.setItem('gameLibraries', JSON.stringify(gameLibraries));
+
+            let lib = new Library(newpath);
+            this.gameList.appendChild(lib.getEl());
+
+            if (this.gameList.querySelector('.no-libraries')) {
+                this.gameList.removeChild($('.no-libraries'));
+            }
+        };
+        dp.click();
     },
 
     loadOverrides: function() {
@@ -222,80 +259,7 @@ window.Manager = {
         });
     },
 
-    rebuildGameList: function() {
-        while (this.gameList.lastChild) {
-            this.gameList.removeChild(this.gameList.lastChild);
-        }
 
-        var games = {};
-        var f;
-
-        var proc = (root, list) => {
-            var games = [];
-            FS.readdirSync(root).sort().forEach((f) => {
-                var fullpath = Path.join(root, f);
-
-                if (f[0] === '.' && f !== '.') return;
-                if (f === ENGINEDIR) return;
-
-                var config = Path.join(fullpath, "config.json");
-                var stat = FS.statSync(fullpath);
-                if (stat.isDirectory()) {
-                    if (FS.existsSync(config)) {
-                        games.push(fullpath);
-                    } else {
-                        proc(Path.join(root, f), this.addGameFolder(f, list));
-                    }
-                }
-            });
-            games.forEach((path) => {
-                // TODO keep active game open
-                this.addGame(path, list);
-            });
-        };
-
-        GAMELIBDIRS.forEach((f) => {
-            proc(f, this.gameList);
-        });
-
-    },
-
-    addGame: function(path, parent) {
-        var config;
-        try {
-            config = JSON.parse(FS.readFileSync(Path.join(path, "config.json")));
-        } catch (e) {
-            this.output("<span style='color:red'>Found, but failed to parse " + Path.join(path, "config.json") + ":", e, "</span>");
-            config = {};
-        }
-
-        var li = document.createElement('li');
-        li.setAttribute('data-path', path);
-
-        var icon = config.icon ? scrub(Path.join(Process.cwd(), path, config.icon)) : ''; // TODO default project icon
-        var title = config.title ? scrub(config.title) : Path.basename(path);
-        var author = config.author ? scrub(config.author) : 'no author';
-        var info = config.width && config.height ? scrub(config.width) + ' x ' + scrub(config.height) : '';
-
-        li.innerHTML = `
-            <div class="icon"><img src="${icon}"></div>
-            <div class="title">${title}</div>
-            <div class="author">${author}</div>
-            <div class="info">${info}</div>
-            <div class="extra">
-                <span class="run">&rarr; Compile and Run</span>
-                <span class="edit">&rarr; Edit</span>
-                <span class="export">&rarr; Export... <input class="directory-picker" type="file" webkitdirectory></span>
-            </div>
-        `;
-
-        li.querySelector('.extra > .run').onclick = (e) => { e.stopPropagation(); this.clickCompileAndRun(li, path); };
-        li.querySelector('.extra > .edit').onclick = (e) => { e.stopPropagation(); this.clickEdit(li, path); };
-        li.querySelector('.extra > .export').onclick = (e) => { e.stopPropagation(); this.clickExport(li, path); };
-        parent.appendChild(li);
-
-        return li;
-    },
 
     clickCompileAndRun: function(li, path) {
         li.classList.add('compiling');
@@ -356,26 +320,6 @@ window.Manager = {
         }
 
         dirSelector.click();
-    },
-
-    addGameFolder: function(path, parent) {
-        var container = document.createElement('li');
-        container.classList.add('folder', 'closed');
-        container.setAttribute('data-path', path);
-
-        var ul = document.createElement('ul');
-        container.appendChild(ul);
-
-        var li = document.createElement('li');
-        li.classList.add('folder-header');
-        li.setAttribute('data-path', path);
-        li.innerHTML =
-            '<div class="icon"></div>' +
-            '<div class="title">' + scrub(path) + '/</div>';
-        ul.appendChild(li);
-
-        parent.appendChild(container);
-        return ul;
     },
 
     output: function(...args) {

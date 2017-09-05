@@ -9,6 +9,10 @@ body {
 
 }
 
+.hidden {
+    display: none;
+}
+
 .layer {
     position: fixed;
     margin: 0;
@@ -75,7 +79,15 @@ body {
 #game-list {
     flex-basis: 0;
     flex-grow: 1;
+    position: relative;
     overflow: auto;
+}
+
+#game-list .no-libraries {
+    text-align: center;
+    padding: 15px;
+    border: 1px dashed #000;
+    cursor: pointer;
 }
 
 #game-list header {

@@ -6,6 +6,12 @@ window.$$ = (q) => {
     return document.querySelectorAll(q);
 }
 
+let $elParent = document.createElement('div');
+window.$create = (html) => {
+    $elParent.innerHTML = html || '';
+    return $elParent.children[0];
+}
+
 window.scrub = (text) => {
     let scrubber = document.createElement('span');
     scrubber.innerText = text;
