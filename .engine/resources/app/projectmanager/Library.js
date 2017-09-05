@@ -22,7 +22,7 @@ class Library {
         this.rebuild();
 
         FS.watch(p, { persistent: true, recursive: false }, (e, filename) => {
-            this.rebuildGameList();
+            this.rebuild();
         });
     }
 
@@ -31,48 +31,47 @@ class Library {
     }
 
     rebuild() {
-        // while (this.gameList.lastChild) {
-        //     this.gameList.removeChild(this.gameList.lastChild);
-        // }
+        while (this.gamesEl.lastChild) {
+            this.gamesEl.removeChild(this.gamesEl.lastChild);
+        }
 
-        var games = {};
-        var f;
-
-        var proc = (root, list) => {
-            var games = [];
+        let proc = (root) => {
+            let games = [];
+            let subdirgames = [];
             FS.readdirSync(root).sort().forEach((f) => {
-                var fullpath = Path.join(root, f);
+                let fullpath = Path.join(root, f);
 
                 if (f[0] === '.' && f !== '.') return;
                 // if (f === ENGINEDIR) return;
 
-                var config = Path.join(fullpath, "config.json");
-                var stat = FS.statSync(fullpath);
+                let config = Path.join(fullpath, "config.json");
+                let stat = FS.statSync(fullpath);
                 if (stat.isDirectory()) {
                     if (FS.existsSync(config)) {
                         games.push(fullpath);
                     } else {
-                        proc(Path.join(root, f), this.addGameFolder(f, list));
+                        subdirgames = subdirgames.concat(proc(Path.join(root, f)));
                     }
                 }
             });
-
-            console.log("--",games);
-
-            let i = 0, j = 0;
-            // while (i < games.length || j < games.length) {
-            //
-            // }
-            games.forEach((path) => {
-                this.addGame(path, list);
-            });
+            return subdirgames.concat(games);
         };
 
-        proc(this.path, this.gamesEl);
+        let games = proc(this.path);
+        let activePath = Manager.activeGame ? Manager.activeGame.getAttribute('data-path') : null;
+
+        games.forEach((path) => {
+            let el = this.addGame(path, this.gamesEl);
+            if (path === activePath) {
+                el.classList.add('active');
+                Manager.activeGame = el;
+            }
+        });
     }
 
     addGame(path, parent) {
-        var config;
+        let config;
+
         try {
             config = JSON.parse(FS.readFileSync(Path.join(path, "config.json")));
         } catch (e) {
@@ -80,25 +79,25 @@ class Library {
             config = {};
         }
 
-        var li = document.createElement('li');
-        li.setAttribute('data-path', path);
+        let icon = config.icon ? scrub(Path.join(path, config.icon)) : ''; // TODO default project icon
+        let title = config.title ? scrub(config.title) : Path.basename(path);
+        let author = config.author ? scrub(config.author) : 'no author';
+        // let info = config.width && config.height ? scrub(config.width) + ' x ' + scrub(config.height) : '';
+        let relativepath = Path.relative(this.path, path).split(Path.sep).slice(0, -1).join('/');
 
-        var icon = config.icon ? scrub(Path.join(path, config.icon)) : ''; // TODO default project icon
-        var title = config.title ? scrub(config.title) : Path.basename(path);
-        var author = config.author ? scrub(config.author) : 'no author';
-        var info = config.width && config.height ? scrub(config.width) + ' x ' + scrub(config.height) : '';
-
-        li.innerHTML = `
-            <div class="icon"><img src="${icon}"></div>
-            <div class="title">${title}</div>
-            <div class="author">${author}</div>
-            <div class="info">${info}</div>
-            <div class="extra">
-                <span class="run">&rarr; Compile and Run</span>
-                <span class="edit">&rarr; Edit</span>
-                <span class="export">&rarr; Export... <input class="directory-picker" type="file" webkitdirectory></span>
-            </div>
-        `;
+        let li = $create(`
+            <li class="game" data-path="${path}">
+                <div class="icon"><img src="${icon}"></div>
+                <div class="title"><span class="subpath">${relativepath ? relativepath + '/' : ''}</span>${title}</div>
+                <div class="author">${author}</div>
+                <div class="extra">
+                    <span class="run">&rarr; Compile and Run</span>
+                    <span class="edit">&rarr; Edit</span>
+                    <span class="export">&rarr; Export... <input class="directory-picker" type="file" webkitdirectory></span>
+                </div>
+            </li>
+        `);
+        // <div class="info">${info}</div>
 
         li.querySelector('.extra > .run').onclick = (e) => { e.stopPropagation(); this.clickCompileAndRun(li, path); };
         li.querySelector('.extra > .edit').onclick = (e) => { e.stopPropagation(); this.clickEdit(li, path); };
@@ -109,14 +108,14 @@ class Library {
     }
 
     addGameFolder(path, parent) {
-        var container = document.createElement('li');
+        let container = document.createElement('li');
         container.classList.add('folder', 'closed');
         container.setAttribute('data-path', path);
 
-        var ul = document.createElement('ul');
+        let ul = document.createElement('ul');
         container.appendChild(ul);
 
-        var li = document.createElement('li');
+        let li = document.createElement('li');
         li.classList.add('folder-header');
         li.setAttribute('data-path', path);
         li.innerHTML =

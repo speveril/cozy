@@ -129,19 +129,15 @@ window.Manager = {
             }
             if (!target || target === this.gameList) return;
 
-            if (target.parentNode.parentNode.classList.contains('folder') && target.previousSibling === null) {
-                target.parentNode.parentNode.classList.toggle('closed');
+            if (this.activeGame && this.activeGame === target) {
+                this.activeGame.classList.remove('active');
+                this.activeGame = null;
             } else {
-                if (this.activeGame && this.activeGame === target) {
+                if (this.activeGame) {
                     this.activeGame.classList.remove('active');
-                    this.activeGame = null;
-                } else {
-                    if (this.activeGame) {
-                        this.activeGame.classList.remove('active');
-                    }
-                    target.classList.add('active');
-                    this.activeGame = target;
                 }
+                target.classList.add('active');
+                this.activeGame = target;
             }
         }
 

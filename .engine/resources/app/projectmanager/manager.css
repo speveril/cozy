@@ -27,7 +27,7 @@ body {
 #content-area {
     flex: 1 0;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
 }
 
 #content-area > section {
@@ -127,45 +127,21 @@ body {
     background: #cc5 !important;
 }
 
-#game-list li:not:hover {
-    background: #bcf;
-}
-
-#game-list li.folder {
-    padding: 0;
-    background: #ddd;
-    border-bottom: none;
-}
-
-#game-list li.folder .folder-header .icon:before {
-    content: '\1f4c2';
-}
-
-#game-list li.folder.closed .folder-header .icon:before {
-    content: '\1f4c1';
-}
-
-#game-list li.folder ul li:not(:first-child) {
-    margin-left: 2.5em;
-}
-
-#game-list li.folder.closed ul li:not(:first-child) {
-    display: none;
-}
-
 #game-list li div:not(:last-child) {
     margin-right: 1em;
 }
 
 #game-list li .icon,
 #game-list li .icon img {
-    width: 16px;
     height: 16px;
+    width: 16px;
+    image-rendering: pixelated;
     line-height: 16px;
 }
 
 #game-list li .author {
-    flex-grow: 1;
+    flex: 1 0;
+    text-align: right;
     font-style: italic;
     color: #888;
 }
@@ -232,8 +208,7 @@ body {
     word-wrap: break-word;
     overflow-y: scroll;
     overflow-x: auto;
-    flex-basis: 0;
-    flex-grow: 1;
+    flex: 0 0 40em;
     color: #bbb;
     background: #444;
 }
