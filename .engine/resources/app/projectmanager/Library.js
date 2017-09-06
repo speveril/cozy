@@ -8,16 +8,40 @@ class Library {
         this.path = p;
         this.games = [];
 
-        this.el = document.createElement('div');
-        this.el.className = "game-library";
-        this.el.innerHTML = `
-            <header>${p}</header>
-            <ul class="games"></ul>
-        `;
+        this.el = $create(`
+            <div class="game-library">
+                <header>
+                    <span>${p}</span>
+                    <span data-action="open-folder">F</span>
+                    <span data-action="refresh">R</span>
+                    <span data-action="remove">&times;</span>
+                </header>
+                <ul class="games"></ul>
+            </div>
+        `);
+
         // TODO a force-refresh
 
         this.headerEl = this.el.querySelector('header');
         this.gamesEl = this.el.querySelector('.games');
+
+        this.headerEl.onclick = (e) => {
+            let target = e.target;
+            let action = target.getAttribute('data-action');
+            switch (action) {
+                case 'refresh':
+                    this.rebuild();
+                    break;
+                case 'remove':
+                    if (window.confirm("Are you sure you want to remove this library from the game list? (No files will be deleted)")) {
+                        Manager.removeLibrary(this);
+                    }
+                    break;
+                case 'open-folder':
+                default:
+                    break;
+            }
+        }
 
         this.rebuild();
 
@@ -105,26 +129,6 @@ class Library {
         parent.appendChild(li);
 
         return li;
-    }
-
-    addGameFolder(path, parent) {
-        let container = document.createElement('li');
-        container.classList.add('folder', 'closed');
-        container.setAttribute('data-path', path);
-
-        let ul = document.createElement('ul');
-        container.appendChild(ul);
-
-        let li = document.createElement('li');
-        li.classList.add('folder-header');
-        li.setAttribute('data-path', path);
-        li.innerHTML =
-            '<div class="icon"></div>' +
-            '<div class="title">' + scrub(path) + '/</div>';
-        ul.appendChild(li);
-
-        parent.appendChild(container);
-        return ul;
     }
 }
 

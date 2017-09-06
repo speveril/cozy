@@ -165,6 +165,13 @@ window.Manager = {
         dp.click();
     },
 
+    removeLibrary: function(lib) {
+        let index = gameLibraries.indexOf(lib);
+        this.gameList.removeChild(lib.getEl());
+        gameLibraries.splice(index, 1);
+        localStorage.setItem('gameLibraries', JSON.stringify(gameLibraries));
+    },
+
     loadOverrides: function() {
         this.override = JSON.parse(localStorage.getItem('override')) || {};
         for (var k in this.override) {

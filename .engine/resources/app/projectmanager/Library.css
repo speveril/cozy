@@ -1,3 +1,30 @@
 .game .subpath {
     color: #aaa;
 }
+
+.game-library header {
+    display: flex;
+    flex-direction: row;
+}
+
+.game-library header span {
+    display: inline-block;
+    flex: 0 0;
+    padding: 0.2em 1em;
+    cursor: pointer;
+}
+
+.game-library header span:not(:first-child):hover {
+    background: #eee;
+}
+
+.game-library header span:first-child {
+    flex: 1 0;
+    padding: 0;
+    cursor: inherit;
+}
+
+.game-library header span[data-action=remove]:hover {
+    background: #f00;
+    color: #fff;
+}
