@@ -62,15 +62,21 @@ class Library {
         let proc = (root) => {
             let games = [];
             let subdirgames = [];
+
+            let config = Path.join(root, "config.json");
+            if (FS.existsSync(config)) {
+                games.push(root);
+            }
+
             FS.readdirSync(root).sort().forEach((f) => {
                 let fullpath = Path.join(root, f);
 
                 if (f[0] === '.' && f !== '.') return;
                 // if (f === ENGINEDIR) return;
 
-                let config = Path.join(fullpath, "config.json");
                 let stat = FS.statSync(fullpath);
                 if (stat.isDirectory()) {
+                    let config = Path.join(fullpath, "config.json");
                     if (FS.existsSync(config)) {
                         games.push(fullpath);
                     } else {
