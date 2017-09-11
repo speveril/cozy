@@ -16,7 +16,7 @@
 
 /// <reference path="Trig.ts"/>
 
-var Electron = require('electron');
+const Electron = require('electron');
 declare var FontFace:any;
 
 type Dict<T> = { [key:string]: T }
@@ -32,7 +32,7 @@ module Cozy {
     export var planes:Plane[];
     export var browserWindow:GitHubElectron.BrowserWindow;
     export var scene:Entity;
-    export var gameName:string; // TODO unnecessary?
+    export var gamePath:string;
     export var engineDir:Cozy.Directory;
     export var gameDir:Cozy.Directory;
     export var userdataDir:Cozy.Directory;
@@ -47,7 +47,7 @@ module Cozy {
 
         this.config = opts;
         this.debug = !!opts.debug;
-        this.gameName = opts.game;
+        this.gamePath = opts.game;
         this.browserWindow = Electron.remote.getCurrentWindow();
 
         if (this.debug) {
@@ -65,10 +65,11 @@ module Cozy {
         var userdataStem = process.env.APPDATA + '\\' || (process.platform == 'darwin' ? process.env.HOME + 'Library/Application Support/' : process.env.HOME + "/.");
 
         this.engineDir = new Cozy.Directory(path.join(process.cwd(), opts.enginePath, "resources", "app"));
-        this.gameDir = new Cozy.Directory(path.join(process.cwd(), this.gameName));
+        this.gameDir = new Cozy.Directory(this.gamePath);
 
         if (!this.config.userdata) {
-            this.config.userdata = this.gameName;
+            let p = this.gamePath.split(path.sep);
+            this.config.userdata = p[p.length - 1];
             console.warn("No 'userdata' key found in config. This will be a problem when you export -- be sure to set it to something.");
         }
         this.userdataDir = new Cozy.Directory(userdataStem).subdir(this.config.userdata, true);

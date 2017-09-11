@@ -129,9 +129,9 @@ class Library {
         `);
         // <div class="info">${info}</div>
 
-        li.querySelector('.extra > .run').onclick = (e) => { e.stopPropagation(); this.clickCompileAndRun(li, path); };
-        li.querySelector('.extra > .edit').onclick = (e) => { e.stopPropagation(); this.clickEdit(li, path); };
-        li.querySelector('.extra > .export').onclick = (e) => { e.stopPropagation(); this.clickExport(li, path); };
+        li.querySelector('.extra > .run').onclick = (e) => { e.stopPropagation(); Manager.clickCompileAndRun(li, path); };
+        li.querySelector('.extra > .edit').onclick = (e) => { e.stopPropagation(); Manager.clickEdit(li, path); };
+        li.querySelector('.extra > .export').onclick = (e) => { e.stopPropagation(); Manager.clickExport(li, path); };
         parent.appendChild(li);
 
         return li;
