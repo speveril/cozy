@@ -1,3 +1,5 @@
+'use strict';
+
 css('Library.css');
 
 const FS = require('fs-extra');
@@ -13,6 +15,7 @@ class Library {
                 <header>
                     <span>${p}</span>
                     <span data-action="open-folder">F</span>
+                    <span data-action="add-game">+</span>
                     <span data-action="refresh">R</span>
                     <span data-action="remove">&times;</span>
                 </header>
@@ -36,6 +39,9 @@ class Library {
                     if (window.confirm("Are you sure you want to remove this library from the game list? (No files will be deleted)")) {
                         Manager.removeLibrary(this);
                     }
+                    break;
+                case 'add-game':
+                    Manager.newGame(this.path);
                     break;
                 case 'open-folder':
                 default:

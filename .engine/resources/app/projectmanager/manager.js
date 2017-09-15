@@ -1,12 +1,11 @@
 'use strict';
 
-
 const FS = require('fs-extra');
 const Child = require('child_process');
 const Path = require('path');
 const Process = require('process');
 
-let gameLibraries = JSON.parse(localStorage.getItem('gameLibraries')) || []; // [Process.cwd(), Path.join(Process.cwd(), '..', 'examples')]; // TODO pull from LocalStorage or something!
+let gameLibraries = JSON.parse(localStorage.getItem('gameLibraries')) || [];
 const ENGINEDIR = '.engine'
 
 const statusText = {
@@ -36,8 +35,6 @@ window.Manager = {
         this.override = null;
 
         this.loadOverrides();
-        // this.rebuildGameList();
-
         this.setEngineStatus('checking');
 
         var lastCompilation = 0;
@@ -88,9 +85,6 @@ window.Manager = {
             switch (action) {
                 case 'docs':
                     Electron.ipcRenderer.send('control-message', { command: 'view-docs' });
-                    break;
-                case 'newgame':
-                    this.newGame();
                     break;
                 case 'addlibrary':
                     this.addLibrary();
@@ -201,17 +195,18 @@ window.Manager = {
         }
     },
 
-    newGameDialog: function() {
+    newGameDialog: function(library) {
         return new Promise((resolve, reject) => {
             var dialog = document.createElement('form');
-            dialog.innerHTML =
-                '<div class="text">New Game</div>' +
-                'Folder: <input type="text" name="path">' +
-                'Name: <input type="text" name="name">' +
-                '<div class="buttons">' +
-                    '<button class="confirm">OK</button>' +
-                    '<button class="cancel">Cancel</button>' +
-                '</div>';
+            dialog.innerHTML = `
+                <div class="text">New Game in ${library}</div>
+                Folder: <input type="text" name="path">
+                Name: <input type="text" name="name">
+                <div class="buttons">
+                    <button class="confirm">OK</button>
+                    <button class="cancel">Cancel</button>
+                </div>
+            `;
             dialog.onsubmit = (e) => {
                 e.preventDefault();
             };
@@ -630,10 +625,10 @@ window.Manager = {
         this.engineStatus.querySelector('.message').innerHTML = statusText[status];
     },
 
-    newGame: function() {
-        this.newGameDialog()
+    newGame: function(library) {
+        this.newGameDialog(library)
             .then((values) => {
-                this.copyTemplate(values);
+                this.copyTemplate(library, values);
             }, (e) => {
                 if (e) {
                     this.output('<span style="color:red">Error: ' + e.toString() + '</span>\n');
@@ -641,9 +636,9 @@ window.Manager = {
             });
     },
 
-    copyTemplate: function(args) {
+    copyTemplate: function(root, args) {
         var name = args.name;
-        var path = args.path;
+        var path = Path.join(root, args.path);
 
         return new Promise((resolve, reject) => {
             this.output('');
@@ -651,7 +646,7 @@ window.Manager = {
             var templateDir = Path.join(ENGINEDIR, "resources", "app", "game_template");
 
             if (!FS.existsSync(path)) {
-                this.output("Creating", Path.join(Process.cwd(), path));
+                this.output("Creating", path);
                 FS.mkdirSync(path);
             }
 
@@ -663,9 +658,9 @@ window.Manager = {
                 filesToCopy.forEach((filename) => {
                     var contents = FS.readFileSync(Path.join(templateDir, filename), { encoding: 'UTF-8' });
                     contents = contents.replace(/\$GAMENAME\$/g, name);
-                    contents = contents.replace(/\$GAMEPATH\$/g, path);
+                    contents = contents.replace(/\$GAMEPATH\$/g, args.path);
                     FS.writeFileSync(Path.join(path, filename), contents);
-                    this.output("&nbsp; ->", Path.join(Process.cwd(), path, filename));
+                    this.output("&nbsp; ->", Path.join(path, filename));
                 });
                 resolve();
             }
