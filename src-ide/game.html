@@ -1,18 +1,21 @@
 <html>
     <head>
         <link rel="stylesheet" href="game.css">
-        <script src="lib/underscore.js"></script>
-        <script src="lib/pixi.js"></script>
+        <!-- <script src="lib/underscore.js"></script> -->
+        <!-- <script src="lib/pixi.js"></script> -->
         <script src="lib/glob.js"></script>
-        <script src="Cozy.js"></script>
+        <!-- <script src="Cozy.js"></script> -->
     </head>
     <body>
         <script>
 (function() {
     const Electron = require('electron');
+    const Cozy = require('Cozy');
     Electron.ipcRenderer.on('start', function(event, arg, overrides) {
-        Cozy.setup(arg, overrides);
-        Cozy.run();
+        Cozy.setup(arg, overrides)
+            .then(() => {
+                Cozy.run(require(arg.game + '/main.js'));
+            });
     });
 })();
         </script>

@@ -1,5 +1,8 @@
+import * as PIXI from 'pixi.js';
+import { Component } from "Component";
+
 module Cozy.Components {
-    export class SpriteLayer extends Cozy.Component {
+    export class SpriteLayer extends Component {
         innerContainer:PIXI.Container; // should be private, but Renderer needs to access it
 
         constructor(args?:any) {

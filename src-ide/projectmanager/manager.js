@@ -378,9 +378,18 @@ window.Manager = {
             });
     },
 
-    fork: function(cmd, params) {
+    fork: function(cmd, params, cwd) {
         return new Promise((resolve, reject) => {
-            var childproc = Child.fork(cmd, params, { silent: true, env: {"ATOM_SHELL_INTERNAL_RUN_AS_NODE":"0"} });
+            let forkparams = {
+                silent: true,
+                env: {"ATOM_SHELL_INTERNAL_RUN_AS_NODE":"0"}
+            };
+            if (cwd !== undefined) {
+                forkparams.cwd = cwd;
+            }
+
+            let childproc = Child.fork(cmd, params, forkparams);
+
             childproc.stdout.on('data', (s) => this.output(s.toString().trim()));
             childproc.stderr.on('data', (s) => this.output(s.toString().trim()));
             childproc.on('exit', (returnCode) => returnCode ? reject(returnCode) : resolve());
@@ -441,7 +450,7 @@ window.Manager = {
 
     build: function(buildParams) {
         buildParams.push('--target', 'ES6');
-        return this.fork(Path.join(IDEDIR, 'node_modules', 'typescript', 'bin', 'tsc'), buildParams);
+        return this.fork(Path.join('node_modules', 'typescript', 'bin', 'tsc'), buildParams);
     },
 
     export: function(srcPath, outPath) {
@@ -617,7 +626,7 @@ window.Manager = {
                 this.output("<span style='color:#0f0'>[ Success ]</span>\n");
                 resolve();
             }, (code) => {
-                this.output("<span style='color:red'>[ FAILURE (code: " + returnCode + ") ]</span>\n");
+                this.output("<span style='color:red'>[ FAILURE (code: " + code + ") ]</span>\n");
                 reject(code)
             });
         });

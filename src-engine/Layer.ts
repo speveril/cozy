@@ -1,59 +1,60 @@
-module Cozy {
-    export class Layer {
-        innerContainer: PIXI.Container;
-        sprites: Array<Cozy.Sprite>;
-        spriteLookup: { [key:string]: Cozy.Sprite };
+import * as PIXI from 'pixi.js';
+import { Sprite } from './Sprite'
 
-        constructor() {
-            this.sprites = [];
-            this.spriteLookup = {};
-            this.innerContainer = new PIXI.Container();
-        }
+export class Layer {
+    innerContainer: PIXI.Container;
+    sprites: Array<Sprite>;
+    spriteLookup: { [key:string]: Sprite };
 
-        update(dt:number):void {
-            this.sprites.forEach(function(s) {
-                s.update(dt);
-            });
-        }
+    constructor() {
+        this.sprites = [];
+        this.spriteLookup = {};
+        this.innerContainer = new PIXI.Container();
+    }
 
-        offset(x:number, y:number) {
-            this.innerContainer.position.x = Math.floor(x);
-            this.innerContainer.position.y = Math.floor(y);
-        }
+    update(dt:number):void {
+        this.sprites.forEach(function(s) {
+            s.update(dt);
+        });
+    }
 
-        getOffset() {
-            return _.clone(this.innerContainer.position);
-        }
+    offset(x:number, y:number) {
+        this.innerContainer.position.x = Math.floor(x);
+        this.innerContainer.position.y = Math.floor(y);
+    }
 
-        add(thing:any) {
-            if (thing instanceof Sprite) {
-                this.sprites.push(thing);
-                this.spriteLookup[thing.innerSprite['uid']] = thing;
-                thing.layer = this;
-                this.innerContainer.addChild(thing.innerSprite);
-            }
-        }
+    getOffset() {
+        return Object.assign({}, this.innerContainer.position);
+    }
 
-        remove(sp:Sprite) {
-            var index = this.sprites.indexOf(sp);
-            if (index !== -1) {
-                this.sprites.splice(index, 1);
-            }
-            this.innerContainer.removeChild(sp.innerSprite);
+    add(thing:any) {
+        if (thing instanceof Sprite) {
+            this.sprites.push(thing);
+            this.spriteLookup[thing.innerSprite['uid']] = thing;
+            thing.layer = this;
+            this.innerContainer.addChild(thing.innerSprite);
         }
+    }
 
-        sortSprites(f:(a:any, b:any) => number) {
-            // this.innerContainer.children.sort(f);
-            this.innerContainer.children.sort((a:any, b:any) => {
-                return f(this.spriteLookup[a['uid']], this.spriteLookup[b['uid']]);
-            });
-            // TODO keep this.sprites in sync with the innerContainer children
+    remove(sp:Sprite) {
+        var index = this.sprites.indexOf(sp);
+        if (index !== -1) {
+            this.sprites.splice(index, 1);
         }
+        this.innerContainer.removeChild(sp.innerSprite);
+    }
 
-        clear() {
-            this.sprites.forEach(function() {
-                this.innerContainer.removeChild(this.sprites[0].innerSprite);
-            }.bind(this));
-        }
+    sortSprites(f:(a:any, b:any) => number) {
+        // this.innerContainer.children.sort(f);
+        this.innerContainer.children.sort((a:any, b:any) => {
+            return f(this.spriteLookup[a['uid']], this.spriteLookup[b['uid']]);
+        });
+        // TODO keep this.sprites in sync with the innerContainer children
+    }
+
+    clear() {
+        this.sprites.forEach(function() {
+            this.innerContainer.removeChild(this.sprites[0].innerSprite);
+        }.bind(this));
     }
 }
