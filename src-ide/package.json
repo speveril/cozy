@@ -1,0 +1,12 @@
+{
+  "name": "cozy",
+  "productName": "Cozy Development Environment and Engine",
+  "version": "0.1.0",
+  "dependencies": {
+    "electron-window-state": "^3.0.3",
+    "fs-extra": "^1.0.0",
+    "glob": "^7.1.0",
+    "typedoc": "^0.7.1",
+    "typescript": "^2.3.3"
+  }
+}

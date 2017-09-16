@@ -6,7 +6,10 @@ const Path = require('path');
 const Process = require('process');
 
 let gameLibraries = JSON.parse(localStorage.getItem('gameLibraries')) || [];
-const ENGINEDIR = 'bin-win32-x64'
+
+// TODO get these from current platform + whether this is a "release" or not
+const ENGINEDIR = 'bin-win32-x64';
+const IDEDIR = 'src-ide';
 
 const statusText = {
     'checking':     "Checking engine state...",
@@ -438,7 +441,7 @@ window.Manager = {
 
     build: function(buildParams) {
         buildParams.push('--target', 'ES6');
-        return this.fork(Path.join(ENGINEDIR, 'resources', 'app', 'node_modules', 'typescript', 'bin', 'tsc'), buildParams);
+        return this.fork(Path.join(IDEDIR, 'node_modules', 'typescript', 'bin', 'tsc'), buildParams);
     },
 
     export: function(srcPath, outPath) {
@@ -603,7 +606,7 @@ window.Manager = {
             );
 
             this.fork(
-                Path.join(ENGINEDIR, 'resources', 'app', 'builddoc'), [
+                Path.join(IDEDIR, 'builddoc'), [
                     '--out', outputPath,
                     '--mode', 'file',
                     '--target', 'ES6',
