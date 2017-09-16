@@ -89,7 +89,7 @@ function play(path, override, debug) {
         // window.toggleDevTools();
 
         params['game'] = path;
-        params['enginePath'] = '.engine';
+        params['enginePath'] = 'bin-win32-x64';
         params['width'] = params['width'] || 320;
         params['height'] = params['height'] || 240;
         params['debug'] = debug;
@@ -107,7 +107,7 @@ function play(path, override, debug) {
 }
 
 function viewDocs() {
-    require('shell').openExternal("file://" + Process.cwd() + "/.engine/docs/index.html");
+    require('shell').openExternal("file://" + Process.cwd() + "/docs/index.html");
 }
 
 function openEditor(path) {
@@ -140,7 +140,7 @@ function openEditor(path) {
     editors[path] = window;
 
     params['gamePath'] = path;
-    params['enginePath'] = '.engine';
+    params['enginePath'] = 'bin-win32-x64';
 
     window.once('close', () => {
         editors[path] = null;

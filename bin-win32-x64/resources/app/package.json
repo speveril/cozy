@@ -4,7 +4,6 @@
   "version": "0.1.0",
   "main": "launch.js",
   "dependencies": {
-    "browserify": "^13.1.0",
     "electron-window-state": "^3.0.3",
     "fs-extra": "^1.0.0",
     "glob": "^7.1.0",

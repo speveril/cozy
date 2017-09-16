@@ -1,7 +1,7 @@
-.engine/resources/app/Cozy.js
-.engine/resources/app/Cozy.js.map
-.engine/resources/app/Cozy.d.ts
-.engine/resources/app/node_modules
+Cozy.js
+Cozy.js.map
+Cozy.d.ts
+node_modules
 examples/**/*.js
 examples/**/*.js.map
 toys/**/*.js

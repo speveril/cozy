@@ -6,7 +6,7 @@ const Path = require('path');
 const Process = require('process');
 
 let gameLibraries = JSON.parse(localStorage.getItem('gameLibraries')) || [];
-const ENGINEDIR = '.engine'
+const ENGINEDIR = 'bin-win32-x64'
 
 const statusText = {
     'checking':     "Checking engine state...",
@@ -42,7 +42,7 @@ window.Manager = {
         if (FS.existsSync(cozyJS)) {
             lastCompilation = FS.statSync(cozyJS).mtime.getTime();
         }
-        var srcFiles = [ Path.join(ENGINEDIR, "src") ];
+        var srcFiles = [ "src-engine" ];
         var f, stat;
         let recompileNeeded = false;
         while(srcFiles.length > 0) {
@@ -66,7 +66,7 @@ window.Manager = {
             this.setEngineStatus('ready');
         }
 
-        FS.watch(Path.join(ENGINEDIR, "src"), { persistent: true, recursive: true }, (e, filename) => {
+        FS.watch("src-engine", { persistent: true, recursive: true }, (e, filename) => {
             if (this.engineStatus.className !== 'compiling') {
                 this.setEngineStatus('dirty');
             }
@@ -351,7 +351,7 @@ window.Manager = {
         this.output("");
         this.buildEngine()
             .then(() => {
-                return this.doc(Path.join(ENGINEDIR, "src", "Cozy.ts"), Path.join(ENGINEDIR, "docs"))
+                return this.doc(Path.join("src-engine", "Cozy.ts"), Path.join("docs"))
             }, () => {
                 if (this.recompileInterval) {
                     this.setEngineStatus('dirty');
@@ -397,7 +397,7 @@ window.Manager = {
         var displayName = scrub(config.title ? config.title + " (" + buildPath + ")" : buildPath);
 
         var params = [
-            '.engine/resources/app/Cozy.d.ts', srcRoot,
+            ENGINEDIR + '/resources/app/Cozy.d.ts', srcRoot,
             '--out', Path.join(buildPath, 'main.js')
         ];
 
@@ -415,7 +415,7 @@ window.Manager = {
 
     buildEngine: function() {
         var params = [
-            '--project', Path.join(ENGINEDIR, "src"),
+            '--project', "src-engine",
             '--out', Path.join(ENGINEDIR, 'resources', 'app', 'cozy-build.js')
         ];
 
