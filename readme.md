@@ -33,6 +33,12 @@ Unfortunately, **to get up and running you'll need to have NPM installed**; run 
 
 See https://bitbucket.org/speveril/cozy-examples/
 
+### SimpleQuest
+
+SimpleQuest was built with Cozy as a way to shake out any problems with the engine by building a game end-to-end. It also formed the basis of the RPG Kit code.
+
+http://speveril.itch.io/simplequest
+
 
 ## Feature Roadmap
 
