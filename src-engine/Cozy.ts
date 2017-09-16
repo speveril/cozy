@@ -145,6 +145,7 @@ module Cozy {
         if (typeof this.config['css'] === 'string') this.config['css'] = [this.config['css']];
         _.each(this.config['css'], (path:string) => {
             _.each(this.gameDir.glob(path), (f:File) => {
+                console.log("stylesheet:", this.gameDir.path, path, f);
                 Cozy.addStyleSheet(f);
             })
         });

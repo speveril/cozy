@@ -41,7 +41,7 @@ window.Manager = {
         this.setEngineStatus('checking');
 
         var lastCompilation = 0;
-        var cozyJS = Path.join(ENGINEDIR, "resources", "app", "Cozy.js")
+        var cozyJS = Path.join(IDEDIR, "Cozy.js")
         if (FS.existsSync(cozyJS)) {
             lastCompilation = FS.statSync(cozyJS).mtime.getTime();
         }
@@ -400,7 +400,7 @@ window.Manager = {
         var displayName = scrub(config.title ? config.title + " (" + buildPath + ")" : buildPath);
 
         var params = [
-            ENGINEDIR + '/resources/app/Cozy.d.ts', srcRoot,
+            IDEDIR + '/Cozy.d.ts', srcRoot,
             '--out', Path.join(buildPath, 'main.js')
         ];
 
@@ -419,21 +419,21 @@ window.Manager = {
     buildEngine: function() {
         var params = [
             '--project', "src-engine",
-            '--out', Path.join(ENGINEDIR, 'resources', 'app', 'cozy-build.js')
+            '--out', Path.join(IDEDIR, 'cozy-build.js')
         ];
 
         this.output("<hr>\n<span style='color:white'>[ Building core engine ]</span>")
         return this.build(params)
             .then(() => {
-                FS.renameSync(Path.join(ENGINEDIR, 'resources', 'app', 'cozy-build.js'), Path.join(ENGINEDIR, 'resources', 'app', 'Cozy.js'))
-                FS.renameSync(Path.join(ENGINEDIR, 'resources', 'app', 'cozy-build.js.map'), Path.join(ENGINEDIR, 'resources', 'app', 'Cozy.js.map'))
-                FS.renameSync(Path.join(ENGINEDIR, 'resources', 'app', 'cozy-build.d.ts'), Path.join(ENGINEDIR, 'resources', 'app', 'Cozy.d.ts'))
+                FS.renameSync(Path.join(IDEDIR, 'cozy-build.js'), Path.join(IDEDIR, 'Cozy.js'))
+                FS.renameSync(Path.join(IDEDIR, 'cozy-build.js.map'), Path.join(IDEDIR, 'Cozy.js.map'))
+                FS.renameSync(Path.join(IDEDIR, 'cozy-build.d.ts'), Path.join(IDEDIR, 'Cozy.d.ts'))
                 this.output(" - Built engine");
                 this.output("<span style='color:#0f0'>[ Success ]</span>\n");
             }, (code) => {
-                FS.unlinkSync(Path.join(ENGINEDIR, 'resources', 'app', 'cozy-build.js'));
-                FS.unlinkSync(Path.join(ENGINEDIR, 'resources', 'app', 'cozy-build.js.map'));
-                FS.unlinkSync(Path.join(ENGINEDIR, 'resources', 'app', 'cozy-build.d.ts'));
+                FS.unlinkSync(Path.join(IDEDIR, 'cozy-build.js'));
+                FS.unlinkSync(Path.join(IDEDIR, 'cozy-build.js.map'));
+                FS.unlinkSync(Path.join(IDEDIR, 'cozy-build.d.ts'));
                 this.output("<span style='color:red'>[ BUILD FAILURE (code: " + code + ") ]</span>\n");
                 return Promise.reject();
             });
@@ -646,7 +646,7 @@ window.Manager = {
         return new Promise((resolve, reject) => {
             this.output('');
             this.output('<strong>[ Creating new game, ' + name + ']')
-            var templateDir = Path.join(ENGINEDIR, "resources", "app", "game_template");
+            var templateDir = Path.join(IDEDIR, "game_template");
 
             if (!FS.existsSync(path)) {
                 this.output("Creating", path);

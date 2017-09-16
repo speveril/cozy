@@ -63,6 +63,7 @@ module Cozy {
     }
 
     export class File {
+        static documentRoot = new Directory(window.location.href.replace("file:///", "").replace("game.html", ""));
         filepath:string;
 
         constructor(f:string) {
@@ -73,7 +74,7 @@ module Cozy {
         get name():string                       { return path.basename(this.filepath); }
         get path():string                       { return this.filepath; }
         get exists():boolean                    { return fs.existsSync(this.filepath); }
-        get url():string                        { return this.relativePath(Cozy.engineDir).replace(/\\/g, "/"); }
+        get url():string                        { return "file:///" + path.resolve(this.relativePath(File.documentRoot)).replace(/\\/g, "/"); }
 
         stat():any {
             return fs.statSync(this.filepath);
