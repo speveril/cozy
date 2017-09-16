@@ -1,4 +1,0 @@
-{
-    ".derive": "sprites/base.sprite",
-    "frameBank": { "x":96, "y":0, "width":48, "height":64 }
-}

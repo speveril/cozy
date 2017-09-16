@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<objecttypes>
- <objecttype name="event" color="#8835a4"/>
- <objecttype name="trigger" color="#b11b3b"/>
- <objecttype name="entity" color="#22a42a"/>
- <objecttype name="camerabox" color="#fff9b2"/>
-</objecttypes>

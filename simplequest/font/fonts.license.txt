@@ -1,8 +1,0 @@
-EggShell.ttf
-EggWhite.ttf
-EggYolk.ttf
-Omelet.ttf
-
-The above font files are licensed under the Creative Commons CC0/Public Domain license.
-
-https://creativecommons.org/publicdomain/zero/1.0/

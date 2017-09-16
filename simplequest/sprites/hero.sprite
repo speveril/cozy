@@ -1,6 +1,0 @@
-{
-    ".derive": "sprites/base.sprite",
-    "texture": "sprites/hero.png",
-    "frameBank": { "x":0, "y":0, "width":48, "height":64 },
-    "currentAnimation": "stand"
-}
