@@ -1,14 +1,16 @@
 {
+    "compileOnSave": false,
     "compilerOptions": {
         "removeComments": true,
         "sourceMap": true,
         "declaration": true,
         "target": "ES6",
-        "module": "system",
+        "module": "amd",
         "moduleResolution": "Node",
-        "out": "../src-ide/Cozy.js"
+        "declarationDir": ".."
     },
     "files": [
+        "lib/electron.d.ts",
         "Cozy.ts"
     ]
 }

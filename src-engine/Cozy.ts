@@ -1,4 +1,5 @@
 import * as Engine from "./Engine";
+import * as PIXI from "pixi.js"
 import * as Audio from './Audio';
 import * as File from "./File";
 import * as Input from "./Input";
@@ -9,11 +10,6 @@ import * as Texture from "./Texture";
 import * as Trig from "./Trig";
 import * as UiComponent from "./UiComponent";
 
-let Cozy = {};
-
-Object.assign(Cozy,
-    Engine, Audio, File, Input, Layer, Plane, Sprite, Texture, Trig, UiComponent
-);
-
-window['Cozy'] = Cozy;
-export default Cozy;
+export default {
+    Engine, PIXI, Audio, File, Input, Layer, Plane, Sprite, Texture, Trig, UiComponent
+};

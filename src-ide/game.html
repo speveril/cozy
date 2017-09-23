@@ -1,21 +1,25 @@
 <html>
     <head>
         <link rel="stylesheet" href="game.css">
-        <!-- <script src="lib/underscore.js"></script> -->
-        <!-- <script src="lib/pixi.js"></script> -->
         <script src="lib/glob.js"></script>
-        <!-- <script src="Cozy.js"></script> -->
+        <script src="Cozy.js"></script>
     </head>
     <body>
         <script>
 (function() {
     const Electron = require('electron');
-    const Cozy = require('Cozy');
+    Electron.remote.getCurrentWindow().openDevTools(); // TODO this should only happen in debug mode
+
+    // const Cozy = require('./Cozy.js');
     Electron.ipcRenderer.on('start', function(event, arg, overrides) {
-        Cozy.setup(arg, overrides)
-            .then(() => {
-                Cozy.run(require(arg.game + '/main.js'));
-            });
+        System.import('Cozy').then((m) => {
+            console.log(m);
+            debugger;
+            // Cozy.Engine.setup(arg, overrides)
+            //     .then(() => {
+            //         Cozy.Engine.run(require(arg.game + '/main.js'));
+            //     });
+        })
     });
 })();
         </script>

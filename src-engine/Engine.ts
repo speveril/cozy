@@ -1,5 +1,3 @@
-/// <reference path="lib/electron.d.ts"/>
-
 import * as PIXI from 'pixi.js';
 import * as Electron from 'electron';
 import * as path from 'path';
@@ -35,7 +33,7 @@ export function setup(opts:any, overrides?:any) {
     console.log("Creating Cozy Object...", opts);
 
     this.config = opts;
-    this.debug = !!opts.debug;
+    this.debug = true; //!!opts.debug;
     this.gamePath = opts.game;
     this.browserWindow = Electron.remote.getCurrentWindow();
 
@@ -111,7 +109,7 @@ export function setup(opts:any, overrides?:any) {
     }
 
     // set up graphics
-    PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
+    PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
     planes = [];
 
     // set up audio

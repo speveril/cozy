@@ -3,11 +3,15 @@
   "productName": "Cozy Development Environment and Engine",
   "version": "0.1.0",
   "dependencies": {
+    "@types/pixi.js": "^4.5.3",
+    "dts-bundle": "^0.7.3",
     "electron-window-state": "^3.0.3",
     "fs-extra": "^1.0.0",
     "glob": "^7.1.0",
     "pixi.js": "^4.5.5",
+    "ts-loader": "^2.3.7",
     "typedoc": "^0.7.1",
-    "typescript": "^2.3.3"
+    "typescript": "^2.3.3",
+    "webpack": "^3.6.0"
   }
 }
