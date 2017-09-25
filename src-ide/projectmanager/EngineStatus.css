@@ -40,33 +40,22 @@
     from {
         transform: rotate(0deg);
     } to {
-        transform: rotate(359deg);
+        transform: rotate(-359deg);
     }
 }
 
-#engine-status.ready { color: #afa; }
-#engine-status.ready .icon::after { content: '\2713'; }
-
-#engine-status.dirty { color: #cc5; }
-#engine-status.dirty .icon::after { content: '\1F503'; }
-
-#engine-status.compiling { color: #ddd; }
-#engine-status.compiling .icon::after {
-    content: '\1F503';
+#engine-status.ready { color: #afa; fill: #afa; }
+#engine-status.dirty { color: #cc5; fill: #cc5; }
+#engine-status.error { color: #f33; fill: #f33; }
+#engine-status.checking,
+#engine-status.compiling {
+    color: #ddd;
+    fill: #ddd;
+}
+#engine-status.checking .icon,
+#engine-status.compiling .icon {
     animation-name: spin;
     animation-duration: 1000ms;
     animation-iteration-count: infinite;
     animation-timing-function: linear;
 }
-
-#engine-status.checking { color: #ddd; }
-#engine-status.checking .icon::after {
-    content: '\1F503';
-    animation-name: spin;
-    animation-duration: 1000ms;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
-}
-
-#engine-status.error { color: #f33; }
-#engine-status.error .icon::after { content: '\2718'; }

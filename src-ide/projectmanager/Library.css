@@ -8,23 +8,24 @@
 }
 
 .game-library header span {
-    display: inline-block;
-    flex: 0 0;
-    padding: 0.2em 1em;
-    cursor: pointer;
-}
-
-.game-library header span:not(:first-child):hover {
-    background: #eee;
-}
-
-.game-library header span:first-child {
     flex: 1 0;
     padding: 0;
+    line-height: 2.25em;
     cursor: inherit;
 }
 
-.game-library header span[data-action=remove]:hover {
+.game-library header button {
+    display: inline-block;
+    flex: 0 0 1.5em;
+    cursor: pointer;
+    text-align: center;
+}
+
+.game-library header button:hover {
+    background: #ddd;
+}
+
+.game-library header button[data-action=remove]:hover {
     background: #f00;
-    color: #fff;
+    fill: #fff;
 }

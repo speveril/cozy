@@ -12,14 +12,6 @@ let gameLibraries = JSON.parse(localStorage.getItem('gameLibraries')) || [];
 const ENGINEDIR = Path.resolve('bin-win32-x64');
 const IDEDIR = Path.resolve('src-ide');
 
-const statusText = {
-    'checking':     "Checking engine state...",
-    'ready':        "Engine is ready",
-    'dirty':        "Engine needs to be recompiled.",
-    'compiling':    "Engine is compiling...",
-    'error':        "Engine compilation failed. See output for details."
-}
-
 const EngineStatus = require('./EngineStatus');
 const Library = require('./Library');
 
@@ -38,7 +30,7 @@ window.Manager = {
         css('manager.css');
 
         let controlsArea = $('#controls');
-        this.engineStatus = EngineStatus.add(controlsArea);
+        EngineStatus.add(controlsArea, () => this.recompileEngine());
 
         this.controls = $('#controls');
         this.gameList = $('#game-list');
@@ -81,7 +73,7 @@ window.Manager = {
         }
 
         FS.watch("src-engine", { persistent: true, recursive: true }, (e, filename) => {
-            if (this.engineStatus.className !== 'compiling') {
+            if (EngineStatus.get() !== 'compiling') {
                 this.setEngineStatus('dirty');
             }
             if (this.recompileInterval) {
@@ -90,8 +82,6 @@ window.Manager = {
             this.recompileInterval = setInterval(() => this.recompileEngine(), 3000);
         });
 
-
-        this.engineStatus.onclick = () => this.recompileEngine();
 
         this.controls.onclick = (e) => {
             var target = e.target;
@@ -354,7 +344,7 @@ window.Manager = {
     },
 
     recompileEngine: function() {
-        if (this.engineStatus.className === 'compiling') return;
+        if (EngineStatus.get() === 'compiling') return;
         if (this.recompileInterval) {
             clearTimeout(this.recompileInterval);
             this.recompileInterval = null;
@@ -826,8 +816,7 @@ window.Manager = {
     },
 
     setEngineStatus: function(status) {
-        this.engineStatus.className = status;
-        this.engineStatus.querySelector('.message').innerHTML = statusText[status];
+        EngineStatus.set(status);
     },
 
     newGame: function(library) {

@@ -14,10 +14,18 @@ class Library {
             <div class="game-library">
                 <header>
                     <span>${p}</span>
-                    <span data-action="open-folder">F</span>
-                    <span data-action="add-game">+</span>
-                    <span data-action="refresh">R</span>
-                    <span data-action="remove">&times;</span>
+                    <button data-action="open-folder" disabled>
+                        <svg class="icon"><use xlink:href="../img/sprite.svg#folder"></use></svg>
+                    </button>
+                    <button data-action="add-game">
+                        <svg class="icon"><use xlink:href="../img/sprite.svg#plus"></use></svg>
+                    </button>
+                    <button data-action="refresh">
+                        <svg class="icon"><use xlink:href="../img/sprite.svg#reload"></use></svg>
+                    </button>
+                    <button data-action="remove">
+                        <svg class="icon"><use xlink:href="../img/sprite.svg#x"></use></svg>
+                    </button>
                 </header>
                 <ul class="games"></ul>
             </div>

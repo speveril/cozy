@@ -24,6 +24,12 @@ body {
     flex-direction: column;
 }
 
+.icon {
+    width: 16px;
+    height: 16px;
+    pointer-events: none;
+}
+
 #content-area {
     flex: 1 0;
     display: flex;
@@ -49,31 +55,56 @@ body {
     flex: 1 0;
 }
 
-#controls button {
+button {
     background: transparent;
+    position: relative;
     border: 0;
     font-size: 150%;
     cursor: pointer;
     width: 1.5em;
     height: 1.5em;
+    padding: 4px;
     outline: none;
 }
 
-#controls button:not(:last-child) {
+button:not(:last-child) {
     margin: 0 1px 0 0;
 }
 
-#controls button:hover {
+button:hover {
     background: rgba(255, 255, 255, 0.5);
 }
 
-#controls button:active {
+button:active {
     background: rgba(0, 0, 0, 0.5);
     color: #fff;
 }
 
-#controls button.off {
-    color: red;
+button:disabled {
+    cursor: auto;
+    pointer-events: none;
+}
+
+button:disabled .icon {
+    fill: #ccc;
+}
+
+button .icon.off-overlay {
+    position: absolute;
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+button.off .icon {
+    fill: #f88;
+}
+button.off .icon.off-overlay {
+    display: inherit;
+    fill: #000;
 }
 
 #game-list {

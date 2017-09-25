@@ -2,6 +2,9 @@
 
 <head>
     <title>Cozy Project Manager</title>
+    <style>
+        svg { width: 16px; height: 16px; }
+    </style>
     <script src="../util.js"></script>
 </head>
 
@@ -9,10 +12,20 @@
     <section class="layer" id="main-layer">
         <section id="controls">
             <section>
-                <button data-action="addlibrary" title="Add a game library">L</button>
-                <button data-action="docs" title="View documentation">&#128464;</button>
-                <button data-action="NOSFX" title="Toggle SFX">S</button>
-                <button data-action="NOMUSIC" title="Toggle music">M</button>
+                <button data-action="addlibrary" title="Add a game library">
+                    <svg class="icon"><use xlink:href="../img/sprite.svg#plus"></use></svg>
+                </button>
+                <button data-action="docs" title="View documentation" disabled>
+                    <svg class="icon"><use xlink:href="../img/sprite.svg#book"></use></svg>
+                </button>
+                <button data-action="NOSFX" title="Toggle SFX">
+                    <svg class="icon off-overlay"><use xlink:href="../img/sprite.svg#ban"></use></svg>
+                    <svg class="icon"><use xlink:href="../img/sprite.svg#volume-high"></use></svg>
+                </button>
+                <button data-action="NOMUSIC" title="Toggle music">
+                    <svg class="icon off-overlay"><use xlink:href="../img/sprite.svg#ban"></use></svg>
+                    <svg class="icon"><use xlink:href="../img/sprite.svg#musical-note"></use></svg>
+                </button>
             </section>
             <div class="spacer"></div>
         </section>
