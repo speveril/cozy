@@ -3,7 +3,7 @@ import * as Electron from 'electron';
 import * as path from 'path';
 
 import { Audio, Sound, Music } from './Audio';
-import { File, Directory } from "./File";
+import { File, Directory } from "./FileSystem";
 import { Input } from "./Input";
 import { Plane } from './Plane';
 import { Texture } from "./Texture";
@@ -12,36 +12,41 @@ declare var FontFace:any;
 
 // The kitchen sink
 
-export var Game:any;
-export var debug:boolean;
-export var config:Object;
-export var textures:{}[];
-export var planes:Plane[];
-export var browserWindow:Electron.BrowserWindow;
-// export var scene:Entity;
-export var gamePath:string;
-export var gameDir:Directory;
-export var engineDir:Directory;
-export var userdataDir:Directory;
+class CozyState {
+    public static Game:any;
+    public static debug:boolean;
 
-var enginePath:string;
-var paused:Boolean;
-var sizeMultiplier:Number;
-var lastTime: number;
+    public static config:Object;
+    public static textures:{}[];
+    public static planes:Plane[];
+    public static browserWindow:Electron.BrowserWindow;
+    // let scene:Entity;
+    public static gamePath:string;
+    public static gameDir:Directory = null;
+    public static engineDir:Directory = null;
+    public static userDataDir:Directory = null;
+
+    public static enginePath:string;
+    public static paused:boolean;
+    public static sizeMultiplier:number;
+    public static lastTime:number;
+}
 
 export function setup(opts:any, overrides?:any) {
+    window['cozyState'] = CozyState;
+
     console.log("Creating Cozy Object...", opts);
 
-    this.config = opts;
-    this.debug = true; //!!opts.debug;
-    this.gamePath = opts.game;
-    this.browserWindow = Electron.remote.getCurrentWindow();
+    window['cozyState'].config = opts;
+    window['cozyState'].debug = !!opts.debug;
+    window['cozyState'].gamePath = opts.game;
+    window['cozyState'].browserWindow = Electron.remote.getCurrentWindow();
 
-    if (this.debug) {
-        this.browserWindow.webContents.once('devtools-opened', () => {
-            this.browserWindow.focus();
+    if (window['cozyState'].debug) {
+        window['cozyState'].browserWindow.webContents.once('devtools-opened', () => {
+            window['cozyState'].browserWindow.focus();
         });
-        this.browserWindow.openDevTools({
+        window['cozyState'].browserWindow['openDevTools']({
             mode: 'detach'
         });
     }
@@ -51,86 +56,88 @@ export function setup(opts:any, overrides?:any) {
     //  https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html
     var userdataStem = process.env.APPDATA + '\\' || (process.platform == 'darwin' ? process.env.HOME + 'Library/Application Support/' : process.env.HOME + "/.");
 
-    this.engineDir = new Directory(path.join(process.cwd(), opts.enginePath, "resources", "app"));
-    this.gameDir = new Directory(this.gamePath);
+    window['cozyState'].engineDir = new Directory(path.join(process.cwd(), opts.enginePath, "resources", "app"));
+    window['cozyState'].gameDir = new Directory(window['cozyState'].gamePath);
+    console.log("SET GAMEDIR");
 
-    if (!this.config.userdata) {
-        let p = this.gamePath.split(path.sep);
-        this.config.userdata = p[p.length - 1];
-        console.warn("No 'userdata' key found in config. This will be a problem when you export -- be sure to set it to something.");
+    if (!window['cozyState'].config['userdata']) {
+        let p = window['cozyState'].gamePath.split(path.sep);
+        window['cozyState'].config['userdata'] = p[p.length - 1];
+        console.warn("No 'userdata' key found in window['cozyState'].config. This will be a problem when you export -- be sure to set it to something.");
     }
-    this.userdataDir = new Directory(userdataStem).subdir(this.config.userdata, true);
+    window['cozyState'].userDataDir = new Directory(userdataStem).subdir(window['cozyState'].config['userdata'], true);
 
-    let userconfig = this.userdataDir.file('config.json');
+    let userconfig = window['cozyState'].userDataDir.file('config.json');
     if (userconfig.exists) {
         let data = JSON.parse(userconfig.read());
-        this.config = Object.assign(this.config, data);
+        window['cozyState'].config = Object.assign(window['cozyState'].config, data);
     }
 
     if (overrides) {
-        this.config = Object.assign(this.config, overrides);
+        window['cozyState'].config = Object.assign(window['cozyState'].config, overrides);
     }
 
-    this.textures = {};
-    this.paused = true;
+    window['cozyState'].textures = [];
+    window['cozyState'].planes = [];
+    window['cozyState'].paused = true;
 
-    process.chdir(this.gameDir.path);
-    Input.init(this.config['controls']);
+    process.chdir(window['cozyState'].gameDir.path);
+    Input.init(window['cozyState'].config['controls']);
 
     // set up window
-    var multX = screen.availWidth / this.config['width'],
-        multY = screen.availHeight/ this.config['height'],
+    var multX = screen.availWidth / window['cozyState'].config['width'],
+        multY = screen.availHeight/ window['cozyState'].config['height'],
         mult  = Math.floor(Math.min(multX, multY));
-    this.browserWindow.setMinimumSize(this.config['width'], this.config['height']);
-    this.browserWindow.setContentSize(this.config['width'] * mult, this.config['height'] * mult);
-    this.browserWindow.center();
+    window['cozyState'].browserWindow.setMinimumSize(window['cozyState'].config['width'], window['cozyState'].config['height']);
+    window['cozyState'].browserWindow.setContentSize(window['cozyState'].config['width'] * mult, window['cozyState'].config['height'] * mult);
+    window['cozyState'].browserWindow.center();
 
-    window.addEventListener('resize', (e) => this.onResize(e));
+    window.addEventListener('resize', (e) => onResize(e));
     window.addEventListener('blur', (e) => {
-        if (this.getFullScreen()) {
-            browserWindow.minimize();
+        if (getFullScreen()) {
+            window['cozyState'].browserWindow.minimize();
         }
     });
     window.addEventListener('focus', (e) => {
         Input.clear();
     });
 
-    if (this.config.fullscreen) {
-        this.setFullScreen(true);
+    if (window['cozyState'].config['fullscreen']) {
+        setFullScreen(true);
     }
 
     // debugging
-    if (this.debug) { // ~ key, opens console
+    if (window['cozyState'].debug) { // ~ key, opens console
         window.addEventListener('onkeydown', (e) => {
             if (e['keyCode'] === 192) {
-                browserWindow['toggleDevTools']();
+                window['cozyState'].browserWindow['toggleDevTools']();
             }
         });
     }
 
     // set up graphics
     PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
-    planes = [];
+    window['cozyState'].planes = [];
 
     // set up audio
     Audio.init({
-        NOSFX:      this.config['NOSFX'],
-        NOMUSIC:    this.config['NOMUSIC']
+        NOSFX:      window['cozyState'].config['NOSFX'],
+        NOMUSIC:    window['cozyState'].config['NOMUSIC']
     });
-    if (this.config['volume']) {
-        if (this.config['volume']['sfx'] !== undefined) {
-            Audio.setSFXVolume(this.config['volume']['sfx']);
+    if (window['cozyState'].config['volume']) {
+        if (window['cozyState'].config['volume']['sfx'] !== undefined) {
+            Audio.setSFXVolume(window['cozyState'].config['volume']['sfx']);
         }
-        if (this.config['volume']['music'] !== undefined) {
-            Audio.setMusicVolume(this.config['volume']['music']);
+        if (window['cozyState'].config['volume']['music'] !== undefined) {
+            Audio.setMusicVolume(window['cozyState'].config['volume']['music']);
         }
     }
 
-    if (typeof this.config['css'] === 'string') this.config['css'] = [this.config['css']];
-    for (let path of this.config['css']) {
-        for (let f of this.gameDir.glob(path)) {
-            console.log("stylesheet:", this.gameDir.path, path, f);
-            addStyleSheet(f);
+    if (typeof window['cozyState'].config['css'] === 'string') window['cozyState'].config['css'] = [window['cozyState'].config['css']];
+    for (let path of window['cozyState'].config['css']) {
+        for (let f of window['cozyState'].gameDir.glob(path)) {
+            console.log("stylesheet:", window['cozyState'].gameDir.path, path, f);
+            addStyleSheet(<File>f);
         }
     };
 
@@ -138,50 +145,58 @@ export function setup(opts:any, overrides?:any) {
 }
 
 export function run(g) {
-    this.Game = g;
-    this.Game.start();
+    window['cozyState'].Game = g;
+    window['cozyState'].Game.start();
 
-    this.onResize();
+    onResize();
 
     // set up animation loop
-    this.lastTime = Date.now();
-    this.frame();
+    window['cozyState'].lastTime = Date.now();
+    frame();
 }
 
 export function frame() {
-    requestAnimationFrame(this.frame.bind(this)); // do this here so if there's an error it doesn't stop everything forever
+    requestAnimationFrame(frame.bind(this)); // do this here so if there's an error it doesn't stop everything forever
 
-    var dt = Date.now() - this.lastTime;
-    this.lastTime += dt;
+    var dt = Date.now() - window['cozyState'].lastTime;
+    window['cozyState'].lastTime += dt;
     dt /= 1000;
 
     Input.update(dt);
     Audio.update(dt);
 
-    if (this.paused) { return; }
+    if (window['cozyState'].paused) { return; }
 
-    for (let plane of this.planes) plane.update(dt);
+    for (let plane of window['cozyState'].planes) plane.update(dt);
 
-    if (this.scene) {
-        this.scene.update(dt);
-    }
-    if (this.Game && this.Game.frame) {
-        this.Game.frame(dt);
-    }
-
-    for (let plane of this.planes) plane.render(dt);
-
-    if (this.scene) {
-        this.scene.render();
+    // if (scene) {
+    //     scene.update(dt);
+    // }
+    if (window['cozyState'].Game && window['cozyState'].Game.frame) {
+        window['cozyState'].Game.frame(dt);
     }
 
-    if (this.Game && this.Game.postRender) {
-        this.Game.postRender(dt);
+    for (let plane of window['cozyState'].planes) plane.render(dt);
+
+    // if (scene) {
+    //     scene.render();
+    // }
+
+    if (window['cozyState'].Game && window['cozyState'].Game.postRender) {
+        window['cozyState'].Game.postRender(dt);
     }
 }
 
+export function gameDir():Directory {
+    return window['cozyState'].gameDir;
+}
+
+export function config():any {
+    return window['cozyState'].config;
+}
+
 // export function setScene(e:Entity) {
-//     this.scene = e;
+//     scene = e;
 // }
 
 export function addPlane(Type:any, args?:any):Plane {
@@ -190,51 +205,51 @@ export function addPlane(Type:any, args?:any):Plane {
     }
 
     var plane = new Type(args || {});
-    this.planes.push(plane);
-    plane.resize(this.sizeMultiplier);
+    window['cozyState'].planes.push(plane);
+    plane.resize(window['cozyState'].sizeMultiplier);
 
     return plane;
 }
 
 export function pause() {
-    this.paused = true;
+    window['cozyState'].paused = true;
 }
 
 export function unpause() {
-    this.paused = false;
+    window['cozyState'].paused = false;
 }
 
 export function onResize(event?:any) {
-    var newSize = this.browserWindow.getContentSize(),
-        multX   = newSize[0] / this.config['width'],
-        multY   = newSize[1] / this.config['height'],
+    var newSize = window['cozyState'].browserWindow.getContentSize(),
+        multX   = newSize[0] / window['cozyState'].config['width'],
+        multY   = newSize[1] / window['cozyState'].config['height'],
         mult    = Math.min(multX, multY);
 
     if (mult > 1) {
         mult = Math.floor(mult);
     }
 
-    this.sizeMultiplier = mult;
+    window['cozyState'].sizeMultiplier = mult;
 
-    for (let plane of this.planes) plane.resize(this.sizeMultiplier);
+    for (let plane of window['cozyState'].planes) plane.resize(window['cozyState'].sizeMultiplier);
 
     // force everything to update properly
-    document.body.style.margin = "" + Math.floor((newSize[1] - mult * this.config['height']) / 2) + "px " + Math.floor((newSize[0] - mult * this.config['width']) / 2) + "px";
+    document.body.style.margin = "" + Math.floor((newSize[1] - mult * window['cozyState'].config['height']) / 2) + "px " + Math.floor((newSize[0] - mult * window['cozyState'].config['width']) / 2) + "px";
     document.body.style.display = 'none';
     document.body.offsetHeight;
     document.body.style.display = '';
 }
 
 export function getCurrentZoom() {
-    return this.sizeMultiplier;
+    return window['cozyState'].sizeMultiplier;
 }
 
 export function setTitle(title) {
-    this.browserWindow.setTitle(title);
+    window['cozyState'].browserWindow.setTitle(title);
 }
 
 export function quit() {
-    this.browserWindow.close();
+    window['cozyState'].browserWindow.close();
 }
 
 export function loadTextures(assets) {
@@ -247,18 +262,20 @@ export function loadTextures(assets) {
             PIXI.loader.add(name, assets[name].path);
         }
 
-        PIXI.loader.load((loader, resources) => {
-            for (let resource of resources) {
-                this.textures[resource['name'].replace(/\\/g, "/")] = new Texture(resource['texture']);
+        PIXI.loader.load(function(loader, resources) {
+            for (let key of Object.keys(resources)) {
+                let resource = resources[key];
+                window['cozyState'].textures[resource['name'].replace(/\\/g, "/")] = new Texture(resource['texture']);
             }
-            this.textures = Object.assign(this.textures, textures);
+            window['cozyState'].textures = Object.assign(window['cozyState'].textures, window['cozyState'].textures);
+            console.log("resolving?");
             resolve();
         });
     });
 }
 
 export function getTexture(f) {
-    return this.textures[f.replace(/\\/g, "/")];
+    return window['cozyState'].textures[f.replace(/\\/g, "/")];
 }
 
 export function addStyleSheet(file:File):void {
@@ -270,9 +287,9 @@ export function addStyleSheet(file:File):void {
 }
 
 export function captureScreenshot(width?:number, height?:number):Promise<any> {
-    let winSize = this.browserWindow.getContentSize();
-    let w = Math.ceil(this.config['width'] * this.sizeMultiplier);
-    let h = Math.ceil(this.config['height'] * this.sizeMultiplier);
+    let winSize = window['cozyState'].browserWindow.getContentSize();
+    let w = <number>Math.ceil(window['cozyState'].config['width'] * window['cozyState'].sizeMultiplier);
+    let h = <number>Math.ceil(window['cozyState'].config['height'] * window['cozyState'].sizeMultiplier);
     let x = ((winSize[0] - w) / 2) | 0;
     let y = ((winSize[1] - h) / 2) | 0;
 
@@ -284,7 +301,7 @@ export function captureScreenshot(width?:number, height?:number):Promise<any> {
     };
 
     return new Promise((resolve, reject) => {
-        this.browserWindow.capturePage(rect, (image) => {
+        window['cozyState'].browserWindow.capturePage(rect, (image) => {
             let opts = {
                 quality: "best"
             };
@@ -297,22 +314,22 @@ export function captureScreenshot(width?:number, height?:number):Promise<any> {
 
 export function saveImageToFile(image:any):File {
     var filename = `${(new Date()).toISOString().replace(/[-T:Z\.]/g,"")}.png`;
-    var file = this.userdataDir.subdir('screenshots', true).file(filename);
+    var file = window['cozyState'].userDataDir.subdir('screenshots', true).file(filename);
     file.write(image.toPng(), 'binary');
     return file;
 }
 
 export function writeUserConfig(data:any) {
-    let f = this.userdataDir.file('config.json');
+    let f = window['cozyState'].userDataDir.file('config.json');
     f.write(data, 'json');
 }
 
 export function getFullScreen():boolean {
-    return this.browserWindow.isFullScreen();
+    return window['cozyState'].browserWindow.isFullScreen();
 }
 
 export function setFullScreen(f:boolean):void {
-    this.browserWindow.setFullScreen(f);
+    window['cozyState'].browserWindow.setFullScreen(f);
 }
 
 /**
@@ -335,7 +352,7 @@ export function fixHTML(html:string):string {
         for (let attr of ['src','href']) {
             if (element.getAttribute(attr)) {
                 if (element.getAttribute(attr).indexOf('data') === 0) return;
-                element[attr] = this.gameDir.file(element.getAttribute(attr)).url;
+                element[attr] = window['cozyState'].gameDir.file(element.getAttribute(attr)).url;
             }
         }
     }
@@ -377,7 +394,7 @@ export function after(n, resolution) {
     let count = n;
     return () => {
         count--;
-        if (count === 0) {
+        if (count <= 0) {
             resolution();
         }
     }

@@ -8,18 +8,17 @@
         <script>
 (function() {
     const Electron = require('electron');
+    const Path = require('path');
+
     Electron.remote.getCurrentWindow().openDevTools(); // TODO this should only happen in debug mode
 
-    // const Cozy = require('./Cozy.js');
-    Electron.ipcRenderer.on('start', function(event, arg, overrides) {
-        System.import('Cozy').then((m) => {
-            console.log(m);
-            debugger;
-            // Cozy.Engine.setup(arg, overrides)
-            //     .then(() => {
-            //         Cozy.Engine.run(require(arg.game + '/main.js'));
-            //     });
-        })
+    Electron.ipcRenderer.on('start', (event, arg, overrides) => {
+        window.Cozy = this.Cozy;
+        Cozy.setup(arg, overrides)
+            .then(() => {
+                require(arg.game + '/main.js'); // creates global.compiledGame
+                Cozy.run(this.compiledGame);
+            });
     });
 })();
         </script>

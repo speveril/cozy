@@ -6,14 +6,18 @@ export class Sound {
     loadedPromise:Promise<any>;
 
     constructor(fileName:string) {
+        console.log("Sound constructor", fileName);
         this.loadedPromise = new Promise((resolve, reject) => {
-            Engine.gameDir.file(fileName).readAsync('binary')
+            Engine.gameDir().file(fileName).readAsync('binary')
             .then(
                 (fileContents:ArrayBuffer) => {
+                    console.log("successfully loaded", fileName);
                     Audio.context.decodeAudioData(
                         fileContents,
                         (decoded) => {
+                            console.log("successfully decoded", fileName);
                             this.buffer = decoded;
+                            console.log("set buffer <" + fileName + ">");
                             resolve();
                         },
                         () => {
@@ -51,17 +55,24 @@ export class Music {
     constructor(def:any) {
         // TODO if def is a string load a file
 
+        console.log("Music constructor", def);
         this.tracks = def.tracks;
         this.buffers = {};
 
         this.loadedPromise = new Promise((resolve, reject) => {
-            var trackResolve = Engine.after(def.tracks.length - 1, resolve);
+            var trackResolve = Engine.after(def.tracks.length, resolve);
 
             def.tracks.forEach((fileName:string):void => {
-                Engine.gameDir.file(fileName).readAsync('binary')
+                Engine.gameDir().file(fileName).readAsync('binary')
                     .then((fileContents:ArrayBuffer) => {
+                        console.log("successfully loaded", fileName);
                         Audio.context.decodeAudioData(fileContents, (decoded) => {
-                            this.buffers[fileName] = decoded;
+                            console.log("successfully decoded", fileName);
+                            try {
+                                this.buffers[fileName] = decoded;
+                            } catch (e) {
+                                console.error(e);
+                            }
                             trackResolve();
                         }, () => {
                             console.log("Couldn't load sound file '" + fileName + "' for song.");

@@ -40,14 +40,14 @@ export class Sprite {
 
     constructor(args) {
         if (typeof args === "string") {
-            args = Engine.gameDir.file(args).read('json');
+            args = Engine.gameDir().file(args).read('json');
         }
 
         while (args['.derive']) {
             let path = args['.derive'];
             delete args['.derive'];
 
-            args = Object.assign({}, Engine.gameDir.file(path).read('json'), args);
+            args = Object.assign({}, Engine.gameDir().file(path).read('json'), args);
         }
 
         if (!args.texture) throw new Error("Sprite must be instantiated with a 'texture'");

@@ -26,7 +26,7 @@ export class Plane {
     }
 
     update(dt):void {}
-    render():void {}
+    render(dt):void {}
     clear():void {}
     resize(mult):void {}
 }
@@ -97,7 +97,7 @@ export class UiPlane extends Plane {
 
     addHTML(file) {
         var container = document.createElement('div');
-        container.innerHTML = Engine.gameDir.find(file).read();
+        container.innerHTML = Engine.gameDir().find(file).read();
         this.container.appendChild(container);
         return container;
     }
