@@ -29,7 +29,6 @@ class CozyState {
     public static enginePath:string;
     public static paused:boolean;
     public static sizeMultiplier:number;
-    public static lastTime:number;
 }
 
 export function setup(opts:any, overrides?:any) {
@@ -151,16 +150,13 @@ export function run(g) {
     onResize();
 
     // set up animation loop
-    window['cozyState'].lastTime = Date.now();
-    frame();
+    frame(0);
 }
 
-export function frame() {
-    requestAnimationFrame(frame.bind(this)); // do this here so if there's an error it doesn't stop everything forever
+export function frame(_dt) {
+    requestAnimationFrame(frame); // do this here so if there's an error it doesn't stop everything forever
 
-    var dt = Date.now() - window['cozyState'].lastTime;
-    window['cozyState'].lastTime += dt;
-    dt /= 1000;
+    let dt = _dt/1000;
 
     Input.update(dt);
     Audio.update(dt);
