@@ -1,0 +1,74 @@
+#!/usr/bin/env node
+
+// I'd rather just call Webpack() in the manager process, but apparently it
+// can't be trusted to not leak 100 mb per compile.
+
+const Webpack = require('webpack');
+const process = require('process');
+
+// ---------------------------------------------------------------------------
+/// guhhh
+
+pluginDefs = {
+    DTSBundle: function(cfg) { this.cfg = cfg; }
+}
+
+pluginDefs.DTSBundle.prototype.apply = function (compiler) {
+    compiler.plugin('done', () => require('dts-bundle').bundle(this.cfg));
+};
+
+// ---------------------------------------------------------------------------
+
+let args = process.argv;
+args.shift();
+args.shift();
+
+let argConfig = JSON.parse(args.join(" "));
+
+// ---------------------------------------------------------------------------
+
+let config = {
+    target: 'electron-renderer',
+    resolve: {
+        extensions: [
+            ".ts", ".webpack.js", ".web.js", ".js", ".json",
+        ],
+        modules: [
+            __dirname,
+            'node_modules'
+        ]
+    },
+    module: {
+        loaders: [
+            { test: /\.ts$/, loader: 'ts-loader', exclude: /node_modules/ }
+        ]
+    },
+    plugins: []
+};
+
+if (argConfig.plugins) {
+    let plugins = argConfig.plugins;
+    argConfig.plugins = [];
+    Object.keys(plugins).forEach((key) => {
+        if (pluginDefs[key]) {
+            argConfig.plugins.push(new pluginDefs[key](plugins[key]));
+        } else {
+            console.log("Couldn't find requested plugin, '" + key + "'");
+        }
+    });
+}
+
+Object.assign(config, argConfig);
+
+try {
+    Webpack(config, (err, stats) => {
+        console.log(stats.toString());
+        if (!err && stats.compilation.errors.length === 0) {
+            process.exit(0);
+        } else {
+            process.exit(1);
+        }
+    });
+} catch (e) {
+    process.exit(2);
+}

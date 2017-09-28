@@ -17,14 +17,6 @@ const Library = require('./Library');
 
 require('module').globalPaths.push(IDEDIR);
 
-/// guhhh
-function DTSBundlePlugin(cfg) {
-    this.cfg = cfg;
-}
-DTSBundlePlugin.prototype.apply = function (compiler) {
-    compiler.plugin('done', () => require('dts-bundle').bundle(this.cfg));
-};
-
 window.Manager = {
     start: function() {
         css('manager.css');
@@ -41,7 +33,7 @@ window.Manager = {
         this.override = null;
 
         this.loadOverrides();
-        this.setEngineStatus('checking');
+        EngineStatus.set('checking');
 
         var lastCompilation = 0;
         var cozyJS = Path.join(IDEDIR, "Cozy.js")
@@ -69,12 +61,12 @@ window.Manager = {
         if (this.recompileNeeded) {
             this.recompileEngine();
         } else {
-            this.setEngineStatus('ready');
+            EngineStatus.set('ready');
         }
 
         FS.watch("src-engine", { persistent: true, recursive: true }, (e, filename) => {
             if (EngineStatus.get() !== 'compiling') {
-                this.setEngineStatus('dirty');
+                EngineStatus.set('dirty');
             }
             if (this.recompileInterval) {
                 clearInterval(this.recompileInterval);
@@ -350,7 +342,7 @@ window.Manager = {
             this.recompileInterval = null;
         }
 
-        this.setEngineStatus('compiling');
+        EngineStatus.set('compiling');
 
         this.output("");
         this.buildEngine()
@@ -358,93 +350,44 @@ window.Manager = {
                 return this.doc(Path.join("src-engine", "Cozy.ts"), Path.join("docs"))
             }, () => {
                 if (this.recompileInterval) {
-                    this.setEngineStatus('dirty');
+                    EngineStatus.set('dirty');
                 } else {
-                    this.setEngineStatus('error');
+                    EngineStatus.set('error');
                     return Promise.reject();
                 }
             })
             .then(() => {
                 if (this.recompileInterval !== null) {
-                    this.setEngineStatus('dirty');
+                    EngineStatus.set('dirty');
                 } else {
-                    this.setEngineStatus('ready');
+                    EngineStatus.set('ready');
                 }
             }, () => {
                 if (this.recompileInterval !== null) {
-                    this.setEngineStatus('dirty');
+                    EngineStatus.set('dirty');
                 } else {
-                    this.setEngineStatus('error');
+                    EngineStatus.set('error');
                 }
             });
     },
 
-    fork: function(cmd, params, cwd) {
+    fork: function(cmd, params, fparams) {
         return new Promise((resolve, reject) => {
             let forkparams = {
-                // silent: true,
                 env: {
                     'ELECTRON_RUN_AS_NODE':true
                 },
                 stdio: [ 'ignore', 'pipe', 'pipe', 'ipc' ]
             };
-            if (cwd !== undefined) {
-                forkparams.cwd = cwd;
-            }
-            params.unshift(cmd);
+            Object.assign(forkparams, fparams);
 
-            let childproc = Child.spawn(process.execPath, params, forkparams);
+            let childproc = Child.fork(cmd, params, forkparams);
 
-            childproc.stdout.on('data', (s) => {
-                // console.log(s);
-                this.output(s.toString().trim());
-
-            });
+            childproc.stdout.on('data', (s) => this.output(s.toString().trim()));
             childproc.stderr.on('data', (s) => this.output(s.toString().trim()));
             childproc.on('exit', (returnCode) => returnCode ? reject(returnCode) : resolve());
-            // childproc.on('message', (a,b,c) => console.log("message!", a, b, c));
-            // childproc.on('error', (a,b,c) => console.log("error!", a, b, c));
-            // childproc.on('close', (a,b,c) => console.log("close!", a, b, c));
-            // childproc.on('disconnect', (a,b,c) => console.log("disconnect!", a, b, c));
-            // childproc.stdin.unref();
-            // childproc.stdout.unref();
-            // childproc.stderr.unref();
-            // childproc.disconnect();
-
-            console.log(childproc);
         })
     },
-
-    // buildGame: function(buildPath) {
-    //     var config;
-    //     try {
-    //         config = JSON.parse(FS.readFileSync(Path.join(buildPath, "config.json")));
-    //     } catch(e) {
-    //         this.output("<span style='color:red'>[ ERROR (" + e.toString() + ") ]</span>\n");
-    //         return Promise.reject();
-    //     }
-    //
-    //     var srcRoot = Path.join(buildPath, config.main || 'main.ts');
-    //     var displayName = scrub(config.title ? config.title + " (" + buildPath + ")" : buildPath);
-    //
-    //     var params = [
-    //         Path.resolve(IDEDIR + '/Cozy.d.ts'), srcRoot,
-    //         '--out', Path.join(buildPath, 'main.js'),
-    //         '--baseUrl', '.',
-    //         '--module', 'system'
-    //     ];
-    //
-    //     this.output("<hr>\n<span style='color:white'>[ Building " + displayName + " ]</span>")
-    //     return this.build(params)
-    //         .then(() => {
-    //             this.output(" - Built " + Path.join(buildPath, 'main.js'));
-    //             this.output("<span style='color:#0f0'>[ Success ]</span>\n");
-    //             return Promise.resolve();
-    //         }, (code) => {
-    //             this.output("<span style='color:red'>[ FAILURE (code: " + code + ") ]</span>\n");
-    //             return Promise.reject();
-    //         });
-    // },
 
     buildGame: function(buildPath) {
         let gameconfig;
@@ -483,20 +426,9 @@ window.Manager = {
         FS.writeFileSync(tsconfigPath, JSON.stringify(tsconfig));
 
         let wpcfg = {
-            target: 'electron-renderer',
             entry: [
                 Path.resolve(Path.join(buildPath, 'main.ts'))
             ],
-            resolve: {
-                extensions: [
-                    ".ts", ".webpack.js", ".web.js", ".js", ".json",
-                ],
-                modules: [
-                    Path.resolve(IDEDIR),
-                    'node_modules'
-                ]
-            },
-            // devtool: 'source-map',
             externals: {
                 Cozy: 'Cozy'
             },
@@ -507,78 +439,36 @@ window.Manager = {
                 libraryTarget: 'global',
                 umdNamedDefine: true
             },
-            module: {
-                loaders: [
-                    { test: /\.ts$/, loader: 'ts-loader', exclude: /node_modules/ }
-                ]
-            },
-            plugins: []
         };
 
-        return new Promise((resolve, reject) => {
-            try {
-                Webpack(wpcfg, (err, stats) => {
-                    this.output(stats);
-                    if (!err && stats.compilation.errors.length === 0) {
-                        this.output(" - Built " + Path.join(buildPath, 'main.js'));
-                        try {
-                            FS.unlinkSync(tsconfigPath);
-                            this.output("<span style='color:#0f0'>[ Success ]</span>\n");
-                        } catch (e) {
-                            this.output(e);
-                            this.output("<span style='color:red'>[ CLEANUP FAILURE ]</span>\n");
-                            reject();
-                        }
-                        resolve();
-                    } else {
-                        this.output("<span style='color:red'>[ BUILD FAILURE ]</span>\n");
-                        reject();
-                    }
-                });
-            } catch (e) {
-                this.output("Webpack failed to start!")
-                this.output(e);
+        return this.fork(Path.join(IDEDIR, 'pack'), [ JSON.stringify(wpcfg) ])
+            .then(() => {
+                this.output(" - Built " + Path.join(buildPath, 'main.js'));
+                try {
+                    FS.unlinkSync(tsconfigPath);
+                    this.output("<span style='color:#0f0'>[ Success ]</span>\n");
+                } catch (e) {
+                    this.output(e);
+                    this.output("<span style='color:red'>[ CLEANUP FAILURE ]</span>\n");
+                    return Promise.reject();
+                }
+                return Promise.resolve();
+            }, (errorCode) => {
+                if (errorCode === 2) {
+                    this.output("Webpack failed to start!");
+                }
                 this.output("<span style='color:red'>[ BUILD FAILURE ]</span>\n");
-            }
-        });
+                return Promise.reject();
+            });
     },
-
-    // buildEngine: function() {
-    //     var params = [
-    //         '--project', "src-engine",
-    //         '--out', Path.join(IDEDIR, 'cozy-build.js')
-    //     ];
-    //
-    //     this.output("<hr>\n<span style='color:white'>[ Building core engine ]</span>")
-    //     return this.build(params)
-    //         .then(() => {
-    //             FS.renameSync(Path.join(IDEDIR, 'cozy-build.js'), Path.join(IDEDIR, 'Cozy.js'))
-    //             FS.renameSync(Path.join(IDEDIR, 'cozy-build.js.map'), Path.join(IDEDIR, 'Cozy.js.map'))
-    //             FS.renameSync(Path.join(IDEDIR, 'cozy-build.d.ts'), Path.join(IDEDIR, 'Cozy.d.ts'))
-    //             this.output(" - Built engine");
-    //             this.output("<span style='color:#0f0'>[ Success ]</span>\n");
-    //         }, (code) => {
-    //             FS.unlinkSync(Path.join(IDEDIR, 'cozy-build.js'));
-    //             FS.unlinkSync(Path.join(IDEDIR, 'cozy-build.js.map'));
-    //             FS.unlinkSync(Path.join(IDEDIR, 'cozy-build.d.ts'));
-    //             this.output("<span style='color:red'>[ BUILD FAILURE (code: " + code + ") ]</span>\n");
-    //             return Promise.reject();
-    //         });
-    // },
 
     buildEngine: function() {
         this.output("<hr>\n<span style='color:white'>[ Building core engine ]</span>")
 
         let cfg = {
-            target: 'electron-renderer',
             entry: [
                 Path.resolve(Path.join('src-engine', 'Cozy.ts'))
             ],
-            resolve: {
-                extensions: [
-                    ".ts", ".webpack.js", ".web.js", ".js", ".json",
-                ]
-            },
             // devtool: 'source-map',
             output: {
                 path: Path.resolve('build'),
@@ -587,47 +477,36 @@ window.Manager = {
                 libraryTarget: 'global',
                 umdNamedDefine: true
             },
-            module: {
-                loaders: [
-                    { test: /\.ts$/, loader: 'ts-loader', exclude: /node_modules/ }
-                ]
-            },
-            plugins: []
-        };
-        cfg.plugins.push(new DTSBundlePlugin({
-            name: 'Cozy',
-            main: 'build/Cozy.d.ts',
-            out: 'cozy-build.d.ts',
-        }));
-
-        return new Promise((resolve, reject) => {
-            try {
-                Webpack(cfg, (err, stats) => {
-                    this.output(stats);
-                    if (!err && stats.compilation.errors.length === 0) {
-                        this.output(" - Built engine");
-                        try {
-                            FS.renameSync(Path.join('build', 'cozy-build.js'), Path.join(IDEDIR, 'Cozy.js'))
-                            FS.renameSync(Path.join('build', 'cozy-build.d.ts'), Path.join(IDEDIR, 'Cozy.d.ts'))
-                            // FS.renameSync(Path.join(IDEDIR, 'cozy-build.js.map'), Path.join(IDEDIR, 'Cozy.js.map'))
-                            this.output("<span style='color:#0f0'>[ Success ]</span>\n");
-                        } catch (e) {
-                            this.output(e);
-                            this.output("<span style='color:red'>[ CLEANUP FAILURE ]</span>\n");
-                            reject();
-                        }
-                        resolve();
-                    } else {
-                        this.output("<span style='color:red'>[ BUILD FAILURE ]</span>\n");
-                        reject();
-                    }
-                });
-            } catch (e) {
-                this.output("Webpack failed to start!")
-                this.output(e);
-                this.output("<span style='color:red'>[ BUILD FAILURE (code: " + code + ") ]</span>\n");
+            plugins: {
+                DTSBundle: {
+                    name: 'Cozy',
+                    main: 'build/Cozy.d.ts',
+                    out: 'cozy-build.d.ts',
+                }
             }
-        });
+        };
+
+        return this.fork(Path.join(IDEDIR, 'pack'), [ JSON.stringify(cfg) ])
+            .then(() => {
+                this.output(" - Built engine");
+                try {
+                    FS.renameSync(Path.join('build', 'cozy-build.js'), Path.join(IDEDIR, 'Cozy.js'))
+                    FS.renameSync(Path.join('build', 'cozy-build.d.ts'), Path.join(IDEDIR, 'Cozy.d.ts'))
+                    // FS.renameSync(Path.join(IDEDIR, 'cozy-build.js.map'), Path.join(IDEDIR, 'Cozy.js.map'))
+                    this.output("<span style='color:#0f0'>[ Success ]</span>\n");
+                } catch (e) {
+                    this.output(e);
+                    this.output("<span style='color:red'>[ CLEANUP FAILURE ]</span>\n");
+                    return Promise.reject();
+                }
+                return Promise.resolve();
+            }, (errorCode) => {
+                if (errorCode === 2) {
+                    this.output("Webpack failed to start!");
+                }
+                this.output("<span style='color:red'>[ BUILD FAILURE ]</span>\n");
+                return Promise.reject();
+            });
     },
 
     build: function(buildParams) {
@@ -813,10 +692,6 @@ window.Manager = {
                 reject(code)
             });
         });
-    },
-
-    setEngineStatus: function(status) {
-        EngineStatus.set(status);
     },
 
     newGame: function(library) {
