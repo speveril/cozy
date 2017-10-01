@@ -1,33 +1,219 @@
 import * as Engine from './Engine';
+import { File } from './FileSystem';
 
-export class Sound {
+// ---------------------------------------------------------------------------
+
+class Sound {
+    public file:File = null;
+    public opts:any = {};
+    public BasicSound:BasicSound = null;
+    public ModuleSound:ModuleSound = null;
+
+    theSound:any;
+    loadedPromise:Promise<any>;
+
+    constructor(filename:string, opts:any) {
+        this.file = Engine.gameDir().file(filename);
+        this.opts = opts;
+
+        console.log("!!", this.file.path, this.file.extension.toLowerCase());
+
+        let generator:any = BasicSound;
+        let varname:string = 'BasicSound';
+        this.loadedPromise = new Promise((resolve, reject) => {
+            switch(this.file.extension.toLowerCase()) {
+                case '.mod':
+                case '.it':
+                case '.mo3':
+                case '.s3m':
+                case '.xm':
+                    // TODO all of the OpenMPT file formats...
+                    console.log("MODULE");
+                    generator = ModuleSound;
+                    varname = 'ModuleSound';
+                    break;
+            }
+            generator.make(this)
+                .then((sound) => {
+                    this.theSound = sound;
+                    this[varname] = this.theSound;
+                    resolve();
+                }, reject);
+        });
+    }
+
+    loaded():Promise<any> {
+        return this.loadedPromise;
+    }
+
+    play() { this.theSound.play(); }
+    pause() { this.theSound.pause(); }
+    stop() { this.theSound.stop(); }
+}
+
+class BasicSound {
+    static make(container:Sound) {
+        return new Promise((resolve, reject) => {
+            container.file.readAsync('binary')
+                .then((fileContents:ArrayBuffer) => {
+                    console.log("successfully loaded", container.file.path);
+                    Audio.context.decodeAudioData(
+                        fileContents,
+                        (decoded) => {
+                            console.log("successfully decoded", container.file.path);
+                            resolve(new BasicSound(container, decoded));
+                        }, () => {
+                            console.warn("Couldn't decode basic sound file '" + container.file.path + "'.");
+                            reject();
+                        }
+                    );
+                }, (error) => {
+                    console.warn("Failed to load '" + container.file.path + "'. " + error);
+                    reject();
+                });
+        });
+    }
+
+    container:Sound;
+    buffer:AudioBuffer;
+    source:AudioBufferSourceNode;
+
+    constructor(container:Sound, buffer:any) {
+        this.container = container;
+        this.buffer = buffer;
+    }
+
+    play():void {
+        this.source = Audio.context.createBufferSource();
+        this.source.buffer = this.buffer;
+        this.source.connect(this.container.opts.gain);
+        if (this.container.opts.loop) {
+             this.source.loop = true;
+        }
+        this.source.start(0);
+    }
+    pause():void { /* TODO */ }
+    stop():void { /* TODO */ }
+}
+
+
+// Based on code from Cowbell
+// https://github.com/demozoo/cowbell/blob/master/cowbell/
+let libopenmpt = window['libopenmpt'];
+let maxFramesPerChunk = 4096;
+class ModuleSound {
+    static make(container:Sound) {
+        return new Promise((resolve, reject) => {
+            container.file.readAsync('binary')
+                .then((fileContents:ArrayBuffer) => {
+                    resolve(new ModuleSound(container, fileContents));
+                }, (error) => {
+                    console.warn("Failed to load '" + container.file.path + "'. " + error);
+                    reject();
+                });
+        });
+    }
+
+    container:Sound;
+    duration:number;
+    modulePtr:any;
+    leftBufferPtr:any;
+    rightBufferPtr:any;
+    scriptNode:any;
+
+    constructor(container:Sound, buffer:any) {
+        this.container = container;
+
+        let byteArray = new Int8Array(buffer);
+        let filePtr = libopenmpt._malloc(byteArray.byteLength);
+        libopenmpt.HEAPU8.set(byteArray, filePtr);
+
+        this.modulePtr = libopenmpt._openmpt_module_create_from_memory(filePtr, byteArray.byteLength, 0, 0, 0);
+        this.leftBufferPtr = libopenmpt._malloc(4 * maxFramesPerChunk);
+        this.rightBufferPtr = libopenmpt._malloc(4 * maxFramesPerChunk);
+        this.duration = libopenmpt._openmpt_module_get_duration_seconds(this.modulePtr);
+        libopenmpt._openmpt_module_set_repeat_count(this.modulePtr, (container.opts.loop ? -1 : 1));
+    }
+
+    play():void {
+        this.scriptNode = Audio.context.createScriptProcessor(maxFramesPerChunk, 0, 2)
+        this.scriptNode.onaudioprocess = (buf) => this.generate(buf);
+        this.scriptNode.connect(this.container.opts.gain);
+    }
+
+    pause():void { /* TODO */ }
+    stop():void { /* TODO */ }
+
+    private generate(ev:AudioProcessingEvent) {
+        let outputBuffer = ev.outputBuffer;
+        let outputL = outputBuffer.getChannelData(0);
+        let outputR = outputBuffer.getChannelData(1);
+        let framesToRender = outputBuffer.length;
+
+        let framesRendered = 0;
+        let ended = false;
+        while (framesToRender > 0) {
+            let framesPerChunk = Math.min(framesToRender, maxFramesPerChunk);
+            let actualFramesPerChunk = libopenmpt._openmpt_module_read_float_stereo(this.modulePtr, Audio.context.sampleRate, framesPerChunk, this.leftBufferPtr, this.rightBufferPtr);
+            let rawAudioLeft = libopenmpt.HEAPF32.subarray(this.leftBufferPtr / 4, this.leftBufferPtr / 4 + actualFramesPerChunk);
+            let rawAudioRight = libopenmpt.HEAPF32.subarray(this.rightBufferPtr / 4, this.rightBufferPtr / 4 + actualFramesPerChunk);
+            for (let i = 0; i < actualFramesPerChunk; ++i) {
+                outputL[framesRendered + i] = rawAudioLeft[i];
+                outputR[framesRendered + i] = rawAudioRight[i];
+            }
+            framesToRender -= actualFramesPerChunk;
+            framesRendered += actualFramesPerChunk;
+            if (actualFramesPerChunk < framesPerChunk) {
+                break;
+            }
+        }
+
+        if (framesRendered < 0) {
+            this.pause();
+            // if (this.onended) this.onended();
+            // seek(0);
+        } else if (framesRendered < maxFramesPerChunk) {
+            for (let chan = 0; chan < outputBuffer.numberOfChannels; chan++) {
+                let channelData = outputBuffer.getChannelData(chan);
+                for (let i = framesRendered; i < outputBuffer.length; i++) {
+                    channelData[i] = 0;
+                }
+            }
+        }
+    }
+}
+
+
+// ---------------------------------------------------------------------------
+
+export class SFX {
     buffer:AudioBuffer;
     source:AudioBufferSourceNode;
     loadedPromise:Promise<any>;
 
-    constructor(fileName:string) {
-        console.log("Sound constructor", fileName);
+    constructor(filename:string) {
+        console.log("SFX constructor", filename);
         this.loadedPromise = new Promise((resolve, reject) => {
-            Engine.gameDir().file(fileName).readAsync('binary')
+            Engine.gameDir().file(filename).readAsync('binary')
             .then(
                 (fileContents:ArrayBuffer) => {
-                    console.log("successfully loaded", fileName);
+                    console.log("successfully loaded", filename);
                     Audio.context.decodeAudioData(
                         fileContents,
                         (decoded) => {
-                            console.log("successfully decoded", fileName);
+                            console.log("successfully decoded", filename);
                             this.buffer = decoded;
-                            console.log("set buffer <" + fileName + ">");
+                            console.log("set buffer <" + filename + ">");
                             resolve();
                         },
                         () => {
-                            console.warn("Couldn't load sound file '" + fileName + "'.");
+                            console.warn("Couldn't load SFX file '" + filename + "'.");
                             reject();
                         }
                     );
                 },
                 (error) => {
-                    console.warn("Failed to load '" + fileName + "'. " + error);
+                    console.warn("Failed to load '" + filename + "'. " + error);
                     reject();
                 }
             );
@@ -47,80 +233,149 @@ export class Sound {
 }
 
 export class Music {
-    loadedPromise:Promise<any>;
-    tracks:string[];
-    buffers:{[filename:string]: AudioBuffer};
-    source:AudioBufferSourceNode;
+    private internalSound:Sound;
+    // static players:Array<any>;
+    //
+    // loadedPromise:Promise<any>;
+    // tracks:string[];
+    // buffers:{[filename:string]: AudioBuffer};
+    // source:AudioBufferSourceNode;
+    //
+    // player:any;
+    // track:any;
+    // playing:any;
 
-    constructor(def:any) {
-        // TODO if def is a string load a file
-
-        console.log("Music constructor", def);
-        this.tracks = def.tracks;
-        this.buffers = {};
-
-        this.loadedPromise = new Promise((resolve, reject) => {
-            var trackResolve = Engine.after(def.tracks.length, resolve);
-
-            def.tracks.forEach((fileName:string):void => {
-                Engine.gameDir().file(fileName).readAsync('binary')
-                    .then((fileContents:ArrayBuffer) => {
-                        console.log("successfully loaded", fileName);
-                        Audio.context.decodeAudioData(fileContents, (decoded) => {
-                            console.log("successfully decoded", fileName);
-                            try {
-                                this.buffers[fileName] = decoded;
-                            } catch (e) {
-                                console.error(e);
-                            }
-                            trackResolve();
-                        }, () => {
-                            console.log("Couldn't load sound file '" + fileName + "' for song.");
-                            reject();
-                        });
-                    });
-            });
+    constructor(filename:string) {
+        this.internalSound = new Sound(filename, {
+            loop: true,
+            gain: Audio.musicGain
         });
+        // console.log("Loading music:", filename);
+        // this.tracks = def.tracks;
+        // this.buffers = {};
+        //
+        // this.loadedPromise = new Promise((resolve, reject) => {
+        //     let trackResolve = Engine.after(def.tracks.length, resolve);
+        //
+        //     def.tracks.forEach((filename:string):void => {
+        //         Engine.gameDir().file(filename).readAsync('binary')
+        //             .then((fileContents:ArrayBuffer) => {
+        //                 console.log("successfully loaded", filename);
+        //                 Audio.context.decodeAudioData(fileContents, (decoded) => {
+        //                     console.log("successfully decoded", filename);
+        //                     try {
+        //                         this.buffers[filename] = decoded;
+        //                     } catch (e) {
+        //                         console.error(e);
+        //                     }
+        //                     trackResolve();
+        //                 }, () => {
+        //                     console.log("Couldn't load sound file '" + filename + "' for song.");
+        //                     reject();
+        //                 });
+        //             });
+        //     });
+        // });
+        //
+        // this.loadedPromise = new Promise((resolve, reject) => {
+        //     try {
+        //         let file = Engine.gameDir().file(filename);
+        //         this.player = Music.getPlayer(file.extension);
+        //         this.track = new this.player.Track(file.path);
+        //         resolve();
+        //     } catch(e) {
+        //         console.error("Error loading", filename);
+        //         console.error(e);
+        //         reject();
+        //     }
+        // });
     }
 
     loaded():Promise<any> {
-        return this.loadedPromise;
+        return this.internalSound.loadedPromise;
     }
 
     start(fade?:number):void {
-        if (Audio.currentMusic) {
-            Audio.currentMusic.stop();
-        }
+        // TODO add fading back in
+        this.internalSound.play();
+        // if (Audio.currentMusic) {
+        //     Audio.currentMusic.stop();
+        // }
+        //
+        // if (fade > 0) {
+        //     Audio.musicFade = {
+        //         progress: 0,
+        //         direction: +1,
+        //         duration: fade
+        //     };
+        // }
+        //
+        // Audio.currentMusic = this;
+        // this.source = Audio.context.createBufferSource();
+        // this.source.buffer = this.buffers[this.tracks[0]];
+        // this.source.connect(Audio.musicGain);
+        // this.source.loop = true;
+        // this.source.start(0);
 
-        if (fade > 0) {
-            Audio.musicFade = {
-                progress: 0,
-                direction: +1,
-                duration: fade
-            };
-        }
+        // this.playing = this.track.open();
+        // window['libopenmpt']._openmpt_module_set_repeat_count(this.player.getModulePtr(), -1); // TODO make looping/repeat count configurable
+        // this.playing.play();
+    }
 
-        Audio.currentMusic = this;
-        this.source = Audio.context.createBufferSource();
-        this.source.buffer = this.buffers[this.tracks[0]];
-        this.source.connect(Audio.musicGain);
-        this.source.loop = true;
-        this.source.start(0);
+    pause(fade?:number):void {
+        // TODO add fading back in
+        this.internalSound.pause();
     }
 
     stop(fade?:number):void {
-        if (fade > 0) {
-            Audio.musicFade = {
-                progress: 1,
-                direction: -1,
-                duration: fade
-            };
-        } else {
-            this.source.stop();
-            this.source.disconnect();
-        }
+        // TODO add fading back in
+        this.internalSound.stop();
+
+        // if (fade > 0) {
+        //     Audio.musicFade = {
+        //         progress: 1,
+        //         direction: -1,
+        //         duration: fade
+        //     };
+        // } else {
+        //     this.source.stop();
+        //     this.source.disconnect();
+        // }
+
+        // this.track.close();
     }
+
+    // static getPlayer(ext:any):any {
+    //     let type = ext.toLowerCase();
+    //     let playerType = 'Audio'; // default to 'Audio', native handling
+    //     switch(type) {
+    //         case '.mod':
+    //         case '.it':
+    //         case '.mo3':
+    //         case '.s3m':
+    //         case '.xm':
+    //             playerType = 'OpenMPT';
+    //             break;
+    //     }
+    //
+    //     console.log("!!!", type, playerType);
+    //
+    //     if (!Music.players) Music.players = [];
+    //     if (!Music.players[playerType]) {
+    //         let configs = {
+    //             "Audio": {},
+    //             "OpenMPT": {
+    //                 pathToLibOpenMPT: 'lib/cowbell/libopenmpt.js'
+    //             }
+    //         }
+    //
+    //         Music.players[playerType] = new window['Cowbell'].Player[playerType](configs[playerType]);
+    //     }
+    //     return Music.players[playerType];
+    // }
 }
+
+// ---------------------------------------------------------------------------
 
 export class Audio {
     static context:AudioContext;
@@ -146,7 +401,6 @@ export class Audio {
         this.sfxGain = this.context.createGain();
         this.sfxGain.connect(this.context.destination);
 
-        console.log(opts);
         if (opts.NOSFX) this.NOSFX = true;
         if (opts.NOMUSIC) this.NOMUSIC = true;
 

@@ -5,7 +5,7 @@ css('EngineStatus.css');
 const statusText = {
     'checking':     ["Checking engine state...", 'loop-circular'],
     'ready':        ["Engine is ready", 'check'],
-    'dirty':        ["Engine needs to be recompiled.", 'reload'],
+    'dirty':        ["Engine needs to be recompiled.", 'loop-circular'],
     'compiling':    ["Engine is compiling...", 'loop-circular'],
     'error':        ["Engine compilation failed. See output for details.", 'warning']
 }

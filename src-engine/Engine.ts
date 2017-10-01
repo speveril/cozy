@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 import * as Electron from 'electron';
 import * as path from 'path';
 
-import { Audio, Sound, Music } from './Audio';
+import { Audio } from './Audio';
 import { File, Directory } from "./FileSystem";
 import { Input } from "./Input";
 import { Plane } from './Plane';
