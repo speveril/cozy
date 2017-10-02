@@ -146,10 +146,18 @@ export function setup(opts:any, overrides?:any) {
 }
 
 export function run(g) {
-    window['cozyState'].Game = g;
-    window['cozyState'].Game.start();
-
     onResize();
+
+    window['cozyState'].Game = g;
+    if (window['cozyState'].Game.load) {
+        Promise.all(window['cozyState'].Game.load())
+            .then(() => {
+                window['cozyState'].Game.start();
+            })
+        ;
+    } else {
+        window['cozyState'].Game.start();
+    }
 
     // set up animation loop
     frame(0);
@@ -252,7 +260,7 @@ export function quit() {
 
 export function loadTextures(assets) {
     return new Promise((resolve, reject) => {
-        if (assets.length < 1) {
+        if (Object.keys(assets).length < 1) {
             resolve();
         }
 
