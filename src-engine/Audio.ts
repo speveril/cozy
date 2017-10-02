@@ -16,8 +16,6 @@ class Sound {
         this.file = Engine.gameDir().file(filename);
         this.opts = opts;
 
-        console.log("!!", this.file.path, this.file.extension.toLowerCase());
-
         let generator:any = BasicSound;
         let varname:string = 'BasicSound';
         this.loadedPromise = new Promise((resolve, reject) => {
@@ -28,7 +26,6 @@ class Sound {
                 case '.s3m':
                 case '.xm':
                     // TODO all of the OpenMPT file formats...
-                    console.log("MODULE");
                     generator = ModuleSound;
                     varname = 'ModuleSound';
                     break;
