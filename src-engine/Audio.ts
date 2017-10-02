@@ -234,61 +234,11 @@ export class SFX {
 
 export class Music {
     private internalSound:Sound;
-    // static players:Array<any>;
-    //
-    // loadedPromise:Promise<any>;
-    // tracks:string[];
-    // buffers:{[filename:string]: AudioBuffer};
-    // source:AudioBufferSourceNode;
-    //
-    // player:any;
-    // track:any;
-    // playing:any;
-
     constructor(filename:string) {
         this.internalSound = new Sound(filename, {
             loop: true,
             gain: Audio.musicGain
         });
-        // console.log("Loading music:", filename);
-        // this.tracks = def.tracks;
-        // this.buffers = {};
-        //
-        // this.loadedPromise = new Promise((resolve, reject) => {
-        //     let trackResolve = Engine.after(def.tracks.length, resolve);
-        //
-        //     def.tracks.forEach((filename:string):void => {
-        //         Engine.gameDir().file(filename).readAsync('binary')
-        //             .then((fileContents:ArrayBuffer) => {
-        //                 console.log("successfully loaded", filename);
-        //                 Audio.context.decodeAudioData(fileContents, (decoded) => {
-        //                     console.log("successfully decoded", filename);
-        //                     try {
-        //                         this.buffers[filename] = decoded;
-        //                     } catch (e) {
-        //                         console.error(e);
-        //                     }
-        //                     trackResolve();
-        //                 }, () => {
-        //                     console.log("Couldn't load sound file '" + filename + "' for song.");
-        //                     reject();
-        //                 });
-        //             });
-        //     });
-        // });
-        //
-        // this.loadedPromise = new Promise((resolve, reject) => {
-        //     try {
-        //         let file = Engine.gameDir().file(filename);
-        //         this.player = Music.getPlayer(file.extension);
-        //         this.track = new this.player.Track(file.path);
-        //         resolve();
-        //     } catch(e) {
-        //         console.error("Error loading", filename);
-        //         console.error(e);
-        //         reject();
-        //     }
-        // });
     }
 
     loaded():Promise<any> {
@@ -298,7 +248,6 @@ export class Music {
     start(fade?:number):void {
         // TODO add fading back in
         this.internalSound.play();
-        // if (Audio.currentMusic) {
         //     Audio.currentMusic.stop();
         // }
         //

@@ -132,13 +132,15 @@ export function setup(opts:any, overrides?:any) {
         }
     }
 
-    if (typeof window['cozyState'].config['css'] === 'string') window['cozyState'].config['css'] = [window['cozyState'].config['css']];
-    for (let path of window['cozyState'].config['css']) {
-        for (let f of window['cozyState'].gameDir.glob(path)) {
-            console.log("stylesheet:", window['cozyState'].gameDir.path, path, f);
-            addStyleSheet(<File>f);
-        }
-    };
+    if (window['cozyState'].config['css']) {
+        if (typeof window['cozyState'].config['css'] === 'string') window['cozyState'].config['css'] = [window['cozyState'].config['css']];
+        for (let path of window['cozyState'].config['css']) {
+            for (let f of window['cozyState'].gameDir.glob(path)) {
+                console.log("stylesheet:", window['cozyState'].gameDir.path, path, f);
+                addStyleSheet(<File>f);
+            }
+        };
+    }
 
     return document['fonts'].ready;
 }
