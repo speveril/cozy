@@ -191,48 +191,21 @@ class ModuleSound {
 // ---------------------------------------------------------------------------
 
 export class SFX {
-    buffer:AudioBuffer;
-    source:AudioBufferSourceNode;
-    loadedPromise:Promise<any>;
+    private internalSound:Sound;
 
     constructor(filename:string) {
-        console.log("SFX constructor", filename);
-        this.loadedPromise = new Promise((resolve, reject) => {
-            Engine.gameDir().file(filename).readAsync('binary')
-            .then(
-                (fileContents:ArrayBuffer) => {
-                    console.log("successfully loaded", filename);
-                    Audio.context.decodeAudioData(
-                        fileContents,
-                        (decoded) => {
-                            console.log("successfully decoded", filename);
-                            this.buffer = decoded;
-                            console.log("set buffer <" + filename + ">");
-                            resolve();
-                        },
-                        () => {
-                            console.warn("Couldn't load SFX file '" + filename + "'.");
-                            reject();
-                        }
-                    );
-                },
-                (error) => {
-                    console.warn("Failed to load '" + filename + "'. " + error);
-                    reject();
-                }
-            );
+        this.internalSound = new Sound(filename, {
+            loop: false,
+            gain: Audio.musicGain
         });
     }
 
     loaded():Promise<any> {
-        return this.loadedPromise;
+        return this.internalSound.loadedPromise;
     }
 
     play():void {
-        this.source = Audio.context.createBufferSource();
-        this.source.buffer = this.buffer;
-        this.source.connect(Audio.sfxGain);
-        this.source.start(0);
+        this.internalSound.play();
     }
 }
 
