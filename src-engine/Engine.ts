@@ -146,17 +146,17 @@ export function setup(opts:any, overrides?:any) {
 }
 
 export function run(g) {
-    onResize();
-
     window['cozyState'].Game = g;
     if (window['cozyState'].Game.load) {
         Promise.all(window['cozyState'].Game.load())
             .then(() => {
                 window['cozyState'].Game.start();
+                onResize();
             })
         ;
     } else {
         window['cozyState'].Game.start();
+        onResize();
     }
 
     // set up animation loop
@@ -226,6 +226,7 @@ export function unpause() {
 }
 
 export function onResize(event?:any) {
+    console.log("onResize", event);
     var newSize = window['cozyState'].browserWindow.getContentSize(),
         multX   = newSize[0] / window['cozyState'].config['width'],
         multY   = newSize[1] / window['cozyState'].config['height'],
@@ -237,9 +238,10 @@ export function onResize(event?:any) {
 
     window['cozyState'].sizeMultiplier = mult;
 
-    for (let plane of window['cozyState'].planes) plane.resize(window['cozyState'].sizeMultiplier);
+    for (let plane of window['cozyState'].planes) plane.resize(window['cozyState'].config['width'], window['cozyState'].config['height'], window['cozyState'].sizeMultiplier);
 
     // force everything to update properly
+
     document.body.style.margin = "" + Math.floor((newSize[1] - mult * window['cozyState'].config['height']) / 2) + "px " + Math.floor((newSize[0] - mult * window['cozyState'].config['width']) / 2) + "px";
     document.body.style.display = 'none';
     document.body.offsetHeight;

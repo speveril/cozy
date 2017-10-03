@@ -28,7 +28,7 @@ export class Plane {
     update(dt):void {}
     render(dt):void {}
     clear():void {}
-    resize(mult):void {}
+    resize(w, h, mult):void {}
 }
 
 export class RenderPlane extends Plane {
@@ -76,9 +76,9 @@ export class RenderPlane extends Plane {
         this.layerContainer.removeChildren();
     }
 
-    resize(mult):void {
+    resize(w, h, mult):void {
         this.renderer.resolution = mult;
-        this.renderer.resize(Engine.config['width'], Engine.config['height']);
+        this.renderer.resize(w, h);
     }
 }
 
@@ -117,9 +117,9 @@ export class UiPlane extends Plane {
         this.container.appendChild(this.root.element);
     }
 
-    resize(mult):void {
+    resize(w, h, mult):void {
         this.container.style.transform = "scale(" + mult + ")";
-        this.container.style.width = Engine.config['width'];
-        this.container.style.height = Engine.config['height'];
+        this.container.style.width = w;
+        this.container.style.height = h;
     }
 }

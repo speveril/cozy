@@ -90,7 +90,10 @@ class BasicSound {
         this.source.start(0);
     }
     pause():void { /* TODO */ }
-    stop():void { /* TODO */ }
+    stop():void {
+        this.source.stop();
+        this.source.disconnect();
+    }
 }
 
 
@@ -134,12 +137,16 @@ class ModuleSound {
 
     play():void {
         this.scriptNode = Audio.context.createScriptProcessor(maxFramesPerChunk, 0, 2)
+        libopenmpt._openmpt_module_set_position_seconds(this.modulePtr, 0); // this is how you seek; 0 is the position here
         this.scriptNode.onaudioprocess = (buf) => this.generate(buf);
         this.scriptNode.connect(this.container.opts.gain);
     }
 
     pause():void { /* TODO */ }
-    stop():void { /* TODO */ }
+    stop():void {
+        // this.scriptNode.stop();
+        this.scriptNode.disconnect(0);
+    }
 
     private generate(ev:AudioProcessingEvent) {
         let outputBuffer = ev.outputBuffer;
@@ -243,11 +250,13 @@ export class Music {
     }
 
     start(fade?:number):void {
-        // TODO add fading back in
+        if (Audio.currentMusic) {
+            Audio.currentMusic.stop();
+        }
+
         this.internalSound.play();
-        //     Audio.currentMusic.stop();
-        // }
-        //
+
+        // TODO add fading back in
         // if (fade > 0) {
         //     Audio.musicFade = {
         //         progress: 0,
@@ -255,17 +264,8 @@ export class Music {
         //         duration: fade
         //     };
         // }
-        //
-        // Audio.currentMusic = this;
-        // this.source = Audio.context.createBufferSource();
-        // this.source.buffer = this.buffers[this.tracks[0]];
-        // this.source.connect(Audio.musicGain);
-        // this.source.loop = true;
-        // this.source.start(0);
 
-        // this.playing = this.track.open();
-        // window['libopenmpt']._openmpt_module_set_repeat_count(this.player.getModulePtr(), -1); // TODO make looping/repeat count configurable
-        // this.playing.play();
+        Audio.currentMusic = this;
     }
 
     pause(fade?:number):void {
@@ -283,42 +283,8 @@ export class Music {
         //         direction: -1,
         //         duration: fade
         //     };
-        // } else {
-        //     this.source.stop();
-        //     this.source.disconnect();
         // }
-
-        // this.track.close();
     }
-
-    // static getPlayer(ext:any):any {
-    //     let type = ext.toLowerCase();
-    //     let playerType = 'Audio'; // default to 'Audio', native handling
-    //     switch(type) {
-    //         case '.mod':
-    //         case '.it':
-    //         case '.mo3':
-    //         case '.s3m':
-    //         case '.xm':
-    //             playerType = 'OpenMPT';
-    //             break;
-    //     }
-    //
-    //     console.log("!!!", type, playerType);
-    //
-    //     if (!Music.players) Music.players = [];
-    //     if (!Music.players[playerType]) {
-    //         let configs = {
-    //             "Audio": {},
-    //             "OpenMPT": {
-    //                 pathToLibOpenMPT: 'lib/cowbell/libopenmpt.js'
-    //             }
-    //         }
-    //
-    //         Music.players[playerType] = new window['Cowbell'].Player[playerType](configs[playerType]);
-    //     }
-    //     return Music.players[playerType];
-    // }
 }
 
 // ---------------------------------------------------------------------------
