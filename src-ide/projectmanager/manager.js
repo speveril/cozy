@@ -581,7 +581,6 @@ window.Manager = {
                 'Cozy.js', 'game.css', 'game.html',
                 Path.join('lib','glob.js'),
                 Path.join('lib','pixi.min.js'),
-                Path.join('lib','underscore.min.js')
             ];
 
             files.forEach((f) => cp(Path.join(appPath, f), Path.join(outAppPath, f.replace(".min.", "."))));
