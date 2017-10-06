@@ -1,6 +1,7 @@
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 body {
@@ -34,6 +35,7 @@ body {
     flex: 1 0;
     display: flex;
     flex-direction: row;
+    position: relative;
 }
 
 #content-area > section {

@@ -14,6 +14,7 @@ const IDEDIR = Path.resolve('src-ide');
 
 const EngineStatus = require('./EngineStatus');
 const Library = require('./Library');
+const GameOverlay = require('./GameOverlay');
 
 require('module').globalPaths.push(IDEDIR);
 
@@ -111,7 +112,7 @@ window.Manager = {
             this.gameList.appendChild(el);
         }
 
-        // TODO move into Library.js
+        // TODO move into Library.js?
         this.gameList.onclick = (e) => {
             var target = e.target;
             while (target && target !== this.gameList && target.tagName.toLowerCase() !== 'li') {
@@ -119,16 +120,18 @@ window.Manager = {
             }
             if (!target || target === this.gameList) return;
 
-            if (this.activeGame && this.activeGame === target) {
-                this.activeGame.classList.remove('active');
-                this.activeGame = null;
-            } else {
-                if (this.activeGame) {
-                    this.activeGame.classList.remove('active');
-                }
-                target.classList.add('active');
-                this.activeGame = target;
-            }
+            GameOverlay.show(target.getAttribute('data-path'));
+
+            // if (this.activeGame && this.activeGame === target) {
+            //     this.activeGame.classList.remove('active');
+            //     this.activeGame = null;
+            // } else {
+            //     if (this.activeGame) {
+            //         this.activeGame.classList.remove('active');
+            //     }
+            //     target.classList.add('active');
+            //     this.activeGame = target;
+            // }
         }
 
         this.output("Cozy project Manager loaded.\n");
@@ -272,48 +275,6 @@ window.Manager = {
             }, () => {
                 li.classList.remove('compiling');
             });
-    },
-
-    clickEdit: function(li, path) {
-        Electron.ipcRenderer.send('control-message', {
-            command: 'edit',
-            path: path,
-        });
-    },
-
-    clickExport: function(li, path) {
-        // TODO check for engine dirty flag, wait for that to compile?
-        // maybe buildGame should just do that?
-
-        var dirSelector = li.querySelector('input.directory-picker');
-
-        dirSelector.onchange = () => {
-            var outputPath = dirSelector.files[0].path;
-            var existingFiles = FS.readdirSync(outputPath);
-
-            dirSelector.onchange = null;
-            dirSelector.value = null;
-
-            if (existingFiles.length > 0) {
-                if (!confirm(outputPath + " isn't empty, and some files may be overwritten. Continue?")) {
-                    return;
-                }
-            }
-
-            li.classList.add('compiling');
-
-            this.output("");
-            this.buildGame(path)
-                .then(() => {
-                    return this.export(path, outputPath);
-                }).then(() => {
-                    li.classList.remove('compiling');
-                }, (e) => {
-                    li.classList.remove('compiling');
-                });
-        }
-
-        dirSelector.click();
     },
 
     output: function(...args) {
