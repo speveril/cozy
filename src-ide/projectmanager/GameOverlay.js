@@ -3,6 +3,7 @@
 css('GameOverlay.css');
 const FS = require('fs-extra');
 const Path = require('path');
+const EngineStatus = require('./EngineStatus');
 
 let element = document.querySelector('#game-overlay');
 let gamepath = null;
@@ -85,8 +86,16 @@ let GameOverlay = {
     },
 
     compile: function() {
-        Manager.output("");
-        return Manager.buildGame(gamepath);
+        if (EngineStatus.get() === 'dirty') {
+            return Manager.recompileEngine()
+                .then(() => {
+                    Manager.output("");
+                    return Manager.buildGame(gamepath);
+                })
+        } else {
+            Manager.output("");
+            return Manager.buildGame(gamepath);
+        }
     },
 
     compileAndRun: function() {
@@ -128,8 +137,8 @@ let GameOverlay = {
 
             li.classList.add('compiling');
 
-            this.output("");
-            this.buildGame(this.gamepath)
+            Manager.output("");
+            GameOverlay.compile()
                 .then(() => {
                     return Manager.export(path, outputPath);
                 });

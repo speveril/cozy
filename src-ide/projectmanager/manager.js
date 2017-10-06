@@ -256,27 +256,6 @@ window.Manager = {
         });
     },
 
-
-
-    clickCompileAndRun: function(li, path) {
-        li.classList.add('compiling');
-
-        this.output("");
-        this.buildGame(path)
-            .then(() => {
-                li.classList.remove('compiling');
-
-                Electron.ipcRenderer.send('control-message', {
-                    command: 'play',
-                    path: path,
-                    debug: true,
-                    override: this.override
-                });
-            }, () => {
-                li.classList.remove('compiling');
-            });
-    },
-
     output: function(...args) {
         var s = '';
         for (let i in args) {
@@ -306,12 +285,12 @@ window.Manager = {
         EngineStatus.set('compiling');
 
         this.output("");
-        this.buildEngine()
+        return this.buildEngine()
             .then(() => {
                 return this.doc(Path.join("src-engine", "Cozy.ts"), Path.join("docs"))
             }, () => {
                 if (this.recompileInterval) {
-                    EngineStatus.set('dirty');
+                    return this.recompileEngine();
                 } else {
                     EngineStatus.set('error');
                     return Promise.reject();
@@ -319,13 +298,13 @@ window.Manager = {
             })
             .then(() => {
                 if (this.recompileInterval !== null) {
-                    EngineStatus.set('dirty');
+                    return this.recompileEngine();
                 } else {
                     EngineStatus.set('ready');
                 }
             }, () => {
                 if (this.recompileInterval !== null) {
-                    EngineStatus.set('dirty');
+                    return this.recompileEngine();
                 } else {
                     EngineStatus.set('error');
                 }
