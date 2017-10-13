@@ -118,9 +118,6 @@ let GameOverlay = {
     },
 
     export: function() {
-        // TODO check for engine dirty flag, wait for that to compile?
-        // maybe buildGame should just do that?
-
         let dp = $create('<input class="directory-picker hidden" type="file" webkitdirectory>');
         dp.onchange = () => {
             var outputPath = dirSelector.files[0].path;
