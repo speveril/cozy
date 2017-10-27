@@ -163,10 +163,12 @@ export function run(g) {
     frame(0);
 }
 
-export function frame(_dt) {
+let last_t = 0
+export function frame(new_t) {
     requestAnimationFrame(frame); // do this here so if there's an error it doesn't stop everything forever
 
-    let dt = _dt/1000;
+    let dt = (new_t - last_t)/1000;
+    last_t = new_t;
 
     Input.update(dt);
     Audio.update(dt);
@@ -419,7 +421,7 @@ the value of that key.
 export function mapO(o, f) {
     let output = {};
     for (let k in o) {
-        output[k] = f(o, k);
+        output[k] = f(o[k], k);
     }
     return output;
 }

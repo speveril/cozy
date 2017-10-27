@@ -34,6 +34,8 @@ export class Layer {
             thing.layer = this;
             this.innerContainer.addChild(thing.innerSprite);
         }
+
+        return thing;
     }
 
     remove(sp:Sprite) {

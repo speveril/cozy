@@ -10,7 +10,7 @@ class Device {
     constructor(buttonMap?:{[name:string]:Array<number>}, axisMap?:{[name:string]:Array<number>}) {
         if (buttonMap) {
             for (let button in buttonMap) {
-                for (let id in buttonMap[button]) {
+                for (let id of buttonMap[button]) {
                     if (!this.buttonMap.hasOwnProperty(id.toString())) this.buttonMap[id.toString()] = [];
                     this.buttonMap[id].push(button);
                 }
@@ -48,13 +48,16 @@ class KeyboardDevice extends Device {
     onKeyDown(event) {
         var keyCode = event.keyCode;
 
+        console.log("keyDown:", keyCode);
         if (this.keys[keyCode]) return;
 
         this.keys[keyCode] = true;
+        console.log(this.buttonMap);
 
         if (this.buttonMap.hasOwnProperty(keyCode)) {
             for (let b of this.buttonMap[keyCode]) {
                 this.pressed[b] = this.pressed[b] ? this.pressed[b] + 1 : 1;
+                console.log("press",b);
             }
         }
     }
@@ -143,7 +146,7 @@ export class Input {
         this.devices = [];
 
         window.addEventListener("gamepadconnected", (evt) => {
-            var gamepad = navigator.getGamepads()[evt['gamepad'].index];
+            let gamepad = navigator.getGamepads()[evt['gamepad'].index];
             console.log("CONNECTED ->", evt['gamepad'], gamepad);
             if (gamepad && gamepad.connected && gamepad.id.match(/XInput STANDARD GAMEPAD/)) {
                 this.addGamepad(gamepad.index);
@@ -157,8 +160,7 @@ export class Input {
         }
 
         window.addEventListener('gamepaddisconnected', (evt) => {
-            var gamepad = evt['gamepad'];
-            console.log("Lost gamepad.", gamepad);
+            console.log("Lost gamepad", evt['gamepad']);
         });
 
         this.controlConfig = controls || {};
@@ -168,8 +170,8 @@ export class Input {
     static update(dt) {
         if (!document.hasFocus()) return;
 
-        var buttonState = {};
-        var axisState = {};
+        let buttonState = {};
+        let axisState = {};
 
         for (let device of Input.devices) {
             Object.assign(buttonState, device.getButtonState());
