@@ -17,8 +17,9 @@ class Device {
             }
         }
         if (axisMap) {
+            console.log(axisMap);
             for (let axis in axisMap) {
-                for (let id in axisMap[axis]) {
+                for (let id of axisMap[axis]) {
                     if (!this.axisMap.hasOwnProperty(id.toString())) this.axisMap[id.toString()] = [];
                     this.axisMap[id].push(axis);
                 }
@@ -48,16 +49,13 @@ class KeyboardDevice extends Device {
     onKeyDown(event) {
         var keyCode = event.keyCode;
 
-        console.log("keyDown:", keyCode);
         if (this.keys[keyCode]) return;
 
         this.keys[keyCode] = true;
-        console.log(this.buttonMap);
 
         if (this.buttonMap.hasOwnProperty(keyCode)) {
             for (let b of this.buttonMap[keyCode]) {
                 this.pressed[b] = this.pressed[b] ? this.pressed[b] + 1 : 1;
-                console.log("press",b);
             }
         }
     }
@@ -115,7 +113,7 @@ class GamepadDevice extends Device {
 
         for (let axisIndex in pad.axes) {
             let d = pad.axes[axisIndex];
-            if (Math.abs(d) < Input.deadzone) return;
+            if (Math.abs(d) < Input.deadzone) continue;
             if (this.axisMap.hasOwnProperty(axisIndex.toString())) {
                 for (let axisName of this.axisMap[axisIndex]) {
                     count[axisName] = (count[axisName] || 0) + 1;
@@ -123,7 +121,7 @@ class GamepadDevice extends Device {
                 }
             }
         }
-        return mapO(state, (name) => (v, k) => v / count[k]);
+        return mapO(state, (v, k) => v / count[k]);
     }
 }
 
@@ -178,7 +176,7 @@ export class Input {
             let deviceAxis = device.getAxisState();
             for (let id in deviceAxis) {
                 axisState[id] = axisState[id] || [];
-                axisState[id].push(axisState[id]);
+                axisState[id].push(deviceAxis[id]);
             }
         }
 
