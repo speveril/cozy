@@ -435,7 +435,7 @@ supplied, use it to compare values.
 @param {function} cmp       Compare function; receives (a,b) and should return negative if a < b, positive if a > b, and 0 if they're equal
 **/
 
-function sortedInsert(a,e,cmp) {
+export function sortedInsert(a,e,cmp) {
     if (!cmp) cmp = (a,b) => { return a - b; };
 
     // short circuit some cases so we can assume that the insert is within the
