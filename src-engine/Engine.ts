@@ -411,11 +411,12 @@ export function after(n, resolution) {
 }
 
 /**
-Utility function to take an object, o, and apply a function f to each value in
-turn. Returns an object with all the same keys as o, but the result of f for
-the value of that key.
-@param o        The object
-@param f        The function, receives (value, key)
+Take an object, o, and apply a function f to each value in turn. Returns an
+object with all the same keys as o, but the result of f for the value of that
+key.
+@param {object}    o        The input object
+@param {function}  f        The function, receives (value, key)
+@returns {object}           The new object
 **/
 
 export function mapO(o, f) {
@@ -424,4 +425,46 @@ export function mapO(o, f) {
         output[k] = f(o[k], k);
     }
     return output;
+}
+
+/**
+Given a sorted array, a, insert a new element e, into it, in-place. If cmp is
+supplied, use it to compare values.
+@param {array}    a         The sorted array
+@param {any}      e         The new element
+@param {function} cmp       Compare function; receives (a,b) and should return negative if a < b, positive if a > b, and 0 if they're equal
+**/
+
+function sortedInsert(a,e,cmp) {
+    if (!cmp) cmp = (a,b) => { return a - b; };
+
+    // short circuit some cases so we can assume that the insert is within the
+    // array somewhere
+    if (a.length < 1 || cmp(e, a[a.length - 1]) >= 0) {
+        a.push(e);
+        return;
+    }
+    if (cmp(e,a[0]) < 0) {
+        a.unshift(e);
+        return;
+    }
+
+    let wnd = [1, a.length - 1];
+
+    while (true) {
+        let i = (wnd[0] + (wnd[1] - wnd[0]) / 2) | 0;
+        if (wnd[1] - wnd[0] === 0) {
+            break;
+        }
+
+        let c = cmp(e, a[i]);
+
+        if (c >= 0) {
+            wnd[0] = i + 1;
+        } else {
+            wnd[1] = i;
+        }
+    }
+
+    a.splice(wnd[0], 0, e);
 }

@@ -147,6 +147,7 @@
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#setfullscreen" class="tsd-kind-icon">set<wbr>Full<wbr>Screen</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#settitle" class="tsd-kind-icon">set<wbr>Title</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#setup" class="tsd-kind-icon">setup</a></li>
+								<li class="tsd-kind-function tsd-is-external tsd-is-not-exported"><a href="globals.html#sortedinsert" class="tsd-kind-icon">sorted<wbr>Insert</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#sqr" class="tsd-kind-icon">sqr</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#uniqueid" class="tsd-kind-icon">uniqueID</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#unpause" class="tsd-kind-icon">unpause</a></li>
@@ -688,14 +689,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Engine.ts:421</li>
+									<li>Defined in Engine.ts:422</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Utility function to take an object, o, and apply a function f to each value in
-										turn. Returns an object with all the same keys as o, but the result of f for
-									the value of that key.</p>
+									<p>Take an object, o, and apply a function f to each value in turn. Returns an
+										object with all the same keys as o, but the result of f for the value of that
+									key.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -703,7 +704,7 @@
 								<li>
 									<h5>o: <span class="tsd-signature-type">any</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The object</p>
+										<p>The input object</p>
 									</div>
 								</li>
 								<li>
@@ -714,6 +715,7 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span></h4>
+							<p>The new object</p>
 							<ul class="tsd-parameters">
 							</ul>
 						</li>
@@ -914,6 +916,50 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-external tsd-is-not-exported">
+					<a name="sortedinsert" class="tsd-anchor"></a>
+					<h3>sorted<wbr>Insert</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-is-external tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">sorted<wbr>Insert<span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, e<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, cmp<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in Engine.ts:438</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Given a sorted array, a, insert a new element e, into it, in-place. If cmp is
+									supplied, use it to compare values.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>a: <span class="tsd-signature-type">any</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The sorted array</p>
+									</div>
+								</li>
+								<li>
+									<h5>e: <span class="tsd-signature-type">any</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The new element</p>
+									</div>
+								</li>
+								<li>
+									<h5>cmp: <span class="tsd-signature-type">any</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Compare function; receives (a,b) and should return negative if a &lt; b, positive if a &gt; b, and 0 if they&#39;re equal</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -1239,6 +1285,9 @@
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#setup" class="tsd-kind-icon">setup</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
+						<a href="globals.html#sortedinsert" class="tsd-kind-icon">sorted<wbr>Insert</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#sqr" class="tsd-kind-icon">sqr</a>
