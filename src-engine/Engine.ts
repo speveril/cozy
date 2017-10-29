@@ -199,6 +199,10 @@ export function gameDir():Directory {
     return window['cozyState'].gameDir;
 }
 
+export function userDataDir():Directory {
+    return window['cozyState'].userDataDir;
+}
+
 export function config():any {
     return window['cozyState'].config;
 }
