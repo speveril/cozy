@@ -50,6 +50,10 @@ export function setup(opts:any, overrides?:any) {
         });
     }
 
+    if (opts.integerUpscale) {
+        document.body.classList.add('integerUpscale');
+    }
+
     // see
     //  http://stackoverflow.com/a/26227660
     //  https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html
@@ -236,19 +240,18 @@ export function unpause() {
 }
 
 export function onResize(event?:any) {
-    console.log("onResize", event);
     var newSize = window['cozyState'].browserWindow.getContentSize(),
         multX   = newSize[0] / window['cozyState'].config['width'],
         multY   = newSize[1] / window['cozyState'].config['height'],
         mult    = Math.min(multX, multY);
 
-    if (mult > 1) {
+    if (window['cozyState'].config['integerUpscale'] && mult > 1) {
         mult = Math.floor(mult);
     }
 
     window['cozyState'].sizeMultiplier = mult;
 
-    for (let plane of window['cozyState'].planes) plane.resize(window['cozyState'].config['width'], window['cozyState'].config['height'], window['cozyState'].sizeMultiplier);
+    for (let plane of window['cozyState'].planes) plane.resize(window['cozyState'].config['width'], window['cozyState'].config['height'], mult);
 
     // force everything to update properly
 

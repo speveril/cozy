@@ -77,8 +77,9 @@ export class RenderPlane extends Plane {
     }
 
     resize(w, h, mult):void {
-        this.renderer.resolution = mult;
+        // this.renderer.resolution = mult;
         this.renderer.resize(w, h);
+        this.renderer.view.style.transform = 'scale(' + mult + ')';
     }
 }
 

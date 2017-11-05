@@ -2,7 +2,6 @@
     margin: 0;
     padding: 0;
     -webkit-user-select: none;
-    image-rendering: pixelated;
     box-sizing: border-box;
 }
 
@@ -12,10 +11,15 @@ body {
     overflow: hidden;
 }
 
+body.integerUpscale {
+    image-rendering: pixelated;
+}
+
 canvas {
     position: absolute;
     top: 0;
     left: 0;
+    transform-origin: top left;
 }
 
 .plane {
