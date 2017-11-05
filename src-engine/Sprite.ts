@@ -53,7 +53,7 @@ export class Sprite {
             args = Object.assign({}, Engine.gameDir().file(path).read('json'), args);
         }
 
-        if (!args.texture) throw new Error("Sprite must be instantiated with a 'texture'");
+        if (!args.texture) throw new Error("Sprite must be instantiated with a 'texture'. args:" + JSON.stringify(args));
 
         args.hotspot = args.hotspot || {};
         args.position = args.position || {};
