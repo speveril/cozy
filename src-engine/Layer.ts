@@ -23,8 +23,10 @@ export class Layer {
         this.innerContainer.position.y = Math.floor(y);
     }
 
-    getOffset() {
-        return Object.assign({}, this.innerContainer.position);
+    getOffset():PIXI.Point {
+        let p = new PIXI.Point();
+        p.copy(this.innerContainer.position);
+        return p;
     }
 
     add(thing:any) {

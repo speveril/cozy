@@ -38,9 +38,12 @@ export class Sprite {
         }
     **/
 
-    constructor(args) {
-        if (typeof args === "string") {
-            args = Engine.gameDir().file(args).read('json');
+    constructor(f) {
+        let args;
+        if (typeof f === "string") {
+            args = Engine.gameDir().file(f).read('json');
+        } else {
+            args = Object.assign({}, f);
         }
 
         while (args['.derive']) {

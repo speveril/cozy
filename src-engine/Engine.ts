@@ -203,8 +203,12 @@ export function userDataDir():Directory {
     return window['cozyState'].userDataDir;
 }
 
-export function config():any {
-    return window['cozyState'].config;
+export function config(k:string):any {
+    if (k !== undefined) {
+        return window['cozyState'].config[k];
+    } else {
+        return window['cozyState'].config;
+    }
 }
 
 // export function setScene(e:Entity) {
