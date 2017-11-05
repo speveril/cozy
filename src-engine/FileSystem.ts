@@ -71,6 +71,8 @@ export class File {
 
     get extension():string                  { return path.extname(this.filepath); }
     get name():string                       { return path.basename(this.filepath); }
+    get dirname():string                    { return path.dirname(this.filepath); }
+    get dir():Directory                     { return new Directory(this.dirname);  }
     get path():string                       { return this.filepath; }
     get exists():boolean                    { return fs.existsSync(this.filepath); }
     get url():string                        { return "file:///" + path.resolve(this.relativePath(File.documentRoot)).replace(/\\/g, "/"); }
