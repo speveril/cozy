@@ -8,7 +8,7 @@ export class Sprite {
     clip: PIXI.Rectangle;
     hotspot: PIXI.Point;
     offset: PIXI.Point;
-    position: PIXI.Point;
+    position: PIXI.ObservablePoint;
     frameBank: PIXI.Rectangle;
     frameSize: PIXI.Point;
     frameCounts: PIXI.Point;
@@ -23,6 +23,8 @@ export class Sprite {
     animationScratch: {};
     currentQuake: {};
     currentFlashing: {};
+
+    private moveCallback:any;
 
     /**
         constructor args: {
@@ -67,8 +69,8 @@ export class Sprite {
         this.innerSprite['uid'] = Engine.uniqueID();
 
         this.offset = args.offset ? new PIXI.Point(args.offset.x, args.offset.y) : new PIXI.Point(0, 0);
+        this.position = new PIXI.ObservablePoint(this.onMove, this, args.position.x || 0, args.position.y || 0 );
         this.hotspot = new PIXI.Point(args.hotspot.x || 0, args.hotspot.y || 0);
-        this.position = new PIXI.Point(args.position.x || 0, args.position.y || 0 );
         this.frameSize = new PIXI.Point(args.frameSize.x || args.texture.width, args.frameSize.y || args.texture.height);
         this.textureFrame = new PIXI.Rectangle(0, 0, this.frameSize.x, this.frameSize.y);
         this.frame_ = 0;
@@ -76,6 +78,7 @@ export class Sprite {
         this.frameCounts = new PIXI.Point(Math.floor(this.frameBank.width / this.frameSize.x), Math.floor(this.frameBank.height / this.frameSize.y));
         this.clip = new PIXI.Rectangle(0, 0, this.frameSize.x, this.frameSize.y);
         this.direction = args.direction || 0;
+        this.moveCallback = args.moveCallback || null;
 
         this.updateTextureFrame();
 
@@ -83,6 +86,10 @@ export class Sprite {
         this.positionInnerSprite();
 
         this.animation = args.currentAnimation;
+    }
+
+    private onMove() {
+        if (this.moveCallback) this.moveCallback();
     }
 
     set frame(f:number) {

@@ -353,6 +353,10 @@ export function setFullScreen(f:boolean):void {
     window['cozyState'].browserWindow.setFullScreen(f);
 }
 
+export function getDebug():boolean {
+    return window['cozyState'].debug;
+}
+
 /**
 Convert some HTML to use URLs appropriate for displaying. Since the engine considers the engine root directory
 to be the root of the HTML document, any references to images, stylesheets, etc must be rewritten.

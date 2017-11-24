@@ -67,10 +67,11 @@
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
-						<section class="tsd-index-section tsd-is-external tsd-is-not-exported">
+						<section class="tsd-index-section tsd-is-external">
 							<h3>Enumerations</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-enum tsd-is-external tsd-is-not-exported"><a href="enums/buttonstate.html" class="tsd-kind-icon">Button<wbr>State</a></li>
+								<li class="tsd-kind-enum tsd-is-external"><a href="enums/shapetype.html" class="tsd-kind-icon">Shape<wbr>Type</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-external">
@@ -91,6 +92,7 @@
 								<li class="tsd-kind-class tsd-is-external"><a href="classes/plane.html" class="tsd-kind-icon">Plane</a></li>
 								<li class="tsd-kind-class tsd-is-external"><a href="classes/renderplane.html" class="tsd-kind-icon">Render<wbr>Plane</a></li>
 								<li class="tsd-kind-class tsd-is-external"><a href="classes/sfx.html" class="tsd-kind-icon">SFX</a></li>
+								<li class="tsd-kind-class tsd-is-external"><a href="classes/shape.html" class="tsd-kind-icon">Shape</a></li>
 								<li class="tsd-kind-class tsd-is-external tsd-is-not-exported"><a href="classes/sound.html" class="tsd-kind-icon">Sound</a></li>
 								<li class="tsd-kind-class tsd-is-external"><a href="classes/sprite.html" class="tsd-kind-icon">Sprite</a></li>
 								<li class="tsd-kind-class tsd-is-external"><a href="classes/texture.html" class="tsd-kind-icon">Texture</a></li>
@@ -134,6 +136,7 @@
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#frame" class="tsd-kind-icon">frame</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#gamedir" class="tsd-kind-icon">game<wbr>Dir</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#getcurrentzoom" class="tsd-kind-icon">get<wbr>Current<wbr>Zoom</a></li>
+								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#getdebug" class="tsd-kind-icon">get<wbr>Debug</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#getfullscreen" class="tsd-kind-icon">get<wbr>Full<wbr>Screen</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#gettexture" class="tsd-kind-icon">get<wbr>Texture</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#loadtextures" class="tsd-kind-icon">load<wbr>Textures</a></li>
@@ -214,7 +217,7 @@
 					<div class="tsd-signature tsd-kind-icon">lastID<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;-1</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Engine.ts:396</li>
+							<li>Defined in Engine.ts:400</li>
 						</ul>
 					</aside>
 				</section>
@@ -264,7 +267,7 @@
 					<div class="tsd-signature tsd-kind-icon">string<wbr>Chars<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Engine.ts:402</li>
+							<li>Defined in Engine.ts:406</li>
 						</ul>
 					</aside>
 				</section>
@@ -330,7 +333,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Engine.ts:414</li>
+									<li>Defined in Engine.ts:418</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -544,7 +547,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Engine.ts:362</li>
+									<li>Defined in Engine.ts:366</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -624,6 +627,23 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-external">
+					<a name="getdebug" class="tsd-anchor"></a>
+					<h3>get<wbr>Debug</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Debug<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in Engine.ts:356</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-external">
 					<a name="getfullscreen" class="tsd-anchor"></a>
 					<h3>get<wbr>Full<wbr>Screen</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-is-external">
@@ -696,7 +716,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Engine.ts:433</li>
+									<li>Defined in Engine.ts:437</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -795,7 +815,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Engine.ts:403</li>
+									<li>Defined in Engine.ts:407</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -936,7 +956,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Engine.ts:449</li>
+									<li>Defined in Engine.ts:453</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1003,7 +1023,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Engine.ts:397</li>
+									<li>Defined in Engine.ts:401</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -1054,7 +1074,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Engine.ts:390</li>
+									<li>Defined in Engine.ts:394</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1114,15 +1134,15 @@
 					<div class="tsd-signature tsd-kind-icon">unique<wbr>Strings<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Engine.ts:401</li>
+							<li>Defined in Engine.ts:405</li>
 						</ul>
 					</aside>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external tsd-is-not-exported">
-						<a name="uniquestrings.reflection-649" class="tsd-anchor"></a>
+						<a name="uniquestrings.reflection-679" class="tsd-anchor"></a>
 						<div class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in Engine.ts:401</li>
+								<li>Defined in Engine.ts:405</li>
 							</ul>
 						</aside>
 					</section>
@@ -1141,6 +1161,9 @@
 				<ul class="before-current">
 					<li class=" tsd-kind-enum tsd-is-external tsd-is-not-exported">
 						<a href="enums/buttonstate.html" class="tsd-kind-icon">Button<wbr>State</a>
+					</li>
+					<li class=" tsd-kind-enum tsd-is-external">
+						<a href="enums/shapetype.html" class="tsd-kind-icon">Shape<wbr>Type</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
 						<a href="classes/audio.html" class="tsd-kind-icon">Audio</a>
@@ -1186,6 +1209,9 @@
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
 						<a href="classes/sfx.html" class="tsd-kind-icon">SFX</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="classes/shape.html" class="tsd-kind-icon">Shape</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external tsd-is-not-exported">
 						<a href="classes/sound.html" class="tsd-kind-icon">Sound</a>
@@ -1270,6 +1296,9 @@
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#getcurrentzoom" class="tsd-kind-icon">get<wbr>Current<wbr>Zoom</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#getdebug" class="tsd-kind-icon">get<wbr>Debug</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#getfullscreen" class="tsd-kind-icon">get<wbr>Full<wbr>Screen</a>

@@ -1,14 +1,17 @@
 import * as PIXI from 'pixi.js';
-import { Sprite } from './Sprite'
+import { Sprite } from './Sprite';
+import { Shape } from './Shape';
 
 export class Layer {
     innerContainer: PIXI.Container;
     sprites: Array<Sprite>;
+    shapes: Array<Shape>;
     spriteLookup: { [key:string]: Sprite };
 
     constructor() {
         this.sprites = [];
         this.spriteLookup = {};
+        this.shapes = [];
         this.innerContainer = new PIXI.Container();
     }
 
@@ -35,17 +38,33 @@ export class Layer {
             this.spriteLookup[thing.innerSprite['uid']] = thing;
             thing.layer = this;
             this.innerContainer.addChild(thing.innerSprite);
+        } else if (thing instanceof Shape) {
+            this.shapes.push(thing);
+            // TODO shapeLookup?
+            thing.layer = this;
+            // thing.onChange();
+            this.innerContainer.addChild(thing.graphics);
         }
 
         return thing;
     }
 
-    remove(sp:Sprite) {
-        var index = this.sprites.indexOf(sp);
-        if (index !== -1) {
-            this.sprites.splice(index, 1);
+    remove(thing:any) {
+        if (thing instanceof Sprite) {
+            let index = this.sprites.indexOf(thing);
+            if (index !== -1) {
+                this.sprites.splice(index, 1);
+            }
+            thing.layer = null;
+            this.innerContainer.removeChild(thing.innerSprite);
+        } else if (thing instanceof Shape) {
+            let i = this.shapes.indexOf(thing);
+            if (i !== -1) {
+                this.shapes.splice(i, 1);
+            }
+            thing.layer = null;
+            this.innerContainer.removeChild(thing.graphics)
         }
-        this.innerContainer.removeChild(sp.innerSprite);
     }
 
     sortSprites(f:(a:any, b:any) => number) {
@@ -57,8 +76,17 @@ export class Layer {
     }
 
     clear() {
-        this.sprites.forEach(function() {
-            this.innerContainer.removeChild(this.sprites[0].innerSprite);
-        }.bind(this));
+        for (let sp of this.sprites) {
+            this.innerContainer.removeChild(sp.innerSprite);
+            sp.layer = null;
+        }
+        this.sprites = [];
+
+        for (let sh of this.shapes) {
+            this.innerContainer.removeChild(sh.graphics);
+            // sh.graphics.clear();
+            sh.layer = null;
+        }
+        this.shapes = [];
     }
 }

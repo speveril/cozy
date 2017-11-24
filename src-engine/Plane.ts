@@ -38,9 +38,14 @@ export class RenderPlane extends Plane {
 
     constructor(args:any) {
         super(args);
-        this.renderer = new PIXI.WebGLRenderer(Engine.config['width'], Engine.config['height'], { transparent: true });
+        this.renderer = new PIXI.WebGLRenderer({
+            width: Engine.config['width'],
+            height: Engine.config['height'],
+            transparent: true,
+            clearBeforeRender: true,
+            // backgroundColor: args.renderBackground !== undefined ? args.renderBackground : 'rgba(0, 0, 0, 0)'
+        });
         // pixi.js typings are messed up and don't list .backgroundColor as a valid member, despite it being one
-        this.renderer['backgroundColor'] = args.renderBackground === undefined ? 'rgba(0, 0, 0, 0)' : args.renderBackground;
         this.container.appendChild(this.renderer.view);
         this.layers = [];
         this.layerContainer = new PIXI.Container();

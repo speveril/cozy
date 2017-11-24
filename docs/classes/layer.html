@@ -88,6 +88,7 @@
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="layer.html#innercontainer" class="tsd-kind-icon">inner<wbr>Container</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="layer.html#shapes" class="tsd-kind-icon">shapes</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="layer.html#spritelookup" class="tsd-kind-icon">sprite<wbr>Lookup</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="layer.html#sprites" class="tsd-kind-icon">sprites</a></li>
 							</ul>
@@ -119,7 +120,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Layer.ts:7</li>
+									<li>Defined in Layer.ts:9</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="layer.html" class="tsd-signature-type">Layer</a></h4>
@@ -135,7 +136,17 @@
 					<div class="tsd-signature tsd-kind-icon">inner<wbr>Container<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Container</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Layer.ts:5</li>
+							<li>Defined in Layer.ts:6</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
+					<a name="shapes" class="tsd-anchor"></a>
+					<h3>shapes</h3>
+					<div class="tsd-signature tsd-kind-icon">shapes<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="shape.html" class="tsd-signature-type">Shape</a><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in Layer.ts:8</li>
 						</ul>
 					</aside>
 				</section>
@@ -145,7 +156,7 @@
 					<div class="tsd-signature tsd-kind-icon">sprite<wbr>Lookup<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Layer.ts:7</li>
+							<li>Defined in Layer.ts:9</li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -163,7 +174,7 @@
 					<div class="tsd-signature tsd-kind-icon">sprites<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="sprite.html" class="tsd-signature-type">Sprite</a><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Layer.ts:6</li>
+							<li>Defined in Layer.ts:7</li>
 						</ul>
 					</aside>
 				</section>
@@ -180,7 +191,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Layer.ts:32</li>
+									<li>Defined in Layer.ts:35</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -203,7 +214,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Layer.ts:59</li>
+									<li>Defined in Layer.ts:78</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -220,7 +231,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Layer.ts:26</li>
+									<li>Defined in Layer.ts:29</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Point</span></h4>
@@ -237,7 +248,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Layer.ts:21</li>
+									<li>Defined in Layer.ts:24</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -257,19 +268,19 @@
 					<a name="remove" class="tsd-anchor"></a>
 					<h3>remove</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">remove<span class="tsd-signature-symbol">(</span>sp<span class="tsd-signature-symbol">: </span><a href="sprite.html" class="tsd-signature-type">Sprite</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">remove<span class="tsd-signature-symbol">(</span>thing<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Layer.ts:43</li>
+									<li>Defined in Layer.ts:52</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>sp: <a href="sprite.html" class="tsd-signature-type">Sprite</a></h5>
+									<h5>thing: <span class="tsd-signature-type">any</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -286,7 +297,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Layer.ts:51</li>
+									<li>Defined in Layer.ts:70</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -330,7 +341,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Layer.ts:15</li>
+									<li>Defined in Layer.ts:18</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -365,6 +376,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
 								<a href="layer.html#innercontainer" class="tsd-kind-icon">inner<wbr>Container</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
+								<a href="layer.html#shapes" class="tsd-kind-icon">shapes</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
 								<a href="layer.html#spritelookup" class="tsd-kind-icon">sprite<wbr>Lookup</a>
