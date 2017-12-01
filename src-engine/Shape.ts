@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js';
 import * as Engine from './Engine';
 import { Layer } from './Layer';
+import { dist } from './Trig';
 
 export enum ShapeType { Polygon, Circle };
 export class Shape {
@@ -30,10 +31,25 @@ export class Shape {
         this.fillcolor = args.fillcolor || 0xFFFFFF;
         this.fillalpha = args.fillalpha || 0.5;
 
-        if (args.hasOwnProperty('points')) this.points = args.points;
         if (args.hasOwnProperty('closed')) this.closed = args.closed;
         if (args.hasOwnProperty('center')) this.center = new PIXI.Point(args.center.x, args.center.y);
         if (args.hasOwnProperty('radius')) this.radius = args.radius;
+
+        if (args.hasOwnProperty('points')) {
+            // "rewind" the polygon to be clockwise, if necessary
+            let sum = (args.points[0] - args.points[args.points.length - 2]) * (args.points[1] + args.points[args.points.length - 1]);
+            for (let i = 0; i < args.points.length - 2; i += 2) {
+                sum += (args.points[i + 2] - args.points[i]) * (args.points[i + 3] + args.points[i + 1]);
+            }
+            if (sum > 0) {
+                this.points = [];
+                for (let i = args.points.length - 2; i >= 0; i -= 2) {
+                    this.points.push(args.points[i], args.points[i+1]);
+                }
+            } else {
+                this.points = args.points.slice(0);
+            }
+        }
 
         this.graphics = new PIXI.Graphics();
 
@@ -42,6 +58,77 @@ export class Shape {
 
     onChange() {
         this.draw();
+    }
+
+    isOnEdge(_x:number|PIXI.Point, _y?:number) {
+        let pt;
+        if (_x instanceof PIXI.Point) {
+            pt = _x;
+        } else {
+            pt = { x: _x, y: _y };
+        }
+
+        switch (this.type) {
+            case ShapeType.Polygon:
+                const length = this.points.length;
+                for (let i = 0, j = length - 1; i < length; j = i++) {
+                    const p1 = { x:this.points[i][0], y: this.points[i][1] };
+                    const p2 = { x:this.points[j][0], y: this.points[j][1] };
+                    if (dist(pt, p1) + dist(pt, p2) === dist(p1, p2)) {
+                        return [p2, p1];
+                    }
+                }
+                break;
+            case ShapeType.Circle:
+                if (dist(pt, this.center) === this.radius) {
+                    return pt;
+                }
+        }
+        return null;
+    }
+
+    // based on contains() from PIXI's Polygon, wiht augmentation to edge check
+    contains(_x:number|PIXI.Point, _y?:number) {
+        let pt;
+        if (_x instanceof PIXI.Point) {
+            pt = _x;
+        } else {
+            pt = { x: _x, y: _y };
+        }
+
+        let inside = false;
+
+        switch (this.type) {
+            case ShapeType.Polygon:
+                // use some raycasting to test hits
+                // https://github.com/substack/point-in-polygon/blob/master/index.js
+                const length = this.points.length;
+
+                for (let i = 0, j = length - 1; i < length; j = i++) {
+                    let p1 = { x:this.points[i][0], y: this.points[i][1] };
+                    let p2 = { x:this.points[j][0], y: this.points[j][1] };
+
+                    // return true immediately if the point is ON this edge
+                    if (dist(pt, p1) + dist(pt, p2) === dist(p1, p2)) {
+                      return true;
+                    }
+
+                    // const intersect = ((p1.y > pt.y) !== (p2.y > pt.y)) && (pt.x < ((p2.x - p1.x) * ((pt.y - p1.y) / (p2.y - p1.y))) + p1.x);
+                    const intersect = ((p1.y > pt.y) !== (p2.y > pt.y)) && (pt.x < ((p2.x - p1.x) * ((pt.y - p1.y) / (p2.y - p1.y))) + p1.x);
+
+                    if (intersect) {
+                      inside = !inside;
+                    }
+                }
+                break;
+            case ShapeType.Circle:
+                if (dist(pt, this.center) <= this.radius) {
+                    inside = true;
+                }
+                break;
+        }
+
+        return inside;
     }
 
     private draw() {

@@ -122,6 +122,7 @@
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#aabbcollide" class="tsd-kind-icon">AABBcollide</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#addplane" class="tsd-kind-icon">add<wbr>Plane</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#addstylesheet" class="tsd-kind-icon">add<wbr>Style<wbr>Sheet</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#after" class="tsd-kind-icon">after</a></li>
@@ -130,6 +131,8 @@
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#config" class="tsd-kind-icon">config</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#dist" class="tsd-kind-icon">dist</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#dist2" class="tsd-kind-icon">dist2</a></li>
+								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#dista" class="tsd-kind-icon">distA</a></li>
+								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#dista2" class="tsd-kind-icon">dist<wbr>A2</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#disttosegment" class="tsd-kind-icon">dist<wbr>ToSegment</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#disttosegmentsquared" class="tsd-kind-icon">dist<wbr>ToSegment<wbr>Squared</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#fixhtml" class="tsd-kind-icon">fixHTML</a></li>
@@ -139,6 +142,7 @@
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#getdebug" class="tsd-kind-icon">get<wbr>Debug</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#getfullscreen" class="tsd-kind-icon">get<wbr>Full<wbr>Screen</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#gettexture" class="tsd-kind-icon">get<wbr>Texture</a></li>
+								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#lineintersection" class="tsd-kind-icon">line<wbr>Intersection</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#loadtextures" class="tsd-kind-icon">load<wbr>Textures</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#mapo" class="tsd-kind-icon">mapO</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#onresize" class="tsd-kind-icon">on<wbr>Resize</a></li>
@@ -275,6 +279,32 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Functions</h2>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-external">
+					<a name="aabbcollide" class="tsd-anchor"></a>
+					<h3>AABBcollide</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">AABBcollide<span class="tsd-signature-symbol">(</span>coordsA<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, coordsB<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in Trig.ts:22</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>coordsA: <span class="tsd-signature-type">any</span></h5>
+								</li>
+								<li>
+									<h5>coordsB: <span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-external">
 					<a name="addplane" class="tsd-anchor"></a>
 					<h3>add<wbr>Plane</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-is-external">
@@ -385,7 +415,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Trig.ts:7</li>
+									<li>Defined in Trig.ts:9</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -480,6 +510,58 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-external">
+					<a name="dista" class="tsd-anchor"></a>
+					<h3>distA</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">distA<span class="tsd-signature-symbol">(</span>v<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, w<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in Trig.ts:7</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>v: <span class="tsd-signature-type">any</span></h5>
+								</li>
+								<li>
+									<h5>w: <span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-external">
+					<a name="dista2" class="tsd-anchor"></a>
+					<h3>dist<wbr>A2</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">dist<wbr>A2<span class="tsd-signature-symbol">(</span>v<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, w<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in Trig.ts:8</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>v: <span class="tsd-signature-type">any</span></h5>
+								</li>
+								<li>
+									<h5>w: <span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-external">
 					<a name="disttosegment" class="tsd-anchor"></a>
 					<h3>dist<wbr>ToSegment</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-is-external">
@@ -489,7 +571,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Trig.ts:19</li>
+									<li>Defined in Trig.ts:21</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -518,7 +600,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Trig.ts:18</li>
+									<li>Defined in Trig.ts:20</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -680,6 +762,38 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-external">
+					<a name="lineintersection" class="tsd-anchor"></a>
+					<h3>line<wbr>Intersection</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">line<wbr>Intersection<span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, b<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, v<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, w<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in Trig.ts:42</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>a: <span class="tsd-signature-type">any</span></h5>
+								</li>
+								<li>
+									<h5>b: <span class="tsd-signature-type">any</span></h5>
+								</li>
+								<li>
+									<h5>v: <span class="tsd-signature-type">any</span></h5>
+								</li>
+								<li>
+									<h5>w: <span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -1138,7 +1252,7 @@
 						</ul>
 					</aside>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external tsd-is-not-exported">
-						<a name="uniquestrings.reflection-679" class="tsd-anchor"></a>
+						<a name="uniquestrings.reflection-731" class="tsd-anchor"></a>
 						<div class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></div>
 						<aside class="tsd-sources">
 							<ul>
@@ -1256,6 +1370,9 @@
 						<a href="globals.html#stringchars" class="tsd-kind-icon">string<wbr>Chars</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#aabbcollide" class="tsd-kind-icon">AABBcollide</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#addplane" class="tsd-kind-icon">add<wbr>Plane</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
@@ -1278,6 +1395,12 @@
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#dist2" class="tsd-kind-icon">dist2</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#dista" class="tsd-kind-icon">distA</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#dista2" class="tsd-kind-icon">dist<wbr>A2</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#disttosegment" class="tsd-kind-icon">dist<wbr>ToSegment</a>
@@ -1305,6 +1428,9 @@
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#gettexture" class="tsd-kind-icon">get<wbr>Texture</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#lineintersection" class="tsd-kind-icon">line<wbr>Intersection</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#loadtextures" class="tsd-kind-icon">load<wbr>Textures</a>
