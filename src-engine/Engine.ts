@@ -29,6 +29,7 @@ class CozyState {
     public static enginePath:string;
     public static paused:boolean;
     public static sizeMultiplier:number;
+    public static autoResize:boolean;
 }
 
 export function setup(opts:any, overrides?:any) {
@@ -83,6 +84,7 @@ export function setup(opts:any, overrides?:any) {
     window['cozyState'].textures = [];
     window['cozyState'].planes = [];
     window['cozyState'].paused = true;
+    window['cozyState'].autoResize = window['cozyState'].config['autoResize'] || false;
 
     process.chdir(window['cozyState'].gameDir.path);
     Input.init(window['cozyState'].config['controls']);
@@ -239,8 +241,20 @@ export function unpause() {
     window['cozyState'].paused = false;
 }
 
+function fixZoom() {
+    let windowSize = window['cozyState'].browserWindow.getContentSize();
+    let mult = window['cozyState'].sizeMultiplier;
+
+    for (let plane of window['cozyState'].planes) plane.resize(window['cozyState'].config['width'], window['cozyState'].config['height'], mult);
+
+    document.body.style.margin = "" + Math.floor((windowSize[1] - mult * window['cozyState'].config['height']) / 2) + "px " + Math.floor((windowSize[0] - mult * window['cozyState'].config['width']) / 2) + "px";
+    document.body.style.display = 'none';
+    document.body.offsetHeight;
+    document.body.style.display = '';
+}
+
 export function onResize(event?:any) {
-    var newSize = window['cozyState'].browserWindow.getContentSize(),
+    let newSize = window['cozyState'].browserWindow.getContentSize(),
         multX   = newSize[0] / window['cozyState'].config['width'],
         multY   = newSize[1] / window['cozyState'].config['height'],
         mult    = Math.min(multX, multY);
@@ -250,18 +264,18 @@ export function onResize(event?:any) {
     }
 
     window['cozyState'].sizeMultiplier = mult;
-
-    for (let plane of window['cozyState'].planes) plane.resize(window['cozyState'].config['width'], window['cozyState'].config['height'], mult);
-
-    // force everything to update properly
-
-    document.body.style.margin = "" + Math.floor((newSize[1] - mult * window['cozyState'].config['height']) / 2) + "px " + Math.floor((newSize[0] - mult * window['cozyState'].config['width']) / 2) + "px";
-    document.body.style.display = 'none';
-    document.body.offsetHeight;
-    document.body.style.display = '';
+    fixZoom();
 }
 
-export function getCurrentZoom() {
+export function setZoom(z:number):void {
+    if (window['cozyState'].config['autoResize']) {
+        throw new Error("Do not call setZoom if the gmae has autoResize turned on.");
+    }
+    window['cozyState'].sizeMultiplier = z;
+    fixZoom();
+}
+
+export function getZoom() {
     return window['cozyState'].sizeMultiplier;
 }
 
