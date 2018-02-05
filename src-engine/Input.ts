@@ -94,6 +94,9 @@ class GamepadDevice extends Device {
 
     getButtonState():{[name:string]:number} {
         var pad = navigator.getGamepads()[this.index];
+        if (!pad) {
+            return;
+        }
         var state:{[name:string]:number} = {};
         for (let id in pad.buttons) {
             let button = pad.buttons[id];

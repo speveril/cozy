@@ -176,6 +176,8 @@ export function frame(new_t) {
     let dt = (new_t - last_t)/1000;
     last_t = new_t;
 
+    dt = 0.016667; // :|
+
     Input.update(dt);
     Audio.update(dt);
 
