@@ -25,11 +25,11 @@ export class Shape {
 
     constructor(type:ShapeType, args?:any) {
         this.type = type;
-        this.linecolor = args.linecolor || 0xFFFFFF;
-        this.linewidth = args.linewidth || 2;
-        this.linealpha = args.linealpha || 1;
-        this.fillcolor = args.fillcolor || 0xFFFFFF;
-        this.fillalpha = args.fillalpha || 0.5;
+        this.linecolor = args.hasOwnProperty('linecolor') ? args.linecolor : 0xFFFFFF;
+        this.linewidth = args.hasOwnProperty('linewidth') ? args.linewidth : 2;
+        this.linealpha = args.hasOwnProperty('linealpha') ? args.linealpha : 1;
+        this.fillcolor = args.hasOwnProperty('fillcolor') ? args.fillcolor : 0xFFFFFF;
+        this.fillalpha = args.hasOwnProperty('fillalpha') ? args.fillalpha : 0.5;
 
         if (args.hasOwnProperty('closed')) this.closed = args.closed;
         if (args.hasOwnProperty('center')) this.center = new PIXI.Point(args.center.x, args.center.y);
