@@ -88,9 +88,9 @@ export class Shape {
     }
 
     // based on contains() from PIXI's Polygon, with augmentation to edge check
-    contains(_x:number|PIXI.Point, _y?:number) {
+    contains(_x:number|PIXI.ObservablePoint|PIXI.Point, _y?:number) {
         let pt;
-        if (_x instanceof PIXI.Point) {
+        if (_x instanceof PIXI.Point || _x instanceof PIXI.ObservablePoint) {
             pt = _x;
         } else {
             pt = { x: _x, y: _y };

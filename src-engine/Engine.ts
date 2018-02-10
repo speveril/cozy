@@ -169,6 +169,7 @@ export function run(g) {
     frame(0);
 }
 
+const fps60 = 1.0 / 60.0;
 let last_t = 0
 export function frame(new_t) {
     requestAnimationFrame(frame); // do this here so if there's an error it doesn't stop everything forever
@@ -176,27 +177,26 @@ export function frame(new_t) {
     let dt = (new_t - last_t)/1000;
     last_t = new_t;
 
-    dt = 0.016667; // :|
+    // if we've dropped a frame, do updates separately for each...
+    let updatedt = dt;
+    while (updatedt > 0) {
+        let _dt = Math.min(updatedt, fps60);
+        Input.update(_dt);
+        Audio.update(_dt);
 
-    Input.update(dt);
-    Audio.update(dt);
+        if (window['cozyState'].paused) return;
+        for (let plane of window['cozyState'].planes) plane.update(_dt);
 
-    if (window['cozyState'].paused) { return; }
+        if (window['cozyState'].Game && window['cozyState'].Game.frame) {
+            window['cozyState'].Game.frame(_dt);
+        }
 
-    for (let plane of window['cozyState'].planes) plane.update(dt);
-
-    // if (scene) {
-    //     scene.update(dt);
-    // }
-    if (window['cozyState'].Game && window['cozyState'].Game.frame) {
-        window['cozyState'].Game.frame(dt);
+        updatedt -= fps60;
     }
 
-    for (let plane of window['cozyState'].planes) plane.render(dt);
 
-    // if (scene) {
-    //     scene.render();
-    // }
+    // only do one render
+    for (let plane of window['cozyState'].planes) plane.render(dt);
 
     if (window['cozyState'].Game && window['cozyState'].Game.postRender) {
         window['cozyState'].Game.postRender(dt);

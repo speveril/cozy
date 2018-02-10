@@ -16,9 +16,9 @@ export class Layer {
     }
 
     update(dt:number):void {
-        this.sprites.forEach(function(s) {
+        for (let s of this.sprites) {
             s.update(dt);
-        });
+        }
     }
 
     offset(x:number, y:number) {
