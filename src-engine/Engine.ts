@@ -158,21 +158,25 @@ export function run(g) {
             .then(() => {
                 window['cozyState'].Game.start();
                 onResize();
+                requestAnimationFrame(frame);
             })
         ;
     } else {
         window['cozyState'].Game.start();
         onResize();
+        requestAnimationFrame(frame);
     }
-
-    // set up animation loop
-    frame(0);
 }
 
 const fps60 = 1.0 / 60.0;
-let last_t = 0
+let last_t = null;
 export function frame(new_t) {
     requestAnimationFrame(frame); // do this here so if there's an error it doesn't stop everything forever
+
+    // the very first time we call frame, go with a dt of 0
+    if (last_t === null) {
+        last_t = new_t;
+    }
 
     let dt = (new_t - last_t)/1000;
     last_t = new_t;
@@ -293,6 +297,7 @@ export function loadTextures(assets) {
     return new Promise((resolve, reject) => {
         if (Object.keys(assets).length < 1) {
             resolve();
+            return;
         }
 
         for (let name in assets) {
@@ -305,7 +310,6 @@ export function loadTextures(assets) {
                 window['cozyState'].textures[resource['name'].replace(/\\/g, "/")] = new Texture(resource['texture']);
             }
             window['cozyState'].textures = Object.assign(window['cozyState'].textures, window['cozyState'].textures);
-            console.log("resolving?");
             resolve();
         });
     });
