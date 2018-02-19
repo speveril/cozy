@@ -57,7 +57,10 @@ export class Directory {
     }
 
     glob(pattern:string, opts?:any):Array<Directory|File> {
-        return this.buildList(window['glob'].sync(pattern, opts));
+        let o = Object.assign({
+            cwd: this.path
+        }, opts);
+        return this.buildList(window['glob'].sync(pattern, o));
     }
 }
 
