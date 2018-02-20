@@ -89,7 +89,6 @@ class GamepadDevice extends Device {
     constructor(index:number, buttonMap?:{[name:string]:Array<number>}, axisMap?:{[name:string]:Array<number>}) {
         super(buttonMap, axisMap);
         this.index = index;
-        console.log(navigator.getGamepads()[this.index]);
     }
 
     getButtonState():{[name:string]:number} {
@@ -137,6 +136,9 @@ export class Input {
     private static callbacks:Dict<Array<any>>;
     private static devices:Array<Device>;
     private static controlConfig:Dict<any>;
+    private static lastMouseInfo:Dict<any>;
+    private static mouseInfo:Dict<any>;
+
 
     static init(controls?:{ [name:string]: any }) {
         this.axes = {};
@@ -166,6 +168,10 @@ export class Input {
 
         this.controlConfig = controls || {};
         this.addKeyboard();
+        
+        if (this.controlConfig['mouse']) {
+            this.addMouse();
+        }
     }
 
     static update(dt) {
@@ -240,6 +246,13 @@ export class Input {
             var events = eventName.split(' ');
             events.forEach(clearEvent);
         }
+    }
+
+    private static addMouse() {
+        window.addEventListener('mousemove', (e) => {
+            mouseInfo.x = e.clientX;
+            mouseInfo.y = e.clientY;
+        });
     }
 
     private static addKeyboard() {
@@ -338,6 +351,4 @@ export class Input {
             }
         }
     }
-
-
 }
