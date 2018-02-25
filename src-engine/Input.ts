@@ -136,9 +136,8 @@ export class Input {
     private static callbacks:Dict<Array<any>>;
     private static devices:Array<Device>;
     private static controlConfig:Dict<any>;
-    private static lastMouseInfo:Dict<any>;
-    private static mouseInfo:Dict<any>;
-
+    private static _mouseInfo:Dict<any>;
+    private static _mousemoveEvent:any;
 
     static init(controls?:{ [name:string]: any }) {
         this.axes = {};
@@ -168,7 +167,7 @@ export class Input {
 
         this.controlConfig = controls || {};
         this.addKeyboard();
-        
+
         if (this.controlConfig['mouse']) {
             this.addMouse();
         }
@@ -216,6 +215,17 @@ export class Input {
                 clearTimeout(this.buttonTimeouts[b]);
             }
         }
+
+        if (Input._mousemoveEvent) {
+            Input._mouseInfo.dx = Input._mousemoveEvent.clientX - Input._mouseInfo.x;
+            Input._mouseInfo.dy = Input._mousemoveEvent.clientY - Input._mouseInfo.y;
+            Input._mouseInfo.x = Input._mousemoveEvent.clientX;
+            Input._mouseInfo.y = Input._mousemoveEvent.clientY;
+        } else {
+            Input._mouseInfo.dx = 0;
+            Input._mouseInfo.dy = 0;
+        }
+        Input._mousemoveEvent = null;
     }
 
     static clear() {
@@ -248,11 +258,32 @@ export class Input {
         }
     }
 
+    // TODO add ability to map mouse buttons to logical buttons
+    // TODO add ability to map mouse dx/dy to an axis??
     private static addMouse() {
+        Input._mouseInfo = {
+            x: 0,
+            y: 0,
+            dx: 0,
+            dy: 0,
+            buttons: [
+                ButtonState.UP, ButtonState.UP, ButtonState.UP,
+                ButtonState.UP, ButtonState.UP
+            ]
+        };
         window.addEventListener('mousemove', (e) => {
-            mouseInfo.x = e.clientX;
-            mouseInfo.y = e.clientY;
+            Input._mousemoveEvent = e;
         });
+        window.addEventListener('mousedown', (e) => {
+            Input._mouseInfo.buttons[e.button] = ButtonState.DOWN;
+        });
+        window.addEventListener('mouseup', (e) => {
+            Input._mouseInfo.buttons[e.button] = ButtonState.UP;
+        });
+    }
+
+    static mouseInfo() {
+        return Input._mouseInfo;
     }
 
     private static addKeyboard() {
@@ -279,6 +310,7 @@ export class Input {
             }
         }
 
+        console.log("keyboard map:", b);
         this.devices.push(new KeyboardDevice(b));
     }
 
@@ -327,6 +359,10 @@ export class Input {
     }
 
     static pressed(name):Boolean {
+        if (name.startsWith('mouse.')) {
+            let n = parseInt(name.substr(6), 10);
+            return this._mouseInfo.buttons[n] === ButtonState.DOWN;
+        }
         return (this.button[name] === ButtonState.DOWN);
     }
 
