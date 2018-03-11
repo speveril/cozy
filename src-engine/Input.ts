@@ -216,16 +216,18 @@ export class Input {
             }
         }
 
-        if (Input._mousemoveEvent) {
-            Input._mouseInfo.dx = Input._mousemoveEvent.clientX - Input._mouseInfo.x;
-            Input._mouseInfo.dy = Input._mousemoveEvent.clientY - Input._mouseInfo.y;
-            Input._mouseInfo.x = Input._mousemoveEvent.clientX;
-            Input._mouseInfo.y = Input._mousemoveEvent.clientY;
-        } else {
-            Input._mouseInfo.dx = 0;
-            Input._mouseInfo.dy = 0;
+        if (Input._mouseInfo) {
+            if (Input._mousemoveEvent) {
+                Input._mouseInfo.dx = Input._mousemoveEvent.clientX - Input._mouseInfo.x;
+                Input._mouseInfo.dy = Input._mousemoveEvent.clientY - Input._mouseInfo.y;
+                Input._mouseInfo.x = Input._mousemoveEvent.clientX;
+                Input._mouseInfo.y = Input._mousemoveEvent.clientY;
+            } else {
+                Input._mouseInfo.dx = 0;
+                Input._mouseInfo.dy = 0;
+            }
+            Input._mousemoveEvent = null;
         }
-        Input._mousemoveEvent = null;
     }
 
     static clear() {

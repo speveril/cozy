@@ -84,7 +84,7 @@ export function setup(opts:any, overrides?:any) {
     window['cozyState'].textures = [];
     window['cozyState'].planes = [];
     window['cozyState'].paused = true;
-    window['cozyState'].autoResize = window['cozyState'].config['autoResize'] || false;
+    window['cozyState'].autoResize = window['cozyState'].config.hasOwnProperty('autoResize') ? window['cozyState'].config['autoResize'] : true;
 
     process.chdir(window['cozyState'].gameDir.path);
     Input.init(window['cozyState'].config['controls']);
@@ -275,7 +275,7 @@ export function onResize(event?:any) {
 
 export function setZoom(z:number):void {
     if (window['cozyState'].config['autoResize']) {
-        throw new Error("Do not call setZoom if the gmae has autoResize turned on.");
+        throw new Error("Do not call setZoom if the game has autoResize turned on.");
     }
     window['cozyState'].sizeMultiplier = z;
     fixZoom();
