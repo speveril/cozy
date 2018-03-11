@@ -13,5 +13,12 @@
     "typedoc": "^0.7.1",
     "typescript": "^2.3.3",
     "webpack": "^3.6.0"
+  },
+  "devDependencies": {
+    "electron": "1.8.3",
+    "electron-packager": "11.1.0"
+  },
+  "scripts": {
+    "start": "electron ./src-ide"
   }
 }

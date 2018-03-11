@@ -1,11 +1,10 @@
 'use strict';
+
 const Electron = require('electron');
 const FS = require('fs-extra');
 const Path = require('path');
 const Process = require('process');
 const WindowStateKeeper = require('electron-window-state');
-
-process.chdir(Path.join(Path.dirname(process.execPath), ".."));
 
 Electron.app.on('ready', setup);
 
