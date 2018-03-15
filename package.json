@@ -19,6 +19,7 @@
     "electron-packager": "11.1.0"
   },
   "scripts": {
-    "start": "electron ./src-ide"
+    "start": "electron ./src-ide",
+    "build": "node build.js"
   }
 }
