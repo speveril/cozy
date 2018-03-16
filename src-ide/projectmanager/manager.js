@@ -134,7 +134,7 @@ window.Manager = {
             // }
         }
 
-        this.output("Cozy project Manager loaded.\n");
+        this.output("Cozy Project Manager loaded.\n");
     },
 
     addLibrary: function() {
