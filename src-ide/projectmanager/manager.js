@@ -357,7 +357,7 @@ window.Manager = {
                 }
             },
             files: [
-                Path.resolve(Path.join(IDEDIR, "..", "src-engine", "lib", "electron.d.ts")),
+                Path.resolve(Path.join(IDEDIR, "..", "node_modules", "electron", "electron.d.ts")),
                 Path.resolve(Path.join(IDEDIR, "Cozy.d.ts")),
                 Path.resolve(srcRoot)
             ]
@@ -621,7 +621,7 @@ window.Manager = {
                     '--target', 'ES6',
                     '--name', 'Cozy Engine',
                     // '--includeDeclarations',
-                    srcPath, 'src-engine/lib/electron.d.ts'
+                    srcPath, 'node_modules/electron/electron.d.ts'
                 ]
             ).then(() => {
                 this.output("<span style='color:#0f0'>[ Success ]</span>\n");

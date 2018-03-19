@@ -10,6 +10,7 @@
         "declarationDir": ".."
     },
     "files": [
+        "../node_modules/electron/electron.d.ts",
         "Cozy.ts"
     ]
 }
