@@ -367,7 +367,7 @@ window.Manager = {
 
         let wpcfg = {
             entry: [
-                Path.resolve(Path.join(buildPath, 'main.ts'))
+                srcRoot
             ],
             externals: {
                 Cozy: 'Cozy'

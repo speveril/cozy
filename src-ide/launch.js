@@ -89,10 +89,12 @@ function play(path, override, debug) {
         // window.toggleDevTools();
 
         params['game'] = path;
-        params['enginePath'] = 'bin-win32-x64';
         params['width'] = params['width'] || 320;
         params['height'] = params['height'] || 240;
         params['debug'] = debug;
+
+        params['enginePath'] = 'node_modules/electron/dist';
+        if (process.platform === 'darwin') params['enginePath'] += '/Contents/Resources'
 
         window.once('close', () => {
             resolve();

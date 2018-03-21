@@ -23,7 +23,6 @@ class CozyState {
     // let scene:Entity;
     public static gamePath:string;
     public static gameDir:Directory = null;
-    public static engineDir:Directory = null;
     public static userDataDir:Directory = null;
 
     public static enginePath:string;
@@ -58,9 +57,16 @@ export function setup(opts:any, overrides?:any) {
     // see
     //  http://stackoverflow.com/a/26227660
     //  https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html
-    var userdataStem = process.env.APPDATA + '\\' || (process.platform == 'darwin' ? process.env.HOME + 'Library/Application Support/' : process.env.HOME + "/.");
+    var userdataStem = '';
 
-    window['cozyState'].engineDir = new Directory(path.join(process.cwd(), opts.enginePath, "resources", "app"));
+    if (process.platform === 'darwin') { // MacOS
+        userdataStem = process.env.HOME + '/Library/Application Support/';
+    } else if (process.env.APPDATA) { // Windows
+        userdataStem = process.env.APPDATA + '\\';
+    } else { // Linux
+        userdataStem = process.env.HOME + "/.";
+    }
+
     window['cozyState'].gameDir = new Directory(window['cozyState'].gamePath);
     console.log("SET GAMEDIR");
 
@@ -93,8 +99,9 @@ export function setup(opts:any, overrides?:any) {
     var multX = screen.availWidth / window['cozyState'].config['width'],
         multY = screen.availHeight/ window['cozyState'].config['height'],
         mult  = Math.floor(Math.min(multX, multY));
-    window['cozyState'].browserWindow.setMinimumSize(window['cozyState'].config['width'], window['cozyState'].config['height']);
-    window['cozyState'].browserWindow.setContentSize(window['cozyState'].config['width'] * mult, window['cozyState'].config['height'] * mult);
+    // window['cozyState'].browserWindow.setMinimumSize(window['cozyState'].config['width'], window['cozyState'].config['height']);
+    //  this next line fails on MacOS
+    // window['cozyState'].browserWindow.setContentSize(window['cozyState'].config['width'] * mult, window['cozyState'].config['height'] * mult);
     window['cozyState'].browserWindow.center();
 
     window.addEventListener('resize', (e) => onResize(e));
@@ -112,10 +119,11 @@ export function setup(opts:any, overrides?:any) {
     }
 
     // debugging
-    if (window['cozyState'].debug) { // ~ key, opens console
-        window.addEventListener('onkeydown', (e) => {
-            if (e['keyCode'] === 192) {
-                window['cozyState'].browserWindow['toggleDevTools']();
+    if (window['cozyState'].debug) { 
+        window.addEventListener('keyup', (e) => {
+            if (e['keyCode'] === 192) { // ~ key, opens console
+                window['cozyState'].browserWindow['openDevTools']();
+                window['cozyState'].browserWindow['devToolsWebContents'].focus();
             }
         });
     }
