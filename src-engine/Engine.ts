@@ -471,6 +471,26 @@ export function mapO(o, f) {
 }
 
 /**
+Given an array, shuffle the elements of that array in-place and return it.
+This is a Fisher-Yates shuffle. https://en.wikipedia.org/wiki/Fisher-Yates_shuffle
+@param {array}    a         The array to shuffle
+@returns {array}            The array, now shuffled.
+**/
+
+export function shuffle(a) {
+    let total = a.length;
+
+    for (let pivot = 0; pivot < total; pivot++) {
+        let select = (Math.random() * (total - pivot)) | 0;
+        let tmp = a[pivot];
+        a[pivot] = a[select];
+        a[select] = tmp;
+    }
+
+    return a;
+}
+
+/**
 Given a sorted array, a, insert a new element e, into it, in-place. If cmp is
 supplied, use it to compare values.
 @param {array}    a         The sorted array
