@@ -98,15 +98,6 @@ export function setup(opts:any, overrides?:any) {
     process.chdir(window['cozyState'].gameDir.path);
     Input.init(window['cozyState'].config['controls']);
 
-    // set up window
-    var multX = screen.availWidth / window['cozyState'].config['width'],
-        multY = screen.availHeight/ window['cozyState'].config['height'],
-        mult  = Math.floor(Math.min(multX, multY));
-    // window['cozyState'].browserWindow.setMinimumSize(window['cozyState'].config['width'], window['cozyState'].config['height']);
-    //  this next line fails on MacOS
-    // window['cozyState'].browserWindow.setContentSize(window['cozyState'].config['width'] * mult, window['cozyState'].config['height'] * mult);
-    window['cozyState'].browserWindow.center();
-
     window.addEventListener('resize', (e) => onResize(e));
     window.addEventListener('blur', (e) => {
         if (getFullScreen()) {
@@ -166,7 +157,14 @@ export function run(g) {
     window['cozyState'].Game = g;
 
     let doLoad = () => {
+        // set up window
+        var multX = screen.availWidth / window['cozyState'].config['width'],
+            multY = screen.availHeight/ window['cozyState'].config['height'],
+            mult  = Math.floor(Math.min(multX, multY));
+        window['cozyState'].browserWindow.setContentSize(window['cozyState'].config['width'] * mult, window['cozyState'].config['height'] * mult);
+        window['cozyState'].browserWindow.center();
         window['cozyState'].Game.start();
+
         onResize();
         requestAnimationFrame(frame);
     };
