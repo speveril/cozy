@@ -50,7 +50,10 @@ export function setup(opts:any, overrides?:any) {
         });
     }
 
-    if (opts.integerUpscale) {
+    if (!window['cozyState'].hasOwnProperty('integerUpscale')) {
+        window['cozyState'].integerUpscale = true;
+    }
+    if (window['cozyState'].integerUpscale) {
         document.body.classList.add('integerUpscale');
     }
 
@@ -161,18 +164,19 @@ export function setup(opts:any, overrides?:any) {
 
 export function run(g) {
     window['cozyState'].Game = g;
-    if (window['cozyState'].Game.load) {
-        Promise.all(window['cozyState'].Game.load())
-            .then(() => {
-                window['cozyState'].Game.start();
-                onResize();
-                requestAnimationFrame(frame);
-            })
-        ;
-    } else {
+
+    let doLoad = () => {
         window['cozyState'].Game.start();
         onResize();
         requestAnimationFrame(frame);
+    };
+
+    if (window['cozyState'].Game.load) {
+        Promise.all(window['cozyState'].Game.load())
+            .then(doLoad)
+        ;
+    } else {
+        doLoad();
     }
 }
 

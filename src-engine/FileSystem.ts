@@ -81,7 +81,7 @@ export class File {
     get dir():Directory                     { return new Directory(this.dirname);  }
     get path():string                       { return this.filepath; }
     get exists():boolean                    { return fs.existsSync(this.filepath); }
-    get url():string                        { return "file:///" + path.resolve(this.relativePath(File.documentRoot)).replace(/\\/g, "/"); }
+    get url():string                        { return "file:///" + this.path.replace(/\\/g, "/"); }
 
     stat():any {
         return fs.statSync(this.filepath);
