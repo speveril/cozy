@@ -196,7 +196,7 @@ export class SFX {
     constructor(filename:string) {
         this.internalSound = new Sound(filename, {
             loop: false,
-            gain: Audio.musicGain
+            gain: Audio.sfxGain
         });
     }
 

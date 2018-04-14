@@ -34,7 +34,7 @@ class CozyState {
 export function setup(opts:any, overrides?:any) {
     window['cozyState'] = CozyState;
 
-    console.log("Creating Cozy Object...", opts);
+    console.log("Creating Cozy Object...", opts, overrides);
 
     window['cozyState'].config = opts;
     window['cozyState'].debug = !!opts.debug;
