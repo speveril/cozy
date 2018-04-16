@@ -113,18 +113,18 @@ let GameOverlay = {
     editData: function() {
         Electron.ipcRenderer.send('control-message', {
             command: 'edit',
-            path: this.gamepath,
+            path: gamepath,
         });
     },
 
     export: function() {
         let dp = $create('<input class="directory-picker hidden" type="file" webkitdirectory>');
         dp.onchange = () => {
-            var outputPath = dirSelector.files[0].path;
+            var outputPath = dp.files[0].path;
             var existingFiles = FS.readdirSync(outputPath);
 
-            dirSelector.onchange = null;
-            dirSelector.value = null;
+            dp.onchange = null;
+            dp.value = null;
 
             if (existingFiles.length > 0) {
                 if (!confirm(outputPath + " isn't empty, and some files may be overwritten. Continue?")) {
@@ -132,12 +132,10 @@ let GameOverlay = {
                 }
             }
 
-            li.classList.add('compiling');
-
             Manager.output("");
             GameOverlay.compile()
                 .then(() => {
-                    return Manager.export(path, outputPath);
+                    return Manager.export(gamepath, outputPath);
                 });
         }
         dp.click();

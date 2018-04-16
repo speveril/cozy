@@ -1,5 +1,6 @@
 'use strict';
 
+const Child = require('child_process');
 const Electron = require('electron');
 const FS = require('fs-extra');
 const Path = require('path');
@@ -31,16 +32,10 @@ function setup() {
 
     Electron.ipcMain.on('control-message', (event, arg) => {
         var command = arg.command;
-        // output("-> " + JSON.stringify(arg));
 
         switch(command) {
             case 'play':
-                play(arg.path, arg.override || {}, arg.debug || false)
-                    .then(() => {
-                        output("<span style='color:#0f0'>[ Done ]</span>\n");
-                    }, (e) => {
-                        output("<span style='color:red'>[ Error: " + e.toString() + " ]</span>\n");
-                    })
+                play(arg.path, arg.override || {}, arg.debug || false);
                 break;
             case 'edit':
                 openEditor(arg.path);
@@ -59,53 +54,87 @@ function setup() {
 }
 
 function play(path, override, debug) {
-    path = path || '';
-
     return new Promise((resolve, reject) => {
-        var params;
-
-        try {
-            params = JSON.parse(FS.readFileSync(Path.join(path, "config.json")));
-        } catch(e) {
-            output("Couldn't load game in " + Path.join(process.cwd(), path) + ".");
-            output("<span style='color:red'>" + e.toString() + "</span>");
-            reject(e);
-        }
-
-        output("<span style='color:white'>[ Launching " + (params.title || path) + " ]</span>");
+        output("<span style='color:white'>[ Launching " + (path) + " ]</span>");
         output(">" + path);
 
-        var window = new Electron.BrowserWindow({
-            'minWidth':           20,
-            'minHeight':          20,
-            'width':              params['width'],
-            'height':             params['height'],
-            'title':              params['title'] || 'Cozy',
-            'fullscreen':         false,
-            'icon':               params['icon'] ? Path.join(process.cwd(), path, params['icon']) : undefined,
-            'autoHideMenuBar':    true,
-            'useContentSize':     true
-        });
-        // window.toggleDevTools();
+        let args = {
+            path: path,
+            override: override,
+            debug: debug
+        };
 
-        params['game'] = path;
-        params['width'] = params['width'] || 320;
-        params['height'] = params['height'] || 240;
-        params['debug'] = debug;
+        let child_params = {
+            stdio: [ 'ignore', 'pipe', 'pipe', 'ipc' ],
+            cwd: Path.resolve(Path.join(__dirname, '..'))
+        };
 
-        params['enginePath'] = 'node_modules/electron/dist';
-        if (process.platform === 'darwin') params['enginePath'] += '/Contents/Resources'
+        let childproc = Child.spawn(process.execPath, [ 'src-player/', JSON.stringify(args) ], child_params);
 
-        window.once('close', () => {
-            resolve();
-        });
+        let stdout = '', stderr = '';
+        childproc.stdout.on('data', (s) => stdout += s.toString().trim() + "\n");
+        childproc.stderr.on('data', (s) => stderr += s.toString().trim() + "\n");
 
-        window.loadURL("file://" + __dirname + "/game.html");
-
-        window.webContents.once('did-finish-load', () => {
-            window.webContents.send('start', params, override);
+        childproc.on('exit', (returnCode) => {
+            if (!returnCode) {
+                output("<span style='color:#0f0'>[ Done ]</span>\n");
+                resolve();
+            } else {
+                output(stderr);
+                output("<span style='color:red'>[ Error: " + returnCode + " ]</span>\n");
+                reject();
+            }
         });
     });
+
+
+    // path = path || '';
+
+    // return new Promise((resolve, reject) => {
+    //     var params;
+
+    //     try {
+    //         params = JSON.parse(FS.readFileSync(Path.join(path, "config.json")));
+    //     } catch(e) {
+    //         output("Couldn't load game in " + Path.join(process.cwd(), path) + ".");
+    //         output("<span style='color:red'>" + e.toString() + "</span>");
+    //         reject(e);
+    //     }
+
+    //     output("<span style='color:white'>[ Launching " + (params.title || path) + " ]</span>");
+    //     output(">" + path);
+
+    //     var window = new Electron.BrowserWindow({
+    //         'minWidth':           20,
+    //         'minHeight':          20,
+    //         'width':              params['width'],
+    //         'height':             params['height'],
+    //         'title':              params['title'] || 'Cozy',
+    //         'fullscreen':         false,
+    //         'icon':               params['icon'] ? Path.join(process.cwd(), path, params['icon']) : undefined,
+    //         'autoHideMenuBar':    true,
+    //         'useContentSize':     true
+    //     });
+    //     // window.toggleDevTools();
+
+    //     params['game'] = path;
+    //     params['width'] = params['width'] || 320;
+    //     params['height'] = params['height'] || 240;
+    //     params['debug'] = debug;
+
+    //     params['enginePath'] = 'node_modules/electron/dist';
+    //     if (process.platform === 'darwin') params['enginePath'] += '/Contents/Resources'
+
+    //     window.once('close', () => {
+    //         resolve();
+    //     });
+
+    //     window.loadURL("file://" + __dirname + "/game.html");
+
+    //     window.webContents.once('did-finish-load', () => {
+    //         window.webContents.send('start', params, override);
+    //     });
+    // });
 }
 
 function viewDocs() {

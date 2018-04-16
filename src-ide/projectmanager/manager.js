@@ -3,14 +3,14 @@
 const FS = require('fs-extra');
 const Child = require('child_process');
 const Path = require('path');
+const packager = require('electron-packager');
 const Process = require('process');
 const Webpack = require('webpack');
 
 let gameLibraries = JSON.parse(localStorage.getItem('gameLibraries')) || [];
 
-// TODO get these from current platform + whether this is a "release" or not
-const ENGINEDIR = Path.resolve('bin-win32-x64');
 const IDEDIR = Path.resolve('src-ide');
+const PLAYERDIR = Path.resolve('src-player');
 
 const EngineStatus = require('./EngineStatus');
 const Library = require('./Library');
@@ -37,7 +37,7 @@ window.Manager = {
         EngineStatus.set('checking');
 
         var lastCompilation = 0;
-        var cozyJS = Path.join(IDEDIR, "Cozy.js")
+        var cozyJS = Path.join(PLAYERDIR, "Cozy.js")
         if (FS.existsSync(cozyJS)) {
             lastCompilation = FS.statSync(cozyJS).mtime.getTime();
         }
@@ -358,7 +358,7 @@ window.Manager = {
             },
             files: [
                 Path.resolve(Path.join(IDEDIR, "..", "node_modules", "electron", "electron.d.ts")),
-                Path.resolve(Path.join(IDEDIR, "Cozy.d.ts")),
+                Path.resolve(Path.join(IDEDIR, "..", "src-player", "Cozy.d.ts")),
                 Path.resolve(srcRoot)
             ]
         };
@@ -430,9 +430,9 @@ window.Manager = {
             .then(() => {
                 this.output(" - Built engine");
                 try {
-                    FS.renameSync(Path.join('build', 'cozy-build.js'), Path.join(IDEDIR, 'Cozy.js'))
-                    FS.renameSync(Path.join('build', 'cozy-build.d.ts'), Path.join(IDEDIR, 'Cozy.d.ts'))
-                    // FS.renameSync(Path.join(IDEDIR, 'cozy-build.js.map'), Path.join(IDEDIR, 'Cozy.js.map'))
+                    FS.renameSync(Path.join('build', 'cozy-build.js'), Path.join(PLAYERDIR, 'Cozy.js'))
+                    FS.renameSync(Path.join('build', 'cozy-build.d.ts'), Path.join(PLAYERDIR, 'Cozy.d.ts'))
+                    // FS.renameSync(Path.join(PLAYERDIR, 'cozy-build.js.map'), Path.join(PLAYERDIR, 'Cozy.js.map'))
                     this.output("<span style='color:#0f0'>[ Success ]</span>\n");
                 } catch (e) {
                     this.output(e);
@@ -462,148 +462,225 @@ window.Manager = {
 
         var displayName = scrub(config.title ? `${config.title} (${srcPath})` : srcPath);
 
-        return new Promise((resolve, reject) => {
-            let fail = (e) => {
-                this.output(e);
-                this.output("<span style='color:red'>[ FAILURE ]</span>\n");
-                reject(e);
-                throw e;
-            }
+        var cp = (src, dest, filt) => {
+            this.output(`Copy ${src} -> ${dest}`);
+            FS.copySync(src, dest, {
+                clobber: true,
+                preserveTimestamps: true,
+                filter: filt
+            });
+        };
 
-            var cp = (src, dest, filt) => {
-                this.output(`Copy ${src} -> ${dest}`);
-                try {
-                    FS.copySync(src, dest, {
-                        clobber: true,
-                        preserveTimestamps: true,
-                        filter: filt
+        let packageConfig = {
+            dir: srcPath,
+            out: outPath,
+            electronVersion: process.versions.electron,
+            name: config.title ? config.title : 'Untitled Cozy Game',
+            executableName: exportConfig.executable ? exportConfig.executable : 'game',
+            ignore: [], // TODO no-ship config
+            // asar: true, // TODO
+            afterCopy: [
+                (buildPath, electronVersion, platform, arch, callback) => {
+                    var paths = [
+                        Path.join(buildPath, "lib"),
+                        Path.join(buildPath, "g")
+                    ];
+
+                    paths.forEach((p) => {
+                        FS.ensureDir(p)
                     });
-                } catch (e) {
-                    fail(e);
-                }
-            }
 
-            this.output(`<hr>\n<span style="color:white">[ Exporting ${displayName}]</span>`);
+                    // TODO ideally a lot of this stuff would all be packed into an asar?
+                    var files = [
+                        'Cozy.js', 'game.css', 'game.html',
+                        Path.join('lib','glob.js'),
+                        Path.join('lib','pixi.min.js'),
+                    ];
 
-            var paths = [
-                Path.join(outPath, "resources"),
-                Path.join(outPath, "resources", "app"),
-                Path.join(outPath, "resources", "app", "lib"),
-                Path.join(outPath, "resources", "app", "g")
-            ];
+                    files.forEach((f) => cp(Path.join(IDEDIR, f), Path.join(buildPath, f.replace(".min.", "."))));
 
-            paths.forEach((p) => {
-                FS.ensureDir(p)
-            });
+                    // TODO put stuff into the package information; name, version, etc
+                    cp(Path.join(IDEDIR, 'x_package.json'), Path.join(buildPath, 'package.json'));
 
-            FS.readdirSync(ENGINEDIR).forEach((f) => {
-                if (!FS.statSync(Path.join(ENGINEDIR, f)).isDirectory()) {
-                    if (f === 'cozy.exe' && exportConfig.executable) {
-                        cp(Path.join(ENGINEDIR, f), Path.join(outPath, exportConfig.executable + '.exe'));
-                    } else {
-                        cp(Path.join(ENGINEDIR, f), Path.join(outPath, f));
+                    try {
+                        config['width'] = config['width'] || 320;
+                        config['height'] = config['height'] || 240;
+                        config['title'] = config['title'] || 'Cozy';
+                        config['fullscreen'] = config['fullscreen'] || false;
+
+                        let launchJS = FS.readFileSync(Path.join(IDEDIR, 'x_launch.js')).toString();
+                        launchJS = launchJS.replace('$$_PARAMS_$$', JSON.stringify(config));
+                        FS.writeFileSync(Path.join(buildPath, 'launch.js'), launchJS);
+                    } catch(e) {
+                        console.error("Couldn't write launch.js");
                     }
+                    callback();
                 }
-            });
+            ],
+        };
 
-            process.noAsar = true; // turn off asar support so it will copy these as files
-            FS.readdirSync(Path.join(ENGINEDIR, "resources")).forEach((f) => {
-                if (f.match(/.asar$/)) {
-                    cp(Path.join(ENGINEDIR, "resources", f), Path.join(outPath, "resources", f));
-                }
-            });
+        if (config.icon) {
+            // TODO convert to the appropriate format, and
+            //packageConfig.icon = iconpath;
+        }
+
+        if (process.platform === 'darwin') {
+            // TODO
+            //packageConfig.osxSign = ;
+        }
+        if (process.platform === 'win32') {
+            // TODO
+            //packageConfig.win32metadata = ;
+        }
+
+        process.noAsar = true;
+        return packager(packageConfig).then((appPaths) => {
             process.noAsar = false;
-
-            var appPath = Path.join(ENGINEDIR, "resources", "app");
-            var outAppPath = Path.join(outPath, "resources", "app");
-
-            var files = [
-                'Cozy.js', 'game.css', 'game.html',
-                Path.join('lib','glob.js'),
-                Path.join('lib','pixi.min.js'),
-            ];
-
-            files.forEach((f) => cp(Path.join(appPath, f), Path.join(outAppPath, f.replace(".min.", "."))));
-
-            // TODO put stuff into the package information; name, version, etc
-            cp(Path.join(appPath, 'x_package.json'), Path.join(outAppPath, 'package.json'));
-
-            try {
-                config['width'] = config['width'] || 320;
-                config['height'] = config['height'] || 240;
-                config['title'] = config['title'] || 'Cozy';
-                config['fullscreen'] = config['fullscreen'] || false;
-
-                let launchJS = FS.readFileSync(Path.join(appPath, 'x_launch.js')).toString();
-                launchJS = launchJS.replace('$$_PARAMS_$$', JSON.stringify(config));
-                FS.writeFileSync(Path.join(outAppPath, 'launch.js'), launchJS);
-            } catch(e) {
-                fail(e);
-            }
-
-            var exclude = exportConfig.exclude || [];
-            exclude.push(".ts$", ".js.map$");
-            for (var i = 0; i < exclude.length; i++) {
-                exclude[i] = new RegExp(exclude[i]);
-            }
-
-            cp(srcPath, Path.join(outAppPath, "g"), (f) => {
-                for (var i = 0; i < exclude.length; i++) {
-                    if (f.match(exclude[i])) return false;
-                }
-                return true;
-            });
-
-            this.output("-- Done copying.");
-
-            // TODO more steps?
-            //  - uglifyjs
-            //  - concat css
-            //  - definable steps
-
-            let gameexec = (exportConfig.executable ? exportConfig.executable : 'cozy') + '.exe';
-            let editcommands = [
-                ['--set-version-string', '"OriginalFilename"', `"${gameexec}"`]
-            ];
-
-            if (config.icon) editcommands.push(['--set-icon', Path.join(srcPath, config.icon)]);
-            if (exportConfig.copyright) editcommands.push(['--set-version-string', '"LegalCopyright"', `"${exportConfig.copyright}"`]);
-            if (config.title) {
-                editcommands.push(['--set-version-string', '"ProductName"', `"${config.title}"`]);
-                editcommands.push(['--set-version-string', '"FileDescription"', `"${config.title}"`]);
-            }
-            if (config.version) {
-                editcommands.push(['--set-product-version', `"${config.version}"`]);
-                editcommands.push(['--set-file-version', `"${config.version}"`]);
-            }
-
-
-            let gameexecpath = Path.join(outPath, gameexec);
-            let rcedit = Path.join(ENGINEDIR, 'tool', 'rcedit.exe');
-            let command = 0;
-
-            // I'd use execFileSync but you can't capture stderr with that because everything is garbage.
-            let doNext = () => {
-                if (command >= editcommands.length) {
-                    this.output("<span style='color:#0f0'>[ Success ]</span>\n");
-                    resolve();
-                    return;
-                }
-
-                let params = editcommands[command++];
-                this.output(`\n> ${rcedit} "${gameexecpath}" ${params.join(' ')}`);
-                Child.exec(`"${rcedit}" "${gameexecpath}" ${params.join(' ')}`, (error, stdout, stderr) => {
-                    if (stdout) this.output(stdout);
-                    if (stderr) this.output(stderr);
-                    if (!error) {
-                        doNext();
-                    } else {
-                        fail(error);
-                    }
-                });
-            };
-            doNext();
+            console.log("Success!", appPaths);
         });
+
+        // return new Promise((resolve, reject) => {
+        //     let fail = (e) => {
+        //         this.output(e);
+        //         this.output("<span style='color:red'>[ FAILURE ]</span>\n");
+        //         reject(e);
+        //         throw e;
+        //     }
+
+        //     var cp = (src, dest, filt) => {
+        //         this.output(`Copy ${src} -> ${dest}`);
+        //         try {
+        //             FS.copySync(src, dest, {
+        //                 clobber: true,
+        //                 preserveTimestamps: true,
+        //                 filter: filt
+        //             });
+        //         } catch (e) {
+        //             fail(e);
+        //         }
+        //     }
+
+        //     this.output(`<hr>\n<span style="color:white">[ Exporting ${displayName}]</span>`);
+
+        //     var paths = [
+        //         Path.join(outPath, "resources"),
+        //         Path.join(outPath, "resources", "app"),
+        //         Path.join(outPath, "resources", "app", "lib"),
+        //         Path.join(outPath, "resources", "app", "g")
+        //     ];
+
+        //     paths.forEach((p) => {
+        //         FS.ensureDir(p)
+        //     });
+
+        //     FS.readdirSync(ENGINEDIR).forEach((f) => {
+        //         if (!FS.statSync(Path.join(ENGINEDIR, f)).isDirectory()) {
+        //             if (f === 'cozy.exe' && exportConfig.executable) {
+        //                 cp(Path.join(ENGINEDIR, f), Path.join(outPath, exportConfig.executable + '.exe'));
+        //             } else {
+        //                 cp(Path.join(ENGINEDIR, f), Path.join(outPath, f));
+        //             }
+        //         }
+        //     });
+
+        //     process.noAsar = true; // turn off asar support so it will copy these as files
+        //     FS.readdirSync(Path.join(ENGINEDIR, "resources")).forEach((f) => {
+        //         if (f.match(/.asar$/)) {
+        //             cp(Path.join(ENGINEDIR, "resources", f), Path.join(outPath, "resources", f));
+        //         }
+        //     });
+        //     process.noAsar = false;
+
+        //     var appPath = Path.join(ENGINEDIR, "resources", "app");
+        //     var outAppPath = Path.join(outPath, "resources", "app");
+
+        //     var files = [
+        //         'Cozy.js', 'game.css', 'game.html',
+        //         Path.join('lib','glob.js'),
+        //         Path.join('lib','pixi.min.js'),
+        //     ];
+
+        //     files.forEach((f) => cp(Path.join(appPath, f), Path.join(outAppPath, f.replace(".min.", "."))));
+
+        //     // TODO put stuff into the package information; name, version, etc
+        //     cp(Path.join(appPath, 'x_package.json'), Path.join(outAppPath, 'package.json'));
+
+        //     try {
+        //         config['width'] = config['width'] || 320;
+        //         config['height'] = config['height'] || 240;
+        //         config['title'] = config['title'] || 'Cozy';
+        //         config['fullscreen'] = config['fullscreen'] || false;
+
+        //         let launchJS = FS.readFileSync(Path.join(appPath, 'x_launch.js')).toString();
+        //         launchJS = launchJS.replace('$$_PARAMS_$$', JSON.stringify(config));
+        //         FS.writeFileSync(Path.join(outAppPath, 'launch.js'), launchJS);
+        //     } catch(e) {
+        //         fail(e);
+        //     }
+
+        //     var exclude = exportConfig.exclude || [];
+        //     exclude.push(".ts$", ".js.map$");
+        //     for (var i = 0; i < exclude.length; i++) {
+        //         exclude[i] = new RegExp(exclude[i]);
+        //     }
+
+        //     cp(srcPath, Path.join(outAppPath, "g"), (f) => {
+        //         for (var i = 0; i < exclude.length; i++) {
+        //             if (f.match(exclude[i])) return false;
+        //         }
+        //         return true;
+        //     });
+
+        //     this.output("-- Done copying.");
+
+        //     // TODO more steps?
+        //     //  - uglifyjs
+        //     //  - concat css
+        //     //  - definable steps
+
+        //     let gameexec = (exportConfig.executable ? exportConfig.executable : 'cozy') + '.exe';
+        //     let editcommands = [
+        //         ['--set-version-string', '"OriginalFilename"', `"${gameexec}"`]
+        //     ];
+
+        //     if (config.icon) editcommands.push(['--set-icon', Path.join(srcPath, config.icon)]);
+        //     if (exportConfig.copyright) editcommands.push(['--set-version-string', '"LegalCopyright"', `"${exportConfig.copyright}"`]);
+        //     if (config.title) {
+        //         editcommands.push(['--set-version-string', '"ProductName"', `"${config.title}"`]);
+        //         editcommands.push(['--set-version-string', '"FileDescription"', `"${config.title}"`]);
+        //     }
+        //     if (config.version) {
+        //         editcommands.push(['--set-product-version', `"${config.version}"`]);
+        //         editcommands.push(['--set-file-version', `"${config.version}"`]);
+        //     }
+
+
+        //     let gameexecpath = Path.join(outPath, gameexec);
+        //     let rcedit = Path.join(ENGINEDIR, 'tool', 'rcedit.exe');
+        //     let command = 0;
+
+        //     // I'd use execFileSync but you can't capture stderr with that because everything is garbage.
+        //     let doNext = () => {
+        //         if (command >= editcommands.length) {
+        //             this.output("<span style='color:#0f0'>[ Success ]</span>\n");
+        //             resolve();
+        //             return;
+        //         }
+
+        //         let params = editcommands[command++];
+        //         this.output(`\n> ${rcedit} "${gameexecpath}" ${params.join(' ')}`);
+        //         Child.exec(`"${rcedit}" "${gameexecpath}" ${params.join(' ')}`, (error, stdout, stderr) => {
+        //             if (stdout) this.output(stdout);
+        //             if (stderr) this.output(stderr);
+        //             if (!error) {
+        //                 doNext();
+        //             } else {
+        //                 fail(error);
+        //             }
+        //         });
+        //     };
+        //     doNext();
+        // });
     },
 
     doc: function(srcPath, outputPath) {
