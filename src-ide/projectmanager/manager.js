@@ -6,6 +6,7 @@ const Path = require('path');
 const packager = require('electron-packager');
 const Process = require('process');
 const Webpack = require('webpack');
+const glob = require('glob');
 
 let gameLibraries = JSON.parse(localStorage.getItem('gameLibraries')) || [];
 
@@ -362,10 +363,8 @@ window.Manager = {
                 Path.resolve(srcRoot)
             ]
         };
-        let tsconfigPath = Path.join(buildPath, "tsconfig.json");
-        FS.writeFileSync(tsconfigPath, JSON.stringify(tsconfig));
 
-        let wpcfg = {
+        let wpconfig = {
             entry: [
                 srcRoot
             ],
@@ -379,9 +378,33 @@ window.Manager = {
                 libraryTarget: 'global',
                 umdNamedDefine: true
             },
+            resolve: {
+                alias: {},
+                extensions: ['.js','.json','.ts']
+            }
         };
+        
+        if (gameconfig.lib) {
+            for (let key of Object.keys(gameconfig.lib)) {
+                let path = Path.resolve(Path.join(buildPath, gameconfig.lib[key]));
+                let libconfig;
+                try {
+                    libconfig = JSON.parse(FS.readFileSync(Path.join(path, "lib.json")));
+                } catch(e) {
+                    this.output("<span style='color:red'>[ ERROR (" + e.toString() + ") ]</span>\n");
+                    return Promise.reject();
+                }
+                tsconfig.compilerOptions.paths[key] = [Path.join(path, libconfig.main)];
+                wpconfig.resolve.alias[key + '$'] = Path.join(path, libconfig.main);
+                wpconfig.resolve.alias[key] = path;
+            }
+        }
 
-        return this.fork(Path.join(IDEDIR, 'pack'), [ JSON.stringify(wpcfg) ])
+        console.log('tsconfig', tsconfig);
+        let tsconfigPath = Path.join(buildPath, "tsconfig.json");
+        FS.writeFileSync(tsconfigPath, JSON.stringify(tsconfig));
+
+        return this.fork(Path.join(IDEDIR, 'pack'), [ JSON.stringify(wpconfig) ])
             .then(() => {
                 this.output(" - Built " + Path.join(buildPath, 'main.js'));
                 try {
@@ -483,7 +506,7 @@ window.Manager = {
                 (buildPath, electronVersion, platform, arch, callback) => {
                     var paths = [
                         Path.join(buildPath, "lib"),
-                        Path.join(buildPath, "g")
+                        // Path.join(buildPath, "g")
                     ];
 
                     paths.forEach((p) => {
@@ -494,13 +517,35 @@ window.Manager = {
                     var files = [
                         'Cozy.js', 'game.css', 'game.html',
                         Path.join('lib','glob.js'),
-                        Path.join('lib','pixi.min.js'),
+                        Path.join('lib','libopenmpt.js'),
+                        Path.join('lib','libopenmpt.js.mem'),
                     ];
 
-                    files.forEach((f) => cp(Path.join(IDEDIR, f), Path.join(buildPath, f.replace(".min.", "."))));
+                    files.forEach((f) => cp(Path.join(PLAYERDIR, f), Path.join(buildPath, f.replace(".min.", "."))));
+
+                    if (config['lib']) {
+                        for (let key of Object.keys(config['lib'])) {
+                            let basename = Path.basename(config['lib'][key]);
+                            cp(Path.join(srcPath, config['lib'][key]), Path.join(buildPath, 'lib', basename));
+                            config['lib'][key] = 'lib/' + basename;
+                        }
+                    }
 
                     // TODO put stuff into the package information; name, version, etc
-                    cp(Path.join(IDEDIR, 'x_package.json'), Path.join(buildPath, 'package.json'));
+                    cp(Path.join(PLAYERDIR, 'x_package.json'), Path.join(buildPath, 'package.json'));
+
+                    // var exclude = exportConfig.exclude || [];
+                    // exclude.push(".ts$", ".js.map$");
+                    // for (var i = 0; i < exclude.length; i++) {
+                    //     exclude[i] = new RegExp(exclude[i]);
+                    // }
+
+                    // cp(srcPath, Path.join(buildPath, "g"), (f) => {
+                    //     for (var i = 0; i < exclude.length; i++) {
+                    //         if (f.match(exclude[i])) return false;
+                    //     }
+                    //     return true;
+                    // });
 
                     try {
                         config['width'] = config['width'] || 320;
@@ -508,7 +553,7 @@ window.Manager = {
                         config['title'] = config['title'] || 'Cozy';
                         config['fullscreen'] = config['fullscreen'] || false;
 
-                        let launchJS = FS.readFileSync(Path.join(IDEDIR, 'x_launch.js')).toString();
+                        let launchJS = FS.readFileSync(Path.join(PLAYERDIR, 'x_launch.js')).toString();
                         launchJS = launchJS.replace('$$_PARAMS_$$', JSON.stringify(config));
                         FS.writeFileSync(Path.join(buildPath, 'launch.js'), launchJS);
                     } catch(e) {
@@ -536,7 +581,9 @@ window.Manager = {
         process.noAsar = true;
         return packager(packageConfig).then((appPaths) => {
             process.noAsar = false;
-            console.log("Success!", appPaths);
+            this.output('Successfully exported to', appPaths[0]);
+            // TODO post-export script?
+            // TODO open up Explorer/Finder?
         });
 
         // return new Promise((resolve, reject) => {

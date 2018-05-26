@@ -147,7 +147,23 @@ export function setup(opts:any, overrides?:any) {
                 console.log("stylesheet:", window['cozyState'].gameDir.path, path, f);
                 addStyleSheet(<File>f);
             }
-        };
+        }
+    }
+
+    if (window['cozyState'].config['lib']) {
+        let libs = window['cozyState'].config['lib'];
+        for (let key of Object.keys(libs)) {
+            let libDir = window['cozyState'].gameDir.subdir(libs[key]);
+            let libConfig = libDir.file('lib.json').read('json');
+            if (libConfig['css']) {
+                for (let path of libConfig['css']) {
+                    for (let f of libDir.glob(path)) {
+                        console.log("stylesheet:", libDir, path, f);
+                        addStyleSheet(<File>f);
+                    }
+                }
+            }
+        }
     }
 
     return document['fonts'].ready;

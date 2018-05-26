@@ -8,7 +8,7 @@ process.chdir(Path.dirname(process.execPath));
 var window;
 
 Electron.app.on('ready', () => {
-    var path = Path.join("resources", "app", "g");
+    var path = Electron.app.getAppPath();
     var params = $$_PARAMS_$$;
 
     window = new Electron.BrowserWindow({
