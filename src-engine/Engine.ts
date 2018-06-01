@@ -95,7 +95,7 @@ export function setup(opts:any, overrides?:any) {
     window['cozyState'].paused = true;
     window['cozyState'].autoResize = window['cozyState'].config.hasOwnProperty('autoResize') ? window['cozyState'].config['autoResize'] : true;
 
-    process.chdir(window['cozyState'].gameDir.path);
+    // process.chdir(window['cozyState'].gameDir.path);
     Input.init(window['cozyState'].config['controls']);
 
     window.addEventListener('resize', (e) => onResize(e));

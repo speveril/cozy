@@ -24,7 +24,7 @@ Electron.app.on('ready', () => {
         return process.exit(0);
     });
 
-    params['game'] = path;
+    params['game'] = Path.join(path, 'g');
     params['enginePath'] = '.';
     params['debug'] = false;
 

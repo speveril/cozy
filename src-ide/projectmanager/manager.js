@@ -494,58 +494,66 @@ window.Manager = {
             });
         };
 
+        /*
+        let exclude = exportConfig.exclude || [];
+        exclude.push('\.ts$');
+        exclude.push('\.js\.map$');
+
+        for (let i = 0; i < exclude.length; i++) {
+            exclude[i] = new RegExp(exclude[i]);
+        }
+        */
+
+        let filter = (patterns) => {
+            // TODO the / may not work for directories on windows
+            let exclude = [
+                '\.ts$', '\.js.map$', '\.git/', '\.gitignore', '\.svn/', '\.DS_Store'
+            ];
+    
+            if (patterns) {
+                for (let pattern of patterns) {
+                    exclude.push(new RegExp(pattern));
+                }
+            }
+
+            return (f) => {
+                for (let re of exclude) {
+                    if (f.match(re)) {
+                        return false;
+                    }
+                }
+                return true;
+            };
+        };
+
         let packageConfig = {
-            dir: srcPath,
+            dir: PLAYERDIR,
             out: outPath,
             electronVersion: process.versions.electron,
             name: config.title ? config.title : 'Untitled Cozy Game',
             executableName: exportConfig.executable ? exportConfig.executable : 'game',
-            ignore: [], // TODO no-ship config
-            // asar: true, // TODO
+            ignore: [
+                /\.d\.ts$/, /launch\.js$/, /package\.json$/, /\.DS_Store/
+            ],
+            // asar: true, // TODO? can't chdir to inside an asar, so need to rethink cwd for Cozy...
             afterCopy: [
                 (buildPath, electronVersion, platform, arch, callback) => {
-                    var paths = [
-                        Path.join(buildPath, "lib"),
-                        // Path.join(buildPath, "g")
-                    ];
-
-                    paths.forEach((p) => {
-                        FS.ensureDir(p)
-                    });
-
-                    // TODO ideally a lot of this stuff would all be packed into an asar?
-                    var files = [
-                        'Cozy.js', 'game.css', 'game.html',
-                        Path.join('lib','glob.js'),
-                        Path.join('lib','libopenmpt.js'),
-                        Path.join('lib','libopenmpt.js.mem'),
-                    ];
-
-                    files.forEach((f) => cp(Path.join(PLAYERDIR, f), Path.join(buildPath, f.replace(".min.", "."))));
+                    cp(srcPath, Path.join(buildPath, 'g'), filter(exportConfig.exclude));
 
                     if (config['lib']) {
+                        this.output("PROCESSING LIBRARIES...");
                         for (let key of Object.keys(config['lib'])) {
-                            let basename = Path.basename(config['lib'][key]);
-                            cp(Path.join(srcPath, config['lib'][key]), Path.join(buildPath, 'lib', basename));
-                            config['lib'][key] = 'lib/' + basename;
+                            this.output(`Lib ${key}:`);
+                            let libconfig = Path.join(srcPath, config['lib'][key], 'lib.json');
+                            cp(Path.join(srcPath, config['lib'][key]), Path.join(buildPath, 'lib', key), filter(libconfig.exclude));
+                            config['lib'][key] = '../lib/' + key;
                         }
                     }
 
+                    // TODO prune empty directories in lib/ and g/
+
                     // TODO put stuff into the package information; name, version, etc
                     cp(Path.join(PLAYERDIR, 'x_package.json'), Path.join(buildPath, 'package.json'));
-
-                    // var exclude = exportConfig.exclude || [];
-                    // exclude.push(".ts$", ".js.map$");
-                    // for (var i = 0; i < exclude.length; i++) {
-                    //     exclude[i] = new RegExp(exclude[i]);
-                    // }
-
-                    // cp(srcPath, Path.join(buildPath, "g"), (f) => {
-                    //     for (var i = 0; i < exclude.length; i++) {
-                    //         if (f.match(exclude[i])) return false;
-                    //     }
-                    //     return true;
-                    // });
 
                     try {
                         config['width'] = config['width'] || 320;
@@ -581,7 +589,7 @@ window.Manager = {
         process.noAsar = true;
         return packager(packageConfig).then((appPaths) => {
             process.noAsar = false;
-            this.output('Successfully exported to', appPaths[0]);
+            this.output(`\nSuccessfully exported to ${appPaths[0]}`);
             // TODO post-export script?
             // TODO open up Explorer/Finder?
         });
