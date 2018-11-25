@@ -68,7 +68,7 @@ export class Directory {
 export class File {
     // windows url looks like file:///c:/foo/bar and we want c:/foo/bar, mac looks like file:///foo/bar
     // and we want /foo/bar
-    static documentRoot = new Directory(window.location.href.replace("file://" + (process.platform === 'darwin' ? '' : '/'), "").replace("game.html", ""));
+    static documentRoot = new Directory(window.location.href.replace("file://" + (process.platform === 'darwin' ? '' : '/'), "").replace(/game.html(\?.*)?/, ""));
     filepath:string;
 
     constructor(f:string) {

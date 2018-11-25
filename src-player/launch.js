@@ -45,7 +45,12 @@ Electron.app.on('ready', () => {
         process.exit(0);
     });
 
-    window.loadURL("file://" + __dirname + "/game.html");
+    // let loadingHTML = 'file://' + path + "/loading.html";
+    // if (!FS.existsSync(loadingHTML)) {
+    //     loadingHTML = "loading.html";
+    // }
+
+    window.loadURL("file://" + __dirname + "/game.html?" + path);
 
     window.webContents.once('did-finish-load', () => {
         window.webContents.send('start', params, args.override);

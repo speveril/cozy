@@ -1,5 +1,24 @@
 <html>
-    <head>
+    <body>
+        <iframe id="loader-frame" style="position:absolute;top:0;left:0;border:0;height:100%;width:100%;"></iframe>
+        <script>
+(function() {
+    // TODO In shipped game.html, should just have src="g/loading.html" in the above iframe, and copy the default loading
+    //      page if there isn't one.
+    let gamedir = window.location.search.slice(1);
+
+    let req = new XMLHttpRequest();
+    req.addEventListener('load', () => {
+        document.getElementById('loader-frame').setAttribute('src', gamedir + "/loading.html");
+    });
+    req.addEventListener('error', () => {
+        document.getElementById('loader-frame').setAttribute('src', 'loading.html');
+    });
+    req.open("GET", gamedir + "/loading.html");
+    req.send();
+})();
+        </script>
+
         <link rel="stylesheet" href="game.css">
         <script src="lib/glob.js"></script>
         <script>
@@ -10,8 +29,6 @@
         <script src="lib/libopenmpt.js"></script>
 
         <script src="Cozy.js"></script>
-    </head>
-    <body>
         <script>
 (function() {
     const Electron = require('electron');

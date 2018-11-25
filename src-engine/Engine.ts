@@ -173,6 +173,8 @@ export function run(g) {
     window['cozyState'].Game = g;
 
     let doLoad = () => {
+        document.getElementById('loader-frame').remove();
+
         // set up window
         var multX = screen.availWidth / window['cozyState'].config['width'],
             multY = screen.availHeight/ window['cozyState'].config['height'],
