@@ -51,7 +51,7 @@ class Sound {
 class BasicSound {
     static make(container:Sound) {
         return new Promise((resolve, reject) => {
-            container.file.readAsync('binary')
+            container.file.read('binary')
                 .then((fileContents:ArrayBuffer) => {
                     console.log("successfully loaded", container.file.path);
                     Audio.context.decodeAudioData(
@@ -104,7 +104,7 @@ let maxFramesPerChunk = 4096;
 class ModuleSound {
     static make(container:Sound) {
         return new Promise((resolve, reject) => {
-            container.file.readAsync('binary')
+            container.file.read('binary')
                 .then((fileContents:ArrayBuffer) => {
                     resolve(new ModuleSound(container, fileContents));
                 }, (error) => {

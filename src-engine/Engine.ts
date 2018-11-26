@@ -390,7 +390,7 @@ export function saveImageToFile(image:any):File {
 
 export function writeUserConfig(data:any) {
     let f = window['cozyState'].userDataDir.file('config.json');
-    f.write(data, 'json');
+    return f.write(data, 'json');
 }
 
 export function getFullScreen():boolean {

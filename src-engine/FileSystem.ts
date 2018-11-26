@@ -1,12 +1,14 @@
 var fs = require('fs');
+var fsPromises = fs.promises;
 var path = require('path');
 const process = require('process');
 
+import * as FS from "fs"; // this imports type information, require() doesn't.
+
 export class Directory {
-    root:string;
+    private root:string;
 
     constructor(f:string) {
-        if (!fs.existsSync(f)) throw new Error("Couldn't open path, " + f + ".");
         this.root = path.resolve(f);
     }
 
@@ -14,28 +16,56 @@ export class Directory {
         return this.root;
     }
 
-    buildList(list:Array<string>):Array<Directory|File> {
-        var found = [];
-        for (let f of list) {
-            var fullpath = path.join(this.root, f);
-            var stats = fs.statSync(fullpath);
-            if (stats.isDirectory()) {
-                found.push(new Directory(fullpath));
-            } else {
-                found.push(new File(fullpath));
-            }
+    exists():Promise<boolean> {
+        return fsPromises.access(fs.constants.F_OK)
+            .then((err) => {
+                return !err;
+            });
+    }
+
+    buildList(list:Array<string>):Promise<Array<Directory|File>> {
+        interface PathStatPair {
+            path:string,
+            stats:FS.Stats
         };
-        return found;
+
+        let pending = [];
+        for (let f of list) {
+            let fullpath = path.join(this.root, f);
+            pending.push(fsPromises.stat(fullpath, {})
+                .then((stats:FS.Stats) => {
+                    return {path:fullpath, stats:stats};
+                })
+            );
+        };
+
+        return Promise.all(pending)
+            .then((values:Array<PathStatPair>) => {
+                let files:Array<Directory|File> = [];
+                for (let value of values) {
+                    if (value.stats.isDirectory()) {
+                        files.push(new Directory(value.path));
+                    } else {
+                        files.push(new File(value.path));
+                    }
+                }
+                return files;
+            });
     }
 
-    read():Array<Directory|File> {
-        return this.buildList(fs.readdirSync(this.root));
+    read():Promise<Array<Directory|File>> {
+        return fsPromises.readdir(this.root)
+            .then((rootfiles) => {
+                return this.buildList(rootfiles);
+            });
     }
 
-    find(p:string):Directory|File {
-        var stats = fs.statSync(path.join(this.root, p));
-        if (stats.isDirectory()) return new Directory(path.join(this.root, p));
-        return new File(path.join(this.root, p));
+    find(p:string):Promise<Directory|File> {
+        return fsPromises.stat(path.join(this.root, p))
+            .then((stats) => {
+                if (stats.isDirectory()) return new Directory(path.join(this.root, p));
+                return new File(path.join(this.root, p));
+            });
     }
 
     file(p:string):File {
@@ -43,7 +73,9 @@ export class Directory {
     }
 
     subdir(p:string, createIfDoesNotExist?:boolean):Directory {
-        var fullpath = path.normalize(path.join(this.root, p));
+        let fullpath = path.normalize(path.join(this.root, p));
+
+        // TODO figure out how this works asynchronously
         if (createIfDoesNotExist && !fs.existsSync(fullpath)) {
             let pathPieces = fullpath.split(path.sep);
             let p = pathPieces[0];
@@ -57,11 +89,19 @@ export class Directory {
         return new Directory(path.join(this.root, p));
     }
 
-    glob(pattern:string, opts?:any):Array<Directory|File> {
-        let o = Object.assign({
-            cwd: this.path
-        }, opts);
-        return this.buildList(window['glob'].sync(pattern, o));
+    glob(pattern:string, opts?:any):Promise<Array<Directory|File>> {
+        return new Promise((resolve, reject) => {
+            let o = Object.assign({
+                cwd: this.path
+            }, opts);
+            window['glob'](pattern, o, (err, files) => {
+                if (err) {
+                    reject();
+                } else {
+                    return this.buildList(files);
+                }
+            });
+        });
     }
 }
 
@@ -80,33 +120,30 @@ export class File {
     get dirname():string                    { return path.dirname(this.filepath); }
     get dir():Directory                     { return new Directory(this.dirname);  }
     get path():string                       { return this.filepath; }
-    get exists():boolean                    { return fs.existsSync(this.filepath); }
     get url():string                        { return "file:///" + this.path.replace(/\\/g, "/"); }
 
+    exists():Promise<boolean> {
+        return fsPromises.access(fs.constants.F_OK)
+            .then((err) => {
+                return !err;
+            });
+    }
+
     stat():any {
-        return fs.statSync(this.filepath);
+        return fs.stat(this.filepath);
     }
 
     relativePath(dir:Directory):string {
         return path.relative(dir.path, this.path);
     }
 
-    read(format?:string):any {
-        switch(format) {
-            case 'json':
-                return JSON.parse(fs.readFileSync(this.filepath, { encoding: 'UTF-8'}));
-            case 'binary':
-                return fs.readFileSync(this.filepath).buffer;
-            default:
-                return fs.readFileSync(this.filepath, { encoding: 'UTF-8'});
-        }
-    }
-
-    readAsync(format?:string):Promise<any> {
+    // TODO consider splitting binary format out into its own readBinary, so this can always
+    //      return a Promise<string>, and it can return an ArrayBuffer
+    read(format?:string):Promise<any> {
         return new Promise((resolve, reject) => {
             switch(format) {
                 case 'json':
-                    fs.readFile(this.filepath, {}, (err, data) => err ? reject(err) : resolve(JSON.parse(data)));
+                    fs.readFile(this.filepath, { encoding: 'UTF-8' }, (err, data) => err ? reject(err) : resolve(JSON.parse(data)));
                     break;
                 case 'binary':
                     fs.readFile(this.filepath, {}, (err, data) => err ? reject(err) : resolve(data.buffer));
@@ -118,14 +155,15 @@ export class File {
         });
     }
 
-    write(data:any, format?:string) {
+    // TODO like read(), consider splitting out a writeBinary()
+    write(data:any, format?:string):Promise<void> {
         switch(format) {
             case 'json':
-                return fs.writeFileSync(this.filepath, JSON.stringify(data), { encoding: 'UTF-8' });
+                return fsPromises.writeFile(this.filepath, JSON.stringify(data), { encoding: 'UTF-8' });
             case 'binary':
-                return fs.writeFileSync(this.filepath, data);
+                return fsPromises.writeFile(this.filepath, data);
             default:
-                return fs.writeFileSync(this.filepath, data, { encoding: 'UTF-8' });
+                return fsPromises.writeFile(this.filepath, data, { encoding: 'UTF-8' });
         }
     }
 }
