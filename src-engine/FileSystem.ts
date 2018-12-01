@@ -5,6 +5,15 @@ const process = require('process');
 
 import * as FS from "fs"; // this imports type information, require() doesn't.
 
+
+/// TODO
+// Change things around so I'm not, in general, just loading files directly; instead, require an explicit
+// "load" step which then makes the file available to the engine. Then, map loaders, sprite loaders, etc
+// etc etc should just pull stuff from that cache, rather than loading things up on-demand. If something
+// needs to be loaded that isn't in the cache, it should be an explicit asynchronous call. Then, all that
+// data is available synchronously later. This is *already* how stuff like fonts and textures work; just
+// expand that to all other file types.
+
 export class Directory {
     private root:string;
 
