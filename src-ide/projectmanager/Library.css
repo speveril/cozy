@@ -2,6 +2,17 @@
     color: #aaa;
 }
 
+.game-library.not-found {
+    color: #666;
+    font-style: italic;
+}
+
+.game-library.not-found .games {
+    color: #f00;
+    padding-left: 3em;
+}
+
+
 .game-library header {
     display: flex;
     flex-direction: row;

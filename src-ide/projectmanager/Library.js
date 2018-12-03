@@ -57,11 +57,11 @@ class Library {
             }
         }
 
-        this.rebuild();
-
-        FS.watch(p, { persistent: true, recursive: false }, (e, filename) => {
-            this.rebuild();
-        });
+        if (this.rebuild()) {
+            FS.watch(p, { persistent: true, recursive: false }, (e, filename) => {
+                this.rebuild();
+            });
+        };
     }
 
     getEl() {
@@ -69,6 +69,14 @@ class Library {
     }
 
     rebuild() {
+        if (!FS.existsSync(this.path)) {
+            this.el.classList.add('not-found');
+            this.gamesEl.innerHTML = 'Could not load this library.';
+            return false;
+        }
+
+        this.el.classList.remove('not-found');
+
         while (this.gamesEl.lastChild) {
             this.gamesEl.removeChild(this.gamesEl.lastChild);
         }
@@ -111,6 +119,8 @@ class Library {
                 Manager.activeGame = el;
             }
         });
+
+        return true;
     }
 
     addGame(path, parent) {

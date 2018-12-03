@@ -160,10 +160,12 @@ window.Manager = {
     },
 
     removeLibrary: function(lib) {
-        let index = gameLibraries.indexOf(lib);
-        this.gameList.removeChild(lib.getEl());
-        gameLibraries.splice(index, 1);
-        localStorage.setItem('gameLibraries', JSON.stringify(gameLibraries));
+        let index = gameLibraries.findIndex((e) => e === lib.path);
+        if (index > -1) {
+            this.gameList.removeChild(lib.getEl());
+            gameLibraries.splice(index, 1);
+            localStorage.setItem('gameLibraries', JSON.stringify(gameLibraries));
+        }
     },
 
     loadOverrides: function() {
