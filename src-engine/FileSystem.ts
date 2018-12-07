@@ -1,10 +1,9 @@
-var fs = require('fs');
-var fsPromises = fs.promises;
-var path = require('path');
-const process = require('process');
+import * as fs from "fs";
+import * as path from "path";
+import * as process from "process";
 
-import * as FS from "fs"; // this imports type information, require() doesn't.
-
+const fsPromises = require('fs').promises; // gross
+let fileManifest = {};
 
 /// TODO
 // Change things around so I'm not, in general, just loading files directly; instead, require an explicit
@@ -13,6 +12,21 @@ import * as FS from "fs"; // this imports type information, require() doesn't.
 // needs to be loaded that isn't in the cache, it should be an explicit asynchronous call. Then, all that
 // data is available synchronously later. This is *already* how stuff like fonts and textures work; just
 // expand that to all other file types.
+
+export function initFileSystem(gamePath:string):Promise<void> {
+    fileManifest = {};
+
+    return new Promise((resolve, reject) => {
+        let crawl = [
+            ["/", path.resolve(gamePath)]
+        ];
+      
+        
+        console.log("files>", fileManifest);
+
+        resolve();
+    });
+}
 
 export class Directory {
     private root:string;
@@ -35,14 +49,14 @@ export class Directory {
     buildList(list:Array<string>):Promise<Array<Directory|File>> {
         interface PathStatPair {
             path:string,
-            stats:FS.Stats
+            stats:fs.Stats
         };
 
         let pending = [];
         for (let f of list) {
             let fullpath = path.join(this.root, f);
             pending.push(fsPromises.stat(fullpath, {})
-                .then((stats:FS.Stats) => {
+                .then((stats:fs.Stats) => {
                     return {path:fullpath, stats:stats};
                 })
             );
@@ -138,8 +152,8 @@ export class File {
             });
     }
 
-    stat():any {
-        return fs.stat(this.filepath);
+    stat():Promise<fs.Stats> {
+        return fsPromises.stat(this.filepath);
     }
 
     relativePath(dir:Directory):string {

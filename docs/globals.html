@@ -103,13 +103,14 @@
 						<section class="tsd-index-section tsd-is-external tsd-is-not-exported">
 							<h3>Type aliases</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-type-alias tsd-is-external tsd-is-not-exported"><a href="globals.html#dict" class="tsd-kind-icon">Dict</a></li>
+								<li class="tsd-kind-type-alias tsd-has-type-parameter tsd-is-external tsd-is-not-exported"><a href="globals.html#dict" class="tsd-kind-icon">Dict</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-external tsd-is-not-exported">
 							<h3>Variables</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-variable tsd-is-external tsd-is-not-exported"><a href="globals.html#fontface" class="tsd-kind-icon">Font<wbr>Face</a></li>
+								<li class="tsd-kind-variable tsd-is-external tsd-is-not-exported"><a href="globals.html#filemanifest" class="tsd-kind-icon">file<wbr>Manifest</a></li>
 								<li class="tsd-kind-variable tsd-is-external tsd-is-not-exported"><a href="globals.html#fps60" class="tsd-kind-icon">fps60</a></li>
 								<li class="tsd-kind-variable tsd-is-external tsd-is-not-exported"><a href="globals.html#fs" class="tsd-kind-icon">fs</a></li>
 								<li class="tsd-kind-variable tsd-is-external tsd-is-not-exported"><a href="globals.html#fspromises" class="tsd-kind-icon">fs<wbr>Promises</a></li>
@@ -117,8 +118,6 @@
 								<li class="tsd-kind-variable tsd-is-external tsd-is-not-exported"><a href="globals.html#last_t" class="tsd-kind-icon">last_<wbr>t</a></li>
 								<li class="tsd-kind-variable tsd-is-external tsd-is-not-exported"><a href="globals.html#libopenmpt" class="tsd-kind-icon">libopenmpt</a></li>
 								<li class="tsd-kind-variable tsd-is-external tsd-is-not-exported"><a href="globals.html#maxframesperchunk" class="tsd-kind-icon">max<wbr>Frames<wbr>Per<wbr>Chunk</a></li>
-								<li class="tsd-kind-variable tsd-is-external tsd-is-not-exported"><a href="globals.html#path" class="tsd-kind-icon">path</a></li>
-								<li class="tsd-kind-variable tsd-is-external tsd-is-not-exported"><a href="globals.html#process" class="tsd-kind-icon">process</a></li>
 								<li class="tsd-kind-variable tsd-is-external tsd-is-not-exported"><a href="globals.html#stringchars" class="tsd-kind-icon">string<wbr>Chars</a></li>
 							</ul>
 						</section>
@@ -146,6 +145,7 @@
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#getfullscreen" class="tsd-kind-icon">get<wbr>Full<wbr>Screen</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#gettexture" class="tsd-kind-icon">get<wbr>Texture</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#getzoom" class="tsd-kind-icon">get<wbr>Zoom</a></li>
+								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#initfilesystem" class="tsd-kind-icon">init<wbr>File<wbr>System</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#lineintersection" class="tsd-kind-icon">line<wbr>Intersection</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#loadtextures" class="tsd-kind-icon">load<wbr>Textures</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#mapo" class="tsd-kind-icon">mapO</a></li>
@@ -180,7 +180,7 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external tsd-is-not-exported">
 				<h2>Type aliases</h2>
-				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-is-external tsd-is-not-exported">
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-has-type-parameter tsd-is-external tsd-is-not-exported">
 					<a name="dict" class="tsd-anchor"></a>
 					<h3>Dict</h3>
 					<div class="tsd-signature tsd-kind-icon">Dict<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
@@ -207,17 +207,32 @@
 					<div class="tsd-signature tsd-kind-icon">Font<wbr>Face<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Engine.ts:11</li>
+							<li>Defined in Engine.ts:14</li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-external tsd-is-not-exported">
+					<a name="filemanifest" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagLet">Let</span> file<wbr>Manifest</h3>
+					<div class="tsd-signature tsd-kind-icon">file<wbr>Manifest<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in FileSystem.ts:6</li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+						</ul>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-external tsd-is-not-exported">
 					<a name="fps60" class="tsd-anchor"></a>
-					<h3>fps60</h3>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> fps60</h3>
 					<div class="tsd-signature tsd-kind-icon">fps60<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1.0 / 60.0</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Engine.ts:199</li>
+							<li>Defined in Engine.ts:230</li>
 						</ul>
 					</aside>
 				</section>
@@ -227,43 +242,44 @@
 					<div class="tsd-signature tsd-kind-icon">fs<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> =&nbsp;require(&#x27;fs&#x27;)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in FileSystem.ts:1</li>
+							<li>Defined in Engine.ts:11</li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-external tsd-is-not-exported">
 					<a name="fspromises" class="tsd-anchor"></a>
-					<h3>fs<wbr>Promises</h3>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> fs<wbr>Promises</h3>
 					<div class="tsd-signature tsd-kind-icon">fs<wbr>Promises<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> =&nbsp;fs.promises</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in FileSystem.ts:2</li>
+							<li>Defined in FileSystem.ts:5</li>
+							<li>Defined in Engine.ts:12</li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-external tsd-is-not-exported">
 					<a name="lastid" class="tsd-anchor"></a>
-					<h3>lastID</h3>
+					<h3><span class="tsd-flag ts-flagLet">Let</span> lastID</h3>
 					<div class="tsd-signature tsd-kind-icon">lastID<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;-1</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Engine.ts:448</li>
+							<li>Defined in Engine.ts:479</li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-external tsd-is-not-exported">
 					<a name="last_t" class="tsd-anchor"></a>
-					<h3>last_<wbr>t</h3>
+					<h3><span class="tsd-flag ts-flagLet">Let</span> last_<wbr>t</h3>
 					<div class="tsd-signature tsd-kind-icon">last_<wbr>t<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> =&nbsp;null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Engine.ts:200</li>
+							<li>Defined in Engine.ts:231</li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-external tsd-is-not-exported">
 					<a name="libopenmpt" class="tsd-anchor"></a>
-					<h3>libopenmpt</h3>
+					<h3><span class="tsd-flag ts-flagLet">Let</span> libopenmpt</h3>
 					<div class="tsd-signature tsd-kind-icon">libopenmpt<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> =&nbsp;window[&#x27;libopenmpt&#x27;]</span></div>
 					<aside class="tsd-sources">
 						<ul>
@@ -273,7 +289,7 @@
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-external tsd-is-not-exported">
 					<a name="maxframesperchunk" class="tsd-anchor"></a>
-					<h3>max<wbr>Frames<wbr>Per<wbr>Chunk</h3>
+					<h3><span class="tsd-flag ts-flagLet">Let</span> max<wbr>Frames<wbr>Per<wbr>Chunk</h3>
 					<div class="tsd-signature tsd-kind-icon">max<wbr>Frames<wbr>Per<wbr>Chunk<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;4096</span></div>
 					<aside class="tsd-sources">
 						<ul>
@@ -282,32 +298,12 @@
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-external tsd-is-not-exported">
-					<a name="path" class="tsd-anchor"></a>
-					<h3>path</h3>
-					<div class="tsd-signature tsd-kind-icon">path<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> =&nbsp;require(&#x27;path&#x27;)</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in FileSystem.ts:3</li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-external tsd-is-not-exported">
-					<a name="process" class="tsd-anchor"></a>
-					<h3>process</h3>
-					<div class="tsd-signature tsd-kind-icon">process<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> =&nbsp;require(&#x27;process&#x27;)</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in FileSystem.ts:4</li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-external tsd-is-not-exported">
 					<a name="stringchars" class="tsd-anchor"></a>
-					<h3>string<wbr>Chars</h3>
+					<h3><span class="tsd-flag ts-flagLet">Let</span> string<wbr>Chars</h3>
 					<div class="tsd-signature tsd-kind-icon">string<wbr>Chars<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Engine.ts:454</li>
+							<li>Defined in Engine.ts:485</li>
 						</ul>
 					</aside>
 				</section>
@@ -350,7 +346,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Engine.ts:258</li>
+									<li>Defined in Engine.ts:289</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -376,7 +372,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Engine.ts:350</li>
+									<li>Defined in Engine.ts:381</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -399,7 +395,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Engine.ts:466</li>
+									<li>Defined in Engine.ts:497</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -425,7 +421,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Engine.ts:358</li>
+									<li>Defined in Engine.ts:389</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -480,7 +476,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Engine.ts:246</li>
+									<li>Defined in Engine.ts:277</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -665,7 +661,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Engine.ts:414</li>
+									<li>Defined in Engine.ts:445</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -697,7 +693,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Engine.ts:278</li>
+									<li>Defined in Engine.ts:309</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -714,7 +710,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Engine.ts:201</li>
+									<li>Defined in Engine.ts:232</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -737,7 +733,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Engine.ts:238</li>
+									<li>Defined in Engine.ts:269</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="classes/directory.html" class="tsd-signature-type">Directory</a></h4>
@@ -754,7 +750,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Engine.ts:404</li>
+									<li>Defined in Engine.ts:435</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -771,7 +767,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Engine.ts:396</li>
+									<li>Defined in Engine.ts:427</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -788,7 +784,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Engine.ts:346</li>
+									<li>Defined in Engine.ts:377</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -811,10 +807,33 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Engine.ts:312</li>
+									<li>Defined in Engine.ts:343</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-external">
+					<a name="initfilesystem" class="tsd-anchor"></a>
+					<h3>init<wbr>File<wbr>System</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">init<wbr>File<wbr>System<span class="tsd-signature-symbol">(</span>gamePath<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in FileSystem.ts:16</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>gamePath: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -860,7 +879,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Engine.ts:324</li>
+									<li>Defined in Engine.ts:355</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -883,7 +902,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Engine.ts:485</li>
+									<li>Defined in Engine.ts:516</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -925,7 +944,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Engine.ts:290</li>
+									<li>Defined in Engine.ts:321</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -948,7 +967,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Engine.ts:270</li>
+									<li>Defined in Engine.ts:301</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -965,7 +984,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Engine.ts:320</li>
+									<li>Defined in Engine.ts:351</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -982,7 +1001,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Engine.ts:455</li>
+									<li>Defined in Engine.ts:486</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1005,7 +1024,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Engine.ts:172</li>
+									<li>Defined in Engine.ts:203</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1028,7 +1047,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Engine.ts:384</li>
+									<li>Defined in Engine.ts:415</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1051,7 +1070,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Engine.ts:400</li>
+									<li>Defined in Engine.ts:431</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1074,7 +1093,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Engine.ts:316</li>
+									<li>Defined in Engine.ts:347</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1097,7 +1116,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Engine.ts:304</li>
+									<li>Defined in Engine.ts:335</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1114,13 +1133,13 @@
 					<a name="setup" class="tsd-anchor"></a>
 					<h3>setup</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">setup<span class="tsd-signature-symbol">(</span>opts<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, overrides<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+						<li class="tsd-signature tsd-kind-icon">setup<span class="tsd-signature-symbol">(</span>opts<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, overrides<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Engine.ts:34</li>
+									<li>Defined in Engine.ts:38</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1132,7 +1151,7 @@
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> overrides: <span class="tsd-signature-type">any</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -1146,7 +1165,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Engine.ts:500</li>
+									<li>Defined in Engine.ts:531</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1179,7 +1198,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Engine.ts:521</li>
+									<li>Defined in Engine.ts:552</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1246,7 +1265,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Engine.ts:449</li>
+									<li>Defined in Engine.ts:480</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -1263,7 +1282,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Engine.ts:274</li>
+									<li>Defined in Engine.ts:305</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1280,7 +1299,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Engine.ts:242</li>
+									<li>Defined in Engine.ts:273</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="classes/directory.html" class="tsd-signature-type">Directory</a></h4>
@@ -1297,7 +1316,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Engine.ts:442</li>
+									<li>Defined in Engine.ts:473</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1335,7 +1354,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Engine.ts:391</li>
+									<li>Defined in Engine.ts:422</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1353,19 +1372,19 @@
 				<h2>Object literals</h2>
 				<section class="tsd-panel tsd-member tsd-kind-object-literal tsd-is-external tsd-is-not-exported">
 					<a name="uniquestrings" class="tsd-anchor"></a>
-					<h3>unique<wbr>Strings</h3>
+					<h3><span class="tsd-flag ts-flagLet">Let</span> unique<wbr>Strings</h3>
 					<div class="tsd-signature tsd-kind-icon">unique<wbr>Strings<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Engine.ts:453</li>
+							<li>Defined in Engine.ts:484</li>
 						</ul>
 					</aside>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external tsd-is-not-exported">
-						<a name="uniquestrings.reflection-747" class="tsd-anchor"></a>
+						<a name="uniquestrings.reflection-751" class="tsd-anchor"></a>
 						<div class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in Engine.ts:453</li>
+								<li>Defined in Engine.ts:484</li>
 							</ul>
 						</aside>
 					</section>
@@ -1451,11 +1470,14 @@
 					<li class=" tsd-kind-class tsd-is-external">
 						<a href="classes/uiplane.html" class="tsd-kind-icon">Ui<wbr>Plane</a>
 					</li>
-					<li class=" tsd-kind-type-alias tsd-is-external tsd-is-not-exported">
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter tsd-is-external tsd-is-not-exported">
 						<a href="globals.html#dict" class="tsd-kind-icon">Dict</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-is-external tsd-is-not-exported">
 						<a href="globals.html#fontface" class="tsd-kind-icon">Font<wbr>Face</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external tsd-is-not-exported">
+						<a href="globals.html#filemanifest" class="tsd-kind-icon">file<wbr>Manifest</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-is-external tsd-is-not-exported">
 						<a href="globals.html#fps60" class="tsd-kind-icon">fps60</a>
@@ -1477,12 +1499,6 @@
 					</li>
 					<li class=" tsd-kind-variable tsd-is-external tsd-is-not-exported">
 						<a href="globals.html#maxframesperchunk" class="tsd-kind-icon">max<wbr>Frames<wbr>Per<wbr>Chunk</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-is-external tsd-is-not-exported">
-						<a href="globals.html#path" class="tsd-kind-icon">path</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-is-external tsd-is-not-exported">
-						<a href="globals.html#process" class="tsd-kind-icon">process</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-is-external tsd-is-not-exported">
 						<a href="globals.html#stringchars" class="tsd-kind-icon">string<wbr>Chars</a>
@@ -1549,6 +1565,9 @@
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#getzoom" class="tsd-kind-icon">get<wbr>Zoom</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#initfilesystem" class="tsd-kind-icon">init<wbr>File<wbr>System</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#lineintersection" class="tsd-kind-icon">line<wbr>Intersection</a>

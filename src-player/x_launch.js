@@ -17,7 +17,7 @@ Electron.app.on('ready', () => {
         'title':              params['title'],
         'fullscreen':         false,
         'autoHideMenuBar':    true,
-        'useContentSize':     true
+        'useContentSize':     true,
     });
 
     window.once('close', () => {

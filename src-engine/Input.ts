@@ -378,7 +378,7 @@ export class Input {
             if (this.button[name] === ButtonState.DOWN) {
                 this.button[name] = ButtonState.IGNORED;
                 if (duration !== undefined) {
-                    this.buttonTimeouts[name] = setTimeout(function() {
+                    this.buttonTimeouts[name] = window.setTimeout(function() {
                         this.button[name] = ButtonState.DOWN;
 
                         var eventInfo = { button: name, pressed: true };

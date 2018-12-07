@@ -3,12 +3,16 @@ import * as Electron from 'electron';
 import * as path from 'path';
 
 import { Audio } from './Audio';
-import { File, Directory } from "./FileSystem";
+import { initFileSystem, File, Directory } from "./FileSystem";
 import { Input } from "./Input";
 import { Plane } from './Plane';
 import { Texture } from "./Texture";
 
+var fs = require('fs');
+var fsPromises = fs.promises;
+
 declare var FontFace:any;
+
 
 // The kitchen sink
 
@@ -32,6 +36,10 @@ class CozyState {
 }
 
 export function setup(opts:any, overrides?:any) {
+    let promises = [
+        document['fonts'].ready
+    ];
+
     window['cozyState'] = CozyState;
 
     console.log("Creating Cozy Object...", opts, overrides);
@@ -150,23 +158,46 @@ export function setup(opts:any, overrides?:any) {
         }
     }
 
-    if (window['cozyState'].config['lib']) {
-        let libs = window['cozyState'].config['lib'];
-        for (let key of Object.keys(libs)) {
-            let libDir = window['cozyState'].gameDir.subdir(libs[key]);
-            let libConfig = libDir.file('lib.json').read('json');
-            if (libConfig['css']) {
-                for (let path of libConfig['css']) {
-                    for (let f of libDir.glob(path)) {
-                        console.log("stylesheet:", libDir, path, f);
-                        addStyleSheet(<File>f);
-                    }
-                }
-            }
-        }
-    }
+    // set up filesystem
+    promises.push(initFileSystem(window['cozyState'].gamePath));
 
-    return document['fonts'].ready;
+    // TODO I don't think any of this is necessary now?
+    // set up libs/kits
+    // if (window['cozyState'].config['lib']) {
+    //     async function loadLibs() {
+    //         let libRoots:Directory[] = (window['cozyState'].config['libRoot'] || localStorage.getItem('libs') || []).reduce((list, path) => {
+    //             list.push(new Directory(path));
+    //         }, []);
+
+    //         let availableLibs = {};
+
+    //         for (let root of libRoots) {
+    //             root.glob("**/lib.json")
+    //             .then((libJSONs) => {
+    //                 console.log(">>", libJSONS);
+    //             })
+    //             ;
+    //         }
+
+    //     //     let libs = window['cozyState'].config['lib'];
+    //     //     for (const k in libs) {
+    //     //         let libDir = window['cozyState'].gameDir.subdir(libs[k]);
+    //     //         let libConfig = libDir.file('lib.json').read('json');
+    //     //         if (libConfig['css']) {
+    //     //             for (let path of libConfig['css']) {
+    //     //                 for (let f of libDir.glob(path)) {
+    //     //                     console.log("stylesheet:", libDir, path, f);
+    //     //                     addStyleSheet(<File>f);
+    //     //                 }
+    //     //             }
+    //     //         }
+    //     //     }
+    //     };
+    //     promises.push(loadLibs());
+    // }
+
+
+    return Promise.all(promises);
 }
 
 export function run(g) {

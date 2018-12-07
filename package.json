@@ -3,20 +3,20 @@
   "productName": "Cozy Development Environment and Engine",
   "version": "0.1.0",
   "dependencies": {
-    "@types/pixi.js": "^4.5.3",
+    "@types/pixi.js": "^4.8.4",
     "dts-bundle": "^0.7.3",
     "electron-window-state": "^3.0.3",
     "fs-extra": "^1.0.0",
-    "glob": "^7.1.0",
-    "pixi.js": "^4.5.5",
+    "glob": "^7.1.3",
+    "pixi.js": "^4.8.3",
     "ts-loader": "^2.3.7",
-    "typedoc": "^0.7.1",
-    "typescript": "^2.3.3",
-    "webpack": "^3.6.0"
+    "typedoc": "^0.13.0",
+    "typescript": "^3.1.6",
+    "webpack": "^3.12.0"
   },
   "devDependencies": {
-    "electron": "1.8.3",
-    "electron-packager": "11.1.0"
+    "electron": "^3.0.10",
+    "electron-packager": "^13.0.0"
   },
   "scripts": {
     "start": "electron ./src-ide",

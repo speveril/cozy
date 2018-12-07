@@ -387,22 +387,34 @@ window.Manager = {
         };
         
         if (gameconfig.lib) {
-            for (let key of Object.keys(gameconfig.lib)) {
-                let path = Path.resolve(Path.join(buildPath, gameconfig.lib[key]));
-                let libconfig;
-                try {
-                    libconfig = JSON.parse(FS.readFileSync(Path.join(path, "lib.json")));
-                } catch(e) {
-                    this.output("<span style='color:red'>[ ERROR (" + e.toString() + ") ]</span>\n");
-                    return Promise.reject();
+            let availableLibs = (JSON.parse(localStorage.getItem('libs')) || []).reduce((list, root) => {
+                console.log("[root]:", root);
+                let libs = glob.sync("**/lib.json", { cwd: root });
+                for (let lib of libs) {
+                    let libconfig;
+                    try {
+                        libconfig = JSON.parse(FS.readFileSync(Path.join(root, lib)));
+                    } catch(e) {
+                        this.output("<span style='color:red'>[ ERROR (" + e.toString() + ") ]</span>\n");
+                    }
+                    console.log("->", libconfig);
+                    list[libconfig.id] = [Path.join(root, Path.dirname(lib)), Path.join(root, Path.dirname(lib), libconfig.main)];
                 }
-                tsconfig.compilerOptions.paths[key] = [Path.join(path, libconfig.main)];
-                wpconfig.resolve.alias[key + '$'] = Path.join(path, libconfig.main);
-                wpconfig.resolve.alias[key] = path;
+                return list;
+            }, {});
+            console.log(">>>", availableLibs);
+
+            for (let key of gameconfig.lib) {
+                console.log("->", key);
+                tsconfig.compilerOptions.paths[key] = [availableLibs[key][1]];
+                wpconfig.resolve.alias[key + '$'] = availableLibs[key][1];
+                wpconfig.resolve.alias[key] = availableLibs[key][0];
             }
         }
 
         console.log('tsconfig', tsconfig);
+        console.log('wpconfig', wpconfig);
+
         let tsconfigPath = Path.join(buildPath, "tsconfig.json");
         FS.writeFileSync(tsconfigPath, JSON.stringify(tsconfig));
 

@@ -29,7 +29,7 @@ Electron.app.on('ready', () => {
         'fullscreen':         false,
         'icon':               params['icon'] ? Path.join(process.cwd(), path, params['icon']) : undefined,
         'autoHideMenuBar':    true,
-        'useContentSize':     true
+        'useContentSize':     true,
     });
     // window.toggleDevTools();
 
@@ -39,7 +39,7 @@ Electron.app.on('ready', () => {
     params['debug'] = args.debug;
 
     params['enginePath'] = 'node_modules/electron/dist';
-    if (process.platform === 'darwin') params['enginePath'] += '/Contents/Resources'
+    if (process.platform === 'darwin') params['enginePath'] += '/Contents/Resources';
 
     window.once('close', () => {
         process.exit(0);
