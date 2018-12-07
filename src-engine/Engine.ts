@@ -90,7 +90,13 @@ export function setup(opts:any, overrides?:any) {
 
     let userconfig = window['cozyState'].userDataDir.file('config.json');
     if (userconfig.exists) {
-        let data = JSON.parse(userconfig.read());
+        let data;
+        try {
+            data = userconfig.read('json');
+        } catch (e) {
+            console.error("Couldn't read JSON data:\n", userconfig.read('text'));
+            data = {};
+        }
         window['cozyState'].config = Object.assign(window['cozyState'].config, data);
     }
 
@@ -151,10 +157,14 @@ export function setup(opts:any, overrides?:any) {
     if (window['cozyState'].config['css']) {
         if (typeof window['cozyState'].config['css'] === 'string') window['cozyState'].config['css'] = [window['cozyState'].config['css']];
         for (let path of window['cozyState'].config['css']) {
-            for (let f of window['cozyState'].gameDir.glob(path)) {
-                console.log("stylesheet:", window['cozyState'].gameDir.path, path, f);
-                addStyleSheet(<File>f);
-            }
+            promises.push((async function() {
+                let files = await window['cozyState'].gameDir.glob(path);
+                console.log("Got the glob", files);
+                for (let f of files) {
+                    console.log("stylesheet:", window['cozyState'].gameDir.path, path, f);
+                    addStyleSheet(<File>f);
+                }
+            })());
         }
     }
 
@@ -196,11 +206,12 @@ export function setup(opts:any, overrides?:any) {
     //     promises.push(loadLibs());
     // }
 
-
+    console.log("Promises...", promises);
     return Promise.all(promises);
 }
 
 export function run(g) {
+    console.log("!! run()");
     window['cozyState'].Game = g;
 
     let doLoad = () => {

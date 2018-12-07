@@ -121,7 +121,7 @@ export class Directory {
                 if (err) {
                     reject();
                 } else {
-                    return this.buildList(files);
+                    this.buildList(files).then(resolve, reject);
                 }
             });
         });
