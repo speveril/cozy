@@ -4,3 +4,4 @@ Cozy.d.ts
 node_modules
 build
 .DS_Store
+docs
