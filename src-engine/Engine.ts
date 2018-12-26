@@ -86,14 +86,12 @@ export function setup(opts:any, overrides?:any) {
         window['cozyState'].config['userdata'] = p[p.length - 1];
     }
 
-    let userconfigFile = null
     let configPromise = initFileSystem(window['cozyState'].gamePath, window['cozyState'].config['userdata'])
         .then(() => {
-            userconfigFile = new UserdataFile('config.json');
-            return userconfigFile.load();
+            return (new UserdataFile('config.json')).load();
         })
-        .then(() => {
-            Object.assign(window['cozyState'].config, userconfigFile.getData('json'));
+        .then((f) => {
+            Object.assign(window['cozyState'].config, f.getData('json'));
             return Promise.resolve();
         }, () => {
             // no user config, that's fine.
@@ -183,9 +181,14 @@ export function run(g) {
     };
 
     if (window['cozyState'].Game.load) {
-        Promise.all(window['cozyState'].Game.load())
-            .then(doLoad)
-        ;
+        let p = window['cozyState'].Game.load();
+        if (p instanceof Promise) {
+            p.then(doLoad);
+        } else if (p instanceof Array) {
+            Promise.all(p).then(doLoad);
+        } else {
+            doLoad();
+        }
     } else {
         doLoad();
     }

@@ -41,12 +41,31 @@ export function initFileSystem(gamePath:string, userdataPath:string):Promise<voi
 }
 
 export class UserdataFile {
+    static glob(pattern:string, opts?:any):Array<UserdataFile> {
+        let o = Object.assign({
+            cwd: userdataStem
+        }, opts);
+
+        let files = window['glob'].sync(pattern, o);
+
+        let found = [];
+        for (let f of files) {
+            let fullpath = path.join(userdataStem, f);
+            let stats = fs.statSync(fullpath);
+            if (!stats.isDirectory()) {
+                found.push(new UserdataFile(f));
+            }
+        };
+
+        return found;
+    }
+
     private realpath:string;
-    private name:string;
+    private _name:string;
     private data:Buffer;
 
     constructor(name:string) {
-        this.name = name;
+        this._name = name;
         this.realpath = path.resolve(userdataStem, name);
         if (this.realpath.indexOf(userdataStem) !== 0) {
             throw new Error("UserdataFile path must not use .. to escape userdata dir.");
@@ -55,8 +74,13 @@ export class UserdataFile {
         this.data = null;
     }
 
+    get name():string { return this._name; }
     get ready():boolean {
-        return this.data === null;
+        return this.data !== null;
+    }
+
+    stat():fs.Stats {
+        return fs.statSync(this.realpath);
     }
 
     getData(format?:string):any {
@@ -95,8 +119,10 @@ export class UserdataFile {
         return fsPromises.readFile(this.realpath)
             .then((data) => {
                 this.data = data;
+                console.log(`] userdata ${this.name}, ${this.realpath}, is ready...`, this.data);
                 return Promise.resolve(this);
             }, (err) => {
+                console.log("something messed up...");
                 throw new Error(err);
             });
     }

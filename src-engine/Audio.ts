@@ -16,9 +16,9 @@ class Sound {
         this.file = Engine.gameDir().file(filename);
         this.opts = opts;
 
-        let generator:any = BasicSound;
-        let varname:string = 'BasicSound';
         this.loadedPromise = new Promise((resolve, reject) => {
+            let generator, varname;
+
             switch(this.file.extension.toLowerCase()) {
                 case '.mod':
                 case '.it':
@@ -29,7 +29,12 @@ class Sound {
                     generator = ModuleSound;
                     varname = 'ModuleSound';
                     break;
+                default:
+                    generator = BasicSound;
+                    varname = 'BasicSound';
+                    break;
             }
+            
             generator.make(this)
                 .then((sound) => {
                     this.theSound = sound;
