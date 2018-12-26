@@ -35,9 +35,7 @@ class CozyState {
 }
 
 export function setup(opts:any, overrides?:any) {
-    let promises = [
-        document['fonts'].ready
-    ];
+    let promises = [];
 
     window['cozyState'] = CozyState;
 
@@ -72,12 +70,6 @@ export function setup(opts:any, overrides?:any) {
     // set up graphics
     PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
     window['cozyState'].planes = [];
-
-    // set up audio
-    Audio.init({
-        NOSFX:      window['cozyState'].config['NOSFX'],
-        NOMUSIC:    window['cozyState'].config['NOMUSIC']
-    });
 
     // set up filesystem
     if (window['cozyState'].config['userdata'] === undefined) {
@@ -131,6 +123,7 @@ export function setup(opts:any, overrides?:any) {
                 });
             }
 
+            // css
             if (window['cozyState'].config['css']) {
                 if (typeof window['cozyState'].config['css'] === 'string') window['cozyState'].config['css'] = [window['cozyState'].config['css']];
                 for (let path of window['cozyState'].config['css']) {
@@ -144,6 +137,12 @@ export function setup(opts:any, overrides?:any) {
                     })());
                 }
             }
+            
+            // audio
+            Audio.init({
+                NOSFX:      window['cozyState'].config['NOSFX'],
+                NOMUSIC:    window['cozyState'].config['NOMUSIC']
+            });
 
             if (window['cozyState'].config['volume']) {
                 if (window['cozyState'].config['volume']['sfx'] !== undefined) {
@@ -153,6 +152,8 @@ export function setup(opts:any, overrides?:any) {
                     Audio.setMusicVolume(window['cozyState'].config['volume']['music']);
                 }
             }
+
+            return document['fonts'].ready;
         })
     ;
 
@@ -387,8 +388,9 @@ export function saveImageToFile(image:any):File {
 }
 
 export function writeUserConfig(data:any) {
-    let f = window['cozyState'].userDataDir.file('config.json');
-    return f.write(data, 'json');
+    let f = new UserdataFile('config.json');
+    f.setData(JSON.stringify(data))
+    return f.write();
 }
 
 export function getFullScreen():boolean {
