@@ -105,7 +105,8 @@ let GameOverlay = {
                     command: 'play',
                     path: gamepath,
                     debug: true,
-                    override: Manager.override
+                    override: Manager.override,
+                    libRoots: localStorage.getItem('libs')
                 });
             });
     },

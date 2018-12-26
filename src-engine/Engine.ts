@@ -27,6 +27,7 @@ class CozyState {
     // let scene:Entity;
     public static gamePath:string;
     public static gameDir:Directory = null;
+    public static libs:String[];
 
     public static enginePath:string;
     public static paused:boolean;
@@ -34,13 +35,14 @@ class CozyState {
     public static autoResize:boolean;
 }
 
-export function setup(opts:any, overrides?:any) {
+export async function setup(opts:any, overrides?:any) {
     let promises = [];
 
     window['cozyState'] = CozyState;
 
     console.log("Creating Cozy Object...", opts, overrides);
 
+    window['cozyState'].libs = JSON.parse(opts.libRoots);
     window['cozyState'].config = opts;
     window['cozyState'].debug = !!opts.debug;
     window['cozyState'].gamePath = opts.game;
@@ -54,6 +56,23 @@ export function setup(opts:any, overrides?:any) {
             mode: 'detach'
         });
     }
+
+    // set up filesystem
+    if (window['cozyState'].config['userdata'] === undefined) {
+        console.warn("No 'userdata' key found in window['cozyState'].config. This will be a problem when you export -- be sure to set it to something.");
+        let p = window['cozyState'].gamePath.split(path.sep);
+        window['cozyState'].config['userdata'] = p[p.length - 1];
+    }
+
+    await initFileSystem(window['cozyState'].gamePath, window['cozyState'].config['userdata']);
+    let f = await (new UserdataFile('config.json')).load();
+    try {
+        Object.assign(window['cozyState'].config, f.getData('json'));
+    } catch (e) {
+        // no user config, that's fine; carry on without it
+    }
+
+    window['cozyState'].config = Object.assign(window['cozyState'].config, overrides);
 
     if (!window['cozyState'].hasOwnProperty('integerUpscale')) {
         window['cozyState'].integerUpscale = true;
@@ -71,99 +90,112 @@ export function setup(opts:any, overrides?:any) {
     PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
     window['cozyState'].planes = [];
 
-    // set up filesystem
-    if (window['cozyState'].config['userdata'] === undefined) {
-        console.warn("No 'userdata' key found in window['cozyState'].config. This will be a problem when you export -- be sure to set it to something.");
-        let p = window['cozyState'].gamePath.split(path.sep);
-        window['cozyState'].config['userdata'] = p[p.length - 1];
+    // Now that we have our full config, do the rest of our configuration
+
+    window['cozyState'].autoResize = window['cozyState'].config.hasOwnProperty('autoResize') ? window['cozyState'].config['autoResize'] : true;
+    Input.init(window['cozyState'].config['controls']);
+
+    window.addEventListener('resize', (e) => onResize(e));
+    window.addEventListener('blur', (e) => {
+        if (getFullScreen()) {
+            window['cozyState'].browserWindow.minimize();
+        }
+    });
+    window.addEventListener('focus', (e) => {
+        Input.clear();
+    });
+
+    if (window['cozyState'].config['fullscreen']) {
+        setFullScreen(true);
     }
 
-    let configPromise = initFileSystem(window['cozyState'].gamePath, window['cozyState'].config['userdata'])
-        .then(() => {
-            return (new UserdataFile('config.json')).load();
-        })
-        .then((f) => {
-            Object.assign(window['cozyState'].config, f.getData('json'));
-            return Promise.resolve();
-        }, () => {
-            // no user config, that's fine.
-            return Promise.resolve();
-        })
-        .then(() => {
-            if (overrides) {
-                window['cozyState'].config = Object.assign(window['cozyState'].config, overrides);
+    // debugging
+    if (window['cozyState'].debug) { 
+        window.addEventListener('keyup', (e) => {
+            if (e['keyCode'] === 192) { // ~ key, opens console
+                window['cozyState'].browserWindow['openDevTools']();
+                window['cozyState'].browserWindow['devToolsWebContents'].focus();
             }
+        });
+    }
+    
+    // audio
+    Audio.init({
+        NOSFX:      window['cozyState'].config['NOSFX'],
+        NOMUSIC:    window['cozyState'].config['NOMUSIC']
+    });
 
-            // Now that we have our full config, do the rest of our configuration
+    if (window['cozyState'].config['volume']) {
+        if (window['cozyState'].config['volume']['sfx'] !== undefined) {
+            Audio.setSFXVolume(window['cozyState'].config['volume']['sfx']);
+        }
+        if (window['cozyState'].config['volume']['music'] !== undefined) {
+            Audio.setMusicVolume(window['cozyState'].config['volume']['music']);
+        }
+    }
 
-            window['cozyState'].autoResize = window['cozyState'].config.hasOwnProperty('autoResize') ? window['cozyState'].config['autoResize'] : true;
-            Input.init(window['cozyState'].config['controls']);
+    // load CSS, from libs and game
+    let cssPromises = [];
+    if (window['cozyState'].config['lib']) {
+        let libRoots:Directory[] = (window['cozyState'].libs).reduce((list, path) => {
+            console.log(path);
+            list.push(new Directory(path));
+            return list;
+        }, []);
 
-            window.addEventListener('resize', (e) => onResize(e));
-            window.addEventListener('blur', (e) => {
-                if (getFullScreen()) {
-                    window['cozyState'].browserWindow.minimize();
-                }
-            });
-            window.addEventListener('focus', (e) => {
-                Input.clear();
-            });
+        let libJSONs = [];
+        for (let root of libRoots) {
+            libJSONs.push.apply(libJSONs, root.glob("**/lib.json"));
+        }
+        await Promise.all(libJSONs.reduce((list, libFile) => {
+            list.push(libFile.load());
+            return list;
+        }, []));
 
-            if (window['cozyState'].config['fullscreen']) {
-                setFullScreen(true);
-            }
-        
-            // debugging
-            if (window['cozyState'].debug) { 
-                window.addEventListener('keyup', (e) => {
-                    if (e['keyCode'] === 192) { // ~ key, opens console
-                        window['cozyState'].browserWindow['openDevTools']();
-                        window['cozyState'].browserWindow['devToolsWebContents'].focus();
+        let availableLibs = {};
+        for (let f of libJSONs) {
+            let d = f.getData('json');
+            console.log(">>", f, d);
+            availableLibs[d.id] = d;
+            availableLibs[d.id].dir = f.dir;
+        }
+
+        let libs = window['cozyState'].config['lib'];
+        for (const k of libs) {
+            console.log("Loading kit:", k, availableLibs[k]);
+            if (availableLibs[k] && availableLibs[k].css) {
+                for (let path of availableLibs[k].css) {
+                    for (let f of availableLibs[k].dir.glob(path)) {
+                        console.log("stylesheet <kit:" + k + ">:", availableLibs[k].dir.path, path, f);
+                        cssPromises.push(addStyleSheet(<File>f));
                     }
-                });
-            }
-
-            // css
-            if (window['cozyState'].config['css']) {
-                if (typeof window['cozyState'].config['css'] === 'string') window['cozyState'].config['css'] = [window['cozyState'].config['css']];
-                for (let path of window['cozyState'].config['css']) {
-                    promises.push((async function() {
-                        let files = await window['cozyState'].gameDir.glob(path);
-                        console.log("Got the glob", files);
-                        for (let f of files) {
-                            console.log("stylesheet:", window['cozyState'].gameDir.path, path, f);
-                            addStyleSheet(<File>f);
-                        }
-                    })());
                 }
             }
-            
-            // audio
-            Audio.init({
-                NOSFX:      window['cozyState'].config['NOSFX'],
-                NOMUSIC:    window['cozyState'].config['NOMUSIC']
-            });
+        }
+    }
 
-            if (window['cozyState'].config['volume']) {
-                if (window['cozyState'].config['volume']['sfx'] !== undefined) {
-                    Audio.setSFXVolume(window['cozyState'].config['volume']['sfx']);
+    if (window['cozyState'].config['css']) {
+        if (typeof window['cozyState'].config['css'] === 'string') window['cozyState'].config['css'] = [window['cozyState'].config['css']];
+        for (let path of window['cozyState'].config['css']) {
+            promises.push((async function() {
+                let files = await window['cozyState'].gameDir.glob(path);
+                console.log("Got the glob", files);
+                for (let f of files) {
+                    console.log("stylesheet <game>:", window['cozyState'].gameDir.path, path, f);
+                    cssPromises.push(addStyleSheet(<File>f));
                 }
-                if (window['cozyState'].config['volume']['music'] !== undefined) {
-                    Audio.setMusicVolume(window['cozyState'].config['volume']['music']);
-                }
-            }
+            })());
+        }
+    }
+        
+    await Promise.all(cssPromises);
 
-            return document['fonts'].ready;
-        })
-    ;
+    await document['fonts'].ready;
 
-    promises.push(configPromise);
-
-    return Promise.all(promises);
+    await Promise.all(promises);
 }
 
 export function run(g) {
-    console.log("!! run()");
     window['cozyState'].Game = g;
 
     let doLoad = () => {
@@ -346,12 +378,15 @@ export function getTexture(f) {
     return window['cozyState'].textures[f.replace(/\\/g, "/")];
 }
 
-export function addStyleSheet(file:File):void {
-    let el = document.createElement('link');
-    el.rel = "stylesheet";
-    el.type = "text/css";
-    el.href = file.url;
-    document.head.appendChild(el);
+export function addStyleSheet(file:File):Promise<void> {
+    return new Promise((resolve, reject) => {
+        let el = document.createElement('link');
+        el.setAttribute('rel', "stylesheet");
+        el.setAttribute('type', "text/css");
+        el.setAttribute('href', file.url);
+        el.onload = () => resolve();
+        document.head.appendChild(el);
+    });
 }
 
 export function captureScreenshot(width?:number, height?:number):Promise<any> {

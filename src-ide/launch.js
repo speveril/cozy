@@ -35,7 +35,7 @@ function setup() {
 
         switch(command) {
             case 'play':
-                play(arg.path, arg.override || {}, arg.debug || false);
+                play(arg.path, arg.override || {}, arg.debug || false, arg.libRoots || '');
                 break;
             case 'edit':
                 openEditor(arg.path);
@@ -53,7 +53,7 @@ function setup() {
     // mainWindow.toggleDevTools();
 }
 
-function play(path, override, debug) {
+function play(path, override, debug, libRoots) {
     return new Promise((resolve, reject) => {
         output("<span style='color:white'>[ Launching " + (path) + " ]</span>");
         output(">" + path);
@@ -61,7 +61,8 @@ function play(path, override, debug) {
         let args = {
             path: path,
             override: override,
-            debug: debug
+            debug: debug,
+            libRoots: libRoots
         };
 
         let child_params = {

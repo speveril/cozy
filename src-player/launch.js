@@ -37,6 +37,7 @@ Electron.app.on('ready', () => {
     params['width'] = params['width'] || 320;
     params['height'] = params['height'] || 240;
     params['debug'] = args.debug;
+    params['libRoots'] = args.libRoots;
 
     params['enginePath'] = 'node_modules/electron/dist';
     if (process.platform === 'darwin') params['enginePath'] += '/Contents/Resources';

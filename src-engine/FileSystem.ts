@@ -119,10 +119,8 @@ export class UserdataFile {
         return fsPromises.readFile(this.realpath)
             .then((data) => {
                 this.data = data;
-                console.log(`] userdata ${this.name}, ${this.realpath}, is ready...`, this.data);
                 return Promise.resolve(this);
             }, (err) => {
-                console.log("something messed up...");
                 throw new Error(err);
             });
     }

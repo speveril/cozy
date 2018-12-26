@@ -351,7 +351,7 @@ window.Manager = {
                 removeComments: true,
                 sourceMap: false,
                 declaration: false,
-                target: "ES6",
+                target: "ES2017",
                 module: "commonjs",
                 moduleResolution: "Node",
                 baseUrl: ".",
