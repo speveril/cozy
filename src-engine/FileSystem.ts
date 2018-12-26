@@ -1,6 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as process from "process";
+import * as Engine from './Engine';
 
 const fsPromises = require('fs').promises; // gross
 let fileManifest = {};
@@ -13,25 +14,95 @@ let fileManifest = {};
 // data is available synchronously later. This is *already* how stuff like fonts and textures work; just
 // expand that to all other file types.
 
-export function initFileSystem(gamePath:string):Promise<void> {
+let userdataStem = null;
+
+export function initFileSystem(gamePath:string, userdataPath:string):Promise<void> {
+    // see
+    //  http://stackoverflow.com/a/26227660
+    //  https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html
+
+    if (process.platform === 'darwin') { // MacOS
+        userdataStem = process.env.HOME + '/Library/Application Support/';
+    } else if (process.env.APPDATA) { // Windows
+        userdataStem = process.env.APPDATA + '\\';
+    } else { // Linux
+        userdataStem = process.env.HOME + "/.";
+    }
+    userdataStem += userdataPath;
+
     fileManifest = {};
 
-    return new Promise((resolve, reject) => {
-        let crawl = [
-            ["/", path.resolve(gamePath)]
-        ];
-      
-        
-        console.log("files>", fileManifest);
+    File.root = gamePath;
 
+    return new Promise((resolve, reject) => {
         resolve();
     });
 }
 
+export class UserdataFile {
+    private realpath:string;
+    private name:string;
+    private data:Buffer;
+
+    constructor(name:string) {
+        this.name = name;
+        this.realpath = path.resolve(userdataStem, name);
+        if (this.realpath.indexOf(userdataStem) !== 0) {
+            throw new Error("UserdataFile path must not use .. to escape userdata dir.");
+        }
+
+        this.data = null;
+    }
+
+    get ready():boolean {
+        return this.data === null;
+    }
+
+    getData(format?:string):any {
+        if (!this.ready) {
+            throw new Error(`File ${this.name} isn't ready for use.`);
+        }
+
+        switch (format) {
+            case 'text':
+                return this.data.toString();
+            case 'json':
+                return JSON.parse(this.data.toString());
+            case 'xml':
+                let parser = new DOMParser();
+                return parser.parseFromString(this.data.toString(), "text/xml");
+            default:
+                return this.data;
+        }
+    }
+
+    setData(d:Buffer|string):void {
+        if (d instanceof Buffer) {
+            this.data = d;
+        } else {
+            this.data = Buffer.from(d, 'utf8');
+        }
+    }
+
+    load():Promise<UserdataFile> {
+        return fsPromises.readFile(this.realpath)
+            .then((data) => {
+                this.data = data;
+            }, (err) => {
+                throw new Error(err);
+            });
+    }
+
+    write():Promise<void> {
+        return fsPromises.writeFile(this.realpath, this.data);
+    }
+}
+
 export class Directory {
-    private root:string;
+    root:string;
 
     constructor(f:string) {
+        if (!fs.existsSync(f)) throw new Error("Couldn't open path, " + f + ".");
         this.root = path.resolve(f);
     }
 
@@ -39,56 +110,28 @@ export class Directory {
         return this.root;
     }
 
-    exists():Promise<boolean> {
-        return fsPromises.access(fs.constants.F_OK)
-            .then((err) => {
-                return !err;
-            });
-    }
-
-    buildList(list:Array<string>):Promise<Array<Directory|File>> {
-        interface PathStatPair {
-            path:string,
-            stats:fs.Stats
-        };
-
-        let pending = [];
+    buildList(list:Array<string>):Array<Directory|File> {
+        var found = [];
         for (let f of list) {
-            let fullpath = path.join(this.root, f);
-            pending.push(fsPromises.stat(fullpath, {})
-                .then((stats:fs.Stats) => {
-                    return {path:fullpath, stats:stats};
-                })
-            );
+            var fullpath = path.join(this.root, f);
+            var stats = fs.statSync(fullpath);
+            if (stats.isDirectory()) {
+                found.push(new Directory(fullpath));
+            } else {
+                found.push(new File(fullpath));
+            }
         };
-
-        return Promise.all(pending)
-            .then((values:Array<PathStatPair>) => {
-                let files:Array<Directory|File> = [];
-                for (let value of values) {
-                    if (value.stats.isDirectory()) {
-                        files.push(new Directory(value.path));
-                    } else {
-                        files.push(new File(value.path));
-                    }
-                }
-                return files;
-            });
+        return found;
     }
 
-    read():Promise<Array<Directory|File>> {
-        return fsPromises.readdir(this.root)
-            .then((rootfiles) => {
-                return this.buildList(rootfiles);
-            });
+    read():Array<Directory|File> {
+        return this.buildList(fs.readdirSync(this.root));
     }
 
-    find(p:string):Promise<Directory|File> {
-        return fsPromises.stat(path.join(this.root, p))
-            .then((stats) => {
-                if (stats.isDirectory()) return new Directory(path.join(this.root, p));
-                return new File(path.join(this.root, p));
-            });
+    find(p:string):Directory|File {
+        var stats = fs.statSync(path.join(this.root, p));
+        if (stats.isDirectory()) return new Directory(path.join(this.root, p));
+        return new File(path.join(this.root, p));
     }
 
     file(p:string):File {
@@ -96,9 +139,7 @@ export class Directory {
     }
 
     subdir(p:string, createIfDoesNotExist?:boolean):Directory {
-        let fullpath = path.normalize(path.join(this.root, p));
-
-        // TODO figure out how this works asynchronously
+        var fullpath = path.normalize(path.join(this.root, p));
         if (createIfDoesNotExist && !fs.existsSync(fullpath)) {
             let pathPieces = fullpath.split(path.sep);
             let p = pathPieces[0];
@@ -112,31 +153,62 @@ export class Directory {
         return new Directory(path.join(this.root, p));
     }
 
-    glob(pattern:string, opts?:any):Promise<Array<Directory|File>> {
-        return new Promise((resolve, reject) => {
-            let o = Object.assign({
-                cwd: this.path
-            }, opts);
-            window['glob'](pattern, o, (err, files) => {
-                if (err) {
-                    reject();
-                } else {
-                    this.buildList(files).then(resolve, reject);
-                }
-            });
-        });
+    glob(pattern:string, opts?:any):Array<Directory|File> {
+        let o = Object.assign({
+            cwd: this.path
+        }, opts);
+        return this.buildList(window['glob'].sync(pattern, o));
     }
 }
+
 
 export class File {
     // windows url looks like file:///c:/foo/bar and we want c:/foo/bar, mac looks like file:///foo/bar
     // and we want /foo/bar
-    static documentRoot = new Directory(window.location.href.replace("file://" + (process.platform === 'darwin' ? '' : '/'), "").replace(/game.html(\?.*)?/, ""));
-    filepath:string;
+    static documentRoot:Directory = new Directory(window.location.href.replace("file://" + (process.platform === 'darwin' ? '' : '/'), "").replace(/game.html(\?.*)?/, ""));
+    static root:string;
+
+    private filepath:string;
+    private data:Buffer;
+
+    // TODO files that are in kits
 
     constructor(f:string) {
-        this.filepath = path.resolve(f);
+        this.filepath = path.resolve(path.relative(File.root, f));
     }
+
+    get ready():boolean {
+        return this.data === null;
+    }
+
+    load():Promise<File> {
+        return fsPromises.readFile(this.filepath)
+            .then((data) => {
+                this.data = data;
+            }, (err) => {
+                throw new Error(err);
+            });
+    }
+
+    getData(format?:string):any {
+        if (!this.ready) {
+            throw new Error(`File ${this.name} isn't ready for use.`);
+        }
+
+        switch (format) {
+            case 'text':
+                return this.data.toString();
+            case 'json':
+                return JSON.parse(this.data.toString());
+            case 'xml':
+                let parser = new DOMParser();
+                return parser.parseFromString(this.data.toString(), "text/xml");
+            default:
+                return this.data;
+        }
+    }
+
+    // TODO -- do I want/need these? --
 
     get extension():string                  { return path.extname(this.filepath); }
     get name():string                       { return path.basename(this.filepath); }
@@ -158,35 +230,5 @@ export class File {
 
     relativePath(dir:Directory):string {
         return path.relative(dir.path, this.path);
-    }
-
-    // TODO consider splitting binary format out into its own readBinary, so this can always
-    //      return a Promise<string>, and it can return an ArrayBuffer
-    read(format?:string):Promise<any> {
-        return new Promise((resolve, reject) => {
-            switch(format) {
-                case 'json':
-                    fs.readFile(this.filepath, { encoding: 'UTF-8' }, (err, data) => err ? reject(err) : resolve(JSON.parse(data)));
-                    break;
-                case 'binary':
-                    fs.readFile(this.filepath, {}, (err, data) => err ? reject(err) : resolve(data.buffer));
-                    break;
-                default:
-                    fs.readFile(this.filepath, { encoding: 'UTF-8' }, (err, data) => err ? reject(err) : resolve(data));
-                    break;
-            }
-        });
-    }
-
-    // TODO like read(), consider splitting out a writeBinary()
-    write(data:any, format?:string):Promise<void> {
-        switch(format) {
-            case 'json':
-                return fsPromises.writeFile(this.filepath, JSON.stringify(data), { encoding: 'UTF-8' });
-            case 'binary':
-                return fsPromises.writeFile(this.filepath, data);
-            default:
-                return fsPromises.writeFile(this.filepath, data, { encoding: 'UTF-8' });
-        }
     }
 }

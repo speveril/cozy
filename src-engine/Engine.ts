@@ -3,7 +3,7 @@ import * as Electron from 'electron';
 import * as path from 'path';
 
 import { Audio } from './Audio';
-import { initFileSystem, File, Directory } from "./FileSystem";
+import { initFileSystem, UserdataFile, File, Directory } from "./FileSystem";
 import { Input } from "./Input";
 import { Plane } from './Plane';
 import { Texture } from "./Texture";
@@ -27,7 +27,6 @@ class CozyState {
     // let scene:Entity;
     public static gamePath:string;
     public static gameDir:Directory = null;
-    public static userDataDir:Directory = null;
 
     public static enginePath:string;
     public static paused:boolean;
@@ -65,28 +64,36 @@ export function setup(opts:any, overrides?:any) {
         document.body.classList.add('integerUpscale');
     }
 
-    // see
-    //  http://stackoverflow.com/a/26227660
-    //  https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html
-    var userdataStem = '';
-
-    if (process.platform === 'darwin') { // MacOS
-        userdataStem = process.env.HOME + '/Library/Application Support/';
-    } else if (process.env.APPDATA) { // Windows
-        userdataStem = process.env.APPDATA + '\\';
-    } else { // Linux
-        userdataStem = process.env.HOME + "/.";
-    }
-
     window['cozyState'].gameDir = new Directory(window['cozyState'].gamePath);
     console.log("SET GAMEDIR");
 
-    if (!window['cozyState'].config['userdata']) {
+    // set up filesystem
+
+    if (window['cozyState'].config['userdata'] === undefined) {
+        console.warn("No 'userdata' key found in window['cozyState'].config. This will be a problem when you export -- be sure to set it to something.");
         let p = window['cozyState'].gamePath.split(path.sep);
         window['cozyState'].config['userdata'] = p[p.length - 1];
-        console.warn("No 'userdata' key found in window['cozyState'].config. This will be a problem when you export -- be sure to set it to something.");
     }
-    window['cozyState'].userDataDir = new Directory(userdataStem).subdir(window['cozyState'].config['userdata'], true);
+
+    let gameconfigFile = null;
+    let userconfigFile = null
+    let fsPromise = initFileSystem(window['cozyState'].gamePath, window['cozyState'].config['userdata'])
+        .then(() => {
+            gameconfigFile = new File('config.json');
+            userconfigFile = new UserdataFile('config.json');
+            return Promise.all([userconfigFile.load(), gameconfigFile.load()]);
+        })
+        .then(() => {
+
+            return Promise.resolve();
+        }, () => {
+            // no user config, that's fine.
+            return Promise.resolve();
+        })
+    ;
+
+    promises.push();
+
 
     let userconfig = window['cozyState'].userDataDir.file('config.json');
     if (userconfig.exists) {
@@ -167,9 +174,6 @@ export function setup(opts:any, overrides?:any) {
             })());
         }
     }
-
-    // set up filesystem
-    promises.push(initFileSystem(window['cozyState'].gamePath));
 
     // TODO I don't think any of this is necessary now?
     // set up libs/kits
