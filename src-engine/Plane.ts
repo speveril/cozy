@@ -104,14 +104,8 @@ export class UiPlane extends Plane {
     addHTML(file) {
         var container = document.createElement('div');
         this.container.appendChild(container);
-        Engine.gameDir().find(file)
-            .then((f) => {
-                return f.read();
-            })
-            .then((text) => {
-                container.innerHTML = text;
-                return Promise.resolve();
-            });
+        var f = Engine.gameDir().file(file);
+        container.innerHTML = f.getData('text');
         return container;
     }
 

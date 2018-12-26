@@ -15,6 +15,7 @@ let fileManifest = {};
 // expand that to all other file types.
 
 let userdataStem = null;
+const fileCache = {};
 
 export function initFileSystem(gamePath:string, userdataPath:string):Promise<void> {
     // see
@@ -71,6 +72,8 @@ export class UserdataFile {
             case 'xml':
                 let parser = new DOMParser();
                 return parser.parseFromString(this.data.toString(), "text/xml");
+            case 'arraybuffer':
+                return this.data.buffer;
             default:
                 return this.data;
         }
@@ -85,9 +88,14 @@ export class UserdataFile {
     }
 
     load():Promise<UserdataFile> {
+        if (this.data) {
+            return Promise.resolve(this);
+        }
+
         return fsPromises.readFile(this.realpath)
             .then((data) => {
                 this.data = data;
+                return Promise.resolve(this);
             }, (err) => {
                 throw new Error(err);
             });
@@ -118,7 +126,7 @@ export class Directory {
             if (stats.isDirectory()) {
                 found.push(new Directory(fullpath));
             } else {
-                found.push(new File(fullpath));
+                found.push(File.get(fullpath));
             }
         };
         return found;
@@ -131,11 +139,11 @@ export class Directory {
     find(p:string):Directory|File {
         var stats = fs.statSync(path.join(this.root, p));
         if (stats.isDirectory()) return new Directory(path.join(this.root, p));
-        return new File(path.join(this.root, p));
+        return File.get(path.join(this.root, p));
     }
 
     file(p:string):File {
-        return new File(path.join(this.root, p));
+        return File.get(path.join(this.root, p));
     }
 
     subdir(p:string, createIfDoesNotExist?:boolean):Directory {
@@ -169,22 +177,35 @@ export class File {
     static root:string;
 
     private filepath:string;
-    private data:Buffer;
+    private data:Buffer = null;
 
     // TODO files that are in kits
+    // TODO make sure you can't load things outside of the game directory
+
+    static get(f:string):File {
+        if (!fileCache[f]) {
+            fileCache[f] = new File(f);
+        }
+        return fileCache[f];
+    }
 
     constructor(f:string) {
-        this.filepath = path.resolve(path.relative(File.root, f));
+        this.filepath = path.resolve(f);
     }
 
     get ready():boolean {
-        return this.data === null;
+        return this.data !== null;
     }
 
     load():Promise<File> {
+        if (this.data) {
+            return Promise.resolve(this);
+        }
+
         return fsPromises.readFile(this.filepath)
             .then((data) => {
                 this.data = data;
+                return Promise.resolve(this);
             }, (err) => {
                 throw new Error(err);
             });
@@ -203,6 +224,8 @@ export class File {
             case 'xml':
                 let parser = new DOMParser();
                 return parser.parseFromString(this.data.toString(), "text/xml");
+            case 'arraybuffer':
+                return this.data.buffer;
             default:
                 return this.data;
         }
