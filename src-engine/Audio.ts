@@ -34,7 +34,7 @@ class Sound {
                     varname = 'BasicSound';
                     break;
             }
-            
+
             generator.make(this)
                 .then((sound) => {
                     this.theSound = sound;
@@ -59,11 +59,11 @@ class BasicSound {
             container.file.load()
                 .then((file) => {
                     let fileContents = file.getData('arraybuffer');
-                    console.log("successfully loaded", container.file.path);
+                    // console.log("successfully loaded", container.file.path);
                     Audio.context.decodeAudioData(
                         fileContents,
                         (decoded) => {
-                            console.log("successfully decoded", container.file.path);
+                            // console.log("successfully decoded", container.file.path);
                             resolve(new BasicSound(container, decoded));
                         }, () => {
                             console.warn("Couldn't decode basic sound file '" + container.file.path + "'.");

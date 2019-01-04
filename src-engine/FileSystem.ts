@@ -126,7 +126,10 @@ export class UserdataFile {
     }
 
     write():Promise<void> {
-        return fsPromises.writeFile(this.realpath, this.data);
+        return fsPromises.mkdir(path.dirname(this.realpath), { recursive: true })
+            .then(() => {
+                fsPromises.writeFile(this.realpath, this.data);
+            });        
     }
 }
 
@@ -207,10 +210,12 @@ export class File {
     // TODO make sure you can't load things outside of the game directory
 
     static get(f:string):File {
-        if (!fileCache[f]) {
-            fileCache[f] = new File(f);
+        f = path.normalize(f);
+        let fullpath = path.resolve(f);
+        if (!fileCache[fullpath]) {
+            fileCache[fullpath] = new File(f);
         }
-        return fileCache[f];
+        return fileCache[fullpath];
     }
 
     constructor(f:string) {
@@ -237,7 +242,7 @@ export class File {
 
     getData(format?:string):any {
         if (!this.ready) {
-            throw new Error(`File ${this.name} isn't ready for use.`);
+            throw new Error(`File ${this.relativePath(Engine.gameDir())} isn't ready for use.`);
         }
 
         switch (format) {
@@ -271,8 +276,8 @@ export class File {
             });
     }
 
-    stat():Promise<fs.Stats> {
-        return fsPromises.stat(this.filepath);
+    stat():fs.Stats {
+        return fs.statSync(this.filepath);
     }
 
     relativePath(dir:Directory):string {

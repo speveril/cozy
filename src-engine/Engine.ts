@@ -65,8 +65,8 @@ export async function setup(opts:any, overrides?:any) {
     }
 
     await initFileSystem(window['cozyState'].gamePath, window['cozyState'].config['userdata']);
-    let f = await (new UserdataFile('config.json')).load();
     try {
+        let f = await (new UserdataFile('config.json')).load();
         Object.assign(window['cozyState'].config, f.getData('json'));
     } catch (e) {
         // no user config, that's fine; carry on without it
