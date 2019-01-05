@@ -126,10 +126,12 @@ export class UserdataFile {
     }
 
     write():Promise<void> {
-        return fsPromises.mkdir(path.dirname(this.realpath), { recursive: true })
-            .then(() => {
-                fsPromises.writeFile(this.realpath, this.data);
-            });        
+        try {
+            fs.mkdirSync(path.dirname(this.realpath), { recursive: true });
+        } catch (e) {
+            console.log(e);
+        }
+        return fsPromises.writeFile(this.realpath, this.data);
     }
 }
 
@@ -173,17 +175,10 @@ export class Directory {
         return File.get(path.join(this.root, p));
     }
 
-    subdir(p:string, createIfDoesNotExist?:boolean):Directory {
+    subdir(p:string):Directory {
         var fullpath = path.normalize(path.join(this.root, p));
-        if (createIfDoesNotExist && !fs.existsSync(fullpath)) {
-            let pathPieces = fullpath.split(path.sep);
-            let p = pathPieces[0];
-            for (let i = 1; i < pathPieces.length; i++) {
-                p += path.sep + pathPieces[i];
-                if (!fs.existsSync(p)) {
-                    fs.mkdirSync(p);
-                }
-            }
+        if (!fs.existsSync(fullpath)) {
+            throw new Error("Directory " + p + " does not exist.");
         }
         return new Directory(path.join(this.root, p));
     }
