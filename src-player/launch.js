@@ -49,6 +49,7 @@ Electron.app.on('ready', () => {
     window.loadURL("file://" + __dirname + "/game.html?" + path);
 
     window.webContents.once('did-finish-load', () => {
+        window.setMenu(null);
         window.webContents.send('start', params, args.override);
     });
 });
