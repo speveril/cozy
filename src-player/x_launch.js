@@ -27,6 +27,7 @@ Electron.app.on('ready', () => {
     params['game'] = Path.join(path, 'g');
     params['enginePath'] = '.';
     params['debug'] = false;
+    params['libRoots'] = JSON.stringify([__dirname + '/lib']);
 
     window.loadURL("file://" + __dirname + "/game.html");
     window.webContents.once('did-finish-load', () => {

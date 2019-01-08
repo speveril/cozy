@@ -546,21 +546,38 @@ window.Manager = {
             electronVersion: process.versions.electron,
             name: config.title ? config.title : 'Untitled Cozy Game',
             executableName: exportConfig.executable ? exportConfig.executable : 'game',
+            icon: Path.join(srcPath, config.icon),
             ignore: [
                 /\.d\.ts$/, /launch\.js$/, /package\.json$/, /\.DS_Store/
             ],
             // asar: true, // TODO? can't chdir to inside an asar, so need to rethink cwd for Cozy...
             afterCopy: [
                 (buildPath, electronVersion, platform, arch, callback) => {
+                    console.log("afterCopy->", buildPath);
                     cp(srcPath, Path.join(buildPath, 'g'), filter(exportConfig.exclude));
 
+                    let libRoots = JSON.parse(localStorage.getItem('libs')) || [];
+                    let libJSONs = [];
+                    let availableLibs = {};
+
+                    for (let root of libRoots) {
+                        for (let filepath of glob.sync(root + "/**/lib.json")) {
+                            let data = JSON.parse(FS.readFileSync(filepath, { encoding: 'utf8' }));
+                            availableLibs[data.id] = data;
+                            availableLibs[data.id].__path = Path.dirname(filepath);
+                        }
+                    }
+
+                    console.log("availableLibs:", availableLibs);
+            
                     if (config['lib']) {
                         this.output("PROCESSING LIBRARIES...");
-                        for (let key of Object.keys(config['lib'])) {
-                            this.output(`Lib ${key}:`);
-                            let libconfig = Path.join(srcPath, config['lib'][key], 'lib.json');
-                            cp(Path.join(srcPath, config['lib'][key]), Path.join(buildPath, 'lib', key), filter(libconfig.exclude));
-                            config['lib'][key] = '../lib/' + key;
+                        for (let key of config['lib']) {
+                            this.output(`Lib ${key}:`, availableLibs[key]);
+                            if (!availableLibs[key]) {
+                                throw new Error("Couldn't find required library '" + key + "'.");
+                            }
+                            cp(availableLibs[key].__path, Path.join(buildPath, 'lib', key), filter(availableLibs[key].exclude));
                         }
                     }
 
@@ -569,18 +586,20 @@ window.Manager = {
                     // TODO put stuff into the package information; name, version, etc
                     cp(Path.join(PLAYERDIR, 'x_package.json'), Path.join(buildPath, 'package.json'));
 
-                    try {
-                        config['width'] = config['width'] || 320;
-                        config['height'] = config['height'] || 240;
-                        config['title'] = config['title'] || 'Cozy';
-                        config['fullscreen'] = config['fullscreen'] || false;
+                    // write launch.js
+                    config['width'] = config['width'] || 320;
+                    config['height'] = config['height'] || 240;
+                    config['title'] = config['title'] || 'Cozy';
+                    config['fullscreen'] = config['fullscreen'] || false;
+                    let launchJS = FS.readFileSync(Path.join(PLAYERDIR, 'x_launch.js')).toString();
+                    launchJS = launchJS.replace('$$_PARAMS_$$', JSON.stringify(config));
+                    FS.writeFileSync(Path.join(buildPath, 'launch.js'), launchJS);
 
-                        let launchJS = FS.readFileSync(Path.join(PLAYERDIR, 'x_launch.js')).toString();
-                        launchJS = launchJS.replace('$$_PARAMS_$$', JSON.stringify(config));
-                        FS.writeFileSync(Path.join(buildPath, 'launch.js'), launchJS);
-                    } catch(e) {
-                        console.error("Couldn't write launch.js");
-                    }
+                    // write game.html
+                    let gameHTML = FS.readFileSync(Path.join(PLAYERDIR, 'x_game.html')).toString();
+                    // TODO processing on gameHTML
+                    FS.writeFileSync(Path.join(buildPath, 'game.html'), gameHTML);
+
                     callback();
                 }
             ],
@@ -604,6 +623,7 @@ window.Manager = {
         return packager(packageConfig).then((appPaths) => {
             process.noAsar = false;
             this.output(`\nSuccessfully exported to ${appPaths[0]}`);
+            this.output("<span style='color:#0f0'>[ Success ]</span>\n");
             // TODO post-export script?
             // TODO open up Explorer/Finder?
         });

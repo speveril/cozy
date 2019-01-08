@@ -1,0 +1,30 @@
+<html>
+    <body>
+        <iframe id="loader-frame" style="position:absolute;top:0;left:0;border:0;height:100%;width:100%;" src="g/loading.html"></iframe>
+        <link rel="stylesheet" href="game.css">
+        <script src="lib/glob.js"></script>
+        <script>
+			window.libopenmpt = {
+				memoryInitializerPrefixURL: 'lib/'
+			};
+        </script>
+        <script src="lib/libopenmpt.js"></script>
+
+        <script src="Cozy.js"></script>
+        <script>
+(function() {
+    const Electron = require('electron');
+    const Path = require('path');
+    Electron.remote.getCurrentWindow().openDevTools(); // TODO this should only happen in debug mode
+    Electron.ipcRenderer.on('start', (event, arg, overrides) => {
+        window.Cozy = this.Cozy;
+        Cozy.setup(arg, overrides)
+            .then(() => {
+                require(arg.game + '/main.js'); // creates global.compiledGame
+                Cozy.run(this.compiledGame);
+            });
+    });
+})();
+        </script>
+    </body>
+</html>
