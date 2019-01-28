@@ -1,23 +1,52 @@
-import * as fs from "fs";
-import * as path from "path";
-import * as process from "process";
 import * as Engine from './Engine';
 
-const fsPromises = require('fs').promises; // gross
+// This file is a bit of a mess.
+// I need the file system to behave quite differently running locally in Electron vs. running on
+// the web in a browser, but I don't want to have to write conditionals in the games themselves.
+// So, this sets up a sort of "virtual file system" for web, and uses real files for Electron.
+// UNFORTUNATELY because of TypeScript/ES6 modules I haven't figured out yet how to conditionally
+// use one or another file in the build because of course nothing good can ever happen. So, just
+// mash it all together into one big mess.
+
+
+// these imports happen conditionally if we're not targetting web
+let fs = null;
+let fsPromises = null;
+let path = null;
+let process = null;
+
+const TARGET = global ? global['COMPILE_TARGET'] : window['COMPILE_TARGET'];
+
 let fileManifest = {};
-
-/// TODO
-// Change things around so I'm not, in general, just loading files directly; instead, require an explicit
-// "load" step which then makes the file available to the engine. Then, map loaders, sprite loaders, etc
-// etc etc should just pull stuff from that cache, rather than loading things up on-demand. If something
-// needs to be loaded that isn't in the cache, it should be an explicit asynchronous call. Then, all that
-// data is available synchronously later. This is *already* how stuff like fonts and textures work; just
-// expand that to all other file types.
-
 let userdataStem = null;
 const fileCache = {};
 
-export function initFileSystem(gamePath:string, userdataPath:string):Promise<void> {
+/// Initialization functions /////////////////////////////////////////////////
+
+function fetch(url):Promise<string> {
+    return new Promise((resolve, reject) => {
+        let req = new XMLHttpRequest();
+
+        req.addEventListener('load', (evt) => {
+            console.log("fetch loaded...", this, evt);
+        });
+
+        req.addEventListener('error', (evt) => {
+            console.log("fetch failed...", this, evt);
+        });
+
+        req.open('GET', url, true);
+    });
+}
+
+async function local_initFileSystem(gamePath:string, userdataPath:string):Promise<void> {
+    [ fs, path, process ] = await Promise.all([
+        import("fs"),
+        // import("path"),
+        // import("process")
+    ]);
+    // fsPromises = fs.promises;
+
     // see
     //  http://stackoverflow.com/a/26227660
     //  https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html
@@ -34,28 +63,44 @@ export function initFileSystem(gamePath:string, userdataPath:string):Promise<voi
     fileManifest = {};
 
     File.root = gamePath;
-
-    return new Promise((resolve, reject) => {
-        resolve();
-    });
 }
+
+async function web_initFileSystem(gamePath:string, userdataPath:string):Promise<void> {
+    let manifestData = await fetch('manifest.json');
+    console.log("manifestData????", manifestData);
+}
+
+export function initFileSystem(gamePath:string, userdataPath:string):Promise<void> {
+    if (TARGET === 'web') {
+        return web_initFileSystem(gamePath, userdataPath);
+    } else {
+        return local_initFileSystem(gamePath, userdataPath);
+    }
+}
+
+/// User Data ////////////////////////////////////////////////////////////////
 
 export class UserdataFile {
     static glob(pattern:string, opts?:any):Array<UserdataFile> {
-        let o = Object.assign({
-            cwd: userdataStem
-        }, opts);
-
-        let files = window['glob'].sync(pattern, o);
-
         let found = [];
-        for (let f of files) {
-            let fullpath = path.join(userdataStem, f);
-            let stats = fs.statSync(fullpath);
-            if (!stats.isDirectory()) {
-                found.push(new UserdataFile(f));
-            }
-        };
+
+        if (TARGET === 'web') {
+            // TODO
+        } else {
+            let o = Object.assign({
+                cwd: userdataStem
+            }, opts);
+
+            let files = window['glob'].sync(pattern, o);
+
+            for (let f of files) {
+                let fullpath = path.join(userdataStem, f);
+                let stats = fs.statSync(fullpath);
+                if (!stats.isDirectory()) {
+                    found.push(new UserdataFile(f));
+                }
+            };
+        }
 
         return found;
     }
@@ -66,9 +111,14 @@ export class UserdataFile {
 
     constructor(name:string) {
         this._name = name;
-        this.realpath = path.resolve(userdataStem, name);
-        if (this.realpath.indexOf(userdataStem) !== 0) {
-            throw new Error("UserdataFile path must not use .. to escape userdata dir.");
+
+        if (TARGET === 'web') {
+            // TODO
+        } else {
+            this.realpath = path.resolve(userdataStem, name);
+            if (this.realpath.indexOf(userdataStem) !== 0) {
+                throw new Error("UserdataFile path must not use .. to escape userdata dir.");
+            }
         }
 
         this.data = null;
@@ -79,7 +129,7 @@ export class UserdataFile {
         return this.data !== null;
     }
 
-    stat():fs.Stats {
+    stat():any {
         return fs.statSync(this.realpath);
     }
 
@@ -116,31 +166,48 @@ export class UserdataFile {
             return Promise.resolve(this);
         }
 
-        return fsPromises.readFile(this.realpath)
-            .then((data) => {
-                this.data = data;
-                return Promise.resolve(this);
-            }, (err) => {
-                throw new Error(err);
-            });
+        if (TARGET === 'web') {
+            // TODO
+        } else {
+            return fsPromises.readFile(this.realpath)
+                .then((data) => {
+                    this.data = data;
+                    return Promise.resolve(this);
+                }, (err) => {
+                    throw new Error(err);
+                });
+        }
     }
 
     write():Promise<void> {
-        try {
-            fs.mkdirSync(path.dirname(this.realpath), { recursive: true });
-        } catch (e) {
-            console.log(e);
+        if (TARGET === 'web') {
+            // TODO 
+            return new Promise((resolve, reject) => {
+                resolve()
+            });
+        } else {
+            try {
+                fs.mkdirSync(path.dirname(this.realpath), { recursive: true });
+            } catch (e) {
+                console.log(e);
+            }
+            return fsPromises.writeFile(this.realpath, this.data);
         }
-        return fsPromises.writeFile(this.realpath, this.data);
     }
 }
+
+/// Directory ////////////////////////////////////////////////////////////////
 
 export class Directory {
     root:string;
 
     constructor(f:string) {
-        if (!fs.existsSync(f)) throw new Error("Couldn't open path, " + f + ".");
-        this.root = path.resolve(f);
+        if (TARGET === 'web') {
+            // TODO
+        } else {
+            if (!fs.existsSync(f)) throw new Error("Couldn't open path, " + f + ".");
+            this.root = path.resolve(f);
+        }
     }
 
     get path():string {
@@ -149,52 +216,83 @@ export class Directory {
 
     buildList(list:Array<string>):Array<Directory|File> {
         var found = [];
-        for (let f of list) {
-            var fullpath = path.join(this.root, f);
-            var stats = fs.statSync(fullpath);
-            if (stats.isDirectory()) {
-                found.push(new Directory(fullpath));
-            } else {
-                found.push(File.get(fullpath));
-            }
-        };
+        if (TARGET === 'web') {
+            // TODO
+        } else {
+            for (let f of list) {
+                var fullpath = path.join(this.root, f);
+                var stats = fs.statSync(fullpath);
+                if (stats.isDirectory()) {
+                    found.push(new Directory(fullpath));
+                } else {
+                    found.push(File.get(fullpath));
+                }
+            };
+        }
         return found;
     }
 
     read():Array<Directory|File> {
-        return this.buildList(fs.readdirSync(this.root));
+        if (TARGET === 'web') {
+            // TODO
+            return [];
+        } else {
+            return this.buildList(fs.readdirSync(this.root));
+        }
     }
 
     find(p:string):Directory|File {
-        var stats = fs.statSync(path.join(this.root, p));
-        if (stats.isDirectory()) return new Directory(path.join(this.root, p));
-        return File.get(path.join(this.root, p));
+        if (TARGET === 'web') {
+            // TODO
+            return null;
+        } else {
+            var stats = fs.statSync(path.join(this.root, p));
+            if (stats.isDirectory()) return new Directory(path.join(this.root, p));
+            return File.get(path.join(this.root, p));
+        }
     }
 
     file(p:string):File {
-        return File.get(path.join(this.root, p));
+        if (TARGET === 'web') {
+            // TODO
+            return null;
+        } else {
+            return File.get(path.join(this.root, p));
+        }
     }
 
     subdir(p:string):Directory {
-        var fullpath = path.normalize(path.join(this.root, p));
-        if (!fs.existsSync(fullpath)) {
-            throw new Error("Directory " + p + " does not exist.");
+        if (TARGET === 'web') {
+            // TODO
+            return null;
+        } else {
+            var fullpath = path.normalize(path.join(this.root, p));
+            if (!fs.existsSync(fullpath)) {
+                throw new Error("Directory " + p + " does not exist.");
+            }
+            return new Directory(path.join(this.root, p));
         }
-        return new Directory(path.join(this.root, p));
     }
 
     glob(pattern:string, opts?:any):Array<Directory|File> {
-        let o = Object.assign({
-            cwd: this.path
-        }, opts);
-        return this.buildList(window['glob'].sync(pattern, o));
+        if (TARGET === 'web') {
+            // TODO
+            return [];
+        } else {
+            let o = Object.assign({
+                cwd: this.path
+            }, opts);
+            return this.buildList(window['glob'].sync(pattern, o));
+        }
     }
 }
 
+/// File /////////////////////////////////////////////////////////////////////
 
 export class File {
     // windows url looks like file:///c:/foo/bar and we want c:/foo/bar, mac looks like file:///foo/bar
     // and we want /foo/bar
+    // TODO -- won't work in web
     static documentRoot:Directory = new Directory(window.location.href.replace("file://" + (process.platform === 'darwin' ? '' : '/'), "").replace(/game.html(\?.*)?/, ""));
     static root:string;
 
@@ -205,8 +303,13 @@ export class File {
     // TODO make sure you can't load things outside of the game directory
 
     static get(f:string):File {
-        f = path.normalize(f);
-        let fullpath = path.resolve(f);
+        let fullpath;
+        if (TARGET === 'web') {
+            // TODO
+        } else {
+            f = path.normalize(f);
+            fullpath = path.resolve(f);
+        }
         if (!fileCache[fullpath]) {
             fileCache[fullpath] = new File(f);
         }
@@ -214,7 +317,11 @@ export class File {
     }
 
     constructor(f:string) {
-        this.filepath = path.resolve(f);
+        if (TARGET === 'web') {
+            // TODO
+        } else {
+            this.filepath = path.resolve(f);
+        }
     }
 
     get ready():boolean {
@@ -226,13 +333,20 @@ export class File {
             return Promise.resolve(this);
         }
 
-        return fsPromises.readFile(this.filepath)
-            .then((data) => {
-                this.data = data;
-                return Promise.resolve(this);
-            }, (err) => {
-                throw new Error(err);
+        if (TARGET === 'web') {
+            // TODO
+            return new Promise((resolve, reject) => {
+                resolve(null);
             });
+        } else {
+            return fsPromises.readFile(this.filepath)
+                .then((data) => {
+                    this.data = data;
+                    return Promise.resolve(this);
+                }, (err) => {
+                    throw new Error(err);
+                });
+        }
     }
 
     getData(format?:string):any {
@@ -257,25 +371,76 @@ export class File {
 
     // TODO -- do I want/need these? --
 
-    get extension():string                  { return path.extname(this.filepath); }
-    get name():string                       { return path.basename(this.filepath); }
-    get dirname():string                    { return path.dirname(this.filepath); }
-    get dir():Directory                     { return new Directory(this.dirname);  }
-    get path():string                       { return this.filepath; }
-    get url():string                        { return "file:///" + this.path.replace(/\\/g, "/"); }
-
-    exists():Promise<boolean> {
-        return fsPromises.access(fs.constants.F_OK)
-            .then((err) => {
-                return !err;
-            });
+    get extension():string { 
+        if (TARGET === 'web') {
+            // TODO
+        } else {
+            return path.extname(this.filepath); 
+        }
     }
 
-    stat():fs.Stats {
-        return fs.statSync(this.filepath);
+    get name():string {
+        if (TARGET === 'web') {
+            // TODO
+        } else {
+            return path.basename(this.filepath);
+        }
+    }
+
+    get dirname():string {
+        if (TARGET === 'web') {
+            // TODO
+        } else {
+            return path.dirname(this.filepath);
+        }
+    }
+
+    get dir():Directory {
+        if (TARGET === 'web') {
+            // TODO
+        } else {
+            return new Directory(this.dirname);
+        }
+    }
+
+    get path():string { 
+        return this.filepath;
+    }
+    get url():string {
+        if (TARGET === 'web') {
+            // TODO
+        } else {
+            return "file:///" + this.path.replace(/\\/g, "/");
+        }
+    }
+
+    exists():Promise<boolean> {
+        if (TARGET === 'web') {
+            // TODO
+            return new Promise((resolve, reject) => {
+                resolve();
+            });
+        } else {
+            return fsPromises.access(fs.constants.F_OK)
+                .then((err) => {
+                    return !err;
+                });
+        }
+    }
+
+    stat():any {
+        if (TARGET === 'web') {
+            // TODO
+        } else {
+            return fs.statSync(this.filepath);
+        }
     }
 
     relativePath(dir:Directory):string {
-        return path.relative(dir.path, this.path);
+        if (TARGET === 'web') {
+            // TODO
+        } else {
+            return path.relative(dir.path, this.path);
+        }
     }
 }

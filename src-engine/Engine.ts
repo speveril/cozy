@@ -1,15 +1,11 @@
 import * as PIXI from 'pixi.js';
-import * as Electron from 'electron';
 import * as path from 'path';
 
 import { Audio } from './Audio';
-import { initFileSystem, UserdataFile, File, Directory } from "./FileSystem";
+import { initFileSystem, UserdataFile, File, Directory } from "FileSystem";
 import { Input } from "./Input";
 import { Plane } from './Plane';
 import { Texture } from "./Texture";
-
-var fs = require('fs');
-var fsPromises = fs.promises;
 
 declare var FontFace:any;
 
@@ -23,7 +19,7 @@ class CozyState {
     public static config:Object;
     public static textures:{}[];
     public static planes:Plane[];
-    public static browserWindow:Electron.BrowserWindow;
+    public static browserWindow:any;
     // let scene:Entity;
     public static gamePath:string;
     public static gameDir:Directory = null;
@@ -46,7 +42,7 @@ export async function setup(opts:any, overrides?:any) {
     window['cozyState'].config = opts;
     window['cozyState'].debug = !!opts.debug;
     window['cozyState'].gamePath = opts.game;
-    window['cozyState'].browserWindow = Electron.remote.getCurrentWindow();
+    window['cozyState'].browserWindow = window ? window : opts.Electron.remote.getCurrentWindow();
 
     if (window['cozyState'].debug) {
         window['cozyState'].browserWindow.webContents.once('devtools-opened', () => {
@@ -396,7 +392,7 @@ export function captureScreenshot(width?:number, height?:number):Promise<any> {
     let x = ((winSize[0] - w) / 2) | 0;
     let y = ((winSize[1] - h) / 2) | 0;
 
-    let rect:Electron.Rectangle = {
+    let rect = {
         width: w,
         height: h,
         x: x,

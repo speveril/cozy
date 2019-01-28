@@ -18,6 +18,7 @@
     Electron.remote.getCurrentWindow().openDevTools(); // TODO this should only happen in debug mode
     Electron.ipcRenderer.on('start', (event, arg, overrides) => {
         window.Cozy = this.Cozy;
+        arg.Electron = Electron;
         Cozy.setup(arg, overrides)
             .then(() => {
                 require(arg.game + '/main.js'); // creates global.compiledGame

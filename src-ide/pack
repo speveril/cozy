@@ -39,7 +39,7 @@ let config = {
         ]
     },
     module: {
-        loaders: [
+        rules: [
             { test: /\.ts$/, loader: 'ts-loader', exclude: /node_modules/ }
         ]
     },
@@ -58,7 +58,27 @@ if (argConfig.plugins) {
     });
 }
 
+if (argConfig.__RESOLVEALIASES) {
+    config.resolve.alias = argConfig.__RESOLVEALIASES;
+    delete argConfig.__RESOLVEALIASES;
+}
+
+if (argConfig.__TSCOMPILEROPTIONS) {
+    let rule = config.module.rules[0];
+    rule.use = [{
+        loader: 'ts-loader',
+        options: {
+            compilerOptions: argConfig.__TSCOMPILEROPTIONS
+        }
+    }];
+
+    delete rule.loader;
+    delete argConfig.__TSCOMPILEROPTIONS;
+}
+
 Object.assign(config, argConfig);
+
+console.log(config);
 
 try {
     Webpack(config, (err, stats) => {

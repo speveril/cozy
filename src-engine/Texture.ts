@@ -1,4 +1,3 @@
-import * as PIXI from 'pixi.js';
 export class Texture {
     innerTexture: PIXI.Texture;
 

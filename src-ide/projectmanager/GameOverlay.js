@@ -41,6 +41,10 @@ let GameOverlay = {
                         <svg class="icon"><use xlink:href="../img/sprite.svg#share-boxed"></use></svg>
                         Export
                     </li>
+                    <li data-action="exportweb" title="Export (Web)">
+                        <svg class="icon"><use xlink:href="../img/sprite.svg#share-boxed"></use></svg>
+                        Export (Web)
+                    </li>
                     <li data-action="editData" title="Edit Data">
                         <svg class="icon"><use xlink:href="../img/sprite.svg#pencil"></use></svg>
                         Edit Data
@@ -85,7 +89,7 @@ let GameOverlay = {
         element.classList.remove('open');
     },
 
-    compile: function() {
+    compile: function(target) {
         if (EngineStatus.get() === 'dirty') {
             return Manager.recompileEngine()
                 .then(() => {
@@ -94,7 +98,7 @@ let GameOverlay = {
                 })
         } else {
             Manager.output("");
-            return Manager.buildGame(gamepath);
+            return Manager.buildGame(gamepath, target);
         }
     },
 
@@ -141,6 +145,34 @@ let GameOverlay = {
         }
         dp.click();
     },
+
+    exportweb: function() {
+        console.log(">> export_web");
+        let dp = $create('<input class="directory-picker hidden" type="file" webkitdirectory>');
+        dp.onchange = () => {
+            var outputPath = dp.files[0].path;
+            var existingFiles = FS.readdirSync(outputPath);
+
+            dp.onchange = null;
+            dp.value = null;
+
+            if (existingFiles.length > 0) {
+                if (!confirm(outputPath + " isn't empty, and some files may be overwritten. Continue?")) {
+                    return;
+                }
+            }
+
+            Manager.output("");
+            Manager.buildEngine('web')
+                .then(() => {
+                    return GameOverlay.compile('web');
+                })
+                .then(() => {
+                    return Manager.exportToWeb(gamepath, outputPath);
+                });
+        }
+        dp.click();
+    }
 };
 
 element.addEventListener('click', GameOverlay.hide);

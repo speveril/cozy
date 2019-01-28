@@ -1,4 +1,3 @@
-import * as PIXI from 'pixi.js';
 import { Component } from "Component";
 
 module Cozy.Components {

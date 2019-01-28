@@ -1,4 +1,3 @@
-import * as PIXI from 'pixi.js';
 import { Sprite } from './Sprite';
 import { Shape } from './Shape';
 

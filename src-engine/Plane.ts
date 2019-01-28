@@ -1,4 +1,3 @@
-import * as PIXI from 'pixi.js';
 import * as Engine from './Engine';
 import { Layer } from './Layer';
 import { Sprite } from './Sprite';
