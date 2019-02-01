@@ -37,9 +37,7 @@ One of the biggest missing pieces of Cozy right now is documentation. I like to 
 
 The core of Cozy is meant to be a straight-forward, generic game engine. It lets you put sprites on the screen, play sounds, handle input, etc. Games are more than this, though! So Cozy is built to have pluggable gameplay bits, or "kits", that implement game-genre specific functionality so you don't have to write it all yourself.
 
-Right now there's only one kit, and it's not on github yet: RPGKit. It's intended to help in making jRPGs and other top-down adventure games.
-
-Current kits I'd like to build are a PlatformerKit and a VisualNovelKit.
+Right now there's only one kit, and it's not on github yet: RPGKit. It's intended to help in making jRPGs and other top-down adventure games. Other kits I have in mind for now are a PlatformerKit and a VisualNovelKit.
 
 ## Examples
 
