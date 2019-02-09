@@ -455,9 +455,7 @@ window.Manager = {
 
         let electronCfg = {
             // devtool: 'source-map',
-            entry: [
-                Path.resolve(Path.join('src-engine', 'Cozy.ts'))
-            ],
+            entry: Path.resolve(Path.join('src-engine', 'Cozy.ts')),
             target: 'electron-renderer',
             output: {
                 path: Path.resolve('build'),
@@ -477,9 +475,7 @@ window.Manager = {
 
         let webCfg = {
             // devtool: 'source-map',
-            entry: [
-                Path.resolve(Path.join('src-engine', 'Cozy.ts'))
-            ],
+            entry: Path.resolve(Path.join('src-engine', 'Cozy.ts')),
             target: 'web',
             output: {
                 path: Path.resolve('build'),
@@ -1029,31 +1025,30 @@ window.Manager = {
 
 
     doc: function(srcPath, outputPath) {
-        return Promise.resolve();
-        // return new Promise((resolve, reject) => {
-        //     this.output(
-        //         "<span style='color:white'>[ Generating documentation ]</span>\n" +
-        //         " - source:      " + srcPath + "\n" +
-        //         " - destination: " + outputPath
-        //     );
+        return new Promise((resolve, reject) => {
+            this.output(
+                "<span style='color:white'>[ Generating documentation ]</span>\n" +
+                " - source:      " + srcPath + "\n" +
+                " - destination: " + outputPath
+            );
 
-        //     this.fork(
-        //         Path.join(IDEDIR, 'builddoc'), [
-        //             '--out', outputPath,
-        //             '--mode', 'file',
-        //             '--target', 'ES6',
-        //             '--name', 'Cozy Engine',
-        //             // '--includeDeclarations',
-        //             srcPath, 'node_modules/electron/electron.d.ts'
-        //         ]
-        //     ).then(() => {
-        //         this.output("<span style='color:#0f0'>[ Success ]</span>\n");
-        //         resolve();
-        //     }, (code) => {
-        //         this.output("<span style='color:red'>[ FAILURE (code: " + code + ") ]</span>\n");
-        //         reject(code)
-        //     });
-        // });
+            this.fork(
+                Path.join(IDEDIR, 'builddoc'), [
+                    '--out', outputPath,
+                    '--mode', 'file',
+                    '--target', 'ES6',
+                    '--name', 'Cozy Engine',
+                    // '--includeDeclarations',
+                    srcPath, 'node_modules/electron/electron.d.ts'
+                ]
+            ).then(() => {
+                this.output("<span style='color:#0f0'>[ Success ]</span>\n");
+                resolve();
+            }, (code) => {
+                this.output("<span style='color:red'>[ FAILURE (code: " + code + ") ]</span>\n");
+                reject(code)
+            });
+        });
     },
 
     newGame: function(library) {
