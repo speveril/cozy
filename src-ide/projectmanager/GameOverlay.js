@@ -1,6 +1,7 @@
 "use strict";
 
 css('GameOverlay.css');
+const Dialog = require('electron').remote.dialog;
 const FS = require('fs-extra');
 const Path = require('path');
 const EngineStatus = require('./EngineStatus');
@@ -147,14 +148,12 @@ let GameOverlay = {
     },
 
     exportweb: function() {
-        console.log(">> export_web");
-        let dp = $create('<input class="directory-picker hidden" type="file" webkitdirectory>');
-        dp.onchange = () => {
-            var outputPath = dp.files[0].path;
+        Dialog.showOpenDialog({
+            title: "Choose export location",
+            properties: ["openDirectory","promptToCreate","createDirectory"]
+        }, (paths) => {
+            var outputPath = paths[0];
             var existingFiles = FS.readdirSync(outputPath);
-
-            dp.onchange = null;
-            dp.value = null;
 
             if (existingFiles.length > 0) {
                 if (!confirm(outputPath + " isn't empty, and some files may be overwritten. Continue?")) {
@@ -163,15 +162,11 @@ let GameOverlay = {
             }
 
             Manager.output("");
-            Manager.buildEngine('web')
-                .then(() => {
-                    return GameOverlay.compile('web');
-                })
+            GameOverlay.compile('web')
                 .then(() => {
                     return Manager.exportToWeb(gamepath, outputPath);
                 });
-        }
-        dp.click();
+        });
     }
 };
 

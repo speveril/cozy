@@ -385,6 +385,17 @@ window.Manager = {
                 extensions: ['.js','.json','.ts']
             }
         };
+
+        // if (target === 'web') {
+        //     wpconfig.__TSCOMPILEROPTIONS = {
+        //         paths: {
+        //             FileSystemImplementation: [ Path.resolve(Path.join(IDEDIR, "..", 'FileSystem-Web.ts')) ]
+        //         }
+        //     };
+        //     wpconfig.__RESOLVEALIASES = {
+        //         FileSystemImplementation$: Path.resolve(Path.join(IDEDIR, "..", 'FileSystem-Web.ts'))
+        //     }
+        // }
         
         if (gameconfig.lib) {
             let availableLibs = (JSON.parse(localStorage.getItem('libs')) || []).reduce((list, root) => {
@@ -462,20 +473,12 @@ window.Manager = {
                     out: 'cozy-build.d.ts',
                 }
             },
-            __TSCOMPILEROPTIONS: {
-                paths: {
-                    FileSystem: [ './FileSystem-Electron.ts' ]
-                }
-            },
-            __RESOLVEALIASES: {
-                FileSystem$: './FileSystem-Electron.ts'
-            },
         };
 
         let webCfg = {
             // devtool: 'source-map',
             entry: [
-                Path.resolve(Path.join('src-engine', 'Cozy-Web.ts'))
+                Path.resolve(Path.join('src-engine', 'Cozy.ts'))
             ],
             target: 'web',
             output: {
@@ -494,11 +497,17 @@ window.Manager = {
             },
             __TSCOMPILEROPTIONS: {
                 paths: {
-                    FileSystem: [ './FileSystem-Web.ts' ]
+                    'pixi.js': [ '../src-player/lib/pixi.min.js' ],
+                    fs: [ './web-polyfill/fs.ts' ],
+                    path: [ './web-polyfill/path.ts' ],
+                    process: [ './web-polyfill/process.ts' ]
                 }
             },
             __RESOLVEALIASES: {
-                FileSystem$: './FileSystem-Web.ts'
+                'pixi.js$': '../src-player/lib/pixi.min.js',
+                fs$: './web-polyfill/fs.ts',
+                path$: './web-polyfill/path.ts',
+                process$: './web-polyfill/process.ts'
             },
         };
 
@@ -1020,30 +1029,31 @@ window.Manager = {
 
 
     doc: function(srcPath, outputPath) {
-        return new Promise((resolve, reject) => {
-            this.output(
-                "<span style='color:white'>[ Generating documentation ]</span>\n" +
-                " - source:      " + srcPath + "\n" +
-                " - destination: " + outputPath
-            );
+        return Promise.resolve();
+        // return new Promise((resolve, reject) => {
+        //     this.output(
+        //         "<span style='color:white'>[ Generating documentation ]</span>\n" +
+        //         " - source:      " + srcPath + "\n" +
+        //         " - destination: " + outputPath
+        //     );
 
-            this.fork(
-                Path.join(IDEDIR, 'builddoc'), [
-                    '--out', outputPath,
-                    '--mode', 'file',
-                    '--target', 'ES6',
-                    '--name', 'Cozy Engine',
-                    // '--includeDeclarations',
-                    srcPath, 'node_modules/electron/electron.d.ts'
-                ]
-            ).then(() => {
-                this.output("<span style='color:#0f0'>[ Success ]</span>\n");
-                resolve();
-            }, (code) => {
-                this.output("<span style='color:red'>[ FAILURE (code: " + code + ") ]</span>\n");
-                reject(code)
-            });
-        });
+        //     this.fork(
+        //         Path.join(IDEDIR, 'builddoc'), [
+        //             '--out', outputPath,
+        //             '--mode', 'file',
+        //             '--target', 'ES6',
+        //             '--name', 'Cozy Engine',
+        //             // '--includeDeclarations',
+        //             srcPath, 'node_modules/electron/electron.d.ts'
+        //         ]
+        //     ).then(() => {
+        //         this.output("<span style='color:#0f0'>[ Success ]</span>\n");
+        //         resolve();
+        //     }, (code) => {
+        //         this.output("<span style='color:red'>[ FAILURE (code: " + code + ") ]</span>\n");
+        //         reject(code)
+        //     });
+        // });
     },
 
     newGame: function(library) {

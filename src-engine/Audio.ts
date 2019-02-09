@@ -1,5 +1,5 @@
 import * as Engine from './Engine';
-import { File } from 'FileSystem';
+import { File } from './FileSystem';
 
 // ---------------------------------------------------------------------------
 

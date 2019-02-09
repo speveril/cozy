@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 import * as path from 'path';
 
 import { Audio } from './Audio';
-import { initFileSystem, UserdataFile, File, Directory } from "FileSystem";
+import { initFileSystem, UserdataFile, File, Directory } from "./FileSystem";
 import { Input } from "./Input";
 import { Plane } from './Plane';
 import { Texture } from "./Texture";

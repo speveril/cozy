@@ -35,7 +35,7 @@ export function initFileSystem(gamePath:string, userdataPath:string):Promise<voi
     virtualPath = gamePath;
     userdataKeyPrefix = userdataPath;
 
-    return fetch('manifest.json')
+    return fetch('file-manifest.json')
         .then(() => {
 
         });

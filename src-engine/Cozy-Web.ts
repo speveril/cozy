@@ -2,7 +2,7 @@ window['COMPILE_TARGET'] = 'web';
 
 export * from './Engine';
 export * from './Audio';
-export * from 'FileSystem';
+export * from './FileSystem';
 export * from './Input';
 export * from './Layer';
 export * from './Plane';
