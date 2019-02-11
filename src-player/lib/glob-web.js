@@ -33,6 +33,7 @@
                 } else if (pattern[index] === '.') {
                     rePattern += "\\.";
                 } else if (pattern[index] === '{') {
+                    index++;
                     let end = pattern.indexOf('}', index);
                     rePattern += "(" + pattern.slice(index, end).replace(',','|') + ")";
                     index = end;
@@ -43,6 +44,7 @@
                 index++;
             }
 
+            console.log("glob regexp:", '^' + prefix + rePattern);
             let found = [];
             let re = new RegExp('^' + prefix + rePattern);
             for (let f of manifest) {
