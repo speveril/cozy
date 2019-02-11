@@ -1,3 +1,1 @@
-export const process = {
-    platform: 'web'
-};
+export const platform = 'web';

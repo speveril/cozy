@@ -1,7 +1,9 @@
 <html>
+    <head></head>
     <body>
         <iframe id="loader-frame" style="position:absolute;top:0;left:0;border:0;height:100%;width:100%;" src="g/loading.html"></iframe>
         <link rel="stylesheet" href="game.css">
+        <script src="lib/glob-web.js"></script>
         <script>
             window.global = window; // oof
 			window.libopenmpt = {
@@ -13,10 +15,25 @@
         <script src="Cozy.js"></script>
         <script>
 (function() {
+    let loaderframe = document.getElementById('loader-frame');
     Cozy.setup($$_PARAMS_$$, {})
         .then(() => {
-            require(arg.game + '/main.js'); // creates window.compiledGame
-            Cozy.run(window.compiledGame);
+            let script = document.createElement('script');
+            script.setAttribute('src', 'g/main.js');
+            script.addEventListener('load', () => {
+                console.log("Loaded, sending ready message...");
+                loaderframe.contentWindow.postMessage('ready', '*');
+            });
+
+            window.addEventListener('message', (evt) => {
+                console.log("Received message:", evt);
+                if (evt.data === 'start') {
+                    Cozy.run(window.compiledGame);
+                }
+            })
+
+            document.body.appendChild(script);
+            // require(arg.game + '/main.js'); // creates window.compiledGame
         });
 })();
         </script>

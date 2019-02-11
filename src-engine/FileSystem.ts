@@ -4,31 +4,63 @@ import * as process from "process";
 import * as Engine from './Engine';
 
 const fsPromises = require('fs').promises; // gross
-let fileManifest = {};
+let fileManifest = [];
 let userdataStem = null;
 const fileCache = {};
+
+const glob = window['glob'].sync;
+
+// XHR wrapper; currently only really used for web platform
+function fetch(url):Promise<string> {
+    return new Promise((resolve, reject) => {
+        let req = new XMLHttpRequest();
+
+        req.addEventListener('load', (evt) => {
+            resolve(req.response)
+        });
+
+        req.addEventListener('error', (evt) => {
+            reject('Failed to fetch file: ' + url);
+        });
+
+        req.open('GET', url);
+        req.send();
+    });
+}
 
 export function initFileSystem(gamePath:string, userdataPath:string):Promise<void> {
     // see
     //  http://stackoverflow.com/a/26227660
     //  https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html
 
-    if (process.platform === 'darwin') { // MacOS
-        userdataStem = process.env.HOME + '/Library/Application Support/';
-    } else if (process.env.APPDATA) { // Windows
-        userdataStem = process.env.APPDATA + '\\';
-    } else { // Linux
-        userdataStem = process.env.HOME + "/.";
+    if (process.platform.toString() === 'web') {
+        userdataStem = "$$userdata/";
+        return (async () => {
+            console.log("Fetching filemanifest");
+            let data = await fetch('filemanifest.json');
+            fileManifest = JSON.parse(data);
+            window['glob'].setManifest(fileManifest);
+            fs['setManifest'](fileManifest);
+
+            // TODO add userdata files to fileManifest
+
+            console.log("-->", fileManifest);
+            File.documentRoot = new Directory("");
+        })();
+    } else {
+        if (process.platform === 'darwin') { // MacOS
+            userdataStem = process.env.HOME + '/Library/Application Support/';
+        } else if (process.env.APPDATA) { // Windows
+            userdataStem = process.env.APPDATA + '\\';
+        } else { // Linux
+            userdataStem = process.env.HOME + "/.";
+        }
+        userdataStem += userdataPath;
+
+        File.root = gamePath;
+        File.documentRoot = new Directory(window.location.href.replace("file://" + (process.platform === 'darwin' ? '' : '/'), "").replace(/game.html(\?.*)?/, ""));
+        return Promise.resolve();
     }
-    userdataStem += userdataPath;
-
-    fileManifest = {};
-
-    File.root = gamePath;
-
-    return new Promise((resolve, reject) => {
-        resolve();
-    });
 }
 
 export class UserdataFile {
@@ -37,7 +69,7 @@ export class UserdataFile {
             cwd: userdataStem
         }, opts);
 
-        let files = window['glob'].sync(pattern, o);
+        let files = glob(pattern, o);
 
         let found = [];
         for (let f of files) {
@@ -178,15 +210,15 @@ export class Directory {
         let o = Object.assign({
             cwd: this.path
         }, opts);
-        return this.buildList(window['glob'].sync(pattern, o));
+        return this.buildList(glob(pattern, o));
     }
 }
 
 
 export class File {
     // windows url looks like file:///c:/foo/bar and we want c:/foo/bar, mac looks like file:///foo/bar
-    // and we want /foo/bar
-    static documentRoot:Directory = new Directory(window.location.href.replace("file://" + (process.platform === 'darwin' ? '' : '/'), "").replace(/game.html(\?.*)?/, ""));
+    // and we want /foo/bar; on web we just leave the http://whatever/
+    static documentRoot:Directory = null;
     static root:string;
 
     private filepath:string;
@@ -253,7 +285,14 @@ export class File {
     get dirname():string                    { return path.dirname(this.filepath); }
     get dir():Directory                     { return new Directory(this.dirname);  }
     get path():string                       { return this.filepath; }
-    get url():string                        { return "file:///" + this.path.replace(/\\/g, "/"); }
+    
+    get url():string {
+        if (process.platform.toString() === 'web') {
+            return this.path;
+        } else {
+            return "file:///" + this.path.replace(/\\/g, "/"); 
+        }
+    }
 
     exists():Promise<boolean> {
         return fsPromises.access(fs.constants.F_OK)

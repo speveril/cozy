@@ -643,6 +643,7 @@ window.Manager = {
                     config['height'] = config['height'] || 240;
                     config['title'] = config['title'] || 'Cozy';
                     config['fullscreen'] = config['fullscreen'] || false;
+                    config['libRoots'] = '["lib/"]';
                     let launchJS = FS.readFileSync(Path.join(PLAYERDIR, 'x_launch.js')).toString();
                     launchJS = launchJS.replace('$$_PARAMS_$$', JSON.stringify(config));
                     FS.writeFileSync(Path.join(buildPath, 'launch.js'), launchJS);
@@ -863,6 +864,28 @@ window.Manager = {
             }
         }
 
+        let filter = (patterns) => {
+            // TODO the / may not work for directories on windows
+            let exclude = [
+                '\.ts$', '\.js.map$', '\.git/', '\.gitignore', '\.svn/', '\.DS_Store'
+            ];
+    
+            if (patterns) {
+                for (let pattern of patterns) {
+                    exclude.push(new RegExp(pattern));
+                }
+            }
+
+            return (f) => {
+                for (let re of exclude) {
+                    if (f.match(re)) {
+                        return false;
+                    }
+                }
+                return true;
+            };
+        };
+
         this.output(`<hr>\n<span style="color:white">[ Exporting ${displayName} for web ]</span>`);
 
         FS.ensureDir(outPath);
@@ -873,7 +896,8 @@ window.Manager = {
         let files = [
             'game.css', 'loading.html',
             Path.join('lib', 'libopenmpt.js'),
-            Path.join('lib', 'libopenmpt.js.mem')
+            Path.join('lib', 'libopenmpt.js.mem'),
+            Path.join('lib', 'glob-web.js'),
         ];
 
         files.forEach((f) => cp(Path.join(PLAYERDIR, f), Path.join(outPath, f.replace(".min.", "."))));
@@ -881,11 +905,12 @@ window.Manager = {
         // copy over files that are just copies, but renamed
         cp_rewrite(Path.join(PLAYERDIR, 'Cozy-Web.js'), Path.join(outPath, 'Cozy.js'));
 
-        // copy over launch.js
         config['width'] = config['width'] || 320;
         config['height'] = config['height'] || 240;
         config['title'] = config['title'] || 'Cozy';
         config['fullscreen'] = config['fullscreen'] || false;
+        config['libRoots'] = '["lib/"]';
+        config['game'] = 'g';
         cp_rewrite(Path.join(PLAYERDIR, 'xweb_game.html'), Path.join(outPath, 'index.html'), {
             '$$_PARAMS_$$': JSON.stringify(config)
         });
@@ -903,6 +928,44 @@ window.Manager = {
             }
             return true;
         });
+
+        // copy over kits
+
+        let libRoots = JSON.parse(localStorage.getItem('libs')) || [];
+        let libJSONs = [];
+        let availableLibs = {};
+
+        for (let root of libRoots) {
+            for (let filepath of glob.sync(root + "/**/lib.json")) {
+                let data = JSON.parse(FS.readFileSync(filepath, { encoding: 'utf8' }));
+                availableLibs[data.id] = data;
+                availableLibs[data.id].__path = Path.dirname(filepath);
+            }
+        }
+
+        console.log("availableLibs:", availableLibs);
+
+        if (config['lib']) {
+            this.output("PROCESSING LIBRARIES...");
+            for (let key of config['lib']) {
+                this.output(`Lib ${key}:`, availableLibs[key]);
+                if (!availableLibs[key]) {
+                    throw new Error("Couldn't find required library '" + key + "'.");
+                }
+                cp(availableLibs[key].__path, Path.join(outPath, 'lib', key), filter(availableLibs[key].exclude));
+            }
+        }
+
+        // TODO prune empty directories in lib/ and g/
+
+        let filemanifest = [];
+        for (let f of glob.sync("**", { cwd:outPath })) {
+            filemanifest.push({
+                name: f,
+                type: FS.statSync(Path.join(outPath, f)).isDirectory() ? 'directory' : 'file'
+            });
+        }
+        FS.writeFileSync(Path.join(outPath, 'filemanifest.json'), JSON.stringify(filemanifest));
 
         this.output("-- Done copying.");
 

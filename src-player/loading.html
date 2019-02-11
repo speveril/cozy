@@ -16,9 +16,27 @@
                 font-family: sans-serif;
                 animation: fade-loop 3s ease infinite; 
             }
-        </style>        
+            body.ready #loading-div {
+                display: none;
+            }
+            body.loading #ready-div {
+                display: none;
+            }
+        </style>
     </head>
-    <body>
-        L O A D I N G
+    <body class="loading">
+        <div id="loading-div">L O A D I N G</div>
+        <div id="ready-div">R E A D Y<br>click to start</div>
     </body>
+    <script>
+        document.getElementById('ready-div').addEventListener('click', () => {
+            window.parent.postMessage('start', "*");
+        });
+        window.addEventListener('message', (evt) => {
+            console.log(evt);
+            if (evt.data === 'ready') {
+                document.body.className = 'ready';
+            }
+        });
+    </script>
 </html>

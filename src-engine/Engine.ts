@@ -42,7 +42,7 @@ export async function setup(opts:any, overrides?:any) {
     window['cozyState'].config = opts;
     window['cozyState'].debug = !!opts.debug;
     window['cozyState'].gamePath = opts.game;
-    window['cozyState'].browserWindow = window ? window : opts.Electron.remote.getCurrentWindow();
+    window['cozyState'].browserWindow = opts.Electron ? opts.Electron.remote.getCurrentWindow() : window; // TODO should probably actually be a weird wrapper
 
     if (window['cozyState'].debug) {
         window['cozyState'].browserWindow.webContents.once('devtools-opened', () => {
@@ -159,7 +159,11 @@ export async function setup(opts:any, overrides?:any) {
         let libs = window['cozyState'].config['lib'];
         for (const k of libs) {
             console.log("Loading kit:", k, availableLibs[k]);
-            if (availableLibs[k] && availableLibs[k].css) {
+            if (!availableLibs[k]) {
+                console.error("Didn't recognize kit", k);
+                continue;
+            }
+            if (availableLibs[k].css) {
                 for (let path of availableLibs[k].css) {
                     for (let f of availableLibs[k].dir.glob(path)) {
                         console.log("stylesheet <kit:" + k + ">:", availableLibs[k].dir.path, path, f);
