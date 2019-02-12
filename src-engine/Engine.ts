@@ -31,109 +31,112 @@ class CozyState {
     public static autoResize:boolean;
 }
 
+let cozyState = null;
+
 export async function setup(opts:any, overrides?:any) {
     let promises = [];
 
-    window['cozyState'] = CozyState;
+    cozyState = CozyState;
+    window['cozyState'] = cozyState; // for debugging
 
     console.log("Creating Cozy Object...", opts, overrides);
 
-    window['cozyState'].libs = JSON.parse(opts.libRoots);
-    window['cozyState'].config = opts;
-    window['cozyState'].debug = !!opts.debug;
-    window['cozyState'].gamePath = opts.game;
-    window['cozyState'].browserWindow = opts.Electron ? opts.Electron.remote.getCurrentWindow() : window; // TODO should probably actually be a weird wrapper
+    cozyState.libs = JSON.parse(opts.libRoots);
+    cozyState.config = opts;
+    cozyState.debug = !!opts.debug;
+    cozyState.gamePath = opts.game;
+    cozyState.browserWindow = opts.Electron ? opts.Electron.remote.getCurrentWindow() : window; // TODO should probably actually be a weird wrapper
 
-    if (window['cozyState'].debug) {
-        window['cozyState'].browserWindow.webContents.once('devtools-opened', () => {
-            window['cozyState'].browserWindow.focus();
+    if (cozyState.debug) {
+        cozyState.browserWindow.webContents.once('devtools-opened', () => {
+            cozyState.browserWindow.focus();
         });
-        window['cozyState'].browserWindow['openDevTools']({
+        cozyState.browserWindow['openDevTools']({
             mode: 'detach'
         });
     }
 
     // set up filesystem
-    if (window['cozyState'].config['userdata'] === undefined) {
-        console.warn("No 'userdata' key found in window['cozyState'].config. This will be a problem when you export -- be sure to set it to something.");
-        let p = window['cozyState'].gamePath.split(path.sep);
-        window['cozyState'].config['userdata'] = p[p.length - 1];
+    if (cozyState.config['userdata'] === undefined) {
+        console.warn("No 'userdata' key found in cozyState.config. This will be a problem when you export -- be sure to set it to something.");
+        let p = cozyState.gamePath.split(path.sep);
+        cozyState.config['userdata'] = p[p.length - 1];
     }
 
-    await initFileSystem(window['cozyState'].gamePath, window['cozyState'].config['userdata']);
+    await initFileSystem(cozyState.gamePath, cozyState.config['userdata']);
     try {
         let f = await (new UserdataFile('config.json')).load();
-        Object.assign(window['cozyState'].config, f.getData('json'));
+        Object.assign(cozyState.config, f.getData('json'));
     } catch (e) {
         // no user config, that's fine; carry on without it
     }
 
-    window['cozyState'].config = Object.assign(window['cozyState'].config, overrides);
+    cozyState.config = Object.assign(cozyState.config, overrides);
 
-    if (!window['cozyState'].hasOwnProperty('integerUpscale')) {
-        window['cozyState'].integerUpscale = true;
+    if (!cozyState.hasOwnProperty('integerUpscale')) {
+        cozyState.integerUpscale = true;
     }
-    if (window['cozyState'].integerUpscale) {
+    if (cozyState.integerUpscale) {
         document.body.classList.add('integerUpscale');
     }
 
-    window['cozyState'].gameDir = new Directory(window['cozyState'].gamePath);
-    window['cozyState'].textures = [];
-    window['cozyState'].planes = [];
-    window['cozyState'].paused = true;
+    cozyState.gameDir = new Directory(cozyState.gamePath);
+    cozyState.textures = [];
+    cozyState.planes = [];
+    cozyState.paused = true;
 
     // set up graphics
     PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
-    window['cozyState'].planes = [];
+    cozyState.planes = [];
 
     // Now that we have our full config, do the rest of our configuration
 
-    window['cozyState'].autoResize = window['cozyState'].config.hasOwnProperty('autoResize') ? window['cozyState'].config['autoResize'] : true;
-    Input.init(window['cozyState'].config['controls']);
+    cozyState.autoResize = cozyState.config.hasOwnProperty('autoResize') ? cozyState.config['autoResize'] : true;
+    Input.init(cozyState.config['controls']);
 
     window.addEventListener('resize', (e) => onResize(e));
     window.addEventListener('blur', (e) => {
         if (getFullScreen()) {
-            window['cozyState'].browserWindow.minimize();
+            cozyState.browserWindow.minimize();
         }
     });
     window.addEventListener('focus', (e) => {
         Input.clear();
     });
 
-    if (window['cozyState'].config['fullscreen']) {
+    if (cozyState.config['fullscreen']) {
         setFullScreen(true);
     }
 
     // debugging
-    if (window['cozyState'].debug) { 
+    if (cozyState.debug && cozyState.browserWindow['openDevTools']) { 
         window.addEventListener('keyup', (e) => {
             if (e['keyCode'] === 192) { // ~ key, opens console
-                window['cozyState'].browserWindow['openDevTools']();
-                window['cozyState'].browserWindow['devToolsWebContents'].focus();
+                cozyState.browserWindow['openDevTools']();
+                cozyState.browserWindow['devToolsWebContents'].focus();
             }
         });
     }
     
     // audio
     Audio.init({
-        NOSFX:      window['cozyState'].config['NOSFX'],
-        NOMUSIC:    window['cozyState'].config['NOMUSIC']
+        NOSFX:      cozyState.config['NOSFX'],
+        NOMUSIC:    cozyState.config['NOMUSIC']
     });
 
-    if (window['cozyState'].config['volume']) {
-        if (window['cozyState'].config['volume']['sfx'] !== undefined) {
-            Audio.setSFXVolume(window['cozyState'].config['volume']['sfx']);
+    if (cozyState.config['volume']) {
+        if (cozyState.config['volume']['sfx'] !== undefined) {
+            Audio.setSFXVolume(cozyState.config['volume']['sfx']);
         }
-        if (window['cozyState'].config['volume']['music'] !== undefined) {
-            Audio.setMusicVolume(window['cozyState'].config['volume']['music']);
+        if (cozyState.config['volume']['music'] !== undefined) {
+            Audio.setMusicVolume(cozyState.config['volume']['music']);
         }
     }
 
     // load CSS, from libs and game
     let cssPromises = [];
-    if (window['cozyState'].config['lib']) {
-        let libRoots:Directory[] = (window['cozyState'].libs).reduce((list, path) => {
+    if (cozyState.config['lib']) {
+        let libRoots:Directory[] = (cozyState.libs).reduce((list, path) => {
             console.log(path);
             list.push(new Directory(path));
             return list;
@@ -156,7 +159,7 @@ export async function setup(opts:any, overrides?:any) {
             availableLibs[d.id].dir = f.dir;
         }
 
-        let libs = window['cozyState'].config['lib'];
+        let libs = cozyState.config['lib'];
         for (const k of libs) {
             console.log("Loading kit:", k, availableLibs[k]);
             if (!availableLibs[k]) {
@@ -174,14 +177,14 @@ export async function setup(opts:any, overrides?:any) {
         }
     }
 
-    if (window['cozyState'].config['css']) {
-        if (typeof window['cozyState'].config['css'] === 'string') window['cozyState'].config['css'] = [window['cozyState'].config['css']];
-        for (let path of window['cozyState'].config['css']) {
+    if (cozyState.config['css']) {
+        if (typeof cozyState.config['css'] === 'string') cozyState.config['css'] = [cozyState.config['css']];
+        for (let path of cozyState.config['css']) {
             promises.push((async function() {
-                let files = await window['cozyState'].gameDir.glob(path);
+                let files = await cozyState.gameDir.glob(path);
                 console.log("Got the glob", files);
                 for (let f of files) {
-                    console.log("stylesheet <game>:", window['cozyState'].gameDir.path, path, f);
+                    console.log("stylesheet <game>:", cozyState.gameDir.path, path, f);
                     cssPromises.push(addStyleSheet(<File>f));
                 }
             })());
@@ -196,25 +199,27 @@ export async function setup(opts:any, overrides?:any) {
 }
 
 export function run(g) {
-    window['cozyState'].Game = g;
+    cozyState.Game = g;
 
     let doLoad = () => {
         document.getElementById('loader-frame').remove();
 
         // set up window
-        var multX = screen.availWidth / window['cozyState'].config['width'],
-            multY = screen.availHeight/ window['cozyState'].config['height'],
+        var multX = screen.availWidth / cozyState.config['width'],
+            multY = screen.availHeight/ cozyState.config['height'],
             mult  = Math.floor(Math.min(multX, multY));
-        window['cozyState'].browserWindow.setContentSize(window['cozyState'].config['width'] * mult, window['cozyState'].config['height'] * mult);
-        window['cozyState'].browserWindow.center();
-        window['cozyState'].Game.start();
+        if (cozyState.browserWindow['setContentSize']) {
+            cozyState.browserWindow.setContentSize(cozyState.config['width'] * mult, cozyState.config['height'] * mult);
+            cozyState.browserWindow.center();
+        }
+        cozyState.Game.start();
 
         onResize();
         requestAnimationFrame(frame);
     };
 
-    if (window['cozyState'].Game.load) {
-        let p = window['cozyState'].Game.load();
+    if (cozyState.Game.load) {
+        let p = cozyState.Game.load();
         if (p instanceof Promise) {
             p.then(doLoad);
         } else if (p instanceof Array) {
@@ -247,11 +252,11 @@ export function frame(new_t) {
         Input.update(_dt);
         Audio.update(_dt);
 
-        if (window['cozyState'].paused) return;
-        for (let plane of window['cozyState'].planes) plane.update(_dt);
+        if (cozyState.paused) return;
+        for (let plane of cozyState.planes) plane.update(_dt);
 
-        if (window['cozyState'].Game && window['cozyState'].Game.frame) {
-            window['cozyState'].Game.frame(_dt);
+        if (cozyState.Game && cozyState.Game.frame) {
+            cozyState.Game.frame(_dt);
         }
 
         updatedt -= fps60;
@@ -259,26 +264,26 @@ export function frame(new_t) {
 
 
     // only do one render
-    for (let plane of window['cozyState'].planes) plane.render(dt);
+    for (let plane of cozyState.planes) plane.render(dt);
 
-    if (window['cozyState'].Game && window['cozyState'].Game.postRender) {
-        window['cozyState'].Game.postRender(dt);
+    if (cozyState.Game && cozyState.Game.postRender) {
+        cozyState.Game.postRender(dt);
     }
 }
 
 export function gameDir():Directory {
-    return window['cozyState'].gameDir;
+    return cozyState.gameDir;
 }
 
 export function userDataDir():Directory {
-    return window['cozyState'].userDataDir;
+    return cozyState.userDataDir;
 }
 
 export function config(k:string):any {
     if (k !== undefined) {
-        return window['cozyState'].config[k];
+        return cozyState.config[k];
     } else {
-        return window['cozyState'].config;
+        return cozyState.config;
     }
 }
 
@@ -292,64 +297,72 @@ export function addPlane(Type:any, args?:any):Plane {
     }
 
     var plane = new Type(args || {});
-    window['cozyState'].planes.push(plane);
-    plane.resize(window['cozyState'].sizeMultiplier);
+    cozyState.planes.push(plane);
+    plane.resize(cozyState.sizeMultiplier);
 
     return plane;
 }
 
 export function pause() {
-    window['cozyState'].paused = true;
+    cozyState.paused = true;
 }
 
 export function unpause() {
-    window['cozyState'].paused = false;
+    cozyState.paused = false;
+}
+
+function getContentSize() {
+    if (cozyState.browserWindow.getContentSize) {
+        return cozyState.browserWindow.getContentSize();
+    } else {
+        return { width: window.innerWidth, height: window.innerHeight };
+    }
 }
 
 function fixZoom() {
-    let windowSize = window['cozyState'].browserWindow.getContentSize();
-    let mult = window['cozyState'].sizeMultiplier;
+    let windowSize = getContentSize();
+    let mult = cozyState.sizeMultiplier;
 
-    for (let plane of window['cozyState'].planes) plane.resize(window['cozyState'].config['width'], window['cozyState'].config['height'], mult);
+    for (let plane of cozyState.planes) plane.resize(cozyState.config['width'], cozyState.config['height'], mult);
 
-    document.body.style.margin = "" + Math.floor((windowSize[1] - mult * window['cozyState'].config['height']) / 2) + "px " + Math.floor((windowSize[0] - mult * window['cozyState'].config['width']) / 2) + "px";
+    document.body.style.margin = "" + Math.floor((windowSize[1] - mult * cozyState.config['height']) / 2) + "px " + Math.floor((windowSize[0] - mult * cozyState.config['width']) / 2) + "px";
     document.body.style.display = 'none';
     document.body.offsetHeight;
     document.body.style.display = '';
 }
 
 export function onResize(event?:any) {
-    let newSize = window['cozyState'].browserWindow.getContentSize(),
-        multX   = newSize[0] / window['cozyState'].config['width'],
-        multY   = newSize[1] / window['cozyState'].config['height'],
+    let newSize = getContentSize(),
+        multX   = newSize[0] / cozyState.config['width'],
+        multY   = newSize[1] / cozyState.config['height'],
         mult    = Math.min(multX, multY);
 
-    if (window['cozyState'].config['integerUpscale'] && mult > 1) {
+    if (cozyState.config['integerUpscale'] && mult > 1) {
         mult = Math.floor(mult);
     }
 
-    window['cozyState'].sizeMultiplier = mult;
+    cozyState.sizeMultiplier = mult;
     fixZoom();
 }
 
 export function setZoom(z:number):void {
-    if (window['cozyState'].config['autoResize']) {
+    if (cozyState.config['autoResize']) {
         throw new Error("Do not call setZoom if the game has autoResize turned on.");
     }
-    window['cozyState'].sizeMultiplier = z;
+    cozyState.sizeMultiplier = z;
     fixZoom();
 }
 
 export function getZoom() {
-    return window['cozyState'].sizeMultiplier;
+    return cozyState.sizeMultiplier;
 }
 
 export function setTitle(title) {
-    window['cozyState'].browserWindow.setTitle(title);
+    cozyState.browserWindow.setTitle(title);
 }
 
 export function quit() {
-    window['cozyState'].browserWindow.close();
+    cozyState.browserWindow.close();
 }
 
 export function loadTextures(assets) {
@@ -366,16 +379,16 @@ export function loadTextures(assets) {
         PIXI.loader.load(function(loader, resources) {
             for (let key of Object.keys(resources)) {
                 let resource = resources[key];
-                window['cozyState'].textures[resource['name'].replace(/\\/g, "/")] = new Texture(resource['texture']);
+                cozyState.textures[resource['name'].replace(/\\/g, "/")] = new Texture(resource['texture']);
             }
-            window['cozyState'].textures = Object.assign(window['cozyState'].textures, window['cozyState'].textures);
+            cozyState.textures = Object.assign(cozyState.textures, cozyState.textures);
             resolve();
         });
     });
 }
 
 export function getTexture(f) {
-    return window['cozyState'].textures[f.replace(/\\/g, "/")];
+    return cozyState.textures[f.replace(/\\/g, "/")];
 }
 
 export function addStyleSheet(file:File):Promise<void> {
@@ -390,9 +403,9 @@ export function addStyleSheet(file:File):Promise<void> {
 }
 
 export function captureScreenshot(width?:number, height?:number):Promise<any> {
-    let winSize = window['cozyState'].browserWindow.getContentSize();
-    let w = <number>Math.ceil(window['cozyState'].config['width'] * window['cozyState'].sizeMultiplier);
-    let h = <number>Math.ceil(window['cozyState'].config['height'] * window['cozyState'].sizeMultiplier);
+    let winSize = getContentSize();
+    let w = <number>Math.ceil(cozyState.config['width'] * cozyState.sizeMultiplier);
+    let h = <number>Math.ceil(cozyState.config['height'] * cozyState.sizeMultiplier);
     let x = ((winSize[0] - w) / 2) | 0;
     let y = ((winSize[1] - h) / 2) | 0;
 
@@ -404,7 +417,7 @@ export function captureScreenshot(width?:number, height?:number):Promise<any> {
     };
 
     return new Promise((resolve, reject) => {
-        window['cozyState'].browserWindow.capturePage(rect, (image) => {
+        cozyState.browserWindow.capturePage(rect, (image) => {
             let opts = {
                 quality: "best"
             };
@@ -417,7 +430,7 @@ export function captureScreenshot(width?:number, height?:number):Promise<any> {
 
 export function saveImageToFile(image:any):File {
     var filename = `${(new Date()).toISOString().replace(/[-T:Z\.]/g,"")}.png`;
-    var file = window['cozyState'].userDataDir.subdir('screenshots', true).file(filename);
+    var file = cozyState.userDataDir.subdir('screenshots', true).file(filename);
     file.write(image.toPng(), 'binary');
     return file;
 }
@@ -429,15 +442,23 @@ export function writeUserConfig(data:any) {
 }
 
 export function getFullScreen():boolean {
-    return window['cozyState'].browserWindow.isFullScreen();
+    if (cozyState.browserWindow.isFullScreen) {
+        return cozyState.browserWindow.isFullScreen();
+    } else {
+        return window.document.body['fullscreenElement'] === null;
+    }
 }
 
 export function setFullScreen(f:boolean):void {
-    window['cozyState'].browserWindow.setFullScreen(f);
+    if (cozyState.browserWindow.setFullScreen) {
+        cozyState.browserWindow.setFullScreen(f);
+    } else {
+        window.document.body.requestFullscreen();
+    }
 }
 
 export function getDebug():boolean {
-    return window['cozyState'].debug;
+    return cozyState.debug;
 }
 
 /**
@@ -460,7 +481,7 @@ export function fixHTML(html:string):string {
         for (let attr of ['src','href']) {
             if (element.getAttribute(attr)) {
                 if (element.getAttribute(attr).indexOf('data') === 0) return;
-                element[attr] = window['cozyState'].gameDir.file(element.getAttribute(attr)).url;
+                element[attr] = cozyState.gameDir.file(element.getAttribute(attr)).url;
             }
         }
     }
