@@ -26,6 +26,10 @@
                 if (pattern[index] === '*') {
                     if (pattern[index + 1] === '*') {
                         rePattern += ".*?";
+                        if (index === 0 && pattern[index + 2] === '/') {
+                            rePattern += "/?";
+                            index++;
+                        }
                         index++;
                     } else {
                         rePattern += "[^/\\\\]*";
@@ -44,12 +48,19 @@
                 index++;
             }
 
-            console.log("glob regexp:", '^' + prefix + rePattern);
+            if (rePattern[0] === '/') {
+                rePattern = rePattern.slice(1);
+            }
+
+            console.log("glob regexp:", '^' + rePattern + '$');
             let found = [];
-            let re = new RegExp('^' + prefix + rePattern);
+            let re = new RegExp('^' + rePattern);
             for (let f of manifest) {
-                if (f.name.match(re)) {
-                    found.push(f.name.slice(prefix.length));
+                if (f.name.indexOf(prefix) !== 0) continue;
+
+                let localpath = f.name.slice(prefix.length);
+                if (localpath.match(re)) {
+                    found.push(localpath);
                 }
             }
 

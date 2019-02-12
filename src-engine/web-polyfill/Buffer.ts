@@ -1,3 +1,5 @@
+// TODO this is far from complete
+
 export class Buffer {
     static from(src:any):Buffer {
         if (src instanceof ArrayBuffer) {

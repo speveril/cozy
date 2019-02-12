@@ -33,7 +33,6 @@ export function setManifest(m) {
 
 export function statSync(p) {
     p = normalize(p);
-    console.log("statSync(", p, ")");
 
     let entry = manifest.find((x) => x.name === p);
 
@@ -58,13 +57,11 @@ export function existsSync(p) {
 
 export const promises = {
     readFile(p) {
-        // TODO need to fail if it's not in the manifest
         p = normalize(p);
         if (!existsSync(p)) {
             // TODO actual fs style errors; ENOEXIST or whatever
             throw new Error("Couldn't read " + p + ", does not exist.");
         }
         return fetch(p);
-        // TODO Buffer polyfill?
     }
 };
