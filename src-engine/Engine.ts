@@ -315,7 +315,7 @@ function getContentSize() {
     if (cozyState.browserWindow.getContentSize) {
         return cozyState.browserWindow.getContentSize();
     } else {
-        return { width: window.innerWidth, height: window.innerHeight };
+        return [ window.innerWidth, window.innerHeight ];
     }
 }
 
