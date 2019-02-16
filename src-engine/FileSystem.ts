@@ -36,15 +36,43 @@ export function initFileSystem(gamePath:string, userdataPath:string):Promise<voi
     if (process.platform.toString() === 'web') {
         userdataStem = "$$userdata/";
         return (async () => {
-            console.log("Fetching filemanifest");
             let data = await fetch('filemanifest.json');
             fileManifest = JSON.parse(data);
             window['glob'].setManifest(fileManifest);
             fs['setManifest'](fileManifest);
 
-            // TODO add userdata files to fileManifest
+            // TODO if indexedDB isn't defined we're going to have a bad time -- fall back to localStorage or something?
+            let db = <IDBDatabase>(await new Promise((resolve, reject) => {
+                let req = indexedDB.open(userdataPath + "$$userdata", 1);
+                req.onupgradeneeded = (evt) => {
+                    let objectStore = evt.target['result'].createObjectStore("files");
+                };
+                req.onsuccess = (e) => resolve(e.target['result']);
+                req.onerror = (e) => reject(e['errorCode']);
+            }));
+            db.onerror = (evt) => {
+                console.error("Userdata DB Error:", evt);
+            };
+            let userdataPaths = new Set();
+            await new Promise((resolve, reject) => {
+                db.transaction("files").objectStore("files").openCursor().onsuccess = (evt) => {
+                    let cursor = evt.target['result'];
+                    if (cursor) {
+                        userdataPaths.add(path.dirname(cursor.key));
+                        fileManifest.push({ name: cursor.key, type: 'file' });
+                        cursor.continue();
+                    } else {
+                        resolve();
+                    }
+                };
+            });
+            for (let p of userdataPaths) {
+                fileManifest.push({ name: p, type: 'directory' });
+            }
+            fs['setUserdataDB'](db);
+            
+            console.log(">>", fileManifest);
 
-            console.log("-->", fileManifest);
             File.documentRoot = new Directory("");
         })();
     } else {

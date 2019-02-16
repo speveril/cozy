@@ -1,4 +1,5 @@
 import { Buffer } from './Buffer';
+import * as path from './path';
 
 function fetch(url):Promise<Buffer> {
     return new Promise((resolve, reject) => {
@@ -30,6 +31,11 @@ export function setManifest(m) {
     manifest = m;
 }
 
+let db = null;
+export function setUserdataDB(d) {
+    db = d;
+}
+
 
 export function statSync(p) {
     p = normalize(p);
@@ -55,6 +61,30 @@ export function existsSync(p) {
     return false;
 }
 
+export function mkdirSync(p, opts) {
+    // not sure this actually matters, really
+
+    if (existsSync(p)) {
+        throw new Error("Tried to make a directory that already exists!");
+    }
+    if (!opts.recursive && !existsSync(path.dirname(p))) {
+        throw new Error("Tried to make a directory in a parent that doesn't exist!");
+    }
+
+    if (opts.recursive) {
+        let dirs = p.split('/');
+        let accum = '';
+        for (let d of dirs) {
+            accum += d + "/";
+            if (!existsSync(d)) {
+                manifest.push({ name: normalize(accum), type: 'directory' });
+            }
+        }
+    } else {
+        manifest.push({ name: normalize(p), type: 'directory' });
+    }
+}
+
 export const promises = {
     readFile(p) {
         p = normalize(p);
@@ -62,6 +92,29 @@ export const promises = {
             // TODO actual fs style errors; ENOEXIST or whatever
             throw new Error("Couldn't read " + p + ", does not exist.");
         }
-        return fetch(p);
+        if (p.indexOf('$$userdata/') === 0) {
+            return new Promise((resolve, reject) => {
+                let req = db.transaction('files').objectStore('files').get(p).onsuccess = (evt) => {
+                    console.log("success loading userdata file", p + ":", evt.target['result']);
+                    resolve(Buffer.from(evt.target['result']));
+                };
+            });
+        } else {
+            return fetch(p);
+        }
+    },
+
+    writeFile(p, data, opts) {
+        p = normalize(p);
+        return new Promise((resolve, reject) => {
+            let t = db.transaction('files', 'readwrite').objectStore('files').put(data, p);
+            
+            t.onsuccess = (evt) => {
+                resolve();
+            };
+            t.onerror = (evt) => {
+                reject(evt.target['result']);
+            };
+        });
     }
 };

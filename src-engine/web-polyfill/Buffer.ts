@@ -4,6 +4,8 @@ export class Buffer {
     static from(src:any):Buffer {
         if (src instanceof ArrayBuffer) {
             return new Buffer(src);
+        } else if (src.buffer && src.buffer instanceof ArrayBuffer) {
+            return new Buffer(src.buffer);
         } else {
             if (typeof src === 'object') {
                 throw new Error("Tried to construct a Buffer from a " + (src.prototype.name));
