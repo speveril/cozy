@@ -48,6 +48,7 @@ export function statSync(p) {
 
     let o = {};
     o['isDirectory'] = entry.type === 'directory' ? () => true : () => false;
+    o['mtime'] = new Date(entry.mtime);
     return o;
 }
 
@@ -77,7 +78,7 @@ export function mkdirSync(p, opts) {
         for (let d of dirs) {
             accum += d + "/";
             if (!existsSync(d)) {
-                manifest.push({ name: normalize(accum), type: 'directory' });
+                manifest.push({ name: normalize(accum), type: 'directory', mtime: new Date().toISOString() });
             }
         }
     } else {
@@ -96,7 +97,7 @@ export const promises = {
             return new Promise((resolve, reject) => {
                 let req = db.transaction('files').objectStore('files').get(p).onsuccess = (evt) => {
                     console.log("success loading userdata file", p + ":", evt.target['result']);
-                    resolve(Buffer.from(evt.target['result']));
+                    resolve(Buffer.from(evt.target['result'].data));
                 };
             });
         } else {
@@ -107,7 +108,10 @@ export const promises = {
     writeFile(p, data, opts) {
         p = normalize(p);
         return new Promise((resolve, reject) => {
-            let t = db.transaction('files', 'readwrite').objectStore('files').put(data, p);
+            let t = db.transaction('files', 'readwrite').objectStore('files').put({
+                mtime: new Date().toISOString(),
+                data: data,
+            }, p);
             
             t.onsuccess = (evt) => {
                 resolve();

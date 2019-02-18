@@ -898,6 +898,7 @@ window.Manager = {
             Path.join('lib', 'libopenmpt.js'),
             Path.join('lib', 'libopenmpt.js.mem'),
             Path.join('lib', 'glob-web.js'),
+            Path.join('lib', 'html2canvas.min.js'),
         ];
 
         files.forEach((f) => cp(Path.join(PLAYERDIR, f), Path.join(outPath, f.replace(".min.", "."))));
@@ -960,9 +961,11 @@ window.Manager = {
 
         let filemanifest = [];
         for (let f of glob.sync("**", { cwd:outPath })) {
+            let stat = FS.statSync(Path.join(outPath, f));
             filemanifest.push({
                 name: f,
-                type: FS.statSync(Path.join(outPath, f)).isDirectory() ? 'directory' : 'file'
+                type: stat.isDirectory() ? 'directory' : 'file',
+                mtime: stat.mtime,
             });
         }
         FS.writeFileSync(Path.join(outPath, 'filemanifest.json'), JSON.stringify(filemanifest));

@@ -53,21 +53,23 @@ export function initFileSystem(gamePath:string, userdataPath:string):Promise<voi
             db.onerror = (evt) => {
                 console.error("Userdata DB Error:", evt);
             };
-            let userdataPaths = new Set();
+            let userdataPaths = {};
             await new Promise((resolve, reject) => {
                 db.transaction("files").objectStore("files").openCursor().onsuccess = (evt) => {
                     let cursor = evt.target['result'];
                     if (cursor) {
-                        userdataPaths.add(path.dirname(cursor.key));
-                        fileManifest.push({ name: cursor.key, type: 'file' });
+                        if (!userdataPaths[path.dirname(cursor.key)] || userdataPaths[path.dirname(cursor.key)] < cursor.value.mtime) {
+                            userdataPaths[path.dirname(cursor.key)] = cursor.value.mtime;
+                        }
+                        fileManifest.push({ name: cursor.key, type: 'file', mtime: cursor.value.mtime });
                         cursor.continue();
                     } else {
                         resolve();
                     }
                 };
             });
-            for (let p of userdataPaths) {
-                fileManifest.push({ name: p, type: 'directory' });
+            for (let p of Object.keys(userdataPaths)) {
+                fileManifest.push({ name: p, type: 'directory', mtime: userdataPaths[p] });
             }
             fs['setUserdataDB'](db);
             

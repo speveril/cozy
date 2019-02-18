@@ -417,14 +417,38 @@ export function captureScreenshot(width?:number, height?:number):Promise<any> {
     };
 
     return new Promise((resolve, reject) => {
-        cozyState.browserWindow.capturePage(rect, (image) => {
-            let opts = {
-                quality: "best"
-            };
-            if (width !== undefined) opts['width'] = width;
-            if (height !== undefined) opts['height'] = height;
-            resolve(image.resize(opts));
-        });
+        // Note that in the Electron case we are returning a NativeImage, and in the
+        // browser case we're returning a canvas object. Both of these happen to have
+        // the .toDataURL() method, so we're okay~ for SimpleQuest, but this should
+        // be revisited.
+
+        if (cozyState.browserWindow.capturePage) {
+            cozyState.browserWindow.capturePage(rect, (image) => {
+                let opts = {
+                    quality: "best"
+                };
+                if (width !== undefined) opts['width'] = width;
+                if (height !== undefined) opts['height'] = height;
+                resolve(image.resize(opts));
+            });
+        } else if (window['html2canvas'] !== undefined) {
+            if (!width) width = w;
+            if (!height) height = Math.round((h / w) * width);
+
+            let outputcanvas = document.createElement('canvas');
+            outputcanvas.setAttribute('width', width.toString());
+            outputcanvas.setAttribute('height', height.toString());
+            
+            // in this case we DO actually want to do resize interpolation
+            
+            window['html2canvas'](document.body).then((c) => {
+                let ctx = outputcanvas.getContext('2d');
+                ctx.drawImage(c, x, y, w, h, 0, 0, width, height);
+                resolve(outputcanvas);
+            });
+        } else {
+            reject();
+        }
     });
 }
 
