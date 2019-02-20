@@ -87,6 +87,9 @@ window.Manager = {
                 case 'addlibrary':
                     this.addLibrary();
                     break;
+                case 'settings':
+                    this.settingsDialog();
+                    break;
                 case 'NOSFX':
                 case 'NOMUSIC':
                     if (target.classList.contains('off')) {
@@ -228,6 +231,39 @@ window.Manager = {
             this.dialogContainer.appendChild(dialog);
 
             dialog.querySelector('input[name=path]').focus();
+        });
+    },
+
+    settingsDialog() {
+        return new Promise((resolve, reject) => {
+            let dialog = document.createElement('form');
+            dialog.innerHTML = `
+                <div class="text">Library Paths</div>
+                <textarea name="libs" rows="10" cols="40">${JSON.parse(localStorage.getItem('libs')).join("\n")}</textarea>
+                <div class="text">One directory per line.</div>
+                <div class="buttons">
+                    <button class="confirm">OK</button>
+                    <button class="cancel">Cancel</button>
+                </div>
+            `;
+            dialog.onsubmit = (e) => {
+                e.preventDefault();
+            };
+            dialog.querySelector('button.confirm').onclick = () => {
+                let libValue = dialog.querySelector('textarea[name=libs]').value.split("\n");
+                console.log(">>>>", dialog.querySelector('textarea[name=libs]').value);
+                localStorage.setItem('libs', JSON.stringify(libValue));
+                this.dialogContainer.removeChild(dialog);
+                resolve();
+            }
+            dialog.querySelector('button.cancel').onclick = () => {
+                this.dialogContainer.removeChild(dialog);
+                reject();
+            }
+
+            this.dialogContainer.appendChild(dialog);
+
+            dialog.querySelector('textarea[name=libs]').focus();
         });
     },
 
