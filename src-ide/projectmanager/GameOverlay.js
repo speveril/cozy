@@ -26,11 +26,15 @@ let GameOverlay = {
         element.innerHTML = `
             <div class="content">
                 <div class="banner">
-                    <h1>${gameconfig.title}</h1>
+                    <div class="title">
+                        ${scrub(gameconfig.title)}
+                        <div class="version">v${scrub(gameconfig.version)}</div>
+                    </div>
+                    <div class="author">by ${scrub(gameconfig.author)}</div>
                 </div>
 
                 <ul class="main actions">
-                    <li data-action="compileAndRun" title="Play (F5)">
+                    <li class="primary" data-action="compileAndRun" title="Play (F5)">
                         <svg class="icon"><use xlink:href="../img/sprite.svg#play-circle"></use></svg>
                         Play
                     </li>
@@ -46,10 +50,10 @@ let GameOverlay = {
                         <svg class="icon"><use xlink:href="../img/sprite.svg#share-boxed"></use></svg>
                         Export (Web)
                     </li>
-                    <li data-action="editData" title="Edit Data">
+                    <!--<li data-action="editData" title="Edit Data">
                         <svg class="icon"><use xlink:href="../img/sprite.svg#pencil"></use></svg>
                         Edit Data
-                    </li>
+                    </li>-->
                 </ul>
 
                 <div class="info"></div>
@@ -65,7 +69,7 @@ let GameOverlay = {
             }
         });
         document.addEventListener('keydown', GameOverlay.keyHandler);
-        element.querySelector('.info').innerHTML = JSON.stringify(gameconfig, null, 4);
+        element.querySelector('.info').innerHTML = "<strong>config.json:</strong>\n\n" + JSON.stringify(gameconfig, null, 4);
     },
 
     keyHandler: function(evt) {
