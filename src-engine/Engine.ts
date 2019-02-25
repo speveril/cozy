@@ -20,6 +20,7 @@ class CozyState {
     public static textures:{}[];
     public static planes:Plane[];
     public static browserWindow:any;
+    public static platform:string;
     // let scene:Entity;
     public static gamePath:string;
     public static gameDir:Directory = null;
@@ -46,6 +47,13 @@ export async function setup(opts:any, overrides?:any) {
     cozyState.debug = !!opts.debug;
     cozyState.gamePath = opts.game;
     cozyState.browserWindow = opts.Electron ? opts.Electron.remote.getCurrentWindow() : window; // TODO should probably actually be a weird wrapper
+    
+    // set platform string
+    if (opts.Electron) {
+        cozyState.platform = 'native';
+    } else {
+        cozyState.platform = 'web';
+    }
 
     if (cozyState.debug) {
         cozyState.browserWindow.webContents.once('devtools-opened', () => {
@@ -287,6 +295,10 @@ export function config(k:string):any {
     }
 }
 
+export function platform():string {
+    return cozyState.platform;
+}
+
 // export function setScene(e:Entity) {
 //     scene = e;
 // }
@@ -452,12 +464,13 @@ export function captureScreenshot(width?:number, height?:number):Promise<any> {
     });
 }
 
-export function saveImageToFile(image:any):File {
-    var filename = `${(new Date()).toISOString().replace(/[-T:Z\.]/g,"")}.png`;
-    var file = cozyState.userDataDir.subdir('screenshots', true).file(filename);
-    file.write(image.toPng(), 'binary');
-    return file;
-}
+// TODO fix this; won't work for browser
+// export function saveImageToFile(image:any):File {
+//     var filename = `${(new Date()).toISOString().replace(/[-T:Z\.]/g,"")}.png`;
+//     var file = cozyState.userDataDir.subdir('screenshots', true).file(filename);
+//     file.write(image.toPng(), 'binary');
+//     return file;
+// }
 
 export function writeUserConfig(data:any) {
     let f = new UserdataFile('config.json');
