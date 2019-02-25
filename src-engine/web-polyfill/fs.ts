@@ -108,12 +108,23 @@ export const promises = {
     writeFile(p, data, opts) {
         p = normalize(p);
         return new Promise((resolve, reject) => {
+            let mtime = new Date().toISOString();
             let t = db.transaction('files', 'readwrite').objectStore('files').put({
-                mtime: new Date().toISOString(),
+                mtime: mtime,
                 data: data,
             }, p);
             
             t.onsuccess = (evt) => {
+                let manifestEntry = manifest.find((x) => x.name === p);
+                if (!manifestEntry) {
+                    manifestEntry = {
+                        name: p,
+                        type: 'file',
+                    };
+                    manifest.push(manifestEntry);
+                }
+                manifestEntry.mtime = mtime;
+
                 resolve();
             };
             t.onerror = (evt) => {
