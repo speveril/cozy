@@ -69,7 +69,7 @@ module.exports = {
             dir: PLAYERDIR,
             out: outPath,
             electronVersion: process.versions.electron,
-            name: config.title ? config.title : 'Untitled Cozy Game',
+            name: (config.title ? config.title : 'Untitled Cozy Game') + '-' + config.version,
             executableName: exportConfig.executable ? exportConfig.executable : 'game',
             icon: Path.join(srcPath, config.icon),
             ignore: [

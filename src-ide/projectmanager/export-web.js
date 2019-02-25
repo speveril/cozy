@@ -12,7 +12,7 @@ module.exports = {
         let exportConfig = config.export || {};
         delete config.export;
 
-        outPath = Path.join(outPath, config.title + '-web');
+        outPath = Path.join(outPath, config.title + '-' + config.version + '-web');
 
         let displayName = scrub(config.title ? `${config.title} (${srcPath})` : srcPath);
 
