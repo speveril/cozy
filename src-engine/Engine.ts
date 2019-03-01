@@ -55,14 +55,14 @@ export async function setup(opts:any, overrides?:any) {
         cozyState.platform = 'web';
     }
 
-    if (cozyState.debug) {
-        cozyState.browserWindow.webContents.once('devtools-opened', () => {
-            cozyState.browserWindow.focus();
-        });
-        cozyState.browserWindow['openDevTools']({
-            mode: 'detach'
-        });
-    }
+    // if (cozyState.debug) {
+    //     cozyState.browserWindow.webContents.once('devtools-opened', () => {
+    //         cozyState.browserWindow.focus();
+    //     });
+    //     cozyState.browserWindow['openDevTools']({
+    //         mode: 'detach'
+    //     });
+    // }
 
     // set up filesystem
     if (cozyState.config['userdata'] === undefined) {
@@ -379,13 +379,17 @@ export function quit() {
 
 export function loadTextures(assets) {
     return new Promise((resolve, reject) => {
-        if (Object.keys(assets).length < 1) {
+        if (Object.getOwnPropertyNames(assets).length < 1) {
             resolve();
             return;
         }
 
         for (let name in assets) {
-            PIXI.loader.add(name, assets[name].path);
+            let asset = assets[name];
+            if (typeof asset === 'string') {
+                asset = gameDir().file(asset);
+            }
+            PIXI.loader.add(name, asset.path);
         }
 
         PIXI.loader.load(function(loader, resources) {
