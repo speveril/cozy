@@ -243,9 +243,10 @@ window.Manager = {
     settingsDialog() {
         return new Promise((resolve, reject) => {
             let dialog = document.createElement('form');
+            let libs = localStorage.getItem('libs') || '[]';
             dialog.innerHTML = `
                 <div class="text">Library Paths</div>
-                <textarea name="libs" rows="10" cols="40">${JSON.parse(localStorage.getItem('libs')).join("\n")}</textarea>
+                <textarea name="libs" rows="10" cols="40">${JSON.parse(libs).join("\n")}</textarea>
                 <div class="text">One directory per line.</div>
                 <div class="buttons">
                     <button class="confirm">OK</button>

@@ -115,7 +115,7 @@ let GameOverlay = {
                     path: gamepath,
                     debug: true,
                     override: Manager.override,
-                    libRoots: localStorage.getItem('libs')
+                    libRoots: localStorage.getItem('libs') || '[]',
                 });
             });
     },
