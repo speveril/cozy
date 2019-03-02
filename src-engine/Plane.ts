@@ -42,9 +42,7 @@ export class RenderPlane extends Plane {
             height: Engine.config['height'],
             transparent: true,
             clearBeforeRender: true,
-            // backgroundColor: args.renderBackground !== undefined ? args.renderBackground : 'rgba(0, 0, 0, 0)'
         });
-        // pixi.js typings are messed up and don't list .backgroundColor as a valid member, despite it being one
         this.container.appendChild(this.renderer.view);
         this.layers = [];
         this.layerContainer = new PIXI.Container();
@@ -58,10 +56,6 @@ export class RenderPlane extends Plane {
 
     update(dt):void {
         for (let layer of this.layers) layer.update(dt);
-    }
-
-    setBackground(color) {
-        this.renderer['backgroundColor'] = color;
     }
 
     addRenderLayer(index?:number):Layer {
