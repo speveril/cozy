@@ -303,14 +303,11 @@ export function platform():string {
 //     scene = e;
 // }
 
-export function addPlane(Type:any, args?:any):Plane {
-    if (!(Type.prototype instanceof Plane)) {
-        throw new TypeError("Type passed to addPlane() must inherit from Plane.");
-    }
-
-    var plane = new Type(args || {});
+export function addPlane<p extends Plane>(Type:{new(args:any): p;}, args?:any):p {
+    let plane = new Type(args || {});
     cozyState.planes.push(plane);
-    plane.resize(cozyState.sizeMultiplier);
+    
+    plane.resize(cozyState.config['width'], cozyState.config['height'], cozyState.sizeMultiplier);
 
     return plane;
 }
