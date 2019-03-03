@@ -25,7 +25,7 @@ The engine's initial development was driven entirely by my needs of it. If you a
 
 After cloning the repository, run `npm install` to get everything set up, and then run `npm start` to start the project manager. Once I get pre-built releases going, this will no longer be necessary. Quality of life stuff like that is high on the priority list.
 
-One of the biggest missing pieces of Cozy right now is documentation. I like to think things are reasonably sensible, but they're probably not! Good luck. Fixing this is pretty high up there too.
+One of the biggest missing pieces of Cozy right now is documentation. I like to think things are reasonably sensible, but they're probably not! Good luck. Fixing this is pretty high up there too. For now, when you first run the Cozy project manager, it should build the engine and some lackluster auto-built documentation. You can find the auto-generated documentation in the `docs/` directory under your Cozy check out.
 
 Whether you use a pre-built release or work from source, exported games will end up as an .exe or .app bundle; your players will not need NPM installed.
 
