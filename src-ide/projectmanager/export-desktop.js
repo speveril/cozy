@@ -15,8 +15,6 @@ module.exports = {
 
         delete config.export;
 
-        var displayName = scrub(config.title ? `${config.title} (${srcPath})` : srcPath);
-
         var cp = (src, dest, filt) => {
             this.output(`Copy ${src} -> ${dest}`);
             FS.copySync(src, dest, {
@@ -29,7 +27,7 @@ module.exports = {
         let filter = (patterns, cwd) => {
             let exclude = [
                 '*.ts', '*.js.map', '.*', './config.json',
-            ].concat(exportConfig.exclude);
+            ].concat(patterns || []);
 
             let excludedFiles = new Set();
             for (let e of exclude) {
@@ -71,7 +69,7 @@ module.exports = {
             electronVersion: process.versions.electron,
             name: (config.title ? config.title : 'Untitled Cozy Game') + '-' + config.version,
             executableName: exportConfig.executable ? exportConfig.executable : 'game',
-            icon: Path.join(srcPath, config.icon),
+            icon: config.icon ? Path.join(srcPath, config.icon) : 'cozy.ico',
             ignore: [
                 /\.d\.ts$/,
                 '.DS_Store',
@@ -84,11 +82,9 @@ module.exports = {
             // asar: true, // TODO? can't chdir to inside an asar, so need to rethink cwd for Cozy...
             afterCopy: [
                 (buildPath, electronVersion, platform, arch, callback) => {
-                    console.log("afterCopy->", buildPath);
                     cp(srcPath, Path.join(buildPath, 'g'), filter(exportConfig.exclude, srcPath));
 
                     let libRoots = JSON.parse(localStorage.getItem('libs')) || [];
-                    let libJSONs = [];
                     let availableLibs = {};
 
                     for (let root of libRoots) {
