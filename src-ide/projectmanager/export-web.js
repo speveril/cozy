@@ -54,6 +54,7 @@ module.exports = {
 
             let excludedFiles = new Set();
             for (let e of exclude) {
+                if (e === undefined) continue; // with no/empty exclude you sometimes get these undefineds
                 for (let f of glob.sync(e, { 
                     cwd: cwd,
                     matchBase: true,
