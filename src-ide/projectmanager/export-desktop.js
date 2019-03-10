@@ -1,10 +1,12 @@
 // TODO this is kind of messy; this function could only ever work put into the Manager object
 
 const FS = require('fs-extra');
+const os = require('os');
 const Path = require('path');
 const packager = require('electron-packager');
 const process = require('process');
 const glob = require('glob');
+const png2icons = require('png2icons');
 
 const PLAYERDIR = Path.resolve('src-player');
 
@@ -63,13 +65,36 @@ module.exports = {
             }
         };
 
+        let icon = config.icon;
+        if (!icon) {
+            icon = 'cozy.ico';
+        } else {
+            if (icon.match(/.png$/)) {
+                let pngsrc = FS.readFileSync(Path.join(srcPath, icon));
+                let iconsrc = null;
+                let iconout = os.tmpdir() + 'cozy-output-icon';
+                if (process.platform === 'darwin') {
+                    iconsrc = png2icons.createICNS(pngsrc, png2icons.BILINEAR, 0);
+                    iconout += '.icns';
+                } else if (process.platform === 'win32') {
+                    iconsrc = png2icons.createICO(pngsrc, png2icons.BILINEAR, 0, true);
+                    iconout += '.ico';
+                }
+
+                if (iconsrc) {
+                    FS.writeFileSync(iconout, iconsrc);
+                    icon = iconout;
+                }
+            }
+        }
+
         let packageConfig = {
             dir: PLAYERDIR,
             out: outPath,
             electronVersion: process.versions.electron,
             name: (config.title ? config.title : 'Untitled Cozy Game') + '-' + config.version,
             executableName: exportConfig.executable ? exportConfig.executable : 'game',
-            icon: config.icon ? Path.join(srcPath, config.icon) : 'cozy.ico',
+            icon: icon,
             ignore: [
                 /\.d\.ts$/,
                 '.DS_Store',
@@ -129,6 +154,8 @@ module.exports = {
                     launchJS = launchJS.replace('$$_PARAMS_$$', JSON.stringify(config));
                     FS.writeFileSync(Path.join(buildPath, 'launch.js'), launchJS);
 
+                    // TODO clean up any generated ico or icns
+
                     // write game.html
                     let gameHTML = FS.readFileSync(Path.join(PLAYERDIR, 'x_game.html')).toString();
                     // TODO processing on gameHTML?
@@ -138,11 +165,6 @@ module.exports = {
                 }
             ],
         };
-
-        if (config.icon) {
-            // TODO convert to the appropriate format, and
-            //packageConfig.icon = iconpath;
-        }
 
         if (process.platform === 'darwin') {
             // TODO
