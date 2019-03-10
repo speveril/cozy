@@ -1,6 +1,7 @@
 <html>
 
 <head>
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' 'unsafe-eval'">
     <title>Cozy Project Manager</title>
     <style>
         svg { width: 16px; height: 16px; }
@@ -43,7 +44,7 @@
     <section class="layer" id="dialogs"></section>
 </body>
 
-<script>
+<script nonce="89c98f098e">
     require('./manager')
     const Electron = require('electron');
 
