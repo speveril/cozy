@@ -11,7 +11,6 @@
   "dependencies": {
     "@types/node": "^10.12.18",
     "@types/pixi.js": "^4.8.4",
-    "browserify": "^16.2.3",
     "dts-bundle": "^0.7.3",
     "electron": "^3.0.10",
     "electron-packager": "^13.0.1",
