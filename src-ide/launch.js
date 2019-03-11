@@ -83,10 +83,12 @@ function play(path, override, debug, libRoots) {
         childproc.on('exit', (returnCode) => {
             if (!returnCode) {
                 output("<span style='color:#0f0'>[ Done ]</span>\n");
+                mainWindow.webContents.send('play-done');
                 resolve();
             } else {
                 output(stderr);
                 output("<span style='color:red'>[ Error: " + returnCode + " ]</span>\n");
+                mainWindow.webContents.send('play-done');
                 reject();
             }
         });

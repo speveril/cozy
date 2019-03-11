@@ -105,8 +105,12 @@ let GameOverlay = {
     },
 
     compileAndRun: function() {
-        GameOverlay.compile()
-            .then(() => {
+        GameOverlay.compile();
+        Manager.queueTask(() => {
+            return new Promise((resolve, reject) => {
+                Electron.ipcRenderer.once('play-done', (event) => {
+                    resolve();
+                });
                 Electron.ipcRenderer.send('control-message', {
                     command: 'play',
                     path: gamepath,
@@ -115,6 +119,7 @@ let GameOverlay = {
                     libRoots: localStorage.getItem('libs') || '[]',
                 });
             });
+        });
     },
 
     editData: function() {

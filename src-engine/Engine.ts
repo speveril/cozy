@@ -9,7 +9,6 @@ import { Texture } from "./Texture";
 
 declare var FontFace:any;
 
-
 // The kitchen sink
 
 class CozyState {
