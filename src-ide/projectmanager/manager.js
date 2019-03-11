@@ -22,6 +22,8 @@ const exportWeb = require('./export-web');
 
 require('module').globalPaths.push(IDEDIR);
 
+let taskQueue = [];
+
 window.Manager = {
     export: exportDesktop.export,
     exportToWeb: exportWeb.export,
@@ -144,7 +146,27 @@ window.Manager = {
             // }
         }
 
+        this.pumpQueue();
+
         this.output("Cozy Project Manager loaded.\n");
+    },
+
+    queueTask: function(f) {
+        taskQueue.push({
+            func: f
+        });
+    },
+
+    pumpQueue: function() {
+        window.requestAnimationFrame(this.pumpQueue.bind(this));
+        if (taskQueue.length > 0) {
+            if (!taskQueue[0].promise) {
+                taskQueue[0].promise = taskQueue[0].func();
+                taskQueue[0].promise.then(() => {
+                    taskQueue.shift();
+                });
+            }
+        }
     },
 
     addLibrary: function() {
@@ -322,39 +344,39 @@ window.Manager = {
     },
 
     recompileEngine: function() {
-        if (EngineStatus.get() === 'compiling') return;
         if (this.recompileInterval) {
             clearTimeout(this.recompileInterval);
             this.recompileInterval = null;
         }
+        this.queueTask(() => {
+            EngineStatus.set('compiling');
 
-        EngineStatus.set('compiling');
-
-        this.output("");
-        return this.buildEngine()
-            .then(() => {
-                return this.doc(Path.join("src-engine", "Cozy.ts"), Path.join("docs"))
-            }, () => {
-                if (this.recompileInterval) {
-                    return this.recompileEngine();
-                } else {
-                    EngineStatus.set('error');
-                    return Promise.reject();
-                }
-            })
-            .then(() => {
-                if (this.recompileInterval !== null) {
-                    return this.recompileEngine();
-                } else {
-                    EngineStatus.set('ready');
-                }
-            }, () => {
-                if (this.recompileInterval !== null) {
-                    return this.recompileEngine();
-                } else {
-                    EngineStatus.set('error');
-                }
-            });
+            this.output("");
+            return this.buildEngine()
+                .then(() => {
+                    return this.doc(Path.join("src-engine", "Cozy.ts"), Path.join("docs"))
+                }, () => {
+                    if (this.recompileInterval) {
+                        return this.recompileEngine();
+                    } else {
+                        EngineStatus.set('error');
+                        return Promise.reject();
+                    }
+                })
+                .then(() => {
+                    if (this.recompileInterval !== null) {
+                        return this.recompileEngine();
+                    } else {
+                        EngineStatus.set('ready');
+                    }
+                }, () => {
+                    if (this.recompileInterval !== null) {
+                        return this.recompileEngine();
+                    } else {
+                        EngineStatus.set('error');
+                    }
+                });
+        });
     },
 
     fork: function(cmd, params, fparams) {
@@ -549,8 +571,6 @@ window.Manager = {
                 process$: './web-polyfill/process.ts'
             },
         };
-
-        console.log("--CONFIGS--\nelectron:", JSON.stringify(electronCfg), "\nweb:", JSON.stringify(webCfg));
 
         let buildPromises = [
             this.fork(Path.join(IDEDIR, 'pack'), [ JSON.stringify(webCfg) ]),

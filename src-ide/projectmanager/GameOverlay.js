@@ -96,15 +96,12 @@ let GameOverlay = {
 
     compile: function(target) {
         if (EngineStatus.get() === 'dirty') {
-            return Manager.recompileEngine()
-                .then(() => {
-                    Manager.output("");
-                    return Manager.buildGame(gamepath);
-                })
-        } else {
-            Manager.output("");
-            return Manager.buildGame(gamepath, target);
+            Manager.recompileEngine();
         }
+        Manager.queueTask(() => {
+            Manager.output("");
+            return Manager.buildGame(gamepath);
+        });
     },
 
     compileAndRun: function() {
@@ -142,11 +139,13 @@ let GameOverlay = {
                 }
             }
 
-            Manager.output("");
-            GameOverlay.compile()
-                .then(() => {
-                    return Manager.export(gamepath, outputPath);
-                });
+            Manager.queueTask(() => {
+                Manager.output("");
+                GameOverlay.compile()
+                    .then(() => {
+                        return Manager.export(gamepath, outputPath);
+                    });
+            });
         }
         dp.click();
     },
@@ -165,11 +164,13 @@ let GameOverlay = {
                 }
             }
 
-            Manager.output("");
-            GameOverlay.compile('web')
-                .then(() => {
-                    return Manager.exportToWeb(gamepath, outputPath);
-                });
+            Manager.queueTask(() => {
+                Manager.output("");
+                GameOverlay.compile('web')
+                    .then(() => {
+                        return Manager.exportToWeb(gamepath, outputPath);
+                    });
+            });
         });
     }
 };
