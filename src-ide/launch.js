@@ -19,7 +19,11 @@ function output(text) {
 
 function setup() {
     var windowState = WindowStateKeeper({});
-    mainWindow = new Electron.BrowserWindow(windowState);
+    mainWindow = new Electron.BrowserWindow(Object.assign({}, windowState, {
+        'webPreferences': {
+            'nodeIntegration': true,
+        },
+    }));
     windowState.manage(mainWindow);
 
     mainWindow.once('close', () => {
@@ -165,7 +169,10 @@ function openEditor(path) {
         'fullscreen':         false,
         // 'icon':               params['icon'] ? Path.join(process.cwd(), path, params['icon']) : undefined,
         'autoHideMenuBar':    false,
-        'useContentSize':     true
+        'useContentSize':     true,
+        'webPreferences': {
+            'nodeIntegration': true,
+        },
     });
     // window.toggleDevTools();
 

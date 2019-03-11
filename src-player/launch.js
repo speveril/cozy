@@ -30,6 +30,9 @@ Electron.app.on('ready', () => {
         'icon':               params['icon'] ? Path.join(process.cwd(), path, params['icon']) : undefined,
         'autoHideMenuBar':    true,
         'useContentSize':     true,
+        'webPreferences': {
+            'nodeIntegration': true,
+        },
     });
     // window.toggleDevTools();
 

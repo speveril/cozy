@@ -18,6 +18,9 @@ Electron.app.on('ready', () => {
         'fullscreen':         false,
         'autoHideMenuBar':    true,
         'useContentSize':     true,
+        'webPreferences': {
+            'nodeIntegration': true,
+        },
     });
 
     window.once('close', () => {
