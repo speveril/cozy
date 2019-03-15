@@ -5,13 +5,15 @@ const Child = require('child_process');
 const Path = require('path');
 const packager = require('electron-packager');
 const Process = require('process');
-const Webpack = require('webpack');
 const glob = require('glob');
 
-let gameLibraries = JSON.parse(localStorage.getItem('gameLibraries')) || [];
+global.ARTIFACTDIR = Path.resolve('../build');
+global.IDEDIR = Path.resolve('.');
+global.PLAYERDIR = Path.resolve('player');
+global.ENGINEDIR = Path.resolve('..', 'src-engine')
 
-const IDEDIR = Path.resolve('src-ide');
-const PLAYERDIR = Path.resolve('src-player');
+
+let gameLibraries = JSON.parse(localStorage.getItem('gameLibraries')) || [];
 
 const EngineStatus = require('./EngineStatus');
 const Library = require('./Library');
@@ -32,7 +34,7 @@ window.Manager = {
         css('manager.css');
 
         let controlsArea = $('#controls');
-        EngineStatus.add(controlsArea, () => this.recompileEngine());
+        let engineSrcExists = false;
 
         this.controls = $('#controls');
         this.gameList = $('#game-list');
@@ -41,49 +43,61 @@ window.Manager = {
         this.recompileInterval = null;
         this.activeGame = null;
         this.override = null;
-
         this.loadOverrides();
-        EngineStatus.set('checking');
 
-        var lastCompilation = 0;
-        var cozyJS = Path.join(PLAYERDIR, "Cozy.js")
-        if (FS.existsSync(cozyJS)) {
-            lastCompilation = FS.statSync(cozyJS).mtime.getTime();
+        // set up engine src watch...
+
+        try {
+            FS.accessSync(ENGINEDIR);
+            engineSrcExists = true;
+        } catch (e) {
+            console.log("->", e);
+            // this just means we're running in 'shipped' mode (or something has happened to src-engine)
         }
-        var srcFiles = [ "src-engine" ];
-        var f, stat;
-        let recompileNeeded = false;
-        while(srcFiles.length > 0) {
-            f = srcFiles.shift();
-            stat = FS.statSync(f);
-            if (stat.isDirectory()) {
-                FS.readdirSync(f).forEach((ff) => {
-                    srcFiles.push(Path.join(f, ff));
-                });
-            } else {
-                if (stat.mtime.getTime() > lastCompilation) {
-                    this.recompileNeeded = true;
-                    break;
+
+        if (engineSrcExists) {
+            EngineStatus.add(controlsArea, () => this.recompileEngine());
+            EngineStatus.set('checking');
+
+            var lastCompilation = 0;
+            var cozyJS = Path.join(PLAYERDIR, "Cozy.js")
+            if (FS.existsSync(cozyJS)) {
+                lastCompilation = FS.statSync(cozyJS).mtime.getTime();
+            }
+            var srcFiles = [ ENGINEDIR ];
+            var f, stat;
+            let recompileNeeded = false;
+            while(srcFiles.length > 0) {
+                f = srcFiles.shift();
+                stat = FS.statSync(f);
+                if (stat.isDirectory()) {
+                    FS.readdirSync(f).forEach((ff) => {
+                        srcFiles.push(Path.join(f, ff));
+                    });
+                } else {
+                    if (stat.mtime.getTime() > lastCompilation) {
+                        this.recompileNeeded = true;
+                        break;
+                    }
                 }
             }
-        }
 
-        if (this.recompileNeeded) {
-            this.recompileEngine();
-        } else {
-            EngineStatus.set('ready');
-        }
-
-        FS.watch("src-engine", { persistent: true, recursive: true }, (e, filename) => {
-            if (EngineStatus.get() !== 'compiling') {
-                EngineStatus.set('dirty');
+            if (this.recompileNeeded) {
+                this.recompileEngine();
+            } else {
+                EngineStatus.set('ready');
             }
-            if (this.recompileInterval) {
-                clearInterval(this.recompileInterval);
-            }
-            this.recompileInterval = setInterval(() => this.recompileEngine(), 3000);
-        });
 
+            FS.watch(ENGINEDIR, { persistent: true, recursive: true }, (e, filename) => {
+                if (EngineStatus.get() !== 'compiling') {
+                    EngineStatus.set('dirty');
+                }
+                if (this.recompileInterval) {
+                    clearInterval(this.recompileInterval);
+                }
+                this.recompileInterval = setInterval(() => this.recompileEngine(), 3000);
+            });
+        }
 
         this.controls.onclick = (e) => {
             var target = e.target;
@@ -354,7 +368,7 @@ window.Manager = {
             this.output("");
             return this.buildEngine()
                 .then(() => {
-                    return this.doc(Path.join("src-engine", "Cozy.ts"), Path.join("docs"))
+                    return this.doc(Path.join(ENGINEDIR, "Cozy.ts"), Path.join("docs"))
                 }, () => {
                     if (this.recompileInterval) {
                         return this.recompileEngine();
@@ -425,8 +439,8 @@ window.Manager = {
                 }
             },
             files: [
-                Path.resolve(Path.join(IDEDIR, "..", "node_modules", "electron", "electron.d.ts")), // TODO remove?
-                Path.resolve(Path.join(IDEDIR, "..", "src-player", "Cozy.d.ts")),
+                // Path.resolve(Path.join(IDEDIR, "..", "node_modules", "electron", "electron.d.ts")), // TODO remove?
+                Path.resolve(Path.join(PLAYERDIR, "Cozy.d.ts")),
                 Path.resolve(srcRoot)
             ]
         };
@@ -520,10 +534,10 @@ window.Manager = {
 
         let electronCfg = {
             // devtool: 'source-map',
-            entry: Path.resolve(Path.join('src-engine', 'Cozy.ts')),
+            entry: Path.resolve(ENGINEDIR, 'Cozy.ts'),
             target: 'electron-renderer',
             output: {
-                path: Path.resolve('build'),
+                path: ARTIFACTDIR,
                 library: 'Cozy',
                 filename: 'cozy-electron.js',
                 libraryTarget: 'global',
@@ -540,10 +554,10 @@ window.Manager = {
 
         let webCfg = {
             // devtool: 'source-map',
-            entry: Path.resolve(Path.join('src-engine', 'Cozy.ts')),
+            entry: Path.resolve(ENGINEDIR, 'Cozy.ts'),
             target: 'web',
             output: {
-                path: Path.resolve('build'),
+                path: ARTIFACTDIR,
                 library: 'Cozy',
                 filename: 'cozy-web.js',
                 libraryTarget: 'window',
@@ -552,20 +566,20 @@ window.Manager = {
             plugins: {
                 DTSBundle: {
                     name: 'Cozy',
-                    main: 'build/Cozy.d.ts',
+                    main: Path.resolve(ARTIFACTDIR, 'Cozy.d.ts'),
                     out: 'cozy-build.d.ts',
                 }
             },
             __TSCOMPILEROPTIONS: {
                 paths: {
-                    'pixi.js': [ '../src-player/lib/pixi.min.js' ],
+                    'pixi.js': [ Path.resolve(PLAYERDIR, 'lib/pixi.min.js') ],
                     fs: [ './web-polyfill/fs.ts' ],
                     path: [ './web-polyfill/path.ts' ],
                     process: [ './web-polyfill/process.ts' ]
                 }
             },
             __RESOLVEALIASES: {
-                'pixi.js$': '../src-player/lib/pixi.min.js',
+                'pixi.js$': Path.resolve(PLAYERDIR, 'lib/pixi.min.js'),
                 fs$: './web-polyfill/fs.ts',
                 path$: './web-polyfill/path.ts',
                 process$: './web-polyfill/process.ts'
@@ -581,9 +595,9 @@ window.Manager = {
             .then(() => {
                 this.output(" - Built engine");
                 try {
-                    FS.renameSync(Path.join('build', 'cozy-electron.js'), Path.join(PLAYERDIR, 'Cozy.js'));
-                    FS.renameSync(Path.join('build', 'cozy-web.js'), Path.join(PLAYERDIR, 'Cozy-web.js'));
-                    FS.renameSync(Path.join('build', 'cozy-build.d.ts'), Path.join(PLAYERDIR, 'Cozy.d.ts'));
+                    FS.renameSync(Path.join(ARTIFACTDIR, 'cozy-electron.js'), Path.join(PLAYERDIR, 'Cozy.js'));
+                    FS.renameSync(Path.join(ARTIFACTDIR, 'cozy-web.js'), Path.join(PLAYERDIR, 'Cozy-web.js'));
+                    FS.renameSync(Path.join(ARTIFACTDIR, 'cozy-build.d.ts'), Path.join(PLAYERDIR, 'Cozy.d.ts'));
                     // FS.renameSync(Path.join(PLAYERDIR, 'cozy-build.js.map'), Path.join(PLAYERDIR, 'Cozy.js.map'))
                     this.output("<span style='color:#0f0'>[ Success ]</span>\n");
                 } catch (e) {

@@ -1,10 +1,6 @@
 const FS = require('fs-extra');
 const Path = require('path');
-const packager = require('electron-packager');
-const process = require('process');
 const glob = require('glob');
-
-const PLAYERDIR = Path.resolve('src-player');
 
 module.exports = {
     export: function(srcPath, outPath) {

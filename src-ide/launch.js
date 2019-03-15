@@ -7,6 +7,9 @@ const Path = require('path');
 const Process = require('process');
 const WindowStateKeeper = require('electron-window-state');
 
+Process.chdir(__dirname);
+
+
 Electron.app.on('ready', setup);
 
 var mainWindow, editors = {};
@@ -74,7 +77,7 @@ function play(path, override, debug, libRoots) {
             cwd: Path.resolve(Path.join(__dirname, '..'))
         };
 
-        let childproc = Child.spawn(process.execPath, [ 'src-player/', JSON.stringify(args) ], child_params);
+        let childproc = Child.spawn(process.execPath, [ 'src-ide/player/', JSON.stringify(args) ], child_params);
 
         let stdout = '', stderr = '';
         childproc.stdout.on('data', (s) => stdout += s.toString().trim() + "\n");

@@ -98,7 +98,7 @@ let GameOverlay = {
         if (EngineStatus.get() === 'dirty') {
             Manager.recompileEngine();
         }
-        Manager.queueTask(() => {
+        return Manager.queueTask(() => {
             Manager.output("");
             return Manager.buildGame(gamepath);
         });
@@ -144,12 +144,10 @@ let GameOverlay = {
                 }
             }
 
+            GameOverlay.compile();
             Manager.queueTask(() => {
                 Manager.output("");
-                GameOverlay.compile()
-                    .then(() => {
-                        return Manager.export(gamepath, outputPath);
-                    });
+                return Manager.export(gamepath, outputPath);
             });
         }
         dp.click();
@@ -169,12 +167,10 @@ let GameOverlay = {
                 }
             }
 
+            GameOverlay.compile('web')
             Manager.queueTask(() => {
                 Manager.output("");
-                GameOverlay.compile('web')
-                    .then(() => {
-                        return Manager.exportToWeb(gamepath, outputPath);
-                    });
+                return Manager.exportToWeb(gamepath, outputPath);
             });
         });
     }

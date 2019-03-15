@@ -4,5 +4,6 @@ Cozy.d.ts
 Cozy-web.js
 node_modules
 build
+dist
 .DS_Store
 docs

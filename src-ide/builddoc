@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+process.chdir(__dirname + "/..");
 var TypeDoc = require('typedoc/dist/lib/cli.js');
 new TypeDoc.CliApplication();
 process.exit(0);

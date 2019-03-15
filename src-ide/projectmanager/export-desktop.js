@@ -8,8 +8,6 @@ const process = require('process');
 const glob = require('glob');
 const png2icons = require('png2icons');
 
-const PLAYERDIR = Path.resolve('src-player');
-
 module.exports = { 
     export(srcPath, outPath) {
         var config = JSON.parse(FS.readFileSync(Path.join(srcPath, "config.json")));

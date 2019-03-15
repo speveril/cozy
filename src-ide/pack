@@ -1,10 +1,12 @@
 #!/usr/bin/env node
 
 // I'd rather just call Webpack() in the manager process, but apparently it
-// can't be trusted to not leak 100 mb per compile.
+// can't be trusted to not leak 100 mb of memory per compile.
 
 const Webpack = require('webpack');
 const process = require('process');
+
+process.chdir(__dirname + '/..');
 
 // ---------------------------------------------------------------------------
 /// guhhh

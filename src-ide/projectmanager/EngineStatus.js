@@ -31,6 +31,7 @@ module.exports = {
     },
 
     get: function() {
+        if (!el) return null;
         return el.className;
     }
 };

@@ -12,7 +12,7 @@
     "@types/node": "^10.12.30",
     "@types/pixi.js": "^4.8.6",
     "dts-bundle": "^0.7.3",
-    "electron": "^4.0.8",
+    "electron": "4.0.8",
     "electron-packager": "^13.1.1",
     "electron-window-state": "^3.0.3",
     "fs-extra": "^1.0.0",
