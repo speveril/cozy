@@ -3,7 +3,6 @@
 const FS = require('fs-extra');
 const Child = require('child_process');
 const Path = require('path');
-const packager = require('electron-packager');
 const Process = require('process');
 const glob = require('glob');
 
@@ -175,9 +174,19 @@ window.Manager = {
         window.requestAnimationFrame(this.pumpQueue.bind(this));
         if (taskQueue.length > 0) {
             if (!taskQueue[0].promise) {
-                taskQueue[0].promise = taskQueue[0].func();
+                try {
+                    taskQueue[0].promise = taskQueue[0].func();
+                } catch(e) {
+                    this.output("<span style='color:red'>[ ERROR (" + e.toString() + ") ]</span>");
+                    this.output("<span style='color:red'>Aborting all queued tasks.</span>\n");
+                    taskQueue = [];
+                }
                 taskQueue[0].promise.then(() => {
                     taskQueue.shift();
+                }, () => {
+                    this.output("Aborting all queued tasks.");
+                    this.output("<span style='color:red'>Aborting all queued tasks.</span>\n");
+                    taskQueue = [];
                 });
             }
         }
