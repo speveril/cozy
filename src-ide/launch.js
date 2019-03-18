@@ -68,6 +68,14 @@ if (cliargs.indexOf('--play') !== -1) {
         });
     });
 } else {
+    console.log("Requesting single instance lock...");
+    Electron.app.requestSingleInstanceLock();
+    Electron.app.on('second-instace', (event, argv, cwd) => {
+        console.log("Second instance started; ignoring.");
+        if (mainWindow) {
+            mainWindow.show();
+        }
+    });
     Electron.app.on('ready', setup);
 }
 
