@@ -9,8 +9,67 @@ const WindowStateKeeper = require('electron-window-state');
 
 Process.chdir(__dirname);
 
+let cliargs = Process.argv.slice(0);
 
-Electron.app.on('ready', setup);
+// Slice the __dirname out of our args; this is because we run games in multiple contexts.
+// When running from source, we end up getting the IDE directory as argv[1]. When running
+// a dist, we do not. Remove it, to make them consistent.
+if (cliargs.indexOf(__dirname) !== -1) {
+    cliargs.splice(cliargs.indexOf(__dirname), 1);
+}
+
+if (cliargs.indexOf('--play') !== -1) {
+    let window;
+    let args = JSON.parse(cliargs[2]);
+    
+    Electron.app.on('ready', () => {
+        let path = args.path;
+        let params;
+        
+        try {
+            params = JSON.parse(FS.readFileSync(Path.join(path, "config.json")));
+        } catch(e) {
+            console.error("Couldn't load game in " + Path.join(process.cwd(), path) + ".");
+            console.error("<span style='color:red'>" + e.toString() + "</span>");
+            process.exit(1);
+        }
+    
+        var window = new Electron.BrowserWindow({
+            'minWidth':           20,
+            'minHeight':          20,
+            'width':              params['width'],
+            'height':             params['height'],
+            'title':              params['title'] || 'Cozy',
+            'fullscreen':         false,
+            'icon':               params['icon'] ? Path.join(process.cwd(), path, params['icon']) : undefined,
+            'autoHideMenuBar':    true,
+            'useContentSize':     true,
+            'webPreferences': {
+                'nodeIntegration': true,
+            },
+        });
+        // window.toggleDevTools();
+    
+        params['game'] = path;
+        params['width'] = params['width'] || 320;
+        params['height'] = params['height'] || 240;
+        params['debug'] = args.debug;
+        params['libRoots'] = args.libRoots;
+    
+        window.once('close', () => {
+            process.exit(0);
+        });
+    
+        window.loadURL("file://" + __dirname + "/player/game.html?" + path);
+    
+        window.webContents.once('did-finish-load', () => {
+            window.setMenu(null);
+            window.webContents.send('start', params, args.override);
+        });
+    });
+} else {
+    Electron.app.on('ready', setup);
+}
 
 var mainWindow, editors = {};
 
@@ -23,6 +82,7 @@ function output(text) {
 function setup() {
     var windowState = WindowStateKeeper({});
     mainWindow = new Electron.BrowserWindow(Object.assign({}, windowState, {
+        'icon': 'icon.ico',
         'webPreferences': {
             'nodeIntegration': true,
         },
@@ -77,7 +137,7 @@ function play(path, override, debug, libRoots) {
             cwd: Path.resolve(Path.join(__dirname, '..'))
         };
 
-        let childproc = Child.spawn(process.execPath, [ 'src-ide/player/', JSON.stringify(args) ], child_params);
+        let childproc = Child.spawn(process.execPath, [ __dirname, '--play', JSON.stringify(args) ], child_params);
 
         let stdout = '', stderr = '';
         childproc.stdout.on('data', (s) => stdout += s.toString().trim() + "\n");

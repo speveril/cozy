@@ -25,7 +25,6 @@ class CozyState {
     public static gameDir:Directory = null;
     public static libs:String[];
 
-    public static enginePath:string;
     public static paused:boolean;
     public static sizeMultiplier:number;
     public static autoResize:boolean;
