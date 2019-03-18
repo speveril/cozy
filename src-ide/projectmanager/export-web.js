@@ -15,14 +15,13 @@ module.exports = {
         let fail = (e) => {
             this.output(e);
             this.output("<span style='color:red'>[ FAILURE ]</span>\n");
-            reject(e);
             throw e;
         }
 
         let cp = (src, dest, filt) => {
             this.output(`Copy ${src} -> ${dest}`);
             FS.copySync(src, dest, {
-                clobber: true,
+                clobber: false,
                 preserveTimestamps: true,
                 filter: filt
             });
@@ -41,7 +40,6 @@ module.exports = {
                 fail(e);
             }
         }
-
 
         let filter = (patterns, cwd) => {
             let exclude = [
@@ -85,9 +83,9 @@ module.exports = {
 
         this.output(`<hr>\n<span style="color:white">[ Exporting ${displayName} for web ]</span>`);
 
-        FS.ensureDir(outPath);
-        FS.ensureDir(Path.join(outPath, "lib"));
-        FS.ensureDir(Path.join(outPath, "g"));
+        FS.ensureDirSync(outPath);
+        FS.ensureDirSync(Path.join(outPath, "lib"));
+        FS.ensureDirSync(Path.join(outPath, "g"));
 
         // just straight copies of some files...
         let files = [
@@ -97,10 +95,20 @@ module.exports = {
             Path.join('lib', 'glob-web.js'),
             Path.join('lib', 'html2canvas.min.js'),
         ];
-        files.forEach((f) => cp(Path.join(PLAYERDIR, f), Path.join(outPath, f.replace(".min.", "."))));
+        files.forEach((f) => {
+            cp(Path.join(PLAYERDIR, f), Path.join(outPath, f.replace(".min.", ".")));
+        });
 
         // copy over files that are just copies, but renamed
-        cp_rewrite(Path.join(PLAYERDIR, 'Cozy-Web.js'), Path.join(outPath, 'Cozy.js'));
+        cp(Path.join(PLAYERDIR, 'Cozy-Web.js'), Path.join(outPath, 'Cozy.js'));
+
+        let icon = config.icon;
+        if (!icon) {
+            icon = 'cozy.ico';
+        } else {
+            icon = Path.join(srcPath, icon);
+        }
+        cp(icon, Path.join(outPath, 'favicon.ico'));
 
         config['width'] = config['width'] || 320;
         config['height'] = config['height'] || 240;
@@ -109,16 +117,16 @@ module.exports = {
         config['libRoots'] = '["lib/"]';
         config['game'] = 'g';
         cp_rewrite(Path.join(PLAYERDIR, 'xweb_game.html'), Path.join(outPath, 'index.html'), {
-            '$$_PARAMS_$$': JSON.stringify(config)
+            '$$_PARAMS_$$': JSON.stringify(config),
+            '$$_FAVICON_$$': 'favicon.ico',
         });
 
         // copy over game itself
         var exclude = exportConfig.exclude || [];
-        cp(srcPath, Path.join(outPath, "g"), filter(exportConfig.exclude, srcPath));
+        cp(srcPath, Path.join(outPath, "g"), filter(exclude, srcPath));
 
         // copy over libs
         let libRoots = JSON.parse(localStorage.getItem('libs')) || [];
-        let libJSONs = [];
         let availableLibs = {};
 
         for (let root of libRoots) {
@@ -171,5 +179,7 @@ module.exports = {
 
         this.output(`\nSuccessfully exported to ${outPath}`);
         this.output("<span style='color:#0f0'>[ Success ]</span>\n");
+
+        return Promise.resolve();
    },
 }
