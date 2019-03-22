@@ -236,15 +236,14 @@ export class Music {
 
         this.internalSound.play();
 
-        // TODO add fading back in
-        // if (fade > 0) {
-        //     Audio.musicFade = {
-        //         progress: 0,
-        //         direction: +1,
-        //         duration: fade
-        //     };
-        // }
-
+        if (fade > 0) {
+            Audio.musicFade = {
+                progress: 0,
+                direction: +1,
+                duration: fade
+            };
+        }
+        
         Audio.currentMusic = this;
     }
 
@@ -254,16 +253,15 @@ export class Music {
     }
 
     stop(fade?:number):void {
-        // TODO add fading back in
-        this.internalSound.stop();
-
-        // if (fade > 0) {
-        //     Audio.musicFade = {
-        //         progress: 1,
-        //         direction: -1,
-        //         duration: fade
-        //     };
-        // }
+        if (fade > 0) {
+            Audio.musicFade = {
+                progress: 1,
+                direction: -1,
+                duration: fade
+            };
+        } else {
+            this.internalSound.stop();
+        }
     }
 }
 
