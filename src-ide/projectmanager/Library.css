@@ -23,6 +23,9 @@
     padding: 0;
     line-height: 2.25em;
     cursor: inherit;
+    text-overflow: ellipsis;
+    white-space: pre;
+    overflow: hidden;
 }
 
 .game-library header button {

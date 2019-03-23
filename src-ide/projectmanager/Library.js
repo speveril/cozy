@@ -13,7 +13,7 @@ class Library {
         this.el = $create(`
             <div class="game-library">
                 <header>
-                    <span>${p}</span>
+                    <span title="${p}">${p}</span>
                     <button data-action="open-folder" disabled>
                         <svg class="icon"><use xlink:href="../img/sprite.svg#folder"></use></svg>
                     </button>
