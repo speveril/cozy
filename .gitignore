@@ -7,3 +7,4 @@ build
 dist
 .DS_Store
 docs
+build.json

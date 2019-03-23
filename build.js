@@ -7,17 +7,67 @@ const path = require('path');
 const process = require('process');
 
 
-
 process.chdir(__dirname);
 
-// TODO real arg parsing
-if (process.argv.length !== 3) {
-    console.log('Usage: node build.js <output-dir>');
-    process.exit(0);
+
+
+function printUsageAndExit(code) {
+    console.log(`\
+Usage: node build.js [BUILD_CONFIG]
+  Build config can either be a JSON object (be sure to wrap it in quotes and
+  escape characters properly) or a path to a JSON file. If config is not
+  provided, the default is 'build.json' in the current directory.
+  
+  Configuration Options:
+    output      Directory where the exported engine should go.
+    examples    Local location of the example games to include.
+    kits        Local location of the kits to include.
+  
+  Example games: https://github.com/speveril/cozy-examples/
+  Kits: (to be determined)
+`);
+    process.exit(code || 0);
 }
 
-let [nodeExe, thisScript, outputDir] = process.argv;
-outputDir = path.resolve(outputDir);
+let [nodeExe, thisScript, config] = process.argv;
+
+// TODO better parsing; allow for more normal flag-based command line config?
+if (!config || config[0] !== '{') {
+    let configFile = config || 'build.json';
+
+    try {
+        config = JSON.parse(fs.readFileSync(configFile));
+    } catch(e) {
+        console.log("Could not read config: " + e + ".\n");
+        printUsageAndExit(1);
+    }
+} else {
+    try {
+        config = JSON.parse(config);
+    } catch(e) {
+        console.log("Could not read config: " + e + ".\n");
+        printUsageAndExit(1);
+    }
+}
+
+// check for missing config keys
+for (let k of ['output','examples','kits']) {
+    if (!config[k]) {
+        console.log(`Missing "${k}" configuration key.\n`);
+        printUsageAndExit(1);
+    }
+}
+
+// check for missing paths
+for (let k of ['output','examples','kits']) {
+    try {
+        fs.accessSync(path.resolve(config[k]));
+    } catch (e) {
+        console.log(`Could not find path for "${k}", ${path.resolve(config[k])}. Path does not exist or is inaccessible.\n`);
+        printUsageAndExit(1);
+    }
+}
+
 
 console.log("Building Cozy for distribution.");
 const packageInfo = JSON.parse(child_process.execSync('npm list --json --depth=0'));
@@ -25,23 +75,7 @@ const packageInfo = JSON.parse(child_process.execSync('npm list --json --depth=0
 console.log(" > Cozy version:    ", packageInfo.version);
 console.log(" > Electron version:", packageInfo.dependencies.electron.version);
 
-
-try {
-    fs.accessSync(outputDir);
-} catch (e) {
-    console.log(`Could not find output directory, ${outputDir}. Please create it first.`);
-    process.exit(1);
-}
-
-// outputDir = path.resolve(outputDir, `cozy-${process.platform}-${packageInfo.version}`);
-
-// try {
-//     fs.accessSync(outputDir);
-//     console.log(`Building would overwrite existing directory, ${outputDir}. Please either update the version in package.json, or delete the output directory, and try again.`);
-//     process.exit(1);
-// } catch (e) {
-//     // this is what we want
-// }
+const outputDir = path.resolve(config.output);
 
 // TODO webpack the ide first?
 
@@ -65,6 +99,27 @@ let packageConfig = {
     ],
     afterCopy: [
         (buildPath, electronVersion, platform, arch, callback) => {
+            let examplesPath = path.resolve(config.examples);
+
+            // can't use withFileTypes in readdir yet :(
+            for (let sub of fs.readdirSync(examplesPath)) {
+                if (sub.indexOf('.git') === 0) continue;
+
+                let stats = fs.statSync(path.resolve(examplesPath, sub));
+                if (!stats.isDirectory()) continue;
+                fs.copySync(path.resolve(examplesPath, sub), path.resolve(buildPath, 'examples', sub));
+            }
+
+            let kitsPath = path.resolve(config.kits);
+
+            for (let sub of fs.readdirSync(kitsPath, { withFileTypes: true })) {
+                if (sub.indexOf('.git') === 0) continue;
+
+                let stats = fs.statSync(path.resolve(kitsPath, sub));
+                if (!stats.isDirectory()) continue;
+                fs.copySync(path.resolve(kitsPath, sub), path.resolve(buildPath, 'kits', sub));
+            }
+
             callback();
         }
     ],

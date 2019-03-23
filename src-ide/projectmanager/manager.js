@@ -12,7 +12,15 @@ global.PLAYERDIR = Path.resolve('player');
 global.ENGINEDIR = Path.resolve('..', 'src-engine')
 
 
-let gameLibraries = JSON.parse(localStorage.getItem('gameLibraries')) || [];
+let gameLibraries = JSON.parse(localStorage.getItem('gameLibraries')) || [
+    Path.resolve(global.IDEDIR, 'examples')
+];
+let libPaths = localStorage.getItem('libs');
+if (!libPaths) {
+    localStorage.setItem('libs', JSON.stringify([
+        Path.resolve('kits'),
+    ]));
+}
 
 const EngineStatus = require('./EngineStatus');
 const Library = require('./Library');
