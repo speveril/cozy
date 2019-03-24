@@ -6,5 +6,5 @@ node_modules
 build
 dist
 .DS_Store
-docs
+docs/api
 build.json

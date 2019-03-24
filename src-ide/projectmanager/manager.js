@@ -73,7 +73,7 @@ window.Manager = {
             }
             var srcFiles = [ ENGINEDIR ];
             var f, stat;
-            let recompileNeeded = false;
+            this.recompileNeeded = false;
             while(srcFiles.length > 0) {
                 f = srcFiles.shift();
                 stat = FS.statSync(f);
@@ -385,7 +385,7 @@ window.Manager = {
             this.output("");
             return this.buildEngine()
                 .then(() => {
-                    return this.doc(Path.join(ENGINEDIR, "Cozy.ts"), Path.join("docs"))
+                    return this.doc(Path.join(ENGINEDIR, "Cozy.ts"), Path.join("docs","api"))
                 }, () => {
                     if (this.recompileInterval) {
                         return this.recompileEngine();
