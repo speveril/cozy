@@ -130,27 +130,18 @@ let GameOverlay = {
     },
 
     export: function() {
-        let dp = $create('<input class="directory-picker hidden" type="file" webkitdirectory>');
-        dp.onchange = () => {
-            var outputPath = dp.files[0].path;
-            var existingFiles = FS.readdirSync(outputPath);
-
-            dp.onchange = null;
-            dp.value = null;
-
-            if (existingFiles.length > 0) {
-                if (!confirm(outputPath + " isn't empty, and some files may be overwritten. Continue?")) {
-                    return;
-                }
-            }
+        Dialog.showOpenDialog({
+            title: "Choose export location",
+            properties: ["openDirectory","promptToCreate","createDirectory"]
+        }, (paths) => {
+            var outputPath = paths[0];
 
             GameOverlay.compile();
             Manager.queueTask(() => {
                 Manager.output("");
                 return Manager.export(gamepath, outputPath);
             });
-        }
-        dp.click();
+        });
     },
 
     exportweb: function() {
@@ -159,13 +150,6 @@ let GameOverlay = {
             properties: ["openDirectory","promptToCreate","createDirectory"]
         }, (paths) => {
             var outputPath = paths[0];
-            var existingFiles = FS.readdirSync(outputPath);
-
-            if (existingFiles.length > 0) {
-                if (!confirm(outputPath + " isn't empty, and some files may be overwritten. Continue?")) {
-                    return;
-                }
-            }
 
             GameOverlay.compile('web')
             Manager.queueTask(() => {

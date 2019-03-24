@@ -89,7 +89,7 @@ module.exports = {
 
         // just straight copies of some files...
         let files = [
-            'game.css', 'loading.html',
+            'game.css',
             Path.join('lib', 'libopenmpt.js'),
             Path.join('lib', 'libopenmpt.js.mem'),
             Path.join('lib', 'glob-web.js'),
@@ -124,6 +124,13 @@ module.exports = {
         // copy over game itself
         var exclude = exportConfig.exclude || [];
         cp(srcPath, Path.join(outPath, "g"), filter(exclude, srcPath));
+
+        try {
+            FS.accessSync(Path.join(outPath, "g", "loading.html"));
+        } catch (e) {
+            // assume that we get into the catch block because loading.html doesn't exist...
+            cp(Path.join(PLAYERDIR, 'loading.html'), Path.join(outPath, "g", "loading.html"));
+        }
 
         // copy over libs
         let libRoots = JSON.parse(localStorage.getItem('libs')) || [];
