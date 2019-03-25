@@ -385,7 +385,7 @@ window.Manager = {
             this.output("");
             return this.buildEngine()
                 .then(() => {
-                    return this.doc(Path.join(ENGINEDIR, "Cozy.ts"), Path.join("docs","api"))
+                    return this.doc(Path.join(ENGINEDIR, "Cozy.ts"), Path.join("docs"))
                 }, () => {
                     if (this.recompileInterval) {
                         return this.recompileEngine();
