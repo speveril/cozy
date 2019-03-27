@@ -1,3 +1,5 @@
+import * as Cozy from 'Cozy';
+
 export function load() {
     let promises = [];
 
