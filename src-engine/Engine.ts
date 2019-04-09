@@ -9,8 +9,6 @@ import { Texture } from "./Texture";
 
 declare var FontFace:any;
 
-// The kitchen sink
-
 class CozyState {
     public static Game:any;
     public static debug:boolean;
@@ -31,6 +29,14 @@ class CozyState {
 }
 
 let cozyState = null;
+
+/**
+ * Instantiate things and set things up so that the game can run. You will not
+ * need to call this function directly; it is called from the game's HTML.
+ * 
+ * @param opts Configuration for this Cozy game.
+ * @param overrides Temporary overrides coming in from the project manager.
+ */
 
 export async function setup(opts:any, overrides?:any) {
     let promises = [];
@@ -204,6 +210,12 @@ export async function setup(opts:any, overrides?:any) {
     await Promise.all(promises);
 }
 
+/**
+ * Load and start the game. Like Cozy.setup(), you will never need to call
+ * this yourself.
+ * 
+ * @param g The game to run.
+ */
 export function run(g) {
     cozyState.Game = g;
 
@@ -240,7 +252,14 @@ export function run(g) {
 
 const fps60 = 1.0 / 60.0;
 let last_t = null;
-export function frame(new_t) {
+
+/**
+ * Called every time the app draws a new frame. Do not call this directly, it
+ * is called by the animation loop.
+ * 
+ * @param new_t New timestamp.
+ */
+export function frame(new_t:number) {
     requestAnimationFrame(frame); // do this here so if there's an error it doesn't stop everything forever
 
     // the very first time we call frame, go with a dt of 0
@@ -277,14 +296,27 @@ export function frame(new_t) {
     }
 }
 
+/**
+ * Get a {@link Directory} object representing the game's root directory (i.e. 
+ * where the config.json is).
+ */
 export function gameDir():Directory {
     return cozyState.gameDir;
 }
 
+/**
+ * Get a {@link Directory} representing the game's user data directory -- this
+ * is usually under the operating system's "My Documents" or similar folder.
+ */
 export function userDataDir():Directory {
     return cozyState.userDataDir;
 }
 
+/**
+ * Fetch a configuration variable. If *k* is not supplied, the entire config
+ * object is returned.
+ * @param k (optional) The key to fetch.
+ */
 export function config(k:string):any {
     if (k !== undefined) {
         return cozyState.config[k];
@@ -293,14 +325,22 @@ export function config(k:string):any {
     }
 }
 
+/**
+ * Get the current platform as a string. Will be either "native" or "web".
+ * You can use this to determine whether you should offer desktop-only options
+ * (e.g. "quit to desktop").
+ */
+
 export function platform():string {
     return cozyState.platform;
 }
 
-// export function setScene(e:Entity) {
-//     scene = e;
-// }
-
+/**
+ * Create and add a Plane to the engine's render stack. The function will
+ * return the newly created Plane.
+ * @param Type What type of Plane to create; should either be {@link RenderPlane} or {@link UiPlane}.
+ * @param args Arguments to pass through to the Plane created.
+ */
 export function addPlane<p extends Plane>(Type:{new(args:any): p;}, args?:any):p {
     let plane = new Type(args || {});
     cozyState.planes.push(plane);
@@ -310,15 +350,28 @@ export function addPlane<p extends Plane>(Type:{new(args:any): p;}, args?:any):p
     return plane;
 }
 
+/**
+ * Pause the engine; when paused, the engine will not call update() on any
+ * Planes, and will not call frame() on your game. The engine starts out
+ * paused, to ensure the game does not attempt to process things until after
+ * loading and initialization is complete.
+ */
 export function pause() {
     cozyState.paused = true;
 }
 
+/**
+ * Unpause the engine. See pause().
+ */
 export function unpause() {
     cozyState.paused = false;
 }
 
-function getContentSize() {
+/**
+ * Get the inner dimensions of the game window; the return value is an array
+ * of two numbers, width and height.
+ */
+function getContentSize():number[] {
     if (cozyState.browserWindow.getContentSize) {
         return cozyState.browserWindow.getContentSize();
     } else {
@@ -338,7 +391,7 @@ function fixZoom() {
     document.body.style.display = '';
 }
 
-export function onResize(event?:any) {
+function onResize(event?:any) {
     let newSize = getContentSize(),
         multX   = newSize[0] / cozyState.config['width'],
         multY   = newSize[1] / cozyState.config['height'],
@@ -352,6 +405,12 @@ export function onResize(event?:any) {
     fixZoom();
 }
 
+/**
+ * Set the current zoom of the game window; this is only usable if the game is
+ * not configured to use "autoResize". 1 is default, 1:1 zoom; 2.0 will double
+ * each pixel, while 0.5 will show the window at half-size.
+ * @param z The new zoom level.
+ */
 export function setZoom(z:number):void {
     if (cozyState.config['autoResize']) {
         throw new Error("Do not call setZoom if the game has autoResize turned on.");
@@ -360,19 +419,35 @@ export function setZoom(z:number):void {
     fixZoom();
 }
 
+/**
+ * Get the current zoom level of the game window.
+ */
 export function getZoom() {
     return cozyState.sizeMultiplier;
 }
 
+/**
+ * Set the title of the game window.
+ * @param title The new title.
+ */
 export function setTitle(title) {
     cozyState.browserWindow.setTitle(title);
 }
 
+/**
+ * Close the window and quit the game. This may not work as expected when
+ * exported for web.
+ */
 export function quit() {
     cozyState.browserWindow.close();
 }
 
-export function loadTextures(assets) {
+/**
+ * Load a list of assets into the engine's texture library. Returns a Promise
+ * that resolves when loading is complete.
+ * @param assets A map of string keys to file paths.
+ */
+export function loadTextures(assets):Promise<void> {
     return new Promise((resolve, reject) => {
         if (Object.getOwnPropertyNames(assets).length < 1) {
             resolve();
@@ -398,10 +473,18 @@ export function loadTextures(assets) {
     });
 }
 
+/**
+ * Retrieve a texture that has been loaded into the engine's texture library.
+ * @param f Key of the texture used when loaded with {@link loadTextures}.
+ */
 export function getTexture(f) {
     return cozyState.textures[f.replace(/\\/g, "/")];
 }
 
+/**
+ * 
+ * @param file A loaded {@link File}.
+ */
 export function addStyleSheet(file:File):Promise<void> {
     return new Promise((resolve, reject) => {
         let el = document.createElement('link');
