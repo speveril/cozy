@@ -529,7 +529,6 @@ window.Manager = {
             .then(() => {
                 this.output(" - Built " + Path.join(buildPath, 'main.js'));
                 try {
-                    FS.unlinkSync(tsconfigPath);
                     this.output("<span style='color:#0f0'>[ Success ]</span>\n");
                 } catch (e) {
                     this.output(e);

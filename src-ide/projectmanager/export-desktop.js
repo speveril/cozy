@@ -101,6 +101,7 @@ module.exports = {
                 'package.json',
                 'x_game.html',
                 'xweb_game.html',
+                'tsconfig.json',
             ],
             // asar: true, // TODO? can't chdir to inside an asar, so need to rethink cwd for Cozy...
             afterCopy: [

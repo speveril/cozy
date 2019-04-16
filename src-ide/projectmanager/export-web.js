@@ -123,6 +123,7 @@ module.exports = {
 
         // copy over game itself
         var exclude = exportConfig.exclude || [];
+        exclude.push('tsconfig.json');
         cp(srcPath, Path.join(outPath, "g"), filter(exclude, srcPath));
 
         try {
