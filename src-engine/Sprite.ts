@@ -68,7 +68,7 @@ export class Sprite {
         this.hotspot = new PIXI.Point(args.hotspot.x || 0, args.hotspot.y || 0);
         this.frameSize = new PIXI.Point(args.frameSize.x || args.texture.width, args.frameSize.y || args.texture.height);
         this.textureFrame = new PIXI.Rectangle(0, 0, this.frameSize.x, this.frameSize.y);
-        this.frame_ = 0;
+        this.frame_ = args.frame || 0;
         this.frameBank = args.frameBank ? new PIXI.Rectangle(args.frameBank.x, args.frameBank.y, args.frameBank.width, args.frameBank.height) : new PIXI.Rectangle(0, 0, this.texture.width, this.texture.height);
         this.frameCounts = new PIXI.Point(Math.floor(this.frameBank.width / this.frameSize.x), Math.floor(this.frameBank.height / this.frameSize.y));
         this.clip = new PIXI.Rectangle(0, 0, this.frameSize.x, this.frameSize.y);
