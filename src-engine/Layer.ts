@@ -19,6 +19,11 @@ export class Layer {
             s.update(dt);
         }
     }
+    
+    adjustPosition(x:number, y:number) {
+        this.innerContainer.position.x += Math.floor(x);
+        this.innerContainer.position.y += Math.floor(y);
+    }
 
     offset(x:number, y:number) {
         this.innerContainer.position.x = Math.floor(x);
