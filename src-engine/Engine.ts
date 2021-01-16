@@ -44,13 +44,32 @@ export async function setup(opts:any, overrides?:any) {
     cozyState = CozyState;
     window['cozyState'] = cozyState; // for debugging
 
+    cozyState.debug = !!opts.debug;
+    cozyState.browserWindow = opts.Electron ? opts.Electron.remote.getCurrentWindow() : window; // TODO should probably actually be a weird wrapper
+    if (cozyState.debug && cozyState.browserWindow['openDevTools']) { 
+        const openDevTools = () => {
+            cozyState.browserWindow['openDevTools']();
+
+            if(cozyState.browserWindow['devToolsWebContents']) {
+                cozyState.browserWindow['devToolsWebContents'].focus();
+            }
+        };
+
+        window.addEventListener('keyup', (e) => {
+            if (e['keyCode'] === 192) { // ~ key, opens console
+                openDevTools();
+            }
+        });
+
+        openDevTools();
+        alert('debug tools mode activated.\n\nPlease wait until chrome inspector opens before continuing.\n\nto remove this functionality, remove the "debug" item from your game\'s config');
+    }
+
     console.log("Creating Cozy Object...", opts, overrides);
 
     cozyState.libs = JSON.parse(opts.libRoots);
     cozyState.config = opts;
-    cozyState.debug = !!opts.debug;
     cozyState.gamePath = opts.game;
-    cozyState.browserWindow = opts.Electron ? opts.Electron.remote.getCurrentWindow() : window; // TODO should probably actually be a weird wrapper
     
     // set platform string
     if (opts.Electron) {
@@ -58,15 +77,6 @@ export async function setup(opts:any, overrides?:any) {
     } else {
         cozyState.platform = 'web';
     }
-
-    // if (cozyState.debug) {
-    //     cozyState.browserWindow.webContents.once('devtools-opened', () => {
-    //         cozyState.browserWindow.focus();
-    //     });
-    //     cozyState.browserWindow['openDevTools']({
-    //         mode: 'detach'
-    //     });
-    // }
 
     // set up filesystem
     if (cozyState.config['userdata'] === undefined) {
@@ -118,16 +128,6 @@ export async function setup(opts:any, overrides?:any) {
 
     if (cozyState.config['fullscreen']) {
         setFullScreen(true);
-    }
-
-    // debugging
-    if (cozyState.debug && cozyState.browserWindow['openDevTools']) { 
-        window.addEventListener('keyup', (e) => {
-            if (e['keyCode'] === 192) { // ~ key, opens console
-                cozyState.browserWindow['openDevTools']();
-                cozyState.browserWindow['devToolsWebContents'].focus();
-            }
-        });
     }
     
     // audio
