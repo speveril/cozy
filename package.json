@@ -20,7 +20,7 @@
     "pixi.js": "^4.8.6",
     "png2icons": "^1.0.1",
     "ts-loader": "^2.3.7",
-    "typedoc": "^0.13.0",
+    "typedoc": "^0.20.16",
     "typescript": "^3.3.3333",
     "webpack": "^3.12.0"
   },
